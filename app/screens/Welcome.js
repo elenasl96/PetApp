@@ -1,21 +1,29 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, Image, SafeAreaView } from 'react-native';
 
 
 function Welcome(props) {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.topBar}>
-                <Text style={styles.mainTitle}>PetApp</Text>
-                <View style={styles.profileImage}>
-
+                <Text style={styles.mainTitle}>GPaw</Text>
+                <View style={styles.profileContainer}>
+                    <Text style={styles.username}>Anna Black</Text>
+                    <Image source={{uri: 'https://cdn.pixabay.com/photo/2015/09/02/13/24/girl-919048_960_720.jpg'}} style={styles.profileImage}>
+                    </Image>
                 </View>
 
             </View>
             <View style={styles.feedContainer}>
                 <View style={styles.feed}>
-
+                    <Text>Feed1</Text>
+                </View>                   
+                <View style={styles.feed}>
+                    <Text>Feed2</Text>
+                </View>
+                <View style={styles.feed}>
+                    <Text>Feed3</Text>
                 </View>
             </View>
             <View style={styles.myPets}>
@@ -47,14 +55,29 @@ const styles = StyleSheet.create({
     topBar: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingTop: 25,
+        alignItems: 'center',
+        paddingTop: 35,
         padding: 10,
-        height: 80,
+    },
+    mainTitle: {
+        fontSize: 25,
+        fontWeight: 'bold',
+    },
+    profileContainer:{
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    username:{
+        fontSize: 14,
+        fontWeight: 'bold',
+        margin: 10,
     },
     profileImage: {
         width: 50,
         height: 50,
         backgroundColor: 'grey',
+        borderRadius: 30,
+        
     },
     feedContainer:{
         flex: 4,
@@ -69,6 +92,8 @@ const styles = StyleSheet.create({
         height: 250,
         backgroundColor: 'white',
         borderRadius: 20,
+        marginRight: 15,
+        padding: 15,
     },
     myPets:{
         flex: 2,
