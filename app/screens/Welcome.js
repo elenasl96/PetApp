@@ -17,7 +17,9 @@ function Welcome(props) {
             </View>
 
             <View style={styles.mainContent}>
-            <ScrollView>
+            <ScrollView
+            showsVerticalScrollIndicator={false}
+            >
 
                 <View style={styles.feedContainer}>
                 <ScrollView 
@@ -180,11 +182,14 @@ const styles = StyleSheet.create({
         width: 300,
         height: 150,
         borderRadius: 35,
-        backgroundColor: 'orange',
+        backgroundColor: 'lightgreen',
     },
     bottomMenu:{
+        position: 'absolute',
+        bottom: 0,
+        left:100,
+        right:100,
         height: 70, 
-        backgroundColor: 'white',
         alignItems: 'center',
         },
     mainButtonContainer:{
