@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, Image, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, SafeAreaView} from 'react-native';
 
 
 function Welcome(props) {
@@ -9,13 +9,13 @@ function Welcome(props) {
             <View style={styles.topBar}>
                 <Text style={styles.mainTitle}>GPaw</Text>
                 <View style={styles.profileContainer}>
-                    <Text style={styles.username}>Anna Black</Text>
+                    <Text style={styles.username}>Anna Black </Text>
                     <Image source={{uri: 'https://cdn.pixabay.com/photo/2015/09/02/13/24/girl-919048_960_720.jpg'}} style={styles.profileImage}>
                     </Image>
                 </View>
 
             </View>
-            <View style={styles.feedContainer}>
+            <ScrollView horizontal={true} contentContainerStyle={styles.feedContainer}>
                 <View style={styles.feed}>
                     <Text>Feed1</Text>
                 </View>                   
@@ -25,10 +25,10 @@ function Welcome(props) {
                 <View style={styles.feed}>
                     <Text>Feed3</Text>
                 </View>
-            </View>
-            <View style={styles.myPets}>
+            </ScrollView>
+            <View style={styles.myPetsContainer}>
                 <Text style={styles.title}>My Pets</Text>   
-                <View style={styles.myPetsContent}>
+                <ScrollView horizontal={true} style={styles.myPets}>
                     <View style={styles.pet}>
 
                     </View>
@@ -38,10 +38,10 @@ function Welcome(props) {
                     <View style={styles.pet}>
 
                     </View>
-                </View> 
+                </ScrollView> 
             </View>
-        <View style={styles.bottomMenu} />
-    </SafeAreaView>
+            <View style={styles.bottomMenu} />
+        </SafeAreaView>
     );
 }
 
@@ -80,11 +80,11 @@ const styles = StyleSheet.create({
         
     },
     feedContainer:{
-        flex: 4,
+        
         justifyContent: 'center',
         flexDirection: 'row',
         padding: 20,
-        height: 300, 
+
         backgroundColor: 'powderblue',
         },
     feed:{
@@ -95,19 +95,18 @@ const styles = StyleSheet.create({
         marginRight: 15,
         padding: 15,
     },
-    myPets:{
-        flex: 2,
+    myPetsContainer:{
+        flex:4,
         flexDirection: 'column',
         height: 150, 
         backgroundColor: 'white',
-        padding: 10,
         },
     title:{
-        marginLeft: 10,
+        marginLeft: 15,
         fontWeight: 'bold',
         fontSize: 20,
     },
-    myPetsContent:{
+    myPets:{
         flex: 1,
         flexWrap: "nowrap",
         flexDirection: 'row',
