@@ -82,7 +82,7 @@ function Welcome(props) {
             <View style={styles.bottomMenu}>          
                 <TouchableHighlight onPress={null}>
                 <View style={styles.mainButtonContainer}>
-                <Image source={require('./paw.png')} style={styles.mainButton}>
+                <Image source={require('../../assets/images/paw.png')} style={styles.mainButton}>
                     </Image>
                 </View>
                 </TouchableHighlight>             
