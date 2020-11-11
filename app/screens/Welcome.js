@@ -45,6 +45,8 @@ function Welcome(props) {
                     horizontal={true} 
                     showsHorizontalScrollIndicator={false}>
                         <View style={styles.pet}>
+                        <Image source={require('../../assets/images/Gioia.jpg')} style={styles.petImage}>
+                        </Image>
                         </View>
  
                         <View style={styles.pet}>                        
@@ -168,6 +170,12 @@ const styles = StyleSheet.create({
         height: 150,
         borderRadius: 75,
         backgroundColor: 'orange',
+    },
+    petImage:{
+        width: 150,
+        height: 150,
+        borderRadius: 75,
+        resizeMode: 'cover',
     },
     myPlaces:{
         
