@@ -6,6 +6,7 @@ import { StyleSheet, TouchableHighlight, Text, View, Button, ScrollView, Image, 
 function Welcome(props) {
     return (
         <SafeAreaView style={styles.container}>
+
             <View style={styles.topBar}>
                 <Text style={styles.mainTitle}>GPaw </Text>
                 <View style={styles.profileContainer}>
@@ -13,10 +14,11 @@ function Welcome(props) {
                     <Image source={{uri: 'https://cdn.pixabay.com/photo/2015/09/02/13/24/girl-919048_960_720.jpg'}} style={styles.profileImage}>
                     </Image>
                 </View>
-
             </View>
+
             <View style={styles.mainContent}>
-              <ScrollView>
+            <ScrollView>
+
                 <View style={styles.feedContainer}>
                 <ScrollView 
                 horizontal={true} 
@@ -31,28 +33,48 @@ function Welcome(props) {
                       <Text>Feed1</Text>
                     </View>
                 </ScrollView>
-              </View>
-               <View style={styles.myPetsContainer}>
-              <Text style={styles.title}>My Pets</Text> 
-              <View style={styles.myPets}> 
-                  <ScrollView 
-                  horizontal={true} 
-                  showsHorizontalScrollIndicator={false}>
-                      <View style={styles.pet}>
+                </View>
 
-                      </View>
-                      <View style={styles.pet}>
-                          
-                      </View>
-                      <View style={styles.pet}>
-
-                      </View>
-                  </ScrollView> 
-              </View>    
-            </View>
               
-              </ScrollView>   
-                  
+                <View style={styles.myPetsContainer}>
+                    <Text style={styles.title}>My Pets</Text> 
+                    <View style={styles.myPets}> 
+                    <ScrollView 
+                    horizontal={true} 
+                    showsHorizontalScrollIndicator={false}>
+                        <View style={styles.pet}>
+                        </View>
+ 
+                        <View style={styles.pet}>                        
+                        </View>
+     
+                        <View style={styles.pet}>
+                        </View>
+                    </ScrollView> 
+                    </View>    
+                </View>
+
+                <View style={styles.myPetsContainer}>
+                    <Text style={styles.title}>My Favourite Places</Text> 
+                    <View style={styles.myPlaces}> 
+                    <ScrollView 
+                    horizontal={true} 
+                    showsHorizontalScrollIndicator={false}>
+                        <View style={styles.place}>
+                        </View>
+ 
+                        <View style={styles.place}>                        
+                        </View>
+     
+                        <View style={styles.place}>
+                        </View>
+                    </ScrollView> 
+                    </View>    
+                </View>
+
+
+              
+            </ScrollView>                    
             </View>
 
             <View style={styles.bottomMenu}>          
@@ -61,9 +83,8 @@ function Welcome(props) {
                 <Image source={require('./paw.png')} style={styles.mainButton}>
                     </Image>
                 </View>
-                </TouchableHighlight>
-                           
-                </View>
+                </TouchableHighlight>             
+            </View>
      
         </SafeAreaView>
     );
@@ -144,6 +165,21 @@ const styles = StyleSheet.create({
         width: 150,
         height: 150,
         borderRadius: 75,
+        backgroundColor: 'orange',
+    },
+    myPlaces:{
+        
+        flexWrap: "nowrap",
+        flexDirection: 'row',
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: 'white',
+    },
+    place:{
+        marginLeft: 15,   
+        width: 300,
+        height: 150,
+        borderRadius: 35,
         backgroundColor: 'orange',
     },
     bottomMenu:{
