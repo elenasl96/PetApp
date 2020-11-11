@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View, ScrollView, Image, SafeAreaView} from 'react-native';
+import React, { useState } from "react";
+import { StyleSheet, TouchableHighlight, Text, View, Button, ScrollView, Image, SafeAreaView} from 'react-native';
 
 
 function Welcome(props) {
@@ -15,7 +15,10 @@ function Welcome(props) {
                 </View>
 
             </View>
-            <ScrollView horizontal={true} contentContainerStyle={styles.feedContainer}>
+            <ScrollView 
+            horizontal={true} 
+            contentContainerStyle={styles.feedContainer} 
+            showsHorizontalScrollIndicator={false}>
                 <View style={styles.feed}>
                     <Text>Feed1</Text>
                 </View>                   
@@ -28,7 +31,10 @@ function Welcome(props) {
             </ScrollView>
             <View style={styles.myPetsContainer}>
                 <Text style={styles.title}>My Pets</Text>   
-                <ScrollView horizontal={true} style={styles.myPets}>
+                <ScrollView 
+                horizontal={true} 
+                style={styles.myPets}
+                showsHorizontalScrollIndicator={false}>
                     <View style={styles.pet}>
 
                     </View>
@@ -40,7 +46,16 @@ function Welcome(props) {
                     </View>
                 </ScrollView> 
             </View>
-            <View style={styles.bottomMenu} />
+            <View style={styles.bottomMenu}>
+           
+                <TouchableHighlight onPress={null}>
+                <View style={styles.mainButtonContainer}>
+                <Image source={require('./paw.png')} style={styles.mainButton}>
+                    </Image>
+                </View>
+                </TouchableHighlight>
+                           
+                </View>
         </SafeAreaView>
     );
 }
@@ -75,9 +90,8 @@ const styles = StyleSheet.create({
     profileImage: {
         width: 50,
         height: 50,
-        backgroundColor: 'grey',
         borderRadius: 30,
-        
+        resizeMode: 'cover',
     },
     feedContainer:{
         
@@ -117,14 +131,27 @@ const styles = StyleSheet.create({
         marginRight: 20,   
         width: 150,
         height: 150,
-        borderRadius: 20,
+        borderRadius: 75,
         backgroundColor: 'orange',
     },
     bottomMenu:{
         height: 70, 
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        alignItems: 'center',
         },
-
+    mainButtonContainer:{
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    mainButton:{
+        width: 50,
+        height: 50,
+        resizeMode: 'cover',
+        tintColor: 'orange',
+    }
   });
   
 
