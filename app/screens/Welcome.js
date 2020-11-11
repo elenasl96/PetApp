@@ -7,7 +7,7 @@ function Welcome(props) {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.topBar}>
-                <Text style={styles.mainTitle}>GPaw</Text>
+                <Text style={styles.mainTitle}>GPaw </Text>
                 <View style={styles.profileContainer}>
                     <Text style={styles.username}>Anna Black </Text>
                     <Image source={{uri: 'https://cdn.pixabay.com/photo/2015/09/02/13/24/girl-919048_960_720.jpg'}} style={styles.profileImage}>
@@ -15,39 +15,47 @@ function Welcome(props) {
                 </View>
 
             </View>
-            <ScrollView 
-            horizontal={true} 
-            contentContainerStyle={styles.feedContainer} 
-            showsHorizontalScrollIndicator={false}>
-                <View style={styles.feed}>
-                    <Text>Feed1</Text>
-                </View>                   
-                <View style={styles.feed}>
-                    <Text>Feed2</Text>
-                </View>
-                <View style={styles.feed}>
-                    <Text>Feed3</Text>
-                </View>
-            </ScrollView>
-            <View style={styles.myPetsContainer}>
-                <Text style={styles.title}>My Pets</Text>   
+            <View style={styles.mainContent}>
+              <ScrollView>
+                <View style={styles.feedContainer}>
                 <ScrollView 
                 horizontal={true} 
-                style={styles.myPets}
                 showsHorizontalScrollIndicator={false}>
-                    <View style={styles.pet}>
+                    <View style={styles.feed}>
+                      <Text>Feed1</Text>
+                    </View> 
+                    <View style={styles.feed}>
+                      <Text>Feed1</Text>
+                    </View>
+                    <View style={styles.feed}>
+                      <Text>Feed1</Text>
+                    </View>
+                </ScrollView>
+              </View>
+               <View style={styles.myPetsContainer}>
+              <Text style={styles.title}>My Pets</Text> 
+              <View style={styles.myPets}> 
+                  <ScrollView 
+                  horizontal={true} 
+                  showsHorizontalScrollIndicator={false}>
+                      <View style={styles.pet}>
 
-                    </View>
-                    <View style={styles.pet}>
-                        
-                    </View>
-                    <View style={styles.pet}>
+                      </View>
+                      <View style={styles.pet}>
+                          
+                      </View>
+                      <View style={styles.pet}>
 
-                    </View>
-                </ScrollView> 
+                      </View>
+                  </ScrollView> 
+              </View>    
             </View>
-            <View style={styles.bottomMenu}>
-           
+              
+              </ScrollView>   
+                  
+            </View>
+
+            <View style={styles.bottomMenu}>          
                 <TouchableHighlight onPress={null}>
                 <View style={styles.mainButtonContainer}>
                 <Image source={require('./paw.png')} style={styles.mainButton}>
@@ -56,6 +64,7 @@ function Welcome(props) {
                 </TouchableHighlight>
                            
                 </View>
+     
         </SafeAreaView>
     );
 }
@@ -63,9 +72,11 @@ function Welcome(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
+        flexDirection: 'column',   
         alignItems: 'stretch',
+    },
+    mainContent:{
+      flex: 1,
     },
     topBar: {
         flexDirection: 'row',
@@ -97,7 +108,8 @@ const styles = StyleSheet.create({
         
         justifyContent: 'center',
         flexDirection: 'row',
-        padding: 20,
+        paddingTop: 20,
+        paddingBottom: 20,
 
         backgroundColor: 'powderblue',
         },
@@ -106,29 +118,29 @@ const styles = StyleSheet.create({
         height: 250,
         backgroundColor: 'white',
         borderRadius: 20,
-        marginRight: 15,
+        marginLeft: 10,
+        marginRight: 10,
         padding: 15,
     },
     myPetsContainer:{
-        flex:4,
-        flexDirection: 'column',
-        height: 150, 
-        backgroundColor: 'white',
+        flexDirection: 'column', 
         },
     title:{
         marginLeft: 15,
+        marginTop: 10,
         fontWeight: 'bold',
         fontSize: 20,
     },
     myPets:{
-        flex: 1,
+        
         flexWrap: "nowrap",
         flexDirection: 'row',
-        padding: 10,
+        paddingTop: 10,
+        paddingBottom: 10,
         backgroundColor: 'white',
     },
     pet:{
-        marginRight: 20,   
+        marginLeft: 15,   
         width: 150,
         height: 150,
         borderRadius: 75,
