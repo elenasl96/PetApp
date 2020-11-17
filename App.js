@@ -6,8 +6,8 @@ import User from './app/firebase/Query';
 
 export default function App() {
   return (
-   <Welcome/>
-   //<User/>
+   //<Welcome/>
+   <User/>
   );
 }
 
