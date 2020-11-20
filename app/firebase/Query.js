@@ -15,4 +15,3 @@ function User(props){
 
 export default User;
 
-//connects to firestore but gives a warning
