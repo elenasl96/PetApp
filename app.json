@@ -16,6 +16,9 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "facebookScheme": "fb401120257739037",
+    "facebookAppId": "401120257739037",
+    "facebookDisplayName": "Pet App",
     "ios": {
       "supportsTablet": true
     },

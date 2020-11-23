@@ -1,4 +1,3 @@
-
 import * as firebase from 'firebase';
 import "firebase/firestore";
 
@@ -12,6 +11,8 @@ import "firebase/firestore";
     appId: "1:831172014060:web:63d4373102fe79a9341ac9",
     measurementId: "G-TNDGL05D7L"
   };
-  // Initialize Firebase
-  const firebaseApp = firebase.initializeApp(firebaseConfig);
-  export const db = firebaseApp.firestore();
+
+/*const firebaseApp = firebase.initializeApp(firebaseConfig);
+export const db = firebaseApp.firestore();*/
+
+export default firebaseConfig;

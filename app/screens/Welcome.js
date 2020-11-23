@@ -9,6 +9,7 @@ function Welcome(props) {
 
             <View style={styles.topBar}>
                 <Text style={styles.mainTitle}>GPaw </Text>
+           
                 <View style={styles.profileContainer}>
                     <Text style={styles.username}>Anna Black </Text>
                     <Image source={{uri: 'https://cdn.pixabay.com/photo/2015/09/02/13/24/girl-919048_960_720.jpg'}} style={styles.profileImage}>

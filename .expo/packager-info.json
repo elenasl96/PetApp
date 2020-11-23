@@ -1,9 +1,10 @@
 {
-  "devToolsPort": 19002,
-  "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 34524,
-  "expoServerNgrokUrl": "https://dp-re3.anonymous.petapp.exp.direct",
-  "packagerNgrokUrl": "https://packager.dp-re3.anonymous.petapp.exp.direct",
-  "ngrokPid": 39240
+  "packagerPid": 23092,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
+  "expoServerPort": 19000,
+  "webpackServerPort": null,
+  "devToolsPort": 19002
 }
