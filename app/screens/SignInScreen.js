@@ -81,9 +81,10 @@ class SignInScreen extends React.Component {
     return (
       <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss();}}>
         <SafeAreaView style={{ flex: 1 }}>
-          <KeyboardAvoidingView style={mainStyle.container} behavior={Platform.OS == "ios" ? "padding" : "height"}
-    keyboardVerticalOffset={Platform.OS == "ios" ? 0 : 20}
-    enabled={Platform.OS === "ios" ? true : false}>
+          <KeyboardAvoidingView style={mainStyle.container} 
+          behavior={Platform.OS == "ios" ? "padding" : "height"}
+          keyboardVerticalOffset={Platform.OS == "ios" ? 0 : 20}
+          enabled={Platform.OS === "ios" ? true : false}>
             <Text style={mainStyle.logo}>
               PetApp     
             </Text>
