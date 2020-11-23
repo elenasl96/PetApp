@@ -1,10 +1,25 @@
 import {StyleSheet} from "react-native";
 
 export default StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#2a9d8f',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
       logo:{
         fontSize:50,
         color:"#fb5b5a",
         marginBottom:40
+      },
+      form: {
+        width: "86%",
+        marginTop: 15,
+        backgroundColor:"#33C1B1",
+        borderRadius:25,
+        height:50,
+        justifyContent:"center",
+        padding:20
       },
       input: {
         fontSize: 20,
@@ -27,7 +42,7 @@ export default StyleSheet.create({
         color:"white"
       },
       text:{
-        fontSize: 17, 
+        fontSize: 18, 
         textAlign: 'center'
       },
       button: {

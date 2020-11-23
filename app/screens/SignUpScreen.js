@@ -15,6 +15,7 @@ import 'firebase/firestore';
 import firebase from 'firebase';
 import * as Facebook from 'expo-facebook'
 import * as GoogleSignIn from 'expo-google-sign-in'
+import mainStyle from '../styles/mainStyle';
 class SignUpScreen extends React.Component {
   state = { 
     displayName: '', 
@@ -91,32 +92,36 @@ class SignUpScreen extends React.Component {
         }}
       >
         <SafeAreaView style={{ flex: 1 }}>
-          <KeyboardAvoidingView style={styles.container} behavior="padding">
-            <Text style={styles.logo}>PetApp</Text>
-            <View style={styles.inputView}>
+          <KeyboardAvoidingView style={mainStyle.container} behavior="padding">
+            <Text style={mainStyle.logo}>PetApp</Text>
+            <View style={mainStyle.form}>
               <TextInput
-                style={styles.inputText}
+                style={mainStyle.inputText}
                 placeholder="Name"
-                placeholderTextColor="#B1B1B1"
+                placeholderTextColor="#616161"
                 returnKeyType="next"
                 textContentType="name"
                 value={this.state.displayName}
                 onChangeText={displayName => this.setState({ displayName })}
               />
+            </View>
+            <View style={mainStyle.form}>
               <TextInput
-                style={styles.inputText}
+                style={mainStyle.inputText}
                 placeholder="Email"
-                placeholderTextColor="#B1B1B1"
+                placeholderTextColor="#616161"
                 returnKeyType="next"
                 keyboardType="email-address"
                 textContentType="emailAddress"
                 value={this.state.email}
                 onChangeText={email => this.setState({ email })}
               />
+            </View>
+            <View style={mainStyle.form}>
               <TextInput
-                style={styles.inputText}
+                style={mainStyle.inputText}
                 placeholder="Password"
-                placeholderTextColor="#B1B1B1"
+                placeholderTextColor="#616161"
                 returnKeyType="done"
                 textContentType="newPassword"
                 secureTextEntry={true}
@@ -170,21 +175,6 @@ class SignUpScreen extends React.Component {
     );
   }
 }const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  form: {
-    width: '86%',
-    marginTop: 15
-  },
-  logo:{
-    fontSize:50,
-    color:"#fb5b5a",
-    marginBottom:40
-  },
   input: {
     fontSize: 20,
     borderColor: '#707070',

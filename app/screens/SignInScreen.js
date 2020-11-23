@@ -81,15 +81,15 @@ class SignInScreen extends React.Component {
     return (
       <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss();}}>
         <SafeAreaView style={{ flex: 1 }}>
-          <KeyboardAvoidingView style={styles.container} behavior="padding">
-            <Text style={styles.logo}>
-              PetApp    
+          <KeyboardAvoidingView style={mainStyle.container} behavior="padding">
+            <Text style={mainStyle.logo}>
+              PetApp     
             </Text>
-            <View style={styles.form}>
+            <View style={mainStyle.form}>
               <TextInput
-                style={styles.input}
+                style={mainStyle.inputText}
                 placeholder="Email"
-                placeholderTextColor="#B1B1B1"
+                placeholderTextColor="#616161"
                 returnKeyType="next"
                 keyboardType="email-address"
                 textContentType="emailAddress"
@@ -97,11 +97,11 @@ class SignInScreen extends React.Component {
                 onChangeText={email => this.setState({ email })}
               />
             </View>
-            <View style={styles.form}>
+            <View style={mainStyle.form}>
               <TextInput
-                style={styles.input}
+                style={mainStyle.inputText}
                 placeholder="Password"
-                placeholderTextColor="#B1B1B1"
+                placeholderTextColor="#616161"
                 returnKeyType="done"
                 textContentType="newPassword"
                 secureTextEntry={true}
@@ -114,41 +114,29 @@ class SignInScreen extends React.Component {
               {this.state.error}
             </Text>
             <TouchableOpacity
-              style={{ width: '86%', marginTop: 10 }}
+              style={styles.signIn}
               onPress={() => this.signInWithEmail()}>
                   <Text>Sign In</Text>
             </TouchableOpacity>
             <TouchableOpacity 
-              style={{ width: "86%", marginTop: 10 }}
+              style={styles.continueButton}
               onPress={() => this.signInWithFacebook()}>
               <View style={styles.button}>
-                <Text
-                  style={{
-                    letterSpacing: 0.5,
-                    fontSize: 16,
-                    color: "#FFFFFF"
-                  }}
-                >
+                <Text style={styles.facebookText}>
                   Continue with Facebook
                 </Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity 
-              style={{ width: "86%", marginTop: 10 }}
+              style={styles.continueButton}
               onPress={() => this.signInWithGoogle()}>
               <View style={styles.googleButton}>
-                <Text
-                  style={{
-                    letterSpacing: 0.5,
-                    fontSize: 16,
-                    color: "#707070"
-                  }}
-                >
+                <Text style={styles.googleText}>
                   Continue with Google
                 </Text>
               </View>
             </TouchableOpacity>
-            <View style={{ marginTop: 10 }}>
+            <View>
               <Text
                 style={styles.text}
                 onPress={() => {
@@ -164,30 +152,8 @@ class SignInScreen extends React.Component {
     );
   }
 }const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  form: {
-    width: "86%",
-    marginTop: 15,
-    backgroundColor:"#465881",
-    borderRadius:25,
-    height:50,
-    marginBottom:20,
-    justifyContent:"center",
-    padding:20
-  },
-  logo: {
-    fontSize:50,
-    color:"#fb5b5a",
-    marginBottom:40
-  },
-  input: {
-    height:50,
-    color:"white"
+  signIn:{
+    marginBottom: 15,
   },
   button: {
     backgroundColor: "#3A559F",
@@ -196,6 +162,21 @@ class SignInScreen extends React.Component {
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 22
+  },
+  continueButton: { 
+    width: "80%", 
+    marginTop: 5,
+    marginBottom: 10,
+  },
+  facebookText: {
+    letterSpacing: 0.5,
+    fontSize: 16,
+    color: "#FFFFFF"
+  },
+  googleText: {
+    letterSpacing: 0.5,
+    fontSize: 16,
+    color: "#303030"
   },
   googleButton: {
     backgroundColor: "#FFFFFF",

@@ -63,7 +63,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   logo:{
-    fontWeight:"bold",
     fontSize:50,
     color:"#fb5b5a",
     marginBottom:40
