@@ -47,7 +47,11 @@ class SignInScreen extends React.Component {
       });
   }  async signInWithFacebook() {
     try {
-      const { type, token } = await Facebook.logInWithReadPermissionsAsync('684399708713036', {
+      var appId = '401120257739037'
+      var appName = 'Pet App'
+      await Facebook.initializeAsync({appId, appName});
+      
+      const { type, token } = await Facebook.logInWithReadPermissionsAsync({
         permissions: ['public_profile'],
       });
       if (type === 'success') {
