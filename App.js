@@ -17,6 +17,7 @@ import firebaseConfig from './app/firebase/firebaseconfig.js';
 import AuthNavigator from './app/screens/AuthNavigator';
 import HomeScreen from './app/screens/HomeScreen.js';
 import SignIn from './app/screens/SignInScreen';
+import CalendarApp from './app/screens/calendar';
 
 
 if (!firebase.apps.length) {
@@ -27,7 +28,8 @@ export default createAppContainer(
   createSwitchNavigator(
     {
       Auth: AuthNavigator,
-      App: HomeScreen,
+     // App: HomeScreen,
+      App: CalendarApp,
       SignIn : SignIn,
     },
     {
