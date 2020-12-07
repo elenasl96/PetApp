@@ -18,6 +18,8 @@ import AuthNavigator from './app/screens/AuthNavigator';
 import HomeScreen from './app/screens/HomeScreen.js';
 import SignIn from './app/screens/SignInScreen';
 import CalendarApp from './app/screens/calendar';
+import * as Notifications from 'expo-notifications';
+
 
 
 if (!firebase.apps.length) {

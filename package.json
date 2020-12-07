@@ -21,7 +21,8 @@
     "react-native-gesture-handler": "~1.7.0",
     "expo-facebook": "~9.0.0",
     "expo-google-sign-in": "~8.3.0",
-    "expo-calendar": "~8.5.0"
+    "expo-calendar": "~8.5.0",
+    "expo-notifications": "~0.7.2"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"
