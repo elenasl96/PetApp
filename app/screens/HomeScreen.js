@@ -19,7 +19,16 @@ class HomeScreen extends React.Component {
       }
     });
   }
+
   render() {
+    const showPet = () => {
+      this.props.navigation.navigate("Pet");
+    };
+
+    const showPlace = () => {
+      this.props.navigation.navigate("Pet");
+    };
+
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.topBar}>
@@ -69,16 +78,27 @@ class HomeScreen extends React.Component {
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}
                 >
-                  <View style={styles.pet}>
-                    <Image
-                      source={require("../../assets/images/Gioia.jpg")}
-                      style={styles.petImage}
-                    ></Image>
-                  </View>
+                  <TouchableHighlight onPress={showPet}>
+                    <View style={styles.pet}>
+                      <Image
+                        source={require("../../assets/images/Gioia.jpg")}
+                        style={styles.petImage}
+                      ></Image>
+                    </View>
+                  </TouchableHighlight>
 
-                  <View style={styles.pet}></View>
+                  <TouchableHighlight onPress={showPet}>
+                    <View style={styles.pet}>
+                      <Image
+                        source={require("../../assets/images/Cipolla.jpg")}
+                        style={styles.petImage}
+                      ></Image>
+                    </View>
+                  </TouchableHighlight>
 
-                  <View style={styles.pet}></View>
+                  <TouchableHighlight onPress={showPet}>
+                    <View style={styles.pet}></View>
+                  </TouchableHighlight>
                 </ScrollView>
               </View>
             </View>
@@ -90,11 +110,17 @@ class HomeScreen extends React.Component {
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}
                 >
-                  <View style={styles.place}></View>
+                  <TouchableHighlight onPress={showPlace}>
+                    <View style={styles.place}></View>
+                  </TouchableHighlight>
 
-                  <View style={styles.place}></View>
+                  <TouchableHighlight onPress={showPlace}>
+                    <View style={styles.place}></View>
+                  </TouchableHighlight>
 
-                  <View style={styles.place}></View>
+                  <TouchableHighlight onPress={showPlace}>
+                    <View style={styles.place}></View>
+                  </TouchableHighlight>
                 </ScrollView>
               </View>
             </View>
