@@ -27,8 +27,8 @@ if (!firebase.apps.length) {
 }
 
 const AppStack = createStackNavigator({
-  //Home: HomeScreen,
-  Pet: PetScreen,
+  Home: HomeScreen,
+  //Pet: PetScreen,
 });
 
 export default createAppContainer(
