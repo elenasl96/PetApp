@@ -11,7 +11,7 @@ const HomeNavigator = createStackNavigator({
 
     // Optional: Override the `navigationOptions` for the screen
     navigationOptions: ({ navigation }) => ({
-      title: `'s Profile'`,
+      title: "Homepage  ",
     }),
   },
 
@@ -20,7 +20,7 @@ const HomeNavigator = createStackNavigator({
     path: "petProfile/:pet",
     // Optional: Override the `navigationOptions` for the screen
     navigationOptions: ({ navigation }) => ({
-      title: `'s Profile'`,
+      title: "-name- profile",
     }),
   },
 });
