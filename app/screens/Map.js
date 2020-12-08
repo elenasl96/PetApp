@@ -1,21 +1,20 @@
-import React from 'react';
-import MapView from 'react-native-maps';
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
+import React from "react";
+import MapView from "react-native-maps";
+import { StyleSheet, Text, View, Dimensions } from "react-native";
 
-export default class App extends React.Component {
+export default class MapScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
         <MapView
-
-        initialRegion={{  
-                latitude: 45.464664,
-                longitude: 9.188540,
-                latitudeDelta: 0.05,
-                longitudeDelta: 0.05
-              }}
-
-        style={styles.mapStyle} />
+          initialRegion={{
+            latitude: 45.464664,
+            longitude: 9.18854,
+            latitudeDelta: 0.05,
+            longitudeDelta: 0.05,
+          }}
+          style={styles.mapStyle}
+        />
       </View>
     );
   }
@@ -24,12 +23,12 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
   mapStyle: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
   },
 });
