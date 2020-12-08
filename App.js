@@ -11,32 +11,36 @@ export default function App() {
   );
 } */
 
-import { createAppContainer, createSwitchNavigator } from 'react-navigation';
-import * as firebase from 'firebase';
-import firebaseConfig from './app/firebase/firebaseconfig.js';
-import AuthNavigator from './app/screens/AuthNavigator';
-import HomeScreen from './app/screens/HomeScreen.js';
-import SignIn from './app/screens/SignInScreen';
-import CalendarApp from './app/screens/calendar';
-import * as Notifications from 'expo-notifications';
-
-
+import { createAppContainer, createSwitchNavigator } from "react-navigation";
+import { createStackNavigator } from "react-navigation-stack";
+import * as firebase from "firebase";
+import firebaseConfig from "./app/firebase/firebaseconfig.js";
+import AuthNavigator from "./app/screens/AuthNavigator";
+import HomeScreen from "./app/screens/HomeScreen.js";
+import SignIn from "./app/screens/SignInScreen";
+import CalendarApp from "./app/screens/calendar";
+import * as Notifications from "expo-notifications";
+import PetScreen from "./app/screens/petPage.js";
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
+const AppStack = createStackNavigator({
+  //Home: HomeScreen,
+  Pet: PetScreen,
+});
+
 export default createAppContainer(
   createSwitchNavigator(
     {
       Auth: AuthNavigator,
-     // App: HomeScreen,
-      App: CalendarApp,
-      SignIn : SignIn,
+      App: AppStack,
+      // App: CalendarApp,
+      SignIn: SignIn,
     },
     {
-      initialRouteName: 'Auth'
+      initialRouteName: "Auth",
     }
   )
 );
-

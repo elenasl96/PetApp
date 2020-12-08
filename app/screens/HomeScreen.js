@@ -1,225 +1,235 @@
-import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Button, Image, TouchableHighlight, ScrollView } from 'react-native';
-import firebase from 'firebase';
+import React from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  Image,
+  TouchableHighlight,
+  ScrollView,
+} from "react-native";
+import { SafeAreaView } from "react-navigation";
+import firebase from "firebase";
 class HomeScreen extends React.Component {
-  state = { user: {} };  componentDidMount() {
+  state = { user: {} };
+  componentDidMount() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user != null) {
-        this.setState({user: user});
+        this.setState({ user: user });
       }
-    })
+    });
   }
   render() {
     return (
-    
       <SafeAreaView style={{ flex: 1 }}>
-            <View style={styles.topBar}>
-                <Text style={styles.mainTitle}>GPaw </Text>
-           
-                <View style={styles.profileContainer}>
-                
-          <Button title="LogOff" onPress={() => {
-            firebase.auth().signOut();
-          }}/>
-                    <Text style={styles.username}>{this.state.user.email}</Text>
-                    <Image source={{uri: 'https://cdn.pixabay.com/photo/2015/09/02/13/24/girl-919048_960_720.jpg'}} style={styles.profileImage}>
-                    </Image>
+        <View style={styles.topBar}>
+          <Text style={styles.mainTitle}>GPaw </Text>
+
+          <View style={styles.profileContainer}>
+            <Button
+              title="LogOff"
+              onPress={() => {
+                firebase.auth().signOut();
+              }}
+            />
+            <Text style={styles.username}>{this.state.user.email}</Text>
+            <Image
+              source={{
+                uri:
+                  "https://cdn.pixabay.com/photo/2015/09/02/13/24/girl-919048_960_720.jpg",
+              }}
+              style={styles.profileImage}
+            ></Image>
+          </View>
+        </View>
+
+        <View style={styles.mainContent}>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={styles.feedContainer}>
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+              >
+                <View style={styles.feed}>
+                  <Text>Feed1</Text>
                 </View>
+                <View style={styles.feed}>
+                  <Text>Feed1</Text>
+                </View>
+                <View style={styles.feed}>
+                  <Text>Feed1</Text>
+                </View>
+              </ScrollView>
             </View>
 
-            <View style={styles.mainContent}>
-            <ScrollView
-            showsVerticalScrollIndicator={false}
-            >
+            <View style={styles.myPetsContainer}>
+              <Text style={styles.title}>My Pets</Text>
+              <View style={styles.myPets}>
+                <ScrollView
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
+                >
+                  <View style={styles.pet}>
+                    <Image
+                      source={require("../../assets/images/Gioia.jpg")}
+                      style={styles.petImage}
+                    ></Image>
+                  </View>
 
-                <View style={styles.feedContainer}>
-                <ScrollView 
-                horizontal={true} 
-                showsHorizontalScrollIndicator={false}>
-                    <View style={styles.feed}>
-                      <Text>Feed1</Text>
-                    </View> 
-                    <View style={styles.feed}>
-                      <Text>Feed1</Text>
-                    </View>
-                    <View style={styles.feed}>
-                      <Text>Feed1</Text>
-                    </View>
+                  <View style={styles.pet}></View>
+
+                  <View style={styles.pet}></View>
                 </ScrollView>
-                </View>
-
-              
-                <View style={styles.myPetsContainer}>
-                    <Text style={styles.title}>My Pets</Text> 
-                    <View style={styles.myPets}> 
-                    <ScrollView 
-                    horizontal={true} 
-                    showsHorizontalScrollIndicator={false}>
-                        <View style={styles.pet}>
-                        <Image source={require('../../assets/images/Gioia.jpg')} style={styles.petImage}>
-                        </Image>
-                        </View>
- 
-                        <View style={styles.pet}>                        
-                        </View>
-     
-                        <View style={styles.pet}>
-                        </View>
-                    </ScrollView> 
-                    </View>    
-                </View>
-
-                <View style={styles.myPetsContainer}>
-                    <Text style={styles.title}>My Favourite Places</Text> 
-                    <View style={styles.myPlaces}> 
-                    <ScrollView 
-                    horizontal={true} 
-                    showsHorizontalScrollIndicator={false}>
-                        <View style={styles.place}>
-                        </View>
- 
-                        <View style={styles.place}>                        
-                        </View>
-     
-                        <View style={styles.place}>
-                        </View>
-                    </ScrollView> 
-                    </View>    
-                </View>
-
-
-              
-            </ScrollView>                    
+              </View>
             </View>
 
-            <View style={styles.bottomMenu}>          
-                <TouchableHighlight onPress={null}>
-                <View style={styles.mainButtonContainer}>
-                <Image source={require('../../assets/images/paw.png')} style={styles.mainButton}>
-                    </Image>
-                </View>
-                </TouchableHighlight>             
+            <View style={styles.myPetsContainer}>
+              <Text style={styles.title}>My Favourite Places</Text>
+              <View style={styles.myPlaces}>
+                <ScrollView
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
+                >
+                  <View style={styles.place}></View>
+
+                  <View style={styles.place}></View>
+
+                  <View style={styles.place}></View>
+                </ScrollView>
+              </View>
             </View>
+          </ScrollView>
+        </View>
+
+        <View style={styles.bottomMenu}>
+          <TouchableHighlight onPress={null}>
+            <View style={styles.mainButtonContainer}>
+              <Image
+                source={require("../../assets/images/paw.png")}
+                style={styles.mainButton}
+              ></Image>
+            </View>
+          </TouchableHighlight>
+        </View>
       </SafeAreaView>
     );
   }
-}const styles = StyleSheet.create({
+}
+const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
+    alignItems: "center",
+    justifyContent: "center",
   },
-  mainContent:{
+  mainContent: {
     flex: 1,
   },
   topBar: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      paddingTop: 35,
-      padding: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingTop: 35,
+    padding: 10,
   },
   mainTitle: {
-      fontSize: 25,
-      fontWeight: 'bold',
+    fontSize: 25,
+    fontWeight: "bold",
   },
-  profileContainer:{
-      flexDirection: 'row',
-      alignItems: 'center',
+  profileContainer: {
+    flexDirection: "row",
+    alignItems: "center",
   },
-  username:{
-      fontSize: 14,
-      fontWeight: 'bold',
-      margin: 10,
+  username: {
+    fontSize: 14,
+    fontWeight: "bold",
+    margin: 10,
   },
   profileImage: {
-      width: 50,
-      height: 50,
-      borderRadius: 30,
-      resizeMode: 'cover',
+    width: 50,
+    height: 50,
+    borderRadius: 30,
+    resizeMode: "cover",
   },
-  feedContainer:{
-      
-      justifyContent: 'center',
-      flexDirection: 'row',
-      paddingTop: 20,
-      paddingBottom: 20,
+  feedContainer: {
+    justifyContent: "center",
+    flexDirection: "row",
+    paddingTop: 20,
+    paddingBottom: 20,
 
-      backgroundColor: 'powderblue',
-      },
-  feed:{
-      width: 300,
-      height: 250,
-      backgroundColor: 'white',
-      borderRadius: 20,
-      marginLeft: 10,
-      marginRight: 10,
-      padding: 15,
+    backgroundColor: "powderblue",
   },
-  myPetsContainer:{
-      flexDirection: 'column', 
-      },
-  title:{
-      marginLeft: 15,
-      marginTop: 10,
-      fontWeight: 'bold',
-      fontSize: 20,
+  feed: {
+    width: 300,
+    height: 250,
+    backgroundColor: "white",
+    borderRadius: 20,
+    marginLeft: 10,
+    marginRight: 10,
+    padding: 15,
   },
-  myPets:{
-      
-      flexWrap: "nowrap",
-      flexDirection: 'row',
-      paddingTop: 10,
-      paddingBottom: 10,
-      backgroundColor: 'white',
+  myPetsContainer: {
+    flexDirection: "column",
   },
-  pet:{
-      marginLeft: 15,   
-      width: 150,
-      height: 150,
-      borderRadius: 75,
-      backgroundColor: 'orange',
+  title: {
+    marginLeft: 15,
+    marginTop: 10,
+    fontWeight: "bold",
+    fontSize: 20,
   },
-  petImage:{
-      width: 150,
-      height: 150,
-      borderRadius: 75,
-      resizeMode: 'cover',
+  myPets: {
+    flexWrap: "nowrap",
+    flexDirection: "row",
+    paddingTop: 10,
+    paddingBottom: 10,
+    backgroundColor: "white",
   },
-  myPlaces:{
-      
-      flexWrap: "nowrap",
-      flexDirection: 'row',
-      paddingTop: 10,
-      paddingBottom: 10,
-      backgroundColor: 'white',
+  pet: {
+    marginLeft: 15,
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    backgroundColor: "orange",
   },
-  place:{
-      marginLeft: 15,   
-      width: 300,
-      height: 150,
-      borderRadius: 35,
-      backgroundColor: 'lightgreen',
+  petImage: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    resizeMode: "cover",
   },
-  bottomMenu:{
-      position: 'absolute',
-      bottom: 0,
-      left:100,
-      right:100,
-      height: 70, 
-      alignItems: 'center',
-      },
-  mainButtonContainer:{
-      width: 60,
-      height: 60,
-      borderRadius: 30,
-      alignItems: 'center',
-      justifyContent: 'center',
+  myPlaces: {
+    flexWrap: "nowrap",
+    flexDirection: "row",
+    paddingTop: 10,
+    paddingBottom: 10,
+    backgroundColor: "white",
   },
-  mainButton:{
-      width: 50,
-      height: 50,
-      resizeMode: 'cover',
-      tintColor: 'orange',
-  }
-});export default HomeScreen;
+  place: {
+    marginLeft: 15,
+    width: 300,
+    height: 150,
+    borderRadius: 35,
+    backgroundColor: "lightgreen",
+  },
+  bottomMenu: {
+    position: "absolute",
+    bottom: 0,
+    left: 100,
+    right: 100,
+    height: 70,
+    alignItems: "center",
+  },
+  mainButtonContainer: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  mainButton: {
+    width: 50,
+    height: 50,
+    resizeMode: "cover",
+    tintColor: "orange",
+  },
+});
+export default HomeScreen;
