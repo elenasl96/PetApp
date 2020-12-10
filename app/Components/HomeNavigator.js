@@ -1,6 +1,8 @@
 import { createStackNavigator } from "react-navigation-stack";
 import HomeScreen from "../screens/HomeScreen";
 import PetScreen from "../screens/petPage";
+import KennelScreen from "../screens/kennelPage";
+import VetScreen from "../screens/vetPage";
 
 const HomeNavigator = createStackNavigator({
   Home: {
@@ -23,6 +25,25 @@ const HomeNavigator = createStackNavigator({
       title: "-name- profile",
     }),
   },
+
+   Kennel : {
+      screen: KennelScreen,
+      path: "kennelProfile/:kennel",
+      // Optional: Override the `navigationOptions` for the screen
+      navigationOptions: ({ navigation }) => ({
+        title: "-name- profile",
+      }),
+    },
+
+    Vet : {
+          screen: VetScreen,
+          path: "vetProfile/:vet",
+          // Optional: Override the `navigationOptions` for the screen
+          navigationOptions: ({ navigation }) => ({
+            title: "-name- profile",
+          }),
+        },
+
 });
 
 export default HomeNavigator;

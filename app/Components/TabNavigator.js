@@ -2,12 +2,15 @@ import { createMaterialBottomTabNavigator } from "react-navigation-material-bott
 import HomeScreen from "../screens/HomeScreen.js";
 import MapScreen from "../screens/Map.js";
 import PetScreen from "../screens/petPage.js";
+import CalendarScreen from "../screens/calendar.js"
 import HomeNavigator from "./HomeNavigator.js";
+
 
 const TabNavigator = createMaterialBottomTabNavigator(
   {
     Home: { screen: HomeNavigator },
     Map: { screen: MapScreen },
+    Calendar : { screen: CalendarScreen },
   },
   {
     initialRouteName: "Home",

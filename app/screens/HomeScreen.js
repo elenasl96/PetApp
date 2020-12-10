@@ -29,6 +29,15 @@ class HomeScreen extends React.Component {
       this.props.navigation.navigate("Pet");
     };
 
+    const showKennel = () => {
+          this.props.navigation.navigate("Kennel");
+        };
+
+    const showVet = () => {
+          this.props.navigation.navigate("Vet");
+    };
+
+
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.topBar}>
@@ -110,11 +119,11 @@ class HomeScreen extends React.Component {
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}
                 >
-                  <TouchableHighlight onPress={showPlace}>
+                  <TouchableHighlight onPress={showKennel}>
                     <View style={styles.place}></View>
                   </TouchableHighlight>
 
-                  <TouchableHighlight onPress={showPlace}>
+                  <TouchableHighlight onPress={showVet}>
                     <View style={styles.place}></View>
                   </TouchableHighlight>
 
