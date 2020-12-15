@@ -22,27 +22,6 @@ class PetScreen extends React.Component {
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
-        <View style={styles.topBar}>
-          <Text style={styles.mainTitle}>GPaw </Text>
-
-          <View style={styles.profileContainer}>
-            <Button
-              title="LogOff"
-              onPress={() => {
-                firebase.auth().signOut();
-              }}
-            />
-            <Text style={styles.username}>{this.state.user.email}</Text>
-            <Image
-              source={{
-                uri:
-                  "https://cdn.pixabay.com/photo/2015/09/02/13/24/girl-919048_960_720.jpg",
-              }}
-              style={styles.profileImage}
-            ></Image>
-          </View>
-        </View>
-
         <View style={styles.mainContent}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.feedContainer}>
