@@ -1,16 +1,3 @@
-/* import React from 'react';
-import Welcome from './app/screens/Welcome';
-import User from './app/firebase/Query';
-import Map from './app/screens/Map';
-
-export default function App() {
-  return (
-   //<Welcome/>
-   //<User/>
-   <Map/>
-  );
-} */
-
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 import { createStackNavigator } from "react-navigation-stack";
@@ -42,3 +29,6 @@ export default createAppContainer(
     }
   )
 );
+
+
+
