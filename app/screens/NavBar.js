@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, Button, Image, StyleSheet } from "react-native";
+import firebase from "firebase";
+
 class NavBar extends Component {
   render() {
     return (
@@ -13,7 +15,7 @@ class NavBar extends Component {
               firebase.auth().signOut();
             }}
           />
-          <Text style={styles.username}>{this.state.user.email}</Text>
+          {/* <Text style={styles.username}>{this.state.user.email}</Text> */}
           <Image
             source={{
               uri:
@@ -37,10 +39,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   topBar: {
+    width: "100%",
+    height: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingTop: 35,
+    paddingTop: 10,
     padding: 10,
   },
   mainTitle: {

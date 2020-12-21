@@ -22,27 +22,6 @@ class KennelScreen extends React.Component {
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
-        <View style={styles.topBar}>
-          <Text style={styles.mainTitle}>GPaw</Text>
-
-          <View style={styles.profileContainer}>
-            <Button
-              title="LogOff"
-              onPress={() => {
-                firebase.auth().signOut();
-              }}
-            />
-            <Text style={styles.username}>{this.state.user.email}</Text>
-            <Image
-              source={{
-                uri:
-                  "https://cdn.pixabay.com/photo/2015/09/02/13/24/girl-919048_960_720.jpg",
-              }}
-              style={styles.profileImage}
-            ></Image>
-          </View>
-        </View>
-
         <View style={styles.mainContent}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.feedContainer}>
@@ -53,39 +32,38 @@ class KennelScreen extends React.Component {
               </View>
             </View>
 
-        <View style={styles.myPetsContainer}>
-                       <Text style={styles.title}>My Favourite Places</Text>
-                       <View style={styles.myPlaces}>
-                         <ScrollView
-                           horizontal={true}
-                           showsHorizontalScrollIndicator={false}
-                         >
-                           <View style={styles.place}></View>
+            <View style={styles.myPetsContainer}>
+              <Text style={styles.title}>My Favourite Places</Text>
+              <View style={styles.myPlaces}>
+                <ScrollView
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
+                >
+                  <View style={styles.place}></View>
 
-                           <View style={styles.place}></View>
+                  <View style={styles.place}></View>
 
-                           <View style={styles.place}></View>
-                         </ScrollView>
-                       </View>
-                     </View>
-                   </ScrollView>
-                 </View>
+                  <View style={styles.place}></View>
+                </ScrollView>
+              </View>
+            </View>
+          </ScrollView>
+        </View>
 
-                 <View style={styles.bottomMenu}>
-                   <TouchableHighlight onPress={null}>
-                     <View style={styles.mainButtonContainer}>
-                       <Image
-                         source={require("../../assets/images/paw.png")}
-                         style={styles.mainButton}
-                       ></Image>
-                     </View>
-                   </TouchableHighlight>
-                 </View>
-               </SafeAreaView>
-             );
-           }
+        <View style={styles.bottomMenu}>
+          <TouchableHighlight onPress={null}>
+            <View style={styles.mainButtonContainer}>
+              <Image
+                source={require("../../assets/images/paw.png")}
+                style={styles.mainButton}
+              ></Image>
+            </View>
+          </TouchableHighlight>
+        </View>
+      </SafeAreaView>
+    );
+  }
 }
-
 
 const styles = StyleSheet.create({
   container: {
