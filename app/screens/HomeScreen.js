@@ -10,19 +10,21 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import firebase from "firebase";
+import { AuthContext } from "../Components/AuthContext";
 class HomeScreen extends React.Component {
-  state = { user: {} };
+  static contextType = AuthContext;
+  //state = { user: {} };
   componentDidMount() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user != null) {
-        this.setState({ user: user });
+        this.context.saveUserUID(user.uid);
+        console.log(this.context.username);
       }
     });
   }
 
   render() {
     const showPet = () => {
-
       this.props.navigation.navigate("Pet");
     };
 
