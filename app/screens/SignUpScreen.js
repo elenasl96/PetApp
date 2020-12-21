@@ -16,6 +16,7 @@ import firebase from 'firebase';
 import * as Facebook from 'expo-facebook'
 import * as GoogleSignIn from 'expo-google-sign-in'
 import mainStyle from '../styles/mainStyle';
+import db from "./../firebase/DatabaseManager.js";
 class SignUpScreen extends React.Component {
   state = { 
     displayName: '', 
@@ -166,6 +167,7 @@ class SignUpScreen extends React.Component {
               <Text
                 style={ styles.text}
                 onPress={() => {
+                  db.getUser('Anna Black');
                   this.props.navigation.navigate('SignIn');
                 }}
               >

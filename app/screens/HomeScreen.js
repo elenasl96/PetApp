@@ -22,6 +22,7 @@ class HomeScreen extends React.Component {
 
   render() {
     const showPet = () => {
+
       this.props.navigation.navigate("Pet");
     };
 

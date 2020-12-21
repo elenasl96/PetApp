@@ -1,9 +1,9 @@
 {
   "packagerPort": 19001,
-  "packagerPid": 18972,
-  "expoServerNgrokUrl": "https://8i-v8a.anonymous.petapp.exp.direct",
-  "packagerNgrokUrl": "https://packager.8i-v8a.anonymous.petapp.exp.direct",
-  "ngrokPid": 12056,
+  "packagerPid": 20708,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "expoServerPort": 19000,
   "webpackServerPort": null,
   "devToolsPort": 19002

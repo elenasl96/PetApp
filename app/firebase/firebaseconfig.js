@@ -1,7 +1,7 @@
 import * as firebase from 'firebase';
 import "firebase/firestore";
 
- var firebaseConfig = {
+ export const firebaseConfig = {
     apiKey: "AIzaSyBE7tjvadykEtSDMZbxHCgKSREXqigAa7k",
     authDomain: "petapp-64e34.firebaseapp.com",
     databaseURL: "https://petapp-64e34.firebaseio.com",
@@ -12,7 +12,6 @@ import "firebase/firestore";
     measurementId: "G-TNDGL05D7L"
   };
 
-/*const firebaseApp = firebase.initializeApp(firebaseConfig);
-export const db = firebaseApp.firestore();*/
+const app = firebase.initializeApp(firebaseConfig);
+export const firestore = firebase.firestore(app);
 
-export default firebaseConfig;

@@ -1,24 +1,36 @@
 import React from 'react';
-import {firebaseConfig} from './firebaseconfig.js';
-import { StyleSheet, Text, View } from 'react-native';
+import {firestore} from './firebaseconfig.js';
+import User from './User.js';
+
+const db = {
+
+   addUser : function(name,password,photo){
+                           const users = firestore.collection('Users');
+                           let user = new User(name,password,photo);
+                           users.add(user.toFirestore());
+   },
+
+   getUser : function(name){
+                           const users = firestore.collection('Users');
+                           users.where("name", "==", name).get().then(function(querySnapshot) {
+                                                                               querySnapshot.forEach(function(doc) {
+                                                                                   let data = doc.data();
+                                                                                   let user = new User(data.name,data.password,data.photo);
+                                                                                   return user;
+                                                                                   //console.log(user);
+                                                                               });
+                                                                               });
+   }
 
 
-var app = firebase.initializeApp(firebaseConfig);
-db = firebase.firestore(app);
-
-function AddUser(int age, string name){
-      const users = db.collection('Users');
-      user = new User(age,name);
-      users.add(user.toFirestore())
-      .then(function(docRef)){
-        console.log("Document written with ID:",docRef.id)};
-      })
-      .catch(function(error)){
-        console.error("Error adding document:",error);
-      });
 }
 
-AddUser(20,'Anna White');
+export default db ;
+
+
+
+
+
 
 
 
