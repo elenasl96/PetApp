@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import firebase from "firebase";
 import * as Facebook from "expo-facebook";
 import * as GoogleSignIn from "expo-google-sign-in";
+import db from "../firebase/DatabaseManager";
 
 export const AuthContext = React.createContext();
 
@@ -9,14 +10,14 @@ class AuthContextProvider extends Component {
   state = {
     email: "",
     password: "",
-    errorMessage: "",
     loading: false,
-    UID: "",
+    uid: "",
   };
 
-  saveUserUID(uid) {
-    this.UID = uid;
-  }
+  saveUserUID = (uid) => {
+    this.setState({ uid: uid });
+    console.log("this state uid:" + this.state.uid);
+  };
 
   onLoginSuccess() {
     this.props.navigation.navigate("App");
@@ -26,11 +27,12 @@ class AuthContextProvider extends Component {
     this.setState({ error: errorMessage, loading: false });
   }
 
-  async signInWithEmail() {
+  async signInWithEmail(state) {
     await firebase
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)
       .then(this.onLoginSuccess.bind(this))
+      .then(console.log(state))
       .catch((error) => {
         let errorCode = error.code;
         let errorMessage = error.message;
@@ -59,7 +61,18 @@ class AuthContextProvider extends Component {
         const facebookProfileData = await firebase
           .auth()
           .signInWithCredential(credential);
-        //this.onLoginSuccess.bind(this);
+        // .then(this.onLoginSuccess.bind(this))
+        if (facebookProfileData.additionalUserInfo.isNewUser) {
+          db.addUser(
+            facebookProfileData.additionalUserInfo.profile.name,
+            "password",
+            "photo"
+          );
+        }
+
+        console.log("Facebook data:");
+        console.log(facebookProfileData);
+        console.log();
       }
     } catch ({ message }) {
       alert(`Facebook Login Error: ${message}`);

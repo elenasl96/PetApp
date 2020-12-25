@@ -12,7 +12,6 @@ import {
   Keyboard,
 } from "react-native";
 import "firebase/firestore";
-import firebase from "firebase";
 
 import mainStyle from "../styles/mainStyle";
 import { AuthContext } from "../Components/AuthContext";

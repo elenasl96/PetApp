@@ -18,7 +18,8 @@ class HomeScreen extends React.Component {
     firebase.auth().onAuthStateChanged((user) => {
       if (user != null) {
         this.context.saveUserUID(user.uid);
-        console.log(this.context.username);
+        console.log("context:");
+        console.log(this.context);
       }
     });
   }

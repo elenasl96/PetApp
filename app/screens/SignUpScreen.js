@@ -12,9 +12,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import "firebase/firestore";
-import firebase from "firebase";
-import * as Facebook from "expo-facebook";
-import * as GoogleSignIn from "expo-google-sign-in";
+
 import mainStyle from "../styles/mainStyle";
 import db from "./../firebase/DatabaseManager.js";
 import { AuthContext } from "../Components/AuthContext.js";
@@ -25,6 +23,7 @@ class SignUpScreen extends React.Component {
     displayName: "",
     email: "",
     password: "",
+    address: "",
     errorMessage: "",
     loading: false,
   };
@@ -75,6 +74,17 @@ class SignUpScreen extends React.Component {
                 textContentType="emailAddress"
                 value={this.state.email}
                 onChangeText={(email) => this.setState({ email })}
+              />
+            </View>
+            <View style={mainStyle.form}>
+              <TextInput
+                style={mainStyle.inputText}
+                placeholder="Address"
+                placeholderTextColor="#616161"
+                returnKeyType="next"
+                textContentType="addressCity"
+                value={this.state.address}
+                onChangeText={(address) => this.context.setState({ address })}
               />
             </View>
             <View style={mainStyle.form}>
