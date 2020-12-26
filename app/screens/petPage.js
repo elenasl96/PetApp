@@ -52,10 +52,13 @@ class PetScreen extends React.Component {
               </View>
               <View style={styles.buttons}>
                 <TouchableOpacity style={styles.button} onPress={null}>
-                  <Text style={styles.buttonText}>Add info</Text>
+                  <Text style={styles.buttonText}>Delete pet</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button} onPress={null}>
-                  <Text style={styles.buttonText}>Delete pet</Text>
+                  <Text style={styles.buttonText}>Add information</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={null}>
+                  <Text style={styles.buttonText}>Report loss</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -137,18 +140,23 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   buttons: {
+    flex: 1,
     flexDirection: "column",
     justifyContent: "flex-start",
-    alignContent: "flex-start",
+    alignItems: "flex-start",
     paddingBottom: 10,
   },
   button: {
     backgroundColor: "#F9844A",
+    minWidth: 100,
     height: 44,
     borderRadius: 22,
-    padding: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 5,
     marginBottom: 5,
     marginLeft: 10,
+    alignContent: "center",
+    justifyContent: "center",
   },
   buttonText: {
     alignSelf: "center",
@@ -159,7 +167,6 @@ const styles = StyleSheet.create({
   },
   petContainer: {
     flex: 1,
-
     flexDirection: "row",
     paddingTop: 20,
     paddingBottom: 20,
@@ -186,8 +193,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     backgroundColor: "#F9C74F",
     borderRadius: 20,
-    marginLeft: 10,
-    marginRight: 10,
+    marginLeft: 7,
+    marginRight: 5,
     padding: 10,
   },
   title: {

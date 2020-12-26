@@ -193,15 +193,16 @@ const styles = StyleSheet.create({
     marginRight: 10,
     padding: 15,
   },
-
   title: {
     fontWeight: "bold",
     fontSize: 20,
   },
   details: {
-    padding: 5,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
     color: "black",
     backgroundColor: "rgba(255,255,255,0.6)",
+    borderRadius: 20,
   },
   vetImage: {
     width: "100%",

@@ -74,31 +74,25 @@ class HomeScreen extends React.Component {
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}
                 >
-                  <TouchableHighlight onPress={showPet}>
-                    <View style={styles.pet}>
-                      <Image
-                        source={require("../../assets/images/Gioia.jpg")}
-                        style={styles.petImage}
-                      ></Image>
-                    </View>
+                  <TouchableHighlight onPress={showPet} style={styles.pet}>
+                    <Image
+                      source={require("../../assets/images/Gioia.jpg")}
+                      style={styles.petImage}
+                    ></Image>
                   </TouchableHighlight>
 
-                  <TouchableHighlight onPress={showPet}>
-                    <View style={styles.pet}>
-                      <Image
-                        source={require("../../assets/images/Cipolla.jpg")}
-                        style={styles.petImage}
-                      ></Image>
-                    </View>
+                  <TouchableHighlight onPress={showPet} style={styles.pet}>
+                    <Image
+                      source={require("../../assets/images/Cipolla.jpg")}
+                      style={styles.petImage}
+                    ></Image>
                   </TouchableHighlight>
 
-                  <TouchableHighlight onPress={addPet}>
-                    <View style={styles.pet}>
-                      <Image
-                        source={require("../../assets/images/add.png")}
-                        style={styles.addPetButton}
-                      ></Image>
-                    </View>
+                  <TouchableHighlight onPress={addPet} style={styles.pet}>
+                    <Image
+                      source={require("../../assets/images/add.png")}
+                      style={styles.addPetButton}
+                    ></Image>
                   </TouchableHighlight>
                 </ScrollView>
               </View>
@@ -111,21 +105,25 @@ class HomeScreen extends React.Component {
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}
                 >
-                  <TouchableHighlight onPress={showVet}>
-                    <View style={styles.place}>
-                      <Image
-                        source={require("../../assets/images/vet.jpg")}
-                        style={styles.placeImage}
-                      ></Image>
-                    </View>
+                  <TouchableHighlight onPress={showVet} style={styles.place}>
+                    <Image
+                      source={require("../../assets/images/vet.jpg")}
+                      style={styles.placeImage}
+                    ></Image>
                   </TouchableHighlight>
 
-                  <TouchableHighlight onPress={showKennel}>
-                    <View style={styles.place}></View>
+                  <TouchableHighlight onPress={showKennel} style={styles.place}>
+                    <Image
+                      source={require("../../assets/images/kennel.jpg")}
+                      style={styles.placeImage}
+                    ></Image>
                   </TouchableHighlight>
 
-                  <TouchableHighlight onPress={showPlace}>
-                    <View style={styles.place}></View>
+                  <TouchableHighlight onPress={showVet} style={styles.place}>
+                    <Image
+                      source={require("../../assets/images/vet.jpg")}
+                      style={styles.placeImage}
+                    ></Image>
                   </TouchableHighlight>
                 </ScrollView>
               </View>
