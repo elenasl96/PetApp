@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
   details: {
     padding: 5,
     color: "black",
-    backgroundColor: "rgba(255,255,255,0.5)",
+    backgroundColor: "rgba(255,255,255,0.6)",
   },
   vetImage: {
     width: "100%",
