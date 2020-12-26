@@ -43,7 +43,7 @@ export default StyleSheet.create({
     color: "white",
   },
   text: {
-    fontSize: 18,
+    fontSize: 20,
   },
   button: {
     backgroundColor: "#3A559F",

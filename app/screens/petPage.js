@@ -29,41 +29,79 @@ class PetScreen extends React.Component {
         <View style={styles.mainContent}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.petContainer}>
-              <View>
-                <View style={styles.pet}>
-                  <ImageBackground
-                    source={require("../../assets/images/Gioia.jpg")}
-                    style={styles.petImage}
-                    imageStyle={{ borderRadius: 20 }}
+              <View style={styles.pet}>
+                <ImageBackground
+                  source={require("../../assets/images/Gioia.jpg")}
+                  style={styles.petImage}
+                  imageStyle={{ borderRadius: 50 }}
+                >
+                  <Text
+                    style={[
+                      styles.title,
+                      {
+                        color: "white",
+                        textShadowColor: "black",
+                        textShadowRadius: 2,
+                        alignSelf: "center",
+                      },
+                    ]}
                   >
-                    <Text
-                      style={[
-                        styles.title,
-                        {
-                          color: "white",
-                          textShadowColor: "black",
-                          textShadowRadius: 2,
-                        },
-                      ]}
-                    >
-                      Gioia
-                    </Text>
-                  </ImageBackground>
-                </View>
+                    Gioia
+                  </Text>
+                </ImageBackground>
+              </View>
+              <View style={styles.buttons}>
+                <TouchableOpacity style={styles.button} onPress={null}>
+                  <Text style={styles.buttonText}>Add info</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={null}>
+                  <Text style={styles.buttonText}>Delete pet</Text>
+                </TouchableOpacity>
               </View>
             </View>
-            <View style={styles.buttons}>
-              <TouchableOpacity style={styles.button} onPress={null}>
-                <Text style={styles.buttonText}>Add info</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.button} onPress={null}>
-                <Text style={styles.buttonText}>Delete pet</Text>
-              </TouchableOpacity>
-            </View>
+
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            >
+              <TouchableHighlight>
+                <View style={styles.info}>
+                  <Text>Size</Text>
+                  <Text>Medium</Text>
+                </View>
+              </TouchableHighlight>
+
+              <TouchableHighlight>
+                <View style={styles.info}>
+                  <Text>Weight</Text>
+                  <Text>20kg</Text>
+                </View>
+              </TouchableHighlight>
+
+              <TouchableHighlight>
+                <View style={styles.info}>
+                  <Text>Height</Text>
+                  <Text>50cm</Text>
+                </View>
+              </TouchableHighlight>
+
+              <TouchableHighlight>
+                <View style={styles.info}>
+                  <Text>Breed</Text>
+                  <Text>Labrador</Text>
+                </View>
+              </TouchableHighlight>
+
+              <TouchableHighlight>
+                <View style={styles.info}>
+                  <Text>Disease</Text>
+                  <Text>Nothing</Text>
+                </View>
+              </TouchableHighlight>
+            </ScrollView>
+
             <View style={styles.descriptionContainer}>
-              <Text style={mainStyle.text}>Size</Text>
-              <Text style={mainStyle.text}>Breed</Text>
-              <Text style={mainStyle.text}>Notes</Text>
+              <Text style={mainStyle.text}>Chart</Text>
             </View>
           </ScrollView>
         </View>
@@ -99,21 +137,17 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   buttons: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignContent: "center",
-    backgroundColor: "powderblue",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignContent: "flex-start",
     paddingBottom: 10,
   },
   button: {
     backgroundColor: "#F9844A",
     height: 44,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
     borderRadius: 22,
     padding: 10,
+    margin: 5,
     marginLeft: 10,
   },
   buttonText: {
@@ -123,50 +157,45 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "bold",
   },
-  profileContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  username: {
-    fontSize: 14,
-    fontWeight: "bold",
-    margin: 10,
-  },
-  profileImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 30,
-    resizeMode: "cover",
-  },
   petContainer: {
-    justifyContent: "center",
+    flex: 1,
+
     flexDirection: "row",
     paddingTop: 20,
     paddingBottom: 20,
-    backgroundColor: "powderblue",
   },
   pet: {
-    width: 300,
-    height: 250,
+    width: 150,
+    height: 150,
+    borderRadius: 75,
     backgroundColor: "white",
-    borderRadius: 20,
     marginLeft: 10,
     marginRight: 10,
-  },
-  title: {
-    fontWeight: "bold",
-    fontSize: 20,
   },
   petImage: {
     flex: 1,
     flexDirection: "column",
     justifyContent: "flex-end",
-    width: 300,
-    height: 250,
-    borderRadius: 20,
+    width: 150,
+    height: 150,
+    borderRadius: 75,
     resizeMode: "cover",
     padding: 10,
   },
+  info: {
+    flex: 1,
+    flexDirection: "column",
+    backgroundColor: "#F9C74F",
+    borderRadius: 20,
+    marginLeft: 10,
+    marginRight: 10,
+    padding: 10,
+  },
+  title: {
+    fontWeight: "bold",
+    fontSize: 20,
+  },
+
   descriptionContainer: {
     padding: 10,
   },
