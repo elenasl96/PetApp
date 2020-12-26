@@ -8,8 +8,11 @@ import {
   Image,
   TouchableHighlight,
   ScrollView,
+  ImageBackground,
+  TouchableOpacity,
 } from "react-native";
 import firebase from "firebase";
+import Line from "../Components/Line";
 class VetScreen extends React.Component {
   state = { user: {} };
   componentDidMount() {
@@ -22,29 +25,102 @@ class VetScreen extends React.Component {
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
-        <View style={styles.mainContent}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.feedContainer}>
-              <View>
-                <View style={styles.feed}>
-                  <Text>Vet</Text>
-                </View>
+        <View>
+          <ImageBackground
+            source={require("../../assets/images/vet.jpg")}
+            style={styles.vetImage}
+          >
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "column",
+                justifyContent: "space-between",
+                padding: 10,
+              }}
+            >
+              <Text
+                style={[
+                  styles.title,
+                  {
+                    color: "white",
+                    textShadowColor: "black",
+                    textShadowRadius: 2,
+                  },
+                ]}
+              >
+                Veterinary
+              </Text>
+              <View style={[styles.details]}>
+                <Text>
+                  Via Milano, 10 Milano, Mi{"\n"}
+                  Tel. 02/123455
+                </Text>
               </View>
             </View>
-
-            <View style={styles.myPetsContainer}>
-              <Text style={styles.title}>My Favourite Places</Text>
-              <View style={styles.myPlaces}>
-                <ScrollView
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}
-                >
-                  <View style={styles.place}></View>
-
-                  <View style={styles.place}></View>
-
-                  <View style={styles.place}></View>
-                </ScrollView>
+          </ImageBackground>
+        </View>
+        <View style={styles.buttons}>
+          <TouchableOpacity style={styles.button} onPress={null}>
+            <Text style={styles.buttonText}>Make Appointment</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={null}>
+            <Text style={styles.buttonText}>Open in map</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.mainContent}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={{ paddingTop: 10 }}
+          >
+            <View style={styles.feedContainer}>
+              <View style={styles.feed}>
+                <Text>News2</Text>
+                <Line></Line>
+                <Text>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                  ultricies posuere nulla, nec fermentum justo tempus ac. Donec
+                  magna lorem, maximus et hendrerit id, rutrum vel sapien. Sed
+                  sed imperdiet ipsum. Duis venenatis ultrices mi dignissim
+                  molestie. Quisque vestibulum ipsum id nulla venenatis, in
+                  elementum lacus ornare. Proin rutrum hendrerit felis fermentum
+                  ultrices.
+                </Text>
+                <Line></Line>
+                <Text>12/12/2020 8:00</Text>
+              </View>
+            </View>
+            <View style={styles.feedContainer}>
+              <View style={styles.feed}>
+                <Text>News2</Text>
+                <Line></Line>
+                <Text>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                  ultricies posuere nulla, nec fermentum justo tempus ac. Donec
+                  magna lorem, maximus et hendrerit id, rutrum vel sapien. Sed
+                  sed imperdiet ipsum. Duis venenatis ultrices mi dignissim
+                  molestie. Quisque vestibulum ipsum id nulla venenatis, in
+                  elementum lacus ornare. Proin rutrum hendrerit felis fermentum
+                  ultrices.
+                </Text>
+                <Line></Line>
+                <Text>12/12/2020 8:00</Text>
+              </View>
+            </View>
+            <View style={styles.feedContainer}>
+              <View style={styles.feed}>
+                <Text>News2</Text>
+                <Line></Line>
+                <Text>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                  ultricies posuere nulla, nec fermentum justo tempus ac. Donec
+                  magna lorem, maximus et hendrerit id, rutrum vel sapien. Sed
+                  sed imperdiet ipsum. Duis venenatis ultrices mi dignissim
+                  molestie. Quisque vestibulum ipsum id nulla venenatis, in
+                  elementum lacus ornare. Proin rutrum hendrerit felis fermentum
+                  ultrices.
+                </Text>
+                <Line></Line>
+                <Text>12/12/2020 8:00</Text>
               </View>
             </View>
           </ScrollView>
@@ -73,6 +149,10 @@ const styles = StyleSheet.create({
   },
   mainContent: {
     flex: 1,
+    flexDirection: "column",
+    alignContent: "center",
+    justifyContent: "center",
+    backgroundColor: "white",
   },
   topBar: {
     flexDirection: "row",
@@ -85,81 +165,51 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "bold",
   },
-  profileContainer: {
+  buttons: {
+    marginTop: 10,
     flexDirection: "row",
-    alignItems: "center",
+    justifyContent: "center",
+    alignContent: "center",
   },
-  username: {
-    fontSize: 14,
-    fontWeight: "bold",
-    margin: 10,
+  button: {
+    backgroundColor: "#F9844A",
+    height: 44,
+    borderRadius: 22,
+    padding: 10,
+    marginLeft: 10,
   },
-  profileImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 30,
-    resizeMode: "cover",
+  buttonText: {
+    alignSelf: "center",
   },
   feedContainer: {
-    justifyContent: "center",
-    flexDirection: "row",
-    paddingTop: 20,
+    width: "95%",
     paddingBottom: 20,
-
-    backgroundColor: "powderblue",
+    alignSelf: "center",
   },
   feed: {
-    width: 300,
-    height: 250,
-    backgroundColor: "white",
+    backgroundColor: "powderblue",
     borderRadius: 20,
     marginLeft: 10,
     marginRight: 10,
     padding: 15,
   },
-  myPetsContainer: {
-    flexDirection: "column",
-  },
+
   title: {
-    marginLeft: 15,
-    marginTop: 10,
     fontWeight: "bold",
     fontSize: 20,
   },
-  myPets: {
-    flexWrap: "nowrap",
-    flexDirection: "row",
-    paddingTop: 10,
-    paddingBottom: 10,
-    backgroundColor: "white",
+  details: {
+    padding: 5,
+    color: "black",
+    backgroundColor: "rgba(255,255,255,0.5)",
   },
-  pet: {
-    marginLeft: 15,
-    width: 150,
-    height: 150,
-    borderRadius: 75,
-    backgroundColor: "orange",
-  },
-  petImage: {
-    width: 150,
-    height: 150,
+  vetImage: {
+    width: "100%",
+    height: 200,
     borderRadius: 75,
     resizeMode: "cover",
   },
-  myPlaces: {
-    flexWrap: "nowrap",
-    flexDirection: "row",
-    paddingTop: 10,
-    paddingBottom: 10,
-    backgroundColor: "white",
-  },
-  place: {
-    marginLeft: 15,
-    width: 300,
-    height: 150,
-    borderRadius: 35,
-    backgroundColor: "lightgreen",
-  },
+
   bottomMenu: {
     position: "absolute",
     bottom: 0,

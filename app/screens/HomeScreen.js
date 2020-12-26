@@ -111,11 +111,16 @@ class HomeScreen extends React.Component {
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}
                 >
-                  <TouchableHighlight onPress={showKennel}>
-                    <View style={styles.place}></View>
+                  <TouchableHighlight onPress={showVet}>
+                    <View style={styles.place}>
+                      <Image
+                        source={require("../../assets/images/vet.jpg")}
+                        style={styles.placeImage}
+                      ></Image>
+                    </View>
                   </TouchableHighlight>
 
-                  <TouchableHighlight onPress={showVet}>
+                  <TouchableHighlight onPress={showKennel}>
                     <View style={styles.place}></View>
                   </TouchableHighlight>
 
@@ -243,6 +248,12 @@ const styles = StyleSheet.create({
     height: 150,
     borderRadius: 35,
     backgroundColor: "lightgreen",
+  },
+  placeImage: {
+    width: 300,
+    height: 150,
+    borderRadius: 35,
+    resizeMode: "cover",
   },
   bottomMenu: {
     position: "absolute",

@@ -10,6 +10,7 @@ class NavBar extends Component {
 
         <View style={styles.profileContainer}>
           <Button
+            color="#43AA8B"
             title="LogOff"
             onPress={() => {
               firebase.auth().signOut();
@@ -47,6 +48,9 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     padding: 10,
   },
+  logOff: {
+    color: "#90BE6D",
+  },
   mainTitle: {
     fontSize: 25,
     fontWeight: "bold",
@@ -67,86 +71,11 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     marginLeft: 10,
   },
-  feedContainer: {
-    justifyContent: "center",
-    flexDirection: "row",
-    paddingTop: 20,
-    paddingBottom: 20,
-
-    backgroundColor: "powderblue",
-  },
-  feed: {
-    width: 300,
-    height: 250,
-    backgroundColor: "white",
-    borderRadius: 20,
-    marginLeft: 10,
-    marginRight: 10,
-    padding: 15,
-  },
-  myPetsContainer: {
-    flexDirection: "column",
-  },
   title: {
     marginLeft: 15,
     marginTop: 10,
     fontWeight: "bold",
     fontSize: 20,
-  },
-  myPets: {
-    flexWrap: "nowrap",
-    flexDirection: "row",
-    paddingTop: 10,
-    paddingBottom: 10,
-    backgroundColor: "white",
-  },
-  pet: {
-    marginLeft: 15,
-    width: 150,
-    height: 150,
-    borderRadius: 75,
-    backgroundColor: "orange",
-  },
-  petImage: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
-    resizeMode: "cover",
-  },
-  myPlaces: {
-    flexWrap: "nowrap",
-    flexDirection: "row",
-    paddingTop: 10,
-    paddingBottom: 10,
-    backgroundColor: "white",
-  },
-  place: {
-    marginLeft: 15,
-    width: 300,
-    height: 150,
-    borderRadius: 35,
-    backgroundColor: "lightgreen",
-  },
-  bottomMenu: {
-    position: "absolute",
-    bottom: 0,
-    left: 100,
-    right: 100,
-    height: 70,
-    alignItems: "center",
-  },
-  mainButtonContainer: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  mainButton: {
-    width: 50,
-    height: 50,
-    resizeMode: "cover",
-    tintColor: "orange",
   },
 });
 

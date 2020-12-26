@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     height: 44,
     borderRadius: 22,
     padding: 10,
-    margin: 5,
+    marginBottom: 5,
     marginLeft: 10,
   },
   buttonText: {
@@ -170,7 +170,6 @@ const styles = StyleSheet.create({
     borderRadius: 75,
     backgroundColor: "white",
     marginLeft: 10,
-    marginRight: 10,
   },
   petImage: {
     flex: 1,
