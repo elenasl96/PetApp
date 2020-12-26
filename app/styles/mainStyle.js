@@ -44,7 +44,6 @@ export default StyleSheet.create({
   },
   text: {
     fontSize: 18,
-    textAlign: "center",
   },
   button: {
     backgroundColor: "#3A559F",

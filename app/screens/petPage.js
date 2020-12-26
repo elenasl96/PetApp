@@ -8,8 +8,12 @@ import {
   Image,
   TouchableHighlight,
   ScrollView,
+  ImageBackground,
+  TouchableOpacity,
 } from "react-native";
 import firebase from "firebase";
+import mainStyle from "../styles/mainStyle";
+import { color } from "react-native-reanimated";
 class PetScreen extends React.Component {
   state = { user: {} };
   componentDidMount() {
@@ -24,28 +28,42 @@ class PetScreen extends React.Component {
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.mainContent}>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.feedContainer}>
+            <View style={styles.petContainer}>
               <View>
-                <View style={styles.feed}>
-                  <Text>Pet1</Text>
+                <View style={styles.pet}>
+                  <ImageBackground
+                    source={require("../../assets/images/Gioia.jpg")}
+                    style={styles.petImage}
+                    imageStyle={{ borderRadius: 20 }}
+                  >
+                    <Text
+                      style={[
+                        styles.title,
+                        {
+                          color: "white",
+                          textShadowColor: "black",
+                          textShadowRadius: 2,
+                        },
+                      ]}
+                    >
+                      Gioia
+                    </Text>
+                  </ImageBackground>
                 </View>
               </View>
             </View>
-
-            <View style={styles.myPetsContainer}>
-              <Text style={styles.title}>My Favourite Places</Text>
-              <View style={styles.myPlaces}>
-                <ScrollView
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}
-                >
-                  <View style={styles.place}></View>
-
-                  <View style={styles.place}></View>
-
-                  <View style={styles.place}></View>
-                </ScrollView>
-              </View>
+            <View style={styles.buttons}>
+              <TouchableOpacity style={styles.button} onPress={null}>
+                <Text style={styles.buttonText}>Add info</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.button} onPress={null}>
+                <Text style={styles.buttonText}>Delete pet</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.descriptionContainer}>
+              <Text style={mainStyle.text}>Size</Text>
+              <Text style={mainStyle.text}>Breed</Text>
+              <Text style={mainStyle.text}>Notes</Text>
             </View>
           </ScrollView>
         </View>
@@ -80,6 +98,27 @@ const styles = StyleSheet.create({
     paddingTop: 35,
     padding: 10,
   },
+  buttons: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignContent: "center",
+    backgroundColor: "powderblue",
+    paddingBottom: 10,
+  },
+  button: {
+    backgroundColor: "#F9844A",
+    height: 44,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 22,
+    padding: 10,
+    marginLeft: 10,
+  },
+  buttonText: {
+    alignSelf: "center",
+  },
   mainTitle: {
     fontSize: 25,
     fontWeight: "bold",
@@ -99,51 +138,37 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     resizeMode: "cover",
   },
-  feedContainer: {
+  petContainer: {
     justifyContent: "center",
     flexDirection: "row",
     paddingTop: 20,
     paddingBottom: 20,
-
     backgroundColor: "powderblue",
   },
-  feed: {
+  pet: {
     width: 300,
     height: 250,
     backgroundColor: "white",
     borderRadius: 20,
     marginLeft: 10,
     marginRight: 10,
-    padding: 15,
-  },
-  myPetsContainer: {
-    flexDirection: "column",
   },
   title: {
-    marginLeft: 15,
-    marginTop: 10,
     fontWeight: "bold",
     fontSize: 20,
   },
-  myPets: {
-    flexWrap: "nowrap",
-    flexDirection: "row",
-    paddingTop: 10,
-    paddingBottom: 10,
-    backgroundColor: "white",
-  },
-  pet: {
-    marginLeft: 15,
-    width: 150,
-    height: 150,
-    borderRadius: 75,
-    backgroundColor: "orange",
-  },
   petImage: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "flex-end",
+    width: 300,
+    height: 250,
+    borderRadius: 20,
     resizeMode: "cover",
+    padding: 10,
+  },
+  descriptionContainer: {
+    padding: 10,
   },
   myPlaces: {
     flexWrap: "nowrap",

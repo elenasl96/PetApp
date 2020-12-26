@@ -229,7 +229,6 @@ const styles = StyleSheet.create({
     borderRadius: 75,
     resizeMode: "cover",
     margin: 20,
-    color: "white",
   },
   myPlaces: {
     flexWrap: "nowrap",
