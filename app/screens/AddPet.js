@@ -1,34 +1,40 @@
-import React, { Component } from "react";
-import { View, Text, Button, Image, StyleSheet } from "react-native";
+import React from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  Button,
+  Image,
+  TouchableHighlight,
+  ScrollView,
+} from "react-native";
 import firebase from "firebase";
-
-class NavBar extends Component {
+import AddPetForm from "../Components/AddPetForm";
+class AddPetScreen extends React.Component {
   render() {
     return (
-      <View style={styles.topBar}>
-        <Text style={styles.mainTitle}>GPaw </Text>
-
-        <View style={styles.profileContainer}>
-          <Button
-            title="LogOff"
-            onPress={() => {
-              firebase.auth().signOut();
-            }}
-          />
-          {/*<Text style={styles.username}>{this.context.username}</Text>*/}
-          <Image
-            source={{
-              uri:
-                "https://cdn.pixabay.com/photo/2015/09/02/13/24/girl-919048_960_720.jpg",
-            }}
-            style={styles.profileImage}
-          ></Image>
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={styles.mainContent}>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <AddPetForm></AddPetForm>
+          </ScrollView>
         </View>
-      </View>
+
+        <View style={styles.bottomMenu}>
+          <TouchableHighlight onPress={null}>
+            <View style={styles.mainButtonContainer}>
+              <Image
+                source={require("../../assets/images/paw.png")}
+                style={styles.mainButton}
+              ></Image>
+            </View>
+          </TouchableHighlight>
+        </View>
+      </SafeAreaView>
     );
   }
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -39,12 +45,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   topBar: {
-    width: "100%",
-    height: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingTop: 10,
+    paddingTop: 35,
     padding: 10,
   },
   mainTitle: {
@@ -65,7 +69,6 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 30,
     resizeMode: "cover",
-    marginLeft: 10,
   },
   feedContainer: {
     justifyContent: "center",
@@ -149,5 +152,4 @@ const styles = StyleSheet.create({
     tintColor: "orange",
   },
 });
-
-export default NavBar;
+export default AddPetScreen;

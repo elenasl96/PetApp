@@ -16,6 +16,7 @@ import "firebase/firestore";
 import mainStyle from "../styles/mainStyle";
 import db from "./../firebase/DatabaseManager.js";
 import { AuthContext } from "../Components/AuthContext.js";
+import User from "./../firebase/User";
 
 class SignUpScreen extends React.Component {
   static contextType = AuthContext;
@@ -27,6 +28,8 @@ class SignUpScreen extends React.Component {
     errorMessage: "",
     loading: false,
   };
+
+  singupWithEmail() {}
 
   renderLoading() {
     if (this.state.loading) {
@@ -84,7 +87,7 @@ class SignUpScreen extends React.Component {
                 returnKeyType="next"
                 textContentType="addressCity"
                 value={this.state.address}
-                onChangeText={(address) => this.context.setState({ address })}
+                onChangeText={(address) => this.setState({ address })}
               />
             </View>
             <View style={mainStyle.form}>
@@ -103,7 +106,7 @@ class SignUpScreen extends React.Component {
             <Text style={styles.error}>{this.state.error}</Text>
             <TouchableOpacity
               style={styles.text}
-              onPress={this.context.signInWithEmail}
+              onPress={this.singupWithEmail}
             >
               <Text>Sign Up</Text>
             </TouchableOpacity>

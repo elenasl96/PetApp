@@ -8,6 +8,7 @@ export const AuthContext = React.createContext();
 
 class AuthContextProvider extends Component {
   state = {
+    user: null,
     email: "",
     password: "",
     loading: false,
@@ -17,6 +18,11 @@ class AuthContextProvider extends Component {
   saveUserUID = (uid) => {
     this.setState({ uid: uid });
     console.log("this state uid:" + this.state.uid);
+  };
+
+  saveUser = (user) => {
+    this.setState({ user: user });
+    console.log("this user" + this.state.user);
   };
 
   onLoginSuccess() {
@@ -68,6 +74,19 @@ class AuthContextProvider extends Component {
             "password",
             "photo"
           );
+        } else {
+          db.getUser("Elena Schinelli").then(
+            (user) =>
+              function () {
+                this.state.user = user;
+                console.log("user from db");
+                console.log(user);
+              }
+          );
+
+          this.saveUser(user);
+          console.log("user");
+          console.log(this.state.user);
         }
 
         console.log("Facebook data:");
