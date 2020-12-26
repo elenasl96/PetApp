@@ -14,4 +14,5 @@ import "firebase/firestore";
 
 const app = firebase.initializeApp(firebaseConfig);
 export const firestore = firebase.firestore(app);
+export const storage = firebase.storage();
 

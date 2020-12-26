@@ -127,7 +127,7 @@ class SignUpScreen extends React.Component {
               <Text
                 style={styles.text}
                 onPress={() => {
-                  db.getUser("Anna Black");
+                  //db.getUser("Anna Black");
                   this.props.navigation.navigate("SignIn");
                 }}
               >
