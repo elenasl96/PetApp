@@ -11,6 +11,7 @@ import {
 import { SafeAreaView } from "react-navigation";
 import firebase from "firebase";
 import { AuthContext } from "../Components/AuthContext";
+import PlusIcon from "../Components/PlusIcon";
 class HomeScreen extends React.Component {
   static contextType = AuthContext;
   //state = { user: {} };
@@ -25,6 +26,10 @@ class HomeScreen extends React.Component {
   }
 
   render() {
+    const addPet = () => {
+      this.props.navigation.navigate("AddPet");
+    };
+
     const showPet = () => {
       this.props.navigation.navigate("Pet");
     };
@@ -69,26 +74,25 @@ class HomeScreen extends React.Component {
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}
                 >
-                  <TouchableHighlight onPress={showPet}>
-                    <View style={styles.pet}>
-                      <Image
-                        source={require("../../assets/images/Gioia.jpg")}
-                        style={styles.petImage}
-                      ></Image>
-                    </View>
+                  <TouchableHighlight onPress={showPet} style={styles.pet}>
+                    <Image
+                      source={require("../../assets/images/Gioia.jpg")}
+                      style={styles.petImage}
+                    ></Image>
                   </TouchableHighlight>
 
-                  <TouchableHighlight onPress={showPet}>
-                    <View style={styles.pet}>
-                      <Image
-                        source={require("../../assets/images/Cipolla.jpg")}
-                        style={styles.petImage}
-                      ></Image>
-                    </View>
+                  <TouchableHighlight onPress={showPet} style={styles.pet}>
+                    <Image
+                      source={require("../../assets/images/Cipolla.jpg")}
+                      style={styles.petImage}
+                    ></Image>
                   </TouchableHighlight>
 
-                  <TouchableHighlight onPress={showPet}>
-                    <View style={styles.pet}></View>
+                  <TouchableHighlight onPress={addPet} style={styles.pet}>
+                    <Image
+                      source={require("../../assets/images/add.png")}
+                      style={styles.addPetButton}
+                    ></Image>
                   </TouchableHighlight>
                 </ScrollView>
               </View>
@@ -101,16 +105,25 @@ class HomeScreen extends React.Component {
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}
                 >
-                  <TouchableHighlight onPress={showKennel}>
-                    <View style={styles.place}></View>
+                  <TouchableHighlight onPress={showVet} style={styles.place}>
+                    <Image
+                      source={require("../../assets/images/vet.jpg")}
+                      style={styles.placeImage}
+                    ></Image>
                   </TouchableHighlight>
 
-                  <TouchableHighlight onPress={showVet}>
-                    <View style={styles.place}></View>
+                  <TouchableHighlight onPress={showKennel} style={styles.place}>
+                    <Image
+                      source={require("../../assets/images/kennel.jpg")}
+                      style={styles.placeImage}
+                    ></Image>
                   </TouchableHighlight>
 
-                  <TouchableHighlight onPress={showPlace}>
-                    <View style={styles.place}></View>
+                  <TouchableHighlight onPress={showVet} style={styles.place}>
+                    <Image
+                      source={require("../../assets/images/vet.jpg")}
+                      style={styles.placeImage}
+                    ></Image>
                   </TouchableHighlight>
                 </ScrollView>
               </View>
@@ -213,6 +226,13 @@ const styles = StyleSheet.create({
     borderRadius: 75,
     resizeMode: "cover",
   },
+  addPetButton: {
+    width: 110,
+    height: 110,
+    borderRadius: 75,
+    resizeMode: "cover",
+    margin: 20,
+  },
   myPlaces: {
     flexWrap: "nowrap",
     flexDirection: "row",
@@ -226,6 +246,12 @@ const styles = StyleSheet.create({
     height: 150,
     borderRadius: 35,
     backgroundColor: "lightgreen",
+  },
+  placeImage: {
+    width: 300,
+    height: 150,
+    borderRadius: 35,
+    resizeMode: "cover",
   },
   bottomMenu: {
     position: "absolute",

@@ -5,6 +5,7 @@ import KennelScreen from "../screens/kennelPage";
 import VetScreen from "../screens/vetPage";
 import React from "react";
 import NavBar from "../screens/NavBar";
+import AddPetScreen from "../screens/AddPet";
 
 const HomeNavigator = createStackNavigator(
   {
@@ -26,6 +27,14 @@ const HomeNavigator = createStackNavigator(
       // Optional: Override the `navigationOptions` for the screen
       navigationOptions: ({ navigation }) => ({
         title: "-name- profile",
+      }),
+    },
+
+    AddPet: {
+      screen: AddPetScreen,
+      // Optional: Override the `navigationOptions` for the screen
+      navigationOptions: ({ navigation }) => ({
+        title: "Add new pet",
       }),
     },
 
@@ -53,7 +62,7 @@ const HomeNavigator = createStackNavigator(
     defaultNavigationOptions: {
       headerTitle: () => <NavBar />,
       headerStyle: {
-        backgroundColor: "#f4511e",
+        backgroundColor: "#F9844A",
       },
       headerTintColor: "#fff",
       headerTitleStyle: {
