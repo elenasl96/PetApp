@@ -1,4 +1,4 @@
-
+/*
 import React from "react";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 
@@ -39,8 +39,8 @@ function App() {
   );
 }
 export default App;
+*/
 
-/*
 import React, { useState, useEffect } from 'react';
 import { Button, Image, View, Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
@@ -99,12 +99,19 @@ export default function ImagePickerExample() {
         db.toStorage(file);
     }
 
+    const addUser = async() => {
+        db.addUser('axr4182','matteo','matteo.jpg','user','via piave');
+    }
+
+    const getUser = async() => {
+        console.log(getUser.then(function('axr4182'){}));
+    }
+
    return (
      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
        <Button title="Pick an image from camera roll" onPress={pickImage} />
        {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-       <Button title="Open the camera" onPress={openCamera} />
+       <Button title="Open the camera" onPress={getUser} />
      </View>
    );
  }
- */

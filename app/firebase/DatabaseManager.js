@@ -1,30 +1,46 @@
-import React from 'react';
+import {useState,useEffect} from 'react';
 import {firestore,storage} from './firebaseconfig.js';
 import User from './User.js';
 
 const db = {
 
-   addUser : function(name,password,photo){
+
+   addUser : function(uid,name,photo,type,address){
                            const users = firestore.collection('Users');
-                           let user = new User(name,password,photo);
-                           users.add(user.toFirestore());
+                           let user = new User(name,photo,type,address);
+                           users.doc(uid).set(user.toFirestore());
    },
 
-   getUser : function(name){
-                           const users = firestore.collection('Users');
-                           users.where("name", "==", name).get().then(function(querySnapshot) {
-                                                                               querySnapshot.forEach(function(doc) {
-                                                                                   let data = doc.data();
-                                                                                   let user = new User(data.name,data.password,data.photo);
-                                                                                   return user;
-                                                                                   //console.log(user);
-                                                                               });
-                                                                               });
+   getUser : function(uid){
+                              const users = firestore.collection('Users');
+                              var user;
+                              return users
+                                 .doc(uid)
+                                 .get()
+                                 .then(function(doc){
+                                   let data = doc.data();
+                                   user = new User(data.name,data.photo,data.type,data.address);
+                                   console.log(user);
+                                   return user;
+                              });
    },
 
+   /*
+   getUser : function(uid){
+              console.log("getUser");
+              const users = firestore.collection('Users');
+              users.where("name","==","matteo").get().then(function(querySnapshot) {
+                     querySnapshot.forEach(function(doc) {
+                         console.log(doc.data());
+                     });
+              })
+              .catch(function(error) {
+                      console.log("Error getting documents: ", error);
+              });
+   },
+   */
    toStorage : function(file){
 
-      console.log("toStorage");
       //Reference to firebase storage
       storageRef = storage.ref();
 
