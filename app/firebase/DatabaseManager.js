@@ -1,6 +1,7 @@
-import {useState,useEffect} from 'react';
 import {firestore,storage} from './firebaseconfig.js';
 import User from './User.js';
+import UserAnimal from './UserAnimal.js';
+import AdoptableAnimal from './AdoptableAnimal.js';
 
 const db = {
 
@@ -23,6 +24,25 @@ const db = {
                                    console.log(user);
                                    return user;
                               });
+   },
+
+   addUserAnimal : function(uid,aid,name,age,breed,size,photo,diseases,stats){
+
+           // stats must be passed in this way:
+           //var stats = {};
+           //stats["weight"] = [{date: '20-12-2020 10:34',value:  20 },{date: '28-12-2020 11:50',value: 20.3}];
+
+           const animals = firestore.collection('Animals');
+           let animal = new UserAnimal(aid,name,age,breed,size,photo,diseases,stats);
+           console.log(animal);
+           animals.doc(uid).collection('useranimals').doc().set(animal.toFirestore());
+   },
+
+   addAdoptableAnimal : function(uid,aid,name,age,breed,size,photo,diseases,profile){
+                                 const animals = firestore.collection('Animals');
+                                 let animal = new AdoptableAnimal(aid,name,age,breed,size,photo,diseases,profile);
+                                 console.log(animal);
+                                 animals.doc(uid).collection('adoptableanimals').doc().set(animal.toFirestore());
    },
 
    /*

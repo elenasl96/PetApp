@@ -100,11 +100,14 @@ export default function ImagePickerExample() {
     }
 
     const addUser = async() => {
-        db.addUser('axr4182','matteo','matteo.jpg','user','via piave');
+        //db.addUser('axr4182','matteo','matteo.jpg','user','via piave');
     }
 
     const getUser = async() => {
-        console.log(getUser.then(function('axr4182'){}));
+        //console.log(getUser.then(function('axr4182'){}));
+        //var stats = {};
+        //stats["weight"] = [{date: '20-12-2020 10:34',value:  20 },{date: '28-12-2020 11:50',value: 20.3}];
+        db.addAdoptableAnimal('axr4185','1145888','Lola',10,'greyhound','medium','photo1298662',['Hepatitis','Leptospiroris'],'Really sweet dog looking for a kind family');
     }
 
    return (
