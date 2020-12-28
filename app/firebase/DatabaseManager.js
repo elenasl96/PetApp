@@ -4,29 +4,33 @@ import UserAnimal from "./UserAnimal.js";
 import AdoptableAnimal from "./AdoptableAnimal.js";
 
 const db = {
+
   addUser: function (uid, name, photo, type, address) {
+    console.log("addUser");
     const users = firestore.collection("Users");
     let user = new User(name, photo, type, address);
-    users.doc(uid).set(user.toFirestore());
+    users.doc(uid).collection("userprofile").doc().set(user.toFirestore());
   },
 
-  getUser: function (name) {
-    const users = firestore.collection("Users");
-    var user;
-    return users
-      .where("name", "==", name)
-      .get()
-      .then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          let data = doc.data();
-          user = new User(data.name, data.password, data.photo);
-          console.log("userFromDbInside");
-          console.log(user);
-          //console.log(user);
-          return user;
+  getUser: function (uid) {
+      const users = firestore.collection("Users");
+      var user;
+      return users
+        .doc(uid)
+        .collection("userprofile")
+        .get()
+        .then(function (doc) {
+         if (doc.exists) {
+                let data = doc.data();
+                user = new User(data.name,data.photo,data.type,data.address);
+                return user;
+            } else {
+                // doc.data() will be undefined in this case
+                console.log("No such document!");
+            }
+        }).catch(function(error) {
+            console.log("Error getting document:", error);
         });
-        return user;
-      });
   },
 
   addUserAnimal: function (
@@ -44,7 +48,7 @@ const db = {
     //var stats = {};
     //stats["weight"] = [{date: '20-12-2020 10:34',value:  20 },{date: '28-12-2020 11:50',value: 20.3}];
 
-    const animals = firestore.collection("Animals");
+    const users = firestore.collection("Users");
     let animal = new UserAnimal(
       aid,
       name,
@@ -56,7 +60,7 @@ const db = {
       stats
     );
     console.log(animal);
-    animals.doc(uid).collection("useranimals").doc().set(animal.toFirestore());
+    users.doc(uid).collection("useranimals").doc().set(animal.toFirestore());
   },
 
   addAdoptableAnimal: function (
@@ -70,7 +74,8 @@ const db = {
     diseases,
     profile
   ) {
-    const animals = firestore.collection("Animals");
+    console.log("addAdoptableAnimal");
+    const users = firestore.collection("Users");
     let animal = new AdoptableAnimal(
       aid,
       name,
@@ -82,28 +87,15 @@ const db = {
       profile
     );
     console.log(animal);
-    animals
+    users
       .doc(uid)
       .collection("adoptableanimals")
       .doc()
       .set(animal.toFirestore());
   },
 
-  /*
-   getUser : function(uid){
-              console.log("getUser");
-              const users = firestore.collection('Users');
-              users.where("name","==","matteo").get().then(function(querySnapshot) {
-                     querySnapshot.forEach(function(doc) {
-                         console.log(doc.data());
-                     });
-              })
-              .catch(function(error) {
-                      console.log("Error getting documents: ", error);
-              });
-   },
-   */
-  toStorage: function (file) {
+
+  toStorage: function (uid,file) {
     //Reference to firebase storage
     storageRef = storage.ref();
 
@@ -114,8 +106,7 @@ const db = {
 
     //Create a filename
     let date = new Date().getTime();
-    let user = "Matteo";
-    let filename = user + date;
+    let filename = uid + date;
 
     // Upload file and metadata
     var uploadTask = storageRef.child("images/" + filename).put(file, metadata);
