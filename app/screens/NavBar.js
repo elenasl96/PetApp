@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import { View, Text, Button, Image, StyleSheet } from "react-native";
 import firebase from "firebase";
+import { AuthContext } from "../Components/AuthContext.js";
 
 class NavBar extends Component {
+  static contextType = AuthContext;
+
   render() {
     return (
       <View style={styles.topBar}>
@@ -19,8 +22,7 @@ class NavBar extends Component {
           {/*<Text style={styles.username}>{this.context.username}</Text>*/}
           <Image
             source={{
-              uri:
-                "https://cdn.pixabay.com/photo/2015/09/02/13/24/girl-919048_960_720.jpg",
+              uri: this.context.user.photo,
             }}
             style={styles.profileImage}
           ></Image>

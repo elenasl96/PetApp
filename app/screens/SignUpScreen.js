@@ -45,28 +45,21 @@ class SignUpScreen extends React.Component {
         const facebookProfileData = await auth().signInWithCredential(
           credential
         );
+        const user = auth().currentUser;
         // .then(this.onLoginSuccess.bind(this))
-        if (true) {
-          auth().onAuthStateChanged((user) => {
-            if (user != null) {
-              db.addUser(
-                user.uid,
-                facebookProfileData.additionalUserInfo.profile.name,
-                "photo",
-                "type",
-                "address"
-              );
-              var userToSave;
-              db.getUser(user.uid).then(function (userFromDb) {
-                userToSave = userFromDb;
-                console.log("user from db");
-                console.log(userFromDb);
-              });
-              this.context.saveUser(userToSave);
-              console.log(userToSave);
-            }
-          });
+        if (facebookProfileData.additionalUserInfo.isNewUser) {
+          db.addUser(
+            auth().currentUser.uid,
+            facebookProfileData.additionalUserInfo.profile.name,
+            facebookProfileData.additionalUserInfo.profile.picture.data.url,
+            "",
+            ""
+          );
         }
+
+        db.getUser(user.uid).then((userFromDb) => {
+          this.context.saveUser(userFromDb);
+        });
 
         //console.log("Facebook data:");
         //console.log(facebookProfileData);

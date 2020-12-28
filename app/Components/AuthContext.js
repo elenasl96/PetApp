@@ -22,7 +22,8 @@ class AuthContextProvider extends Component {
 
   saveUser = (user) => {
     this.setState({ user: user });
-    console.log("this user" + this.state.user);
+    console.log("this user");
+    console.log(this.state.user);
   };
 
   onLoginSuccess() {
