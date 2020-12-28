@@ -19,18 +19,20 @@ const db = {
         .doc(uid)
         .collection("userprofile")
         .get()
-        .then(function (doc) {
-         if (doc.exists) {
-                let data = doc.data();
-                user = new User(data.name,data.photo,data.type,data.address);
-                return user;
-            } else {
-                // doc.data() will be undefined in this case
-                console.log("No such document!");
-            }
-        }).catch(function(error) {
-            console.log("Error getting document:", error);
-        });
+        .then(function(querySnapshot) {
+                 querySnapshot.forEach(function(doc) {
+                     // doc.data() is never undefined for query doc snapshots
+                     console.log(doc.id, " => ", doc.data());
+                     let data = doc.data();
+                     user = new User(data.name,data.photo,data.type,data.address);
+                     //console.log(user);
+                     return user;
+                 });
+                 return user;
+             })
+             .catch(function(error) {
+                 console.log("Error getting documents: ", error);
+             });
   },
 
   addUserAnimal: function (
