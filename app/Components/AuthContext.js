@@ -15,6 +15,8 @@ class AuthContextProvider extends Component {
     uid: "",
   };
 
+  static contextType = AuthContext;
+
   saveUserUID = (uid) => {
     this.setState({ uid: uid });
     console.log("this state uid:" + this.state.uid);
@@ -75,18 +77,11 @@ class AuthContextProvider extends Component {
             "photo"
           );
         } else {
-          db.getUser("Elena Schinelli").then(
-            (user) =>
-              function () {
-                this.state.user = user;
-                console.log("user from db");
-                console.log(user);
-              }
-          );
-
-          this.saveUser(user);
-          console.log("user");
-          console.log(this.state.user);
+          db.getUser("Elena Schinelli").then(function (user) {
+            console.log("user from db");
+            console.log(user);
+            this.context.saveUser(user);
+          });
         }
 
         console.log("Facebook data:");
@@ -130,6 +125,7 @@ class AuthContextProvider extends Component {
           signInWithEmail: this.signInWithEmail,
           signInWithGoogle: this.signInWithGoogle,
           saveUserUID: this.saveUserUID,
+          saveUser: this.saveUser,
         }}
       >
         {this.props.children}
