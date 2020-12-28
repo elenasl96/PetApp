@@ -4,7 +4,6 @@ import UserAnimal from "./UserAnimal.js";
 import AdoptableAnimal from "./AdoptableAnimal.js";
 
 const db = {
-
   addUser: function (uid, name, photo, type, address) {
     console.log("addUser");
     const users = firestore.collection("Users");
@@ -13,24 +12,25 @@ const db = {
   },
 
   getUser: function (uid) {
-      const users = firestore.collection("Users");
-      var user;
-      return users
-        .doc(uid)
-        .collection("userprofile")
-        .get()
-        .then(function (doc) {
-         if (doc.exists) {
-                let data = doc.data();
-                user = new User(data.name,data.photo,data.type,data.address);
-                return user;
-            } else {
-                // doc.data() will be undefined in this case
-                console.log("No such document!");
-            }
-        }).catch(function(error) {
-            console.log("Error getting document:", error);
-        });
+    const users = firestore.collection("Users");
+    var user;
+    return users
+      .doc(uid)
+      .collection("userprofile")
+      .get()
+      .then(function (doc) {
+        if (doc.exists) {
+          let data = doc.data();
+          user = new User(data.name, data.photo, data.type, data.address);
+          return user;
+        } else {
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
+        }
+      })
+      .catch(function (error) {
+        console.log("Error getting document:", error);
+      });
   },
 
   addUserAnimal: function (
@@ -94,8 +94,7 @@ const db = {
       .set(animal.toFirestore());
   },
 
-
-  toStorage: function (uid,file) {
+  toStorage: function (uid, file) {
     //Reference to firebase storage
     storageRef = storage.ref();
 

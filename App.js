@@ -1,4 +1,3 @@
-/*
 import React from "react";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 
@@ -39,7 +38,7 @@ function App() {
   );
 }
 export default App;
-*/
+/*
 
 import React, { useState, useEffect } from 'react';
 import { Button, Image, View, Platform } from 'react-native';
@@ -124,3 +123,4 @@ export default function ImagePickerExample() {
      </View>
    );
  }
+*/

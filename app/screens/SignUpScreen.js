@@ -12,11 +12,12 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import "firebase/firestore";
+import { auth } from "../firebase/firebaseconfig.js";
+import * as Facebook from "expo-facebook";
 
 import mainStyle from "../styles/mainStyle";
 import db from "./../firebase/DatabaseManager.js";
 import { AuthContext } from "../Components/AuthContext.js";
-import User from "./../firebase/User";
 
 class SignUpScreen extends React.Component {
   static contextType = AuthContext;
@@ -29,7 +30,51 @@ class SignUpScreen extends React.Component {
     loading: false,
   };
 
-  singupWithEmail() {}
+  async signInWithFacebook() {
+    try {
+      var appId = "401120257739037";
+      var appName = "Pet App";
+      await Facebook.initializeAsync({ appId, appName });
+
+      const { type, token } = await Facebook.logInWithReadPermissionsAsync({
+        permissions: ["public_profile"],
+      });
+      if (type === "success") {
+        await auth().setPersistence(auth.Auth.Persistence.LOCAL);
+        const credential = auth.FacebookAuthProvider.credential(token);
+        const facebookProfileData = await auth().signInWithCredential(
+          credential
+        );
+        // .then(this.onLoginSuccess.bind(this))
+        if (true) {
+          auth().onAuthStateChanged((user) => {
+            if (user != null) {
+              db.addUser(
+                user.uid,
+                facebookProfileData.additionalUserInfo.profile.name,
+                "photo",
+                "type",
+                "address"
+              );
+              var userToSave;
+              db.getUser(user.uid).then(function (userFromDb) {
+                userToSave = userFromDb;
+                console.log("user from db");
+                console.log(userFromDb);
+              });
+              this.context.saveUser(userToSave);
+              console.log(userToSave);
+            }
+          });
+        }
+
+        //console.log("Facebook data:");
+        //console.log(facebookProfileData);
+      }
+    } catch ({ message }) {
+      alert(`Facebook Login Error: ${message}`);
+    }
+  }
 
   renderLoading() {
     if (this.state.loading) {
@@ -106,13 +151,13 @@ class SignUpScreen extends React.Component {
             <Text style={styles.error}>{this.state.error}</Text>
             <TouchableOpacity
               style={styles.text}
-              onPress={this.singupWithEmail}
+              onPress={this.signupWithEmail}
             >
               <Text>Sign Up</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={{ width: "80%", marginTop: 10 }}
-              onPress={this.context.signInWithFacebook}
+              onPress={this.signInWithFacebook.bind(this)}
             >
               <View style={styles.button}>
                 <Text style={styles.buttonText}>Continue with Facebook</Text>

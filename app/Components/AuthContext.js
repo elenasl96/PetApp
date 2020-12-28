@@ -15,8 +15,6 @@ class AuthContextProvider extends Component {
     uid: "",
   };
 
-  static contextType = AuthContext;
-
   saveUserUID = (uid) => {
     this.setState({ uid: uid });
     console.log("this state uid:" + this.state.uid);
@@ -52,47 +50,6 @@ class AuthContextProvider extends Component {
       });
   }
 
-  async signInWithFacebook() {
-    try {
-      var appId = "401120257739037";
-      var appName = "Pet App";
-      await Facebook.initializeAsync({ appId, appName });
-
-      const { type, token } = await Facebook.logInWithReadPermissionsAsync({
-        permissions: ["public_profile"],
-      });
-      if (type === "success") {
-        await firebase
-          .auth()
-          .setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-        const credential = firebase.auth.FacebookAuthProvider.credential(token);
-        const facebookProfileData = await firebase
-          .auth()
-          .signInWithCredential(credential);
-        // .then(this.onLoginSuccess.bind(this))
-        if (facebookProfileData.additionalUserInfo.isNewUser) {
-          db.addUser(
-            facebookProfileData.additionalUserInfo.profile.name,
-            "password",
-            "photo"
-          );
-        } else {
-          db.getUser("Elena Schinelli").then(function (user) {
-            console.log("user from db");
-            console.log(user);
-            this.context.saveUser(user);
-          });
-        }
-
-        console.log("Facebook data:");
-        console.log(facebookProfileData);
-        console.log();
-      }
-    } catch ({ message }) {
-      alert(`Facebook Login Error: ${message}`);
-    }
-  }
-
   async signInWithGoogle() {
     try {
       await GoogleSignIn.askForPlayServicesAsync();
@@ -121,7 +78,6 @@ class AuthContextProvider extends Component {
       <AuthContext.Provider
         value={{
           ...this.state,
-          signInWithFacebook: this.signInWithFacebook,
           signInWithEmail: this.signInWithEmail,
           signInWithGoogle: this.signInWithGoogle,
           saveUserUID: this.saveUserUID,
