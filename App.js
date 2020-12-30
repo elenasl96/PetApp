@@ -1,3 +1,4 @@
+
 import React from "react";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 
@@ -38,6 +39,7 @@ function App() {
   );
 }
 export default App;
+
 /*
 
 import React, { useState, useEffect } from 'react';
@@ -99,28 +101,23 @@ export default function ImagePickerExample() {
     }
 
     const addUser = async() => {
-        //db.addUser('axr4183','matteo','matteo.jpg','user','via piave');
-        var stats = {};
-        stats["weight"] = [{date: '20-12-2020 10:34',value:  20 },{date: '28-12-2020 11:50',value: 20.3}];
-        db.addUserAnimal('axr4183','1145888','Lola',10,'greyhound','medium','photo1298662',['Hepatitis','Leptospiroris'],stats);
+        var news = {};
+        news["30/12/2020 11:36"] = [{title: "New activity in town" ,text: "I'm a new vet in town , in my GPaw profile you can find all the info about me. "}];
+        db.addBusinessUser('axr4184','photo111','vet','Viale Romagna 62','fr81ms',news);
     }
 
     const getUser = async() => {
-
-        //var stats = {};
-        //stats["weight"] = [{date: '20-12-2020 10:34',value:  20 },{date: '28-12-2020 11:50',value: 20.3}];
-        //db.addAdoptableAnimal('axr4185','1145888','Lola',10,'greyhound','medium','photo1298662',['Hepatitis','Leptospiroris'],'Really sweet dog looking for a kind family');
-        db.getUser('axr4183').then(function(user){
-           console.log(user);
-        });
+        db.getUser('axr4183');
+        db.getUser('axr4184');
     }
 
    return (
      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-       <Button title="Pick an image from camera roll" onPress={pickImage} />
+       <Button title="Pick an image from camera roll" onPress={getUser} />
        {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-       <Button title="Open the camera" onPress={getUser} />
+       <Button title="Open the camera" onPress={addUser} />
      </View>
    );
  }
 */
+
