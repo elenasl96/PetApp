@@ -11,9 +11,9 @@ const db = {
 // ----------------User-----------------------------------------------------------
 
 
-  addUser: function (uid, name, photo, type, address) {
+  addUser: function (uid, name, photo,address) {
     const users = firestore.collection("Users");
-    let user = new User(name, photo, type, address);
+    let user = new User(name, photo,'user', address);
     users.doc(uid).collection("userprofile").doc().set(user.toFirestore());
   },
 
@@ -22,7 +22,7 @@ const db = {
     console.log("Add businessuser");
     let user = new BusinessUser(name, photo, type, address, pid, news);
     console.log(user);
-    console.log(user.getPid());
+    //console.log(user.getPid());
     users.doc(uid).collection("userprofile").doc().set(user.toFirestore());
   },
 
@@ -281,6 +281,30 @@ const db = {
                              .catch(function(error) {
                                  console.log("Error getting documents: ", error);
                              });
+  },
+
+
+//----------------News---------------------------------------------------
+
+  addNews: function (uid,title,text) {
+       var news = {};
+       var date = new Date();
+       var day = date.getDay();
+       var month = date.getMonth();
+       var year = date.getFullYear();
+       var hours = date.getHours();
+       var minutes = date.GetMinutes();
+       var seconds = date.GetSeconds();
+       var timestamp =
+       day+ "/" + month + "/"+year+" "+
+       hours + ":" + minutes + ":" + seconds;
+       news[timestamp] = [{title: title,text: text}];
+       //const users = firestore.collection("Users");
+       //let user = new User(name, photo,'user', address);
+       //users.doc(uid).collection("userprofile").doc().set(user.toFirestore());
+
+
+       //work in progress.....
   },
 
 

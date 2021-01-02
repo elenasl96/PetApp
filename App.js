@@ -40,8 +40,8 @@ function App() {
 }
 export default App;
 
-/*
 
+/*
 import React, { useState, useEffect } from 'react';
 import { Button, Image, View, Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
@@ -103,12 +103,14 @@ export default function ImagePickerExample() {
     const addUser = async() => {
         var news = {};
         news["30/12/2020 11:36"] = [{title: "New activity in town" ,text: "I'm a new vet in town , in my GPaw profile you can find all the info about me. "}];
-        db.addBusinessUser('axr4184','photo111','vet','Viale Romagna 62','fr81ms',news);
+        db.addBusinessUser('axr4184','matteo','photo111','vet','Viale Romagna 62','fr81ms',news);
     }
 
     const getUser = async() => {
-        db.getUser('axr4183');
-        db.getUser('axr4184');
+        //db.getUser('axr4183');
+         db.getUser('axr4183').then(function(user){
+                     console.log(user);
+                  });
     }
 
    return (
@@ -119,5 +121,6 @@ export default function ImagePickerExample() {
      </View>
    );
  }
-*/
 
+
+*/
