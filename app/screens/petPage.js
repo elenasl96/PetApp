@@ -13,7 +13,6 @@ import {
 } from "react-native";
 import firebase from "firebase";
 import mainStyle from "../styles/mainStyle";
-import { color } from "react-native-reanimated";
 class PetScreen extends React.Component {
   state = { user: {} };
   componentDidMount() {
@@ -24,6 +23,7 @@ class PetScreen extends React.Component {
     });
   }
   render() {
+    const pet = this.props.navigation.state.params.pet;
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.mainContent}>
@@ -46,7 +46,7 @@ class PetScreen extends React.Component {
                       },
                     ]}
                   >
-                    Gioia
+                    {pet.name}
                   </Text>
                 </ImageBackground>
               </View>
@@ -70,7 +70,7 @@ class PetScreen extends React.Component {
               <TouchableHighlight>
                 <View style={styles.info}>
                   <Text>Size</Text>
-                  <Text>Medium</Text>
+                  <Text>{pet.size}</Text>
                 </View>
               </TouchableHighlight>
 
@@ -91,14 +91,14 @@ class PetScreen extends React.Component {
               <TouchableHighlight>
                 <View style={styles.info}>
                   <Text>Breed</Text>
-                  <Text>Labrador</Text>
+                  <Text>{pet.breed}</Text>
                 </View>
               </TouchableHighlight>
 
               <TouchableHighlight>
                 <View style={styles.info}>
                   <Text>Disease</Text>
-                  <Text>Nothing</Text>
+                  <Text>{pet.diseases}</Text>
                 </View>
               </TouchableHighlight>
             </ScrollView>

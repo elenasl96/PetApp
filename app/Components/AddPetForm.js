@@ -12,21 +12,35 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
+import db from "../firebase/DatabaseManager";
 import ImagePickerExample from "../screens/camera";
+import { AuthContext } from "../Components/AuthContext";
 
 import mainStyle from "../styles/mainStyle";
 
 export default class AddPetForm extends Component {
+  static contextType = AuthContext;
   state = {
     name: null,
-    size: null,
+    age: null,
     breed: null,
+    size: null,
     photo: null,
+    diseases: null,
   };
 
   registerPet() {
-    console.log("New Pet:");
-    console.log(this.state);
+    db.addUserAnimal(
+      this.context.uid,
+      "1",
+      this.state.name,
+      this.state.age,
+      this.state.breed,
+      this.state.size,
+      "",
+      this.state.diseases,
+      ""
+    );
   }
 
   render() {
@@ -57,6 +71,18 @@ export default class AddPetForm extends Component {
         <View style={mainStyle.form}>
           <TextInput
             style={mainStyle.inputText}
+            placeholder="Age"
+            placeholderTextColor="#616161"
+            returnKeyType="next"
+            keyboardType="email-address"
+            textContentType="emailAddress"
+            value={this.state.age}
+            onChangeText={(age) => this.setState({ age })}
+          />
+        </View>
+        <View style={mainStyle.form}>
+          <TextInput
+            style={mainStyle.inputText}
             placeholder="Size"
             placeholderTextColor="#616161"
             returnKeyType="next"
@@ -77,12 +103,31 @@ export default class AddPetForm extends Component {
             onChangeText={(breed) => this.setState({ breed })}
           />
         </View>
+        <View style={mainStyle.form}>
+          <TextInput
+            style={mainStyle.inputText}
+            placeholder="Diseases"
+            placeholderTextColor="#616161"
+            returnKeyType="next"
+            textContentType="addressCity"
+            value={this.state.diseases}
+            onChangeText={(diseases) => this.setState({ diseases })}
+          />
+        </View>
         <Text style={[mainStyle.text, { margin: 10 }]}>Select an image:</Text>
-        <ImagePickerExample></ImagePickerExample>
+        <ImagePickerExample
+          photo={this.state.photo}
+          setPhoto={(photo) => this.setState({ photo })}
+        ></ImagePickerExample>
         <Text style={styles.error}>{this.state.error}</Text>
 
         <TouchableOpacity
-          style={{ width: "50%", marginTop: 10, alignSelf: "center" }}
+          style={{
+            width: "50%",
+            marginTop: 10,
+            marginBottom: 40,
+            alignSelf: "center",
+          }}
           onPress={this.registerPet.bind(this)}
         >
           <View style={styles.button}>

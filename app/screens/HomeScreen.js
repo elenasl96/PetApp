@@ -12,18 +12,13 @@ import { SafeAreaView } from "react-navigation";
 import firebase from "firebase";
 import { AuthContext } from "../Components/AuthContext";
 import PlusIcon from "../Components/PlusIcon";
+import PetButton from "../Components/PetButton";
 class HomeScreen extends React.Component {
+  state = {
+    pets: [],
+    places: [],
+  };
   static contextType = AuthContext;
-  //state = { user: {} };
-  componentDidMount() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user != null) {
-        this.context.saveUserUID(user.uid);
-        console.log("context:");
-        console.log(this.context);
-      }
-    });
-  }
 
   render() {
     const addPet = () => {
@@ -74,7 +69,8 @@ class HomeScreen extends React.Component {
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}
                 >
-                  <TouchableHighlight onPress={showPet} style={styles.pet}>
+                  <PetButton navigation={this.props.navigation}></PetButton>
+                  {/*}   <TouchableHighlight onPress={showPet} style={styles.pet}>
                     <Image
                       source={require("../../assets/images/Gioia.jpg")}
                       style={styles.petImage}
@@ -86,7 +82,7 @@ class HomeScreen extends React.Component {
                       source={require("../../assets/images/Cipolla.jpg")}
                       style={styles.petImage}
                     ></Image>
-                  </TouchableHighlight>
+    </TouchableHighlight> */}
 
                   <TouchableHighlight onPress={addPet} style={styles.pet}>
                     <Image
@@ -105,20 +101,6 @@ class HomeScreen extends React.Component {
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}
                 >
-                  <TouchableHighlight onPress={showVet} style={styles.place}>
-                    <Image
-                      source={require("../../assets/images/vet.jpg")}
-                      style={styles.placeImage}
-                    ></Image>
-                  </TouchableHighlight>
-
-                  <TouchableHighlight onPress={showKennel} style={styles.place}>
-                    <Image
-                      source={require("../../assets/images/kennel.jpg")}
-                      style={styles.placeImage}
-                    ></Image>
-                  </TouchableHighlight>
-
                   <TouchableHighlight onPress={showVet} style={styles.place}>
                     <Image
                       source={require("../../assets/images/vet.jpg")}

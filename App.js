@@ -23,7 +23,7 @@ const AppContainer = createAppContainer(
       Auth: AuthNavigator,
       App: TabNavigator,
       // App: CalendarApp,
-      SignIn: SignIn,
+      //SignIn: SignIn,
     },
     {
       initialRouteName: "Auth",

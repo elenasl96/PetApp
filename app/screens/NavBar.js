@@ -20,12 +20,12 @@ class NavBar extends Component {
             }}
           />
           {/*<Text style={styles.username}>{this.context.username}</Text>*/}
-          <Image
+          {/*<Image
             source={{
               uri: this.context.user.photo,
             }}
             style={styles.profileImage}
-          ></Image>
+          ></Image>*/}
         </View>
       </View>
     );
