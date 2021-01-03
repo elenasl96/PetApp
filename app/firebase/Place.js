@@ -1,13 +1,15 @@
 export default class Place {
 
   name: string;
+  type : string;
   description: string;
   photo: string;
   uid: string;
   region: Object;
 
-  constructor(name, description, photo, uid, latitude, longitude, latitudeDelta, longitudeDelta) {
+  constructor(name, type, description, photo, uid, latitude, longitude, latitudeDelta, longitudeDelta) {
     this.name = name;
+    this.type = type;
     this.description = description;
     this.photo = photo;
     this.uid = uid;
@@ -17,6 +19,10 @@ export default class Place {
   // getters
   getName() {
     return name;
+  }
+
+  getType(){
+    return type;
   }
 
   getDescription(){
@@ -39,6 +45,7 @@ export default class Place {
   toFirestore() {
     return {
       name: this.name,
+      type: this.type,
       description: this.description,
       photo: this.photo,
       uid: this.uid,

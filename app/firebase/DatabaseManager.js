@@ -1,29 +1,19 @@
 import { firestore, storage } from "./firebaseconfig.js";
 import User from "./User.js";
-import BusinessUser from "./BusinessUser.js";
-import UserAnimal from "./UserAnimal.js";
+import Animal from "./Animal.js";
 import AdoptableAnimal from "./AdoptableAnimal.js";
 import Place from "./Place.js";
 
 const db = {
 
 
-// ----------------User-----------------------------------------------------------
+// ----------------User-----------------------------------------------------------  OK
 
 
-  addUser: function (uid, name, photo,address) {
+  addUser: function (uid, name,photo,type,address) {
     const users = firestore.collection("Users");
-    let user = new User(name, photo,'user', address);
-    users.doc(uid).collection("userprofile").doc().set(user.toFirestore());
-  },
-
-  addBusinessUser : function(uid, name, photo, type, address, pid, news){
-    const users = firestore.collection("Users");
-    console.log("Add businessuser");
-    let user = new BusinessUser(name, photo, type, address, pid, news);
-    console.log(user);
-    //console.log(user.getPid());
-    users.doc(uid).collection("userprofile").doc().set(user.toFirestore());
+    let user = new User(name, photo, type, address);
+    users.doc(uid).set(user.toFirestore());
   },
 
   getUser: function (uid) {
@@ -32,17 +22,13 @@ const db = {
       var user;
       return users
         .doc(uid)
-        .collection("userprofile")
         .get()
         .then(function(querySnapshot) {
                  querySnapshot.forEach(function(doc) {
                      // doc.data() is never undefined for query doc snapshots
                      console.log(doc.id, " => ", doc.data());
                      let data = doc.data();
-                     if (data.type == 'user')
-                       user = new User(data.name,data.photo,data.type,data.address);
-                     else
-                       user = new BusinessUser(data.name,data.photo,data.type,data.address,data.pid,data.news)
+                     user = new User(data.name,data.photo,data.type,data.address);
                      //console.log(user);
                      return user;
                  });
@@ -64,46 +50,67 @@ const db = {
     breed,
     size,
     photo,
-    diseases,
-    stats
+    diseases
   ) {
-    // stats must be passed in this way:
-    //var stats = {};
-    //stats["weight"] = [{date: '20-12-2020 10:34',value:  20 },{date: '28-12-2020 11:50',value: 20.3}];
 
     const users = firestore.collection("Users");
-    let animal = new UserAnimal(
-      aid,
+    const animals =users.doc(uid).collection("Animals");
+    let animal = new Animal(
       name,
       age,
       breed,
       size,
-      photo,
-      diseases,
-      stats
-    );
+      photo);
     console.log(animal);
-    users.doc(uid).collection("useranimals").doc().set(animal.toFirestore());
+    animals.doc(aid).set(animal.toFirestore());
   },
   /* how to call get from outside
   db.UserAnimals('axr4183').then(function(animals){
              console.log(animals);
           });
 */
+  addAnimalDisease: function(uid,aid,disease){
+    const users = firestore.collection("Users");
+    const animals =users.doc(uid).collection("Animals");
+    animals.doc(aid).collection("Diseases").add({disease});
+  },
+
+  addAnimalStat: function(uid,aid,stat,value){
+    const users = firestore.collection("Users");
+    const animals =users.doc(uid).collection("Animals");
+    var date = new Date();
+    var day = date.getDate();
+    if (day < 10 )
+        day = '0' + day;
+    var month = date.getMonth();
+    month = month + 1;
+    if (month < 10 )
+       month = '0' + month;
+    var year = date.getFullYear();
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var seconds = date.getSeconds();
+    var timestamp =
+       day+ "/" + month + "/"+year+" "+
+       hours + ":" + minutes + ":" + seconds;
+    console.log(timestamp);
+    animals.doc(aid).collection("Stats").doc(stat).collection("Samples").add({timestamp: timestamp, value: value});
+  },
+
   getUserAnimals : function(uid) {
       const users = firestore.collection("Users");
             var animals = [];
             return users
               .doc(uid)
-              .collection("useranimals")
+              .collection("Animals")
               .get()
               .then(function(querySnapshot) {
                        querySnapshot.forEach(function(doc) {
                            // doc.data() is never undefined for query doc snapshots
                            console.log(doc.id, " => ", doc.data());
-                           let data = doc.data();
+                           animals.push(doc.id);
+                           /*
                            animals.push(new UserAnimal(
-                                 data.aid,
                                  data.name,
                                  data.age,
                                  data.breed,
@@ -112,6 +119,7 @@ const db = {
                                  data.diseases,
                                  data.stats
                                ));
+                           */
                            //console.log(user);
                            return animals;
                        });
@@ -123,60 +131,158 @@ const db = {
                    });
   },
 
+  getUserAnimal : function(uid,aid){
+        const animals = firestore.collection("Users").doc(uid).collection("Animals");
+        var animal;
+        return animals
+          .doc(aid)
+          .get()
+          .then(function(doc) {
+                       // doc.data() is never undefined for query doc snapshots
+                       console.log(doc.id, " => ", doc.data());
+                       let data = doc.data();
+                       animal = new Animal(data.name,data.age,data.breed,data.size,data.photo);
+                       //console.log(user);
+                       return animal;
+               })
+               .catch(function(error) {
+                   console.log("Error getting documents: ", error);
+               });
+
+  },
+
+  //------------- To be fixed
+
+
+  getAnimalStats : function(uid,aid){
+      const animals = firestore.collection("Users").doc(uid).collection("Animals");
+              var stats = [];
+              return animals
+                .doc(aid)
+                .collection("Stats")
+                .get()
+                .then(function(querySnapshot) {
+                         querySnapshot.forEach(function(doc) {
+                             // doc.data() is never undefined for query doc snapshots
+                             console.log(doc.id, " => ", doc.data());
+                             stats.push(doc.id);
+                             //console.log(user);
+                             return stats;
+                         });
+                         return stats;
+                     })
+                     .catch(function(error) {
+                         console.log("Error getting documents: ", error);
+                     });
+  },
+
+  getAnimalStatSamples : function(uid,aid,stat){
+     const stats = firestore.collection("Users").doc(uid).collection("Animals").doc(aid).collection("Stats");
+                   var samples = [];
+                   return stats
+                     .doc(stat)
+                     .collection("Samples")
+                     .get()
+                     .then(function(querySnapshot) {
+                              querySnapshot.forEach(function(doc) {
+                                  // doc.data() is never undefined for query doc snapshots
+                                  console.log(doc.id, " => ", doc.data());
+                                  let data = doc.data();
+                                  samples.push(data);
+                                  //console.log(user);
+                                  return samples;
+                              });
+                              return samples;
+                          })
+                          .catch(function(error) {
+                              console.log("Error getting documents: ", error);
+                          });
+
+  },
+
+  //-----
+
+  getAnimalDiseases : function(uid,aid){
+      const animals = firestore.collection("Users").doc(uid).collection("Animals");
+                    var diseases = [];
+                    return animals
+                      .doc(aid)
+                      .collection("Diseases")
+                      .get()
+                      .then(function(querySnapshot) {
+                               querySnapshot.forEach(function(doc) {
+                                   // doc.data() is never undefined for query doc snapshots
+                                   console.log(doc.id, " => ", doc.data());
+                                   let data = doc.data();
+                                   diseases.push(data);
+                                   //console.log(user);
+                                   return diseases;
+                               });
+                               return diseases;
+                           })
+                           .catch(function(error) {
+                               console.log("Error getting documents: ", error);
+                           });
+
+  },
+
   addAdoptableAnimal: function (
-    uid,
+    pid,
     aid,
     name,
     age,
     breed,
     size,
     photo,
-    diseases,
     profile
   ) {
     console.log("addAdoptableAnimal");
-    const users = firestore.collection("Users");
+    const places = firestore.collection("Places");
     let animal = new AdoptableAnimal(
-      aid,
       name,
       age,
       breed,
       size,
       photo,
-      diseases,
       profile
     );
     console.log(animal);
-    users
-      .doc(uid)
-      .collection("adoptableanimals")
-      .doc()
-      .set(animal.toFirestore());
+    places.doc(pid).collection("Animals").doc(aid).set(animal.toFirestore());
   },
 
+  getAdoptableAnimal : function(pid,aid){
+          const animals = firestore.collection("Places").doc(pid).collection("Animals");
+          var animal;
+          return animals
+            .doc(aid)
+            .get()
+            .then(function(doc) {
+                         // doc.data() is never undefined for query doc snapshots
+                         console.log(doc.id, " => ", doc.data());
+                         let data = doc.data();
+                         animal = new AdoptableAnimal(data.name,data.age,data.breed,data.size,data.photo,data.profile);
+                         //console.log(user);
+                         return animal;
+                 })
+                 .catch(function(error) {
+                     console.log("Error getting documents: ", error);
+                 });
+    },
 
-  getAdoptableAnimals : function(uid) {
-        const users = firestore.collection("Users");
+
+  getAdoptableAnimals : function(pid) {
+        const places = firestore.collection("Places");
               var animals = [];
-              return users
-                .doc(uid)
-                .collection("adoptableanimals")
+              return places
+                .doc(pid)
+                .collection("Animals")
                 .get()
                 .then(function(querySnapshot) {
                          querySnapshot.forEach(function(doc) {
                              // doc.data() is never undefined for query doc snapshots
                              console.log(doc.id, " => ", doc.data());
                              let data = doc.data();
-                             animals.push(new UserAnimal(
-                                   data.aid,
-                                   data.name,
-                                   data.age,
-                                   data.breed,
-                                   data.size,
-                                   data.photo,
-                                   data.diseases,
-                                   data.profile
-                                 ));
+                             animals.push(doc.id)
                              //console.log(user);
                              return animals;
                          });
@@ -188,11 +294,60 @@ const db = {
                      });
   },
 
+  addAdoptableAnimalDisease: function(pid,aid,disease){
+      const places = firestore.collection("Places");
+      const animals =places.doc(pid).collection("Animals");
+      animals.doc(aid).collection("Diseases").add({disease});
+  },
+
+  getAdoptableAnimalDiseases : function(pid,aid){
+        const animals = firestore.collection("Places").doc(pid).collection("Animals");
+                      var diseases = [];
+                      return animals
+                        .doc(aid)
+                        .collection("Diseases")
+                        .get()
+                        .then(function(querySnapshot) {
+                                 querySnapshot.forEach(function(doc) {
+                                     // doc.data() is never undefined for query doc snapshots
+                                     console.log(doc.id, " => ", doc.data());
+                                     let data = doc.data();
+                                     diseases.push(data);
+                                     //console.log(user);
+                                     return diseases;
+                                 });
+                                 return diseases;
+                             })
+                             .catch(function(error) {
+                                 console.log("Error getting documents: ", error);
+                             });
+
+    },
+
+
+  deleteAnimal : function(uid,aid) {
+     const users = firestore.collection("Users");
+     users.doc(uid).collection("Animals").doc(aid).delete().then(function() {
+                     console.log("Document successfully deleted!");
+                 }).catch(function(error) {
+                     console.error("Error removing document: ", error);
+                 });
+  },
+
+  deleteAdoptableAnimal : function(pid,aid) {
+       const places = firestore.collection("Places");
+       places.doc(pid).collection("Animals").doc(aid).delete().then(function() {
+                       console.log("Document successfully deleted!");
+                   }).catch(function(error) {
+                       console.error("Error removing document: ", error);
+                   });
+  },
+
 //----------------------Places-------------------------------------------------------------------------------------
 
-  addPlace: function (pid,name, description, photo, uid, latitude, longitude, latitudeDelta, longitudeDelta) {
+  addPlace: function (pid,name,type,description, photo, uid, latitude, longitude, latitudeDelta, longitudeDelta) {
       const places = firestore.collection("Places");
-      let place = new Place(name, description, photo, uid, latitude, longitude, latitudeDelta, longitudeDelta);
+      let place = new Place(name,type, description, photo, uid, latitude, longitude, latitudeDelta, longitudeDelta);
       places.doc(pid).set(place.toFirestore());
   },
 
@@ -208,6 +363,7 @@ const db = {
                                      let data = doc.data();
                                      place = new Place(
                                      data.name,
+                                     data.type,
                                      data.description,
                                      data.photo,
                                      data.uid,
@@ -235,6 +391,7 @@ const db = {
                                    let data = doc.data();
                                    places.push(new Place(
                                    data.name,
+                                   data.type,
                                    data.description,
                                    data.photo,
                                    data.uid,
@@ -281,6 +438,15 @@ const db = {
                              .catch(function(error) {
                                  console.log("Error getting documents: ", error);
                              });
+  },
+
+  deletePlace : function(pid) {
+       const places = firestore.collection("Places");
+       places.doc(pid).delete().then(function() {
+                       console.log("Document successfully deleted!");
+                   }).catch(function(error) {
+                       console.error("Error removing document: ", error);
+                   });
   },
 
 

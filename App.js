@@ -1,4 +1,4 @@
-
+/*
 import React from "react";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 
@@ -39,9 +39,9 @@ function App() {
   );
 }
 export default App;
+*/
 
 
-/*
 import React, { useState, useEffect } from 'react';
 import { Button, Image, View, Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
@@ -101,16 +101,24 @@ export default function ImagePickerExample() {
     }
 
     const addUser = async() => {
-        var news = {};
-        news["30/12/2020 11:36"] = [{title: "New activity in town" ,text: "I'm a new vet in town , in my GPaw profile you can find all the info about me. "}];
-        db.addBusinessUser('axr4184','matteo','photo111','vet','Viale Romagna 62','fr81ms',news);
+        //var news = {};
+        //news["30/12/2020 11:36"] = [{title: "New activity in town" ,text: "I'm a new vet in town , in my GPaw profile you can find all the info about me. "}];
+        //db.addAdoptableAnimal('yghuiow','juiay','Willy',11,'Labrador','Medium','willy.jpg','profile');
+        //db.addAdoptableAnimalDisease('yghuiow','juiay','disease1');
+        //db.addAnimalDisease('axr4185','juiay','disease2');
+        //db.addAnimalStat('axr4185','juiay','weight',20);
+        //db.addAnimalStat('axr4185','juiay','height',50);
+        //db.addAnimalStat('axr4185','juiay','weight',21);
+        //db.addUserAnimal('axr4185','juioo','Willy',11,'Labrador','Medium','willy.jpg');
+        //db.deleteAnimal('axr4185','juioo');
+        db.deleteAdoptableAnimalPlace('yghuiow','juiay');
     }
 
     const getUser = async() => {
         //db.getUser('axr4183');
-         db.getUser('axr4183').then(function(user){
-                     console.log(user);
-                  });
+         db.getAnimalStats('axr4185','juiay').then(function(place){
+                     console.log(place);
+         });
     }
 
    return (
@@ -123,4 +131,3 @@ export default function ImagePickerExample() {
  }
 
 
-*/
