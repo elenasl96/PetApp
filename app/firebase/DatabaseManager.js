@@ -14,25 +14,24 @@ const db = {
   },
 
   getUser: function (uid) {
-    const users = firestore.collection("Users");
-    var user;
-    return users
-      .doc(uid)
-      .get()
-      .then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
-          let data = doc.data();
-          user = new User(data.name, data.photo, data.type, data.address);
-          //console.log(user);
-          return user;
-        });
-        return user;
-      })
-      .catch(function (error) {
-        console.log("Error getting documents: ", error);
-      });
+
+      const users = firestore.collection("Users");
+      var user;
+      return users
+        .doc(uid)
+        .get()
+        .then(function(doc) {
+                     // doc.data() is never undefined for query doc snapshots
+                     console.log(doc.id, " => ", doc.data());
+                     let data = doc.data();
+                     user = new User(data.name,data.photo,data.type,data.address);
+                     //console.log(user);
+                     return user;
+                 })
+             .catch(function(error) {
+                 console.log("Error getting documents: ", error);
+             });
+
   },
 
   //---------------------Animals--------------------------------------------------------------

@@ -116,10 +116,12 @@ export default function ImagePickerExample() {
     }
 
     const getUser = async() => {
-        //db.getUser('axr4183');
-         db.getAnimalStats('axr4185','juiay').then(function(place){
+        db.getUser('axr4185').then(function(user){
+           console.log(user);
+        });
+         /*db.getAnimalStats('axr4185','juiay').then(function(place){
                      console.log(place);
-         });
+         });*/
     }
 
    return (
