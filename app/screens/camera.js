@@ -58,8 +58,10 @@ export default function ImagePickerExample(props) {
   const upload = async (uri) => {
     const response = await fetch(uri);
     const file = await response.blob();
-    console.log(file);
-    db.toStorage(file);
+    console.log("File");
+    db.toStorage("uid", file).then((url) => {
+      console.log("tostore: " + url);
+    });
   };
 
   return (
