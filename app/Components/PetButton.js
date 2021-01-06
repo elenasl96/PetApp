@@ -8,24 +8,9 @@ import {
 } from "react-native";
 import firebase from "firebase";
 import { AuthContext } from "../Components/AuthContext";
-import db from "../firebase/DatabaseManager";
 
 class PetButton extends React.Component {
   static contextType = AuthContext;
-
-  state = {
-    pets: [],
-  };
-
-  componentDidMount() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        db.getUserAnimals(this.context.uid).then((pets) =>
-          this.setState({ pets: pets })
-        );
-      }
-    });
-  }
 
   showPet = () => {
     this.props.navigation.navigate("Pet");
@@ -33,9 +18,10 @@ class PetButton extends React.Component {
 
   render() {
     const navigation = this.props.navigation;
-    console.log(this.state.pets);
+    const pets = this.props.pets;
+    console.log(pets);
     var petButtons = [];
-    this.state.pets.map((pet, i) =>
+    pets.map((pet, i) =>
       petButtons.push(
         <TouchableHighlight
           style={styles.pet}

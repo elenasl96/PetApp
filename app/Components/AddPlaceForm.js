@@ -8,9 +8,6 @@ import {
   SafeAreaView,
   TouchableOpacity,
   KeyboardAvoidingView,
-  ActivityIndicator,
-  Keyboard,
-  TouchableWithoutFeedback,
 } from "react-native";
 import db from "../firebase/DatabaseManager";
 import ImagePickerExample from "../screens/camera";
@@ -18,28 +15,28 @@ import { AuthContext } from "../Components/AuthContext";
 
 import mainStyle from "../styles/mainStyle";
 
-export default class AddPetForm extends Component {
+export default class AddPlaceForm extends Component {
   static contextType = AuthContext;
   state = {
     name: null,
-    age: null,
-    breed: null,
-    size: null,
+    type: null,
+    description: null,
     photo: null,
-    diseases: null,
+    address: null,
   };
 
-  registerPet() {
-    db.addUserAnimal(
-      this.context.uid,
-      "1",
-      this.state.name,
-      this.state.age,
-      this.state.breed,
-      this.state.size,
+  registerPlace() {
+    db.addPlace(
       "",
-      this.state.diseases,
-      ""
+      this.state.name,
+      this.state.photo,
+      this.state.description,
+      this.state.photo,
+      this.context.uid,
+      "latitude",
+      "longitude",
+      "latitudeDelta",
+      "longitudeDelta"
     );
     this.props.navigation.navigate("App");
   }
@@ -64,7 +61,6 @@ export default class AddPetForm extends Component {
             placeholder="Name"
             placeholderTextColor="#616161"
             returnKeyType="next"
-            textContentType="name"
             value={this.state.name}
             onChangeText={(name) => this.setState({ name })}
           />
@@ -72,49 +68,36 @@ export default class AddPetForm extends Component {
         <View style={mainStyle.form}>
           <TextInput
             style={mainStyle.inputText}
-            placeholder="Age"
+            placeholder="Type"
             placeholderTextColor="#616161"
             returnKeyType="next"
-            keyboardType="email-address"
-            textContentType="emailAddress"
-            value={this.state.age}
-            onChangeText={(age) => this.setState({ age })}
+            value={this.state.type}
+            onChangeText={(type) => this.setState({ type })}
           />
         </View>
         <View style={mainStyle.form}>
           <TextInput
             style={mainStyle.inputText}
-            placeholder="Size"
+            placeholder="Description"
             placeholderTextColor="#616161"
             returnKeyType="next"
-            keyboardType="email-address"
-            textContentType="emailAddress"
-            value={this.state.size}
-            onChangeText={(size) => this.setState({ size })}
+            multiline="true"
+            value={this.state.description}
+            onChangeText={(description) => this.setState({ description })}
           />
         </View>
         <View style={mainStyle.form}>
           <TextInput
             style={mainStyle.inputText}
-            placeholder="Breed"
+            placeholder="Address"
             placeholderTextColor="#616161"
             returnKeyType="next"
             textContentType="addressCity"
-            value={this.state.breed}
-            onChangeText={(breed) => this.setState({ breed })}
+            value={this.state.address}
+            onChangeText={(address) => this.setState({ address })}
           />
         </View>
-        <View style={mainStyle.form}>
-          <TextInput
-            style={mainStyle.inputText}
-            placeholder="Diseases"
-            placeholderTextColor="#616161"
-            returnKeyType="next"
-            textContentType="addressCity"
-            value={this.state.diseases}
-            onChangeText={(diseases) => this.setState({ diseases })}
-          />
-        </View>
+
         <Text style={[mainStyle.text, { margin: 10 }]}>Select an image:</Text>
         <ImagePickerExample
           photo={this.state.photo}
@@ -129,10 +112,10 @@ export default class AddPetForm extends Component {
             marginBottom: 40,
             alignSelf: "center",
           }}
-          onPress={this.registerPet.bind(this)}
+          onPress={this.registerPlace.bind(this)}
         >
           <View style={styles.button}>
-            <Text style={styles.buttonText}>Register Pet</Text>
+            <Text style={styles.buttonText}>Register Place</Text>
           </View>
         </TouchableOpacity>
       </SafeAreaView>

@@ -9,8 +9,6 @@ export const AuthContext = React.createContext();
 class AuthContextProvider extends Component {
   state = {
     user: null,
-    email: "",
-    password: "",
     loading: false,
     uid: "",
   };

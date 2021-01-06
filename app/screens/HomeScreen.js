@@ -13,12 +13,25 @@ import firebase from "firebase";
 import { AuthContext } from "../Components/AuthContext";
 import PlusIcon from "../Components/PlusIcon";
 import PetButton from "../Components/PetButton";
+import db from "../firebase/DatabaseManager";
+
 class HomeScreen extends React.Component {
   state = {
     pets: [],
     places: [],
   };
   static contextType = AuthContext;
+
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        db.getUser(this.context.uid);
+        db.getUserAnimals(this.context.uid).then((pets) =>
+          this.setState({ pets: pets })
+        );
+      }
+    });
+  }
 
   render() {
     const addPet = () => {
@@ -69,7 +82,10 @@ class HomeScreen extends React.Component {
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}
                 >
-                  <PetButton navigation={this.props.navigation}></PetButton>
+                  <PetButton
+                    pets={this.state.pets}
+                    navigation={this.props.navigation}
+                  ></PetButton>
                   {/*}   <TouchableHighlight onPress={showPet} style={styles.pet}>
                     <Image
                       source={require("../../assets/images/Gioia.jpg")}

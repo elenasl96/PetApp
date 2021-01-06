@@ -52,9 +52,9 @@ class SignUpScreen extends React.Component {
             auth().currentUser.uid,
             facebookProfileData.additionalUserInfo.profile.name,
             facebookProfileData.additionalUserInfo.profile.picture.data.url,
-            "",
-            ""
-          );
+            "user",
+            "via veglia"
+          ).then("User Registered");
         }
 
         db.getUser(user.uid).then((userFromDb) => {

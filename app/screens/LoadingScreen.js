@@ -13,7 +13,7 @@ class LoadingScreen extends React.Component {
           return idToken;
         });*/
         this.context.saveUserUID(user.uid);
-        this.props.navigation.navigate("App");
+        this.props.navigation.navigate("AppBusiness");
       } else {
         this.props.navigation.navigate("SignUp");
       }

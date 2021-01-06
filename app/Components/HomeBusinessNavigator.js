@@ -1,5 +1,4 @@
 import { createStackNavigator } from "react-navigation-stack";
-import HomeScreen from "../screens/HomeScreen";
 import PetScreen from "../screens/petPage";
 import KennelScreen from "../screens/kennelPage";
 import VetScreen from "../screens/vetPage";
@@ -8,20 +7,8 @@ import NavBar from "../screens/NavBar";
 import AddPetScreen from "../screens/AddPet";
 import HomeBusiness from "../screens/BusinessUser/HomeBusiness";
 
-const HomeNavigator = createStackNavigator(
+const HomeBusinessNavigator = createStackNavigator(
   {
-    Home: {
-      screen: HomeScreen,
-      // Optional: When deep linking or using react-navigation in a web app, this path is used:
-      path: "home",
-      // The action and route params are extracted from the path.
-
-      // Optional: Override the `navigationOptions` for the screen
-      navigationOptions: ({ navigation }) => ({
-        title: "Homepage    ",
-      }),
-    },
-
     HomeBusiness: {
       screen: HomeBusiness,
       // Optional: When deep linking or using react-navigation in a web app, this path is used:
@@ -70,7 +57,7 @@ const HomeNavigator = createStackNavigator(
     },
   },
   {
-    initialRouteName: "Home",
+    initialRouteName: "HomeBusiness",
     /* The header config from HomeScreen is now here */
     defaultNavigationOptions: {
       headerTitle: () => <NavBar />,
@@ -85,4 +72,4 @@ const HomeNavigator = createStackNavigator(
   }
 );
 
-export default HomeNavigator;
+export default HomeBusinessNavigator;
