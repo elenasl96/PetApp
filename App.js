@@ -1,3 +1,4 @@
+/*
 import React from "react";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 
@@ -40,7 +41,7 @@ function App() {
   );
 }
 export default App;
-/*
+*/
 
 
 import React, { useState, useEffect } from 'react';
@@ -112,14 +113,30 @@ export default function ImagePickerExample() {
         //db.addAnimalStat('axr4185','juiay','weight',21);
         //db.addUserAnimal('axr4185','juioo','Willy',11,'Labrador','Medium','willy.jpg');
         //db.deleteAnimal('axr4185','juioo');
-        db.deleteAdoptableAnimalPlace('yghuiow','juiay');
+        //db.addUserFeed('axr4185','yyyhgd','Labrador needs extra hugs','Labrador are extremely emphatic dogs, needs constantly kindness and love');
+        db.deleteUserFeed('axr4185','yyyhgd');
+        //db.deleteAdoptableAnimalPlace('yghuiow','juiay');
     }
 
     const getUser = async() => {
-        db.getUser('axr4185').then(function(user){
-           console.log(user);
+
+
+        db.addUserNotification('axr4185','yyyhgd','lost pet seen','Your lost pet has been found');
+   /*
+        db.getUserNotifications('axr4185').then(function(notifications){
+                   console.log(notifications);
         });
-         /*db.getAnimalStats('axr4185','juiay').then(function(place){
+
+        db.getUserNotification('axr4185','yyyhgd').then(function(notification){
+                           console.log(notification);
+        });
+        console.log("delete");
+        db.deleteUserNotification('axr4185','yyyhgd');
+        db.getUserNotification('axr4185','yyyhgd').then(function(notification){
+                                   console.log(notification);
+        });
+
+         db.getAnimalStats('axr4185','juiay').then(function(place){
                      console.log(place);
          });*/
     }
@@ -134,4 +151,4 @@ export default function ImagePickerExample() {
  }
 
 
-*/
+
