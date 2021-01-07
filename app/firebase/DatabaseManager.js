@@ -505,7 +505,7 @@ const db = {
 
   //----------------News---------------------------------------------------
 
-  addNews: function (uid,newsid, title, text) {
+  addNews: function (pid,newsid, title, text) {
     var date = new Date();
         var day = date.getDate();
         if (day < 10) day = "0" + day;
@@ -530,7 +530,7 @@ const db = {
           seconds;
         console.log(timestamp);
     const places = firestore.collection("Places");
-    let news = new News(title,text,date);
+    let news = new News(title,text,timestamp);
     places.doc(pid).collection("News").doc(newsid).set(news.toFirestore());
     //const users = firestore.collection("Users");
     //let user = new User(name, photo,'user', address);

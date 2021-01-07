@@ -121,7 +121,9 @@ export default function ImagePickerExample() {
     const getUser = async() => {
 
 
-        db.addUserNotification('axr4185','yyyhgd','lost pet seen','Your lost pet has been found');
+        //db.addUserNotification('axr4185','yyyhgd','lost pet seen','Your lost pet has been found');
+        db.addPlace('yyyuio','Kennel of MonteSanVito','kennel','kennel for abandoned pets','img.jpg','axr4185',132.65,133.68,0.5,0.5);
+        db.addNews('yyyuio','kiyr','New adoptable dogs','Hi pet lovers, new adoptable dogs are looking for kind people, please take a look!');
    /*
         db.getUserNotifications('axr4185').then(function(notifications){
                    console.log(notifications);
