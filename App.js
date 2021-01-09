@@ -114,33 +114,16 @@ export default function ImagePickerExample() {
         //db.addUserAnimal('axr4185','juioo','Willy',11,'Labrador','Medium','willy.jpg');
         //db.deleteAnimal('axr4185','juioo');
         //db.addUserFeed('axr4185','yyyhgd','Labrador needs extra hugs','Labrador are extremely emphatic dogs, needs constantly kindness and love');
-        db.deleteUserFeed('axr4185','yyyhgd');
+        //db.deleteUserFeed('axr4185','yyyhgd');
         //db.deleteAdoptableAnimalPlace('yghuiow','juiay');
+        db.addAnimalStat('axr4185','juiay','weight');
+        db.addAnimalStatSample('axr4185','juiay','weight',20);
+        db.addAnimalStat('axr4185','juiay','height');
+        db.addAnimalStatSample('axr4185','juiay','height',50);
     }
 
     const getUser = async() => {
-
-
-        //db.addUserNotification('axr4185','yyyhgd','lost pet seen','Your lost pet has been found');
-        db.addPlace('yyyuio','Kennel of MonteSanVito','kennel','kennel for abandoned pets','img.jpg','axr4185',132.65,133.68,0.5,0.5);
-        db.addNews('yyyuio','kiyr','New adoptable dogs','Hi pet lovers, new adoptable dogs are looking for kind people, please take a look!');
-   /*
-        db.getUserNotifications('axr4185').then(function(notifications){
-                   console.log(notifications);
-        });
-
-        db.getUserNotification('axr4185','yyyhgd').then(function(notification){
-                           console.log(notification);
-        });
-        console.log("delete");
-        db.deleteUserNotification('axr4185','yyyhgd');
-        db.getUserNotification('axr4185','yyyhgd').then(function(notification){
-                                   console.log(notification);
-        });
-
-         db.getAnimalStats('axr4185','juiay').then(function(place){
-                     console.log(place);
-         });*/
+       db.deletePlace('0ClOXcEHqeKREkGTNf96');
     }
 
    return (

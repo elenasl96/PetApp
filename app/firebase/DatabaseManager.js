@@ -6,10 +6,12 @@ import Place from "./Place.js";
 import Feed from "./Feed.js";
 import Notification from "./Notification.js";
 import News from "./News.js";
+import LostPetNotify from "./LostPetNotify.js";
+import LostPetSeen from "./LostPetSeen.js";
 
 
 const db = {
-  // ----------------User-----------------------------------------------------------  OK
+  // ----------------User-----------------------------------------------------------
 
   addUser: function (uid, name, photo, type, address) {
     const users = firestore.collection("Users");
@@ -38,7 +40,8 @@ const db = {
 
   },
 
-  //---------------------Animals--------------------------------------------------------------
+  //--------------UserAnimal----------------------------------------
+
   addUserAnimal: function (uid, aid, name, age, breed, size, photo, diseases) {
     const users = firestore.collection("Users");
     const animals = users.doc(uid).collection("Animals");
@@ -57,7 +60,13 @@ const db = {
     animals.doc(aid).collection("Diseases").add({ disease });
   },
 
-  addAnimalStat: function (uid, aid, stat, value) {
+  addAnimalStat: function (uid, aid, stat){
+    const users = firestore.collection("Users");
+    const stats = users.doc(uid).collection("Animals").doc(aid).collection("Stats");
+    stats.doc(stat).set({ stat });
+  },
+
+  addAnimalStatSample: function (uid, aid, stat, value) {
     const users = firestore.collection("Users");
     const animals = users.doc(uid).collection("Animals");
     var date = new Date();
@@ -153,13 +162,9 @@ const db = {
       });
   },
 
-  //------------- To be fixed
-
   getAnimalStats: function (uid, aid) {
-    const animals = firestore
-      .collection("Users")
-      .doc(uid)
-      .collection("Animals");
+    const users = firestore.collection("Users");
+    const animals = users.doc(uid).collection("Animals");
     var stats = [];
     return animals
       .doc(aid)
@@ -208,8 +213,6 @@ const db = {
       });
   },
 
-  //-----
-
   getAnimalDiseases: function (uid, aid) {
     const animals = firestore
       .collection("Users")
@@ -235,6 +238,90 @@ const db = {
         console.log("Error getting documents: ", error);
       });
   },
+
+  deleteAnimal: function (uid, aid) {
+      const users = firestore.collection("Users");
+      users
+        .doc(uid)
+        .collection("Animals")
+        .doc(aid)
+        .delete()
+        .then(function () {
+          console.log("Document successfully deleted!");
+        })
+        .catch(function (error) {
+          console.error("Error removing document: ", error);
+        });
+    },
+
+
+  //-------------SavedPlaces--------------------------------
+
+
+  addSavedPlace: function (uid, pid) {
+    const users = firestore.collection("Users");
+    users.doc(uid).collection("savedplaces").doc().set({ pid: pid });
+  },
+
+  getSavedPlaces: function (uid) {
+    const users = firestore.collection("Users");
+    var savedplaces = [];
+    return users
+      .doc(uid)
+      .collection("savedplaces")
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          // doc.data() is never undefined for query doc snapshots
+          console.log(doc.id, " => ", doc.data());
+          savedplaces.push(doc.id);
+          //console.log(user);
+          return savedplaces;
+        });
+
+        return savedplaces;
+      })
+      .catch(function (error) {
+        console.log("Error getting documents: ", error);
+      });
+  },
+
+  getSavedPlace: function(uid,id){
+    const users = firestore.collection("Users");
+    var savedplace;
+        return users
+          .doc(uid)
+          .collection("savedplaces")
+          .doc(id)
+          .get()
+          .then(function (doc) {
+              // doc.data() is never undefined for query doc snapshots
+              console.log(doc.id, " => ", doc.data());
+              savedplace = doc.data().pid;
+              //console.log(user);
+              return savedplace;
+            })
+          .catch(function (error) {
+            console.log("Error getting documents: ", error);
+          });
+  },
+
+  deleteSavedPlace: function (uid,id){
+    const users = firestore.collection("Users");
+    users
+    .doc(uid)
+    .collection("savedplaces")
+    .doc(id)
+             .delete()
+             .then(function () {
+               console.log("Document successfully deleted!");
+             })
+             .catch(function (error) {
+               console.error("Error removing document: ", error);
+             });
+  },
+
+//----------------------Places----------------------------------------------------------
 
   addAdoptableAnimal: function (
     pid,
@@ -326,8 +413,7 @@ const db = {
         querySnapshot.forEach(function (doc) {
           // doc.data() is never undefined for query doc snapshots
           console.log(doc.id, " => ", doc.data());
-          let data = doc.data();
-          diseases.push(data);
+          diseases.push(doc.id);
           //console.log(user);
           return diseases;
         });
@@ -338,16 +424,11 @@ const db = {
       });
   },
 
-  deleteAnimal: function (uid, aid) {
-    const users = firestore.collection("Users");
-    users
-      .doc(uid)
-      .collection("Animals")
-      .doc(aid)
-      .delete()
-      .then(function () {
-        console.log("Document successfully deleted!");
-      })
+  deleteAdoptableAnimalDisease : function(pid,aid,id){
+    const animals = firestore.collection("Places").doc(pid).collection("Animals");
+    animals.doc(aid).collection("Diseases").doc(id).delete().then(function(){
+    console.log("Document successfully deleted!");
+    })
       .catch(function (error) {
         console.error("Error removing document: ", error);
       });
@@ -355,20 +436,25 @@ const db = {
 
   deleteAdoptableAnimal: function (pid, aid) {
     const places = firestore.collection("Places");
-    places
-      .doc(pid)
-      .collection("Animals")
-      .doc(aid)
-      .delete()
-      .then(function () {
-        console.log("Document successfully deleted!");
-      })
-      .catch(function (error) {
-        console.error("Error removing document: ", error);
-      });
+    this.getAdoptableAnimalDiseases(pid,aid).then(function(diseases){
+       if (diseases.length != 0){  // diseases are optional so must be checked
+          diseases.forEach(function(id){
+            db.deleteAdoptableAnimalDisease(pid,aid,id);
+          });
+       }
+       places
+         .doc(pid)
+         .collection("Animals")
+         .doc(aid)
+         .delete()
+         .then(function () {
+           console.log("Document successfully deleted!");
+         })
+         .catch(function (error) {
+           console.error("Error removing document: ", error);
+       });
+    });
   },
-
-  //----------------------Places-------------------------------------------------------------------------------------
 
   addPlace: function (
     pid,
@@ -436,20 +522,7 @@ const db = {
         querySnapshot.forEach(function (doc) {
           // doc.data() is never undefined for query doc snapshots
           console.log(doc.id, " => ", doc.data());
-          let data = doc.data();
-          places.push(
-            new Place(
-              data.name,
-              data.type,
-              data.description,
-              data.photo,
-              data.uid,
-              data.latitude,
-              data.longitude,
-              data.latitudeDelta,
-              data.longitudeDelta
-            )
-          );
+          places.push(doc.id);
           //console.log(user);
           return places;
         });
@@ -461,47 +534,40 @@ const db = {
       });
   },
 
-  addSavedPlace: function (uid, pid) {
-    const users = firestore.collection("Users");
-    users.doc(uid).collection("savedplaces").doc().set({ pid: pid });
-  },
-
-  getSavedPlaces: function (uid) {
-    const users = firestore.collection("Users");
-    var savedplaces = [];
-    return users
-      .doc(uid)
-      .collection("savedplaces")
-      .get()
-      .then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
-          let data = doc.data();
-          savedplaces.push(data.pid);
-          //console.log(user);
-          return savedplaces;
-        });
-
-        return savedplaces;
-      })
-      .catch(function (error) {
-        console.log("Error getting documents: ", error);
-      });
-  },
-
   deletePlace: function (pid) {
+
     const places = firestore.collection("Places");
-    places
-      .doc(pid)
-      .delete()
-      .then(function () {
-        console.log("Document successfully deleted!");
-      })
-      .catch(function (error) {
-        console.error("Error removing document: ", error);
-      });
+
+
+    this.getAllNews(pid).then(function(news){
+
+    if(news.length != 0){
+       news.forEach(newsid => db.deleteNews(pid,newsid));
+    }
+
+    db.getAdoptableAnimals(pid).then(function(animals){
+           if (animals.length != 0){
+             animals.forEach(function(aid){
+                db.deleteAdoptableAnimal(pid,aid);
+             });
+           }
+       console.log("deletePlace");
+         places
+         .doc(pid)
+         .delete()
+         .then(function () {
+           console.log("Document successfully deleted!");
+         })
+         .catch(function (error) {
+           console.error("Error removing document: ", error);
+         });
+     });
+
+    });
+
   },
+
+
 
   //----------------News---------------------------------------------------
 
@@ -532,107 +598,122 @@ const db = {
     const places = firestore.collection("Places");
     let news = new News(title,text,timestamp);
     places.doc(pid).collection("News").doc(newsid).set(news.toFirestore());
-    //const users = firestore.collection("Users");
-    //let user = new User(name, photo,'user', address);
-    //users.doc(uid).collection("userprofile").doc().set(user.toFirestore());
-
-    //work in progress.....
   },
-/*
-    addPlace: function (
-      pid,
-      name,
-      type,
-      description,
-      photo,
-      uid,
-      latitude,
-      longitude,
-      latitudeDelta,
-      longitudeDelta
-    ) {
-      const places = firestore.collection("Places");
-      let place = new Place(
-        name,
-        type,
-        description,
-        photo,
-        uid,
-        latitude,
-        longitude,
-        latitudeDelta,
-        longitudeDelta
-      );
-      places.doc(pid).set(place.toFirestore());
+
+  getAllNews: function(pid){
+       console.log("getAllNews");
+       const places = firestore.collection("Places");
+       var news = [];
+          return places
+            .doc(pid)
+            .collection("News")
+            .get()
+            .then(function (querySnapshot) {
+              querySnapshot.forEach(function (doc) {
+                // doc.data() is never undefined for query doc snapshots
+                console.log(doc.id, " => ", doc.data());
+                //let data = doc.data();
+                //let feed = new Feed(data.title,data.text);
+                news.push(doc.id);
+                //console.log(news);
+                //console.log(feed);
+                return news;
+              });
+              console.log(news);
+              return news;
+            })
+            .catch(function (error) {
+              console.log("Error getting documents: ", error);
+            });
     },
 
-    getPlace: function (pid) {
-      const map = firestore.collection("Places");
-      var place;
-      return map
-        .doc(pid)
-        .get()
-        .then(function (doc) {
-          // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
-          let data = doc.data();
-          place = new Place(
-            data.name,
-            data.type,
-            data.description,
-            data.photo,
-            data.uid,
-            data.latitude,
-            data.longitude,
-            data.latitudeDelta,
-            data.longitudeDelta
-          );
-          //console.log(user);
-          return place;
-        })
-        .catch(function (error) {
-          console.log("Error getting documents: ", error);
-        });
+    deleteNews:function(pid,newsid){
+           console.log("delete news");
+           const places = firestore.collection("Places");
+           places
+             .doc(pid)
+             .collection("News")
+             .doc(newsid)
+             .delete()
+             .then(function () {
+               console.log("Document successfully deleted!");
+             })
+             .catch(function (error) {
+               console.error("Error removing document: ", error);
+             });
     },
 
-    getPlaces: function () {
-      // needs a range filter
-      const map = firestore.collection("Places");
-      var places = [];
-      return map
-        .get()
-        .then(function (querySnapshot) {
-          querySnapshot.forEach(function (doc) {
-            // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, " => ", doc.data());
-            let data = doc.data();
-            places.push(
-              new Place(
-                data.name,
-                data.type,
-                data.description,
-                data.photo,
-                data.uid,
-                data.latitude,
-                data.longitude,
-                data.latitudeDelta,
-                data.longitudeDelta
-              )
-            );
-            //console.log(user);
-            return places;
-          });
+    getNews: function(pid,newsid){
+        const places = firestore.collection("Places");
+                var news;
+                return places
+                  .doc(pid)
+                  .collection("News")
+                  .doc(newsid)
+                  .get()
+                  .then(function (doc) {
+                      // doc.data() is never undefined for query doc snapshots
+                      console.log(doc.id, " => ", doc.data());
+                      let data = doc.data();
+                      news = new News(data.title,data.text,data.timestamp);
+                      return news;
+                    })
+                  .catch(function (error) {
+                    console.log("Error getting documents: ", error);
+                  });
+      },
 
-          return places;
-        })
-        .catch(function (error) {
-          console.log("Error getting documents: ", error);
-        });
-    },
-*/
   //--------------------- Feed ------------------------------------------------------------------
-  getFeedByFilters(){
 
+
+  getFeedsByFilter(pet,filter,value){
+    const ref = firestore.collection("Feed").doc(pet).collection(filter);
+    //console.log(ref);
+    var feeds = [];
+    return ref
+            .where("name","==",value)
+           .get()
+           //.where("name","==",value)
+           .then(function (querySnapshot) {
+                       querySnapshot.forEach(function (doc) {
+                         // doc.data() is never undefined for query doc snapshots
+                         console.log(doc.id, " => ", doc.data());
+                         let data = doc.data();
+                         let feed = new Feed(data.title,data.text);
+                         feeds.push(feed);
+                         //console.log(feed);
+                         return feeds;
+                       });
+                        return feeds;
+                                 })
+                                 .catch(function (error) {
+                                   console.log("Error getting documents: ", error);
+                                 });
+
+  },
+
+
+  getGeneralFeeds(pet){
+            console.log("general");
+            const general = firestore.collection("Feed").doc(pet).collection("General");
+            var feeds = [];
+            return general
+                   .get()
+                   .then(function (querySnapshot) {
+                               querySnapshot.forEach(function (doc) {
+                                 // doc.data() is never undefined for query doc snapshots
+                                 console.log(doc.id, " => ", doc.data());
+                                 let data = doc.data();
+                                 let feed = new Feed(data.title,data.text);
+                                 feeds.push(feed);
+                                 //console.log(feed);
+                                 return feeds;
+                               });
+                                return feeds;
+                                         })
+                                         .catch(function (error) {
+                                           console.log("Error getting documents: ", error);
+                                         });
   },
 
   addUserFeed: function(uid,fid,title,text){
@@ -790,6 +871,172 @@ const db = {
                 console.error("Error removing document: ", error);
               });
           },
+
+  //-----------------------------Lost Pets Notify ------------------------------
+
+    addLostPetNotify: function(lid,name,photo,size,color,breed,notes,place,uid,email,phone){
+         const lostPets = firestore.collection("LostPetNotify");
+         var date = new Date();
+                 var day = date.getDate();
+                 if (day < 10) day = "0" + day;
+                 var month = date.getMonth();
+                 month = month + 1;
+                 if (month < 10) month = "0" + month;
+                 var year = date.getFullYear();
+                 var hours = date.getHours();
+                 var minutes = date.getMinutes();
+                 var seconds = date.getSeconds();
+                 var timestamp =
+                   day +
+                   "/" +
+                   month +
+                   "/" +
+                   year +
+                   " " +
+                   hours +
+                   ":" +
+                   minutes +
+                   ":" +
+                   seconds;
+         let notification = new LostPetNotify(name,photo,size,color,breed,notes,place,timestamp,uid,email,phone);
+         lostPets.doc(lid).set(notification.toFirestore());
+       },
+
+    getLostPetNotifications: function(){
+          const lostPets = firestore.collection("LostPetNotify");
+             var notifications = [];
+             return lostPets
+               .get()
+               .then(function (querySnapshot) {
+                 querySnapshot.forEach(function (doc) {
+                   // doc.data() is never undefined for query doc snapshots
+                   console.log(doc.id, " => ", doc.data());
+                   notifications.push(doc.id);
+                   //console.log(feed);
+                   return notifications;
+                 });
+                 return notifications;
+               })
+               .catch(function (error) {
+                 console.log("Error getting documents: ", error);
+               });
+       },
+
+       getLostPetNotification: function(lid){
+             const lostPets = firestore.collection("LostPetNotify");
+                   var notification;
+                   return lostPets
+                     .doc(lid)
+                     .get()
+                     .then(function (doc) {
+                         // doc.data() is never undefined for query doc snapshots
+                         console.log(doc.id, " => ", doc.data());
+                         let data = doc.data();
+                         notification = new LostPetNotify(data.name,data.photo,data.size,data.color,data.breed,data.notes,data.place,data.timestamp,data.uid,data.email,data.phone);
+                         return notification;
+                       })
+                     .catch(function (error) {
+                       console.log("Error getting documents: ", error);
+                     });
+       },
+
+
+       deleteLostPetNotification:function(lid){
+            const lostPets = firestore.collection("LostPetNotify");
+                  lostPets
+                  .doc(lid)
+                  .delete()
+                  .then(function () {
+                    console.log("Document successfully deleted!");
+                  })
+                  .catch(function (error) {
+                    console.error("Error removing document: ", error);
+                  });
+              },
+
+
+  //-----------------------------Lost Pets Seen ------------------------------
+
+    addLostPetSeen: function(lid,photo,size,color,breed,notes,place,uid,email,phone){
+         const lostPets = firestore.collection("LostPetSeen");
+         var date = new Date();
+                 var day = date.getDate();
+                 if (day < 10) day = "0" + day;
+                 var month = date.getMonth();
+                 month = month + 1;
+                 if (month < 10) month = "0" + month;
+                 var year = date.getFullYear();
+                 var hours = date.getHours();
+                 var minutes = date.getMinutes();
+                 var seconds = date.getSeconds();
+                 var timestamp =
+                   day +
+                   "/" +
+                   month +
+                   "/" +
+                   year +
+                   " " +
+                   hours +
+                   ":" +
+                   minutes +
+                   ":" +
+                   seconds;
+         let notification = new LostPetSeen(photo,size,color,breed,notes,place,timestamp,uid,email,phone);
+         lostPets.doc(lid).set(notification.toFirestore());
+       },
+
+    getLostPetsSeen: function(){
+          const lostPets = firestore.collection("LostPetSeen");
+             var notifications = [];
+             return lostPets
+               .get()
+               .then(function (querySnapshot) {
+                 querySnapshot.forEach(function (doc) {
+                   // doc.data() is never undefined for query doc snapshots
+                   console.log(doc.id, " => ", doc.data());
+                   notifications.push(doc.id);
+                   //console.log(feed);
+                   return notifications;
+                 });
+                 return notifications;
+               })
+               .catch(function (error) {
+                 console.log("Error getting documents: ", error);
+               });
+       },
+
+       getLostPetSeen: function(lid){
+             const lostPets = firestore.collection("LostPetSeen");
+                   var notification;
+                   return lostPets
+                     .doc(lid)
+                     .get()
+                     .then(function (doc) {
+                         // doc.data() is never undefined for query doc snapshots
+                         console.log(doc.id, " => ", doc.data());
+                         let data = doc.data();
+                         notification = new LostPetSeen(data.size,data.color,data.breed,data.notes,data.place,data.timestamp,data.uid,data.email,data.phone);
+                         return notification;
+                       })
+                     .catch(function (error) {
+                       console.log("Error getting documents: ", error);
+                     });
+       },
+
+
+       deleteLostPetSeen:function(lid){
+            const lostPets = firestore.collection("LostPetSeen");
+                  lostPets
+                  .doc(lid)
+                  .delete()
+                  .then(function () {
+                    console.log("Document successfully deleted!");
+                  })
+                  .catch(function (error) {
+                    console.error("Error removing document: ", error);
+                  });
+              },
+
 
   //----------------Photo storage------------------------------------------------------------------------------
 
