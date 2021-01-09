@@ -40,6 +40,56 @@ const db = {
 
   },
 
+  deleteUser: function (uid,type){
+
+     const users = firestore.collection("Users");
+
+         this.getUserNotifications(uid).then(function(notifications){
+
+         if(notifications.length != 0){
+            notifications.forEach(id => db.deleteUserNotification(uid,id));
+         }
+
+         if (type=="business"){
+                   users
+                   .doc(uid)
+                   .delete()
+                   .then(function () {
+                     console.log("Document successfully deleted!");
+                   })
+                   .catch(function (error) {
+                     console.error("Error removing document: ", error);
+                   });
+         }
+         else{
+            db.getUserFeeds(uid).then(function(feeds){
+               if(feeds.length != 0){
+                  feeds.forEach(id => db.deleteUserFeed(uid,id));
+               }
+               db.getSavedPlaces(uid).then(function(savedplaces){
+                 if(savedplaces.length !=0){
+                    savedplaces.forEach(id => db.deleteSavedPlace(uid,id));
+                 }
+                   db.getUserAnimals(uid).then(function(animals){
+                      if(animals.length !=0){
+                        animals.forEach(id => db.deleteAnimal(uid,id));
+                      }
+                       users
+                         .doc(uid)
+                         .delete()
+                         .then(function () {
+                           console.log("Document successfully deleted!");
+                         })
+                         .catch(function (error) {
+                           console.error("Error removing document: ", error);
+                         });
+                   });
+               });
+            });
+         }
+    });
+  },
+
   //--------------UserAnimal----------------------------------------
 
   addUserAnimal: function (uid, aid, name, age, breed, size, photo, diseases) {
@@ -63,7 +113,7 @@ const db = {
   addAnimalStat: function (uid, aid, stat){
     const users = firestore.collection("Users");
     const stats = users.doc(uid).collection("Animals").doc(aid).collection("Stats");
-    stats.doc(stat).set({ stat });
+    stats.doc(stat).set({ name : stat, });
   },
 
   addAnimalStatSample: function (uid, aid, stat, value) {
@@ -185,6 +235,27 @@ const db = {
       });
   },
 
+  getAnimalStat: function ( uid,aid,stat){
+     const users = firestore.collection("Users");
+         const animals = users.doc(uid).collection("Animals");
+         var stat;
+         return animals
+           .doc(aid)
+           .collection("Stats")
+           .doc(stat)
+           .get()
+           .then(function (doc) {
+               // doc.data() is never undefined for query doc snapshots
+               console.log(doc.id, " => ", doc.data());
+               stat = doc.data().name;
+               //console.log(user);
+               return stat;
+             })
+           .catch(function (error) {
+             console.log("Error getting documents: ", error);
+           });
+  },
+
   getAnimalStatSamples: function (uid, aid, stat) {
     const stats = firestore
       .collection("Users")
@@ -201,8 +272,7 @@ const db = {
         querySnapshot.forEach(function (doc) {
           // doc.data() is never undefined for query doc snapshots
           console.log(doc.id, " => ", doc.data());
-          let data = doc.data();
-          samples.push(data);
+          samples.push(doc.id);
           //console.log(user);
           return samples;
         });
@@ -211,6 +281,32 @@ const db = {
       .catch(function (error) {
         console.log("Error getting documents: ", error);
       });
+  },
+
+  getAnimalStatSample: function (uid,aid,stat,id){
+    const stats = firestore
+          .collection("Users")
+          .doc(uid)
+          .collection("Animals")
+          .doc(aid)
+          .collection("Stats");
+        var sample;
+        return stats
+          .doc(stat)
+          .collection("Samples")
+          .doc(id)
+          .get()
+          .then(function (doc) {
+              // doc.data() is never undefined for query doc snapshots
+              console.log(doc.id, " => ", doc.data());
+              sample = doc.data();
+              //console.log(user);
+              return sample;
+            })
+          .catch(function (error) {
+            console.log("Error getting documents: ", error);
+          });
+
   },
 
   getAnimalDiseases: function (uid, aid) {
@@ -227,8 +323,7 @@ const db = {
         querySnapshot.forEach(function (doc) {
           // doc.data() is never undefined for query doc snapshots
           console.log(doc.id, " => ", doc.data());
-          let data = doc.data();
-          diseases.push(data);
+          diseases.push(doc.id);
           //console.log(user);
           return diseases;
         });
@@ -239,19 +334,90 @@ const db = {
       });
   },
 
-  deleteAnimal: function (uid, aid) {
-      const users = firestore.collection("Users");
-      users
+  getAnimalDisease: function (uid, aid , id) {
+      const animals = firestore
+        .collection("Users")
         .doc(uid)
-        .collection("Animals")
+        .collection("Animals");
+      var disease ;
+      return animals
         .doc(aid)
-        .delete()
-        .then(function () {
-          console.log("Document successfully deleted!");
-        })
+        .collection("Diseases")
+        .doc(id)
+        .get()
+        .then(function (doc) {
+            // doc.data() is never undefined for query doc snapshots
+            console.log(doc.id, " => ", doc.data());
+            disease = doc.data().disease;
+            //console.log(user);
+            return disease;
+          })
+        .catch(function (error) {
+          console.log("Error getting documents: ", error);
+        });
+    },
+
+  deleteAnimalDisease : function(uid,aid,id){
+      const animals = firestore.collection("Users").doc(uid).collection("Animals");
+      animals.doc(aid).collection("Diseases").doc(id).delete().then(function(){
+      console.log("Document successfully deleted!");
+      })
         .catch(function (error) {
           console.error("Error removing document: ", error);
         });
+    },
+
+   deleteAnimalStat : function(uid,aid,id){
+      const animals = firestore.collection("Users").doc(uid).collection("Animals");
+        animals.doc(aid).collection("Stats").doc(id).delete().then(function(){
+        console.log("Document successfully deleted!");
+        })
+          .catch(function (error) {
+            console.error("Error removing document: ", error);
+          });
+   },
+
+   deleteAnimalStatSample : function(uid,aid,stat,id){
+      const animals = firestore.collection("Users").doc(uid).collection("Animals");
+      const stats = animals.doc(aid).collection("Stats");
+      stats.doc(stat).collection("Samples").doc(id).delete().then(function(){
+      console.log("Document successfully deleted!");
+      })
+        .catch(function (error) {
+          console.error("Error removing document: ", error);
+        });
+   },
+
+   deleteAnimal: function (uid, aid) {
+      const users = firestore.collection("Users");
+      this.getAnimalDiseases(uid,aid).then(function(diseases){
+         if (diseases.length != 0){  // diseases are optional so must be checked
+             diseases.forEach(id => db.deleteAnimalDisease(uid,aid,id));
+         }
+         db.getAnimalStats(uid,aid).then(function(stats){
+           if(stats.length!=0){
+              stats.forEach(function(id){
+                 db.getAnimalStatSamples(uid,aid,id).then(function(samples){
+                    if(samples.length !=0){
+                        samples.forEach(sampleid =>db.deleteAnimalStatSample(uid,aid,id,sampleid));
+                    }
+                 });
+                 db.deleteAnimalStat(uid,aid,id);
+              });
+           }
+           users
+              .doc(uid)
+              .collection("Animals")
+              .doc(aid)
+              .delete()
+              .then(function () {
+                console.log("Document successfully deleted!");
+              })
+              .catch(function (error) {
+                console.error("Error removing document: ", error);
+            });
+          });
+       });
     },
 
 

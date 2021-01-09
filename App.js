@@ -123,7 +123,7 @@ export default function ImagePickerExample() {
     }
 
     const getUser = async() => {
-       db.deletePlace('0ClOXcEHqeKREkGTNf96');
+       db.deleteUser('axr4185','user');
     }
 
    return (
