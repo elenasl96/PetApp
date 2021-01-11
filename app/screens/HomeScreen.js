@@ -19,24 +19,27 @@ class HomeScreen extends React.Component {
   state = {
     pets: [],
     places: [],
-    mount: false,
+    update: false,
+    mounted: false,
   };
   static contextType = AuthContext;
 
   componentDidMount() {
-    this.setState({ mount: true });
+    this.setState({ mounted: true });
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         db.getUser(this.context.uid);
         db.getUserAnimals(this.context.uid).then((pets) => {
-          this.setState({ pets: pets });
+          if (this.state.mounted) {
+            this.setState({ pets: pets });
+          }
         });
       }
     });
   }
 
   componentWillUnmount() {
-    this.setState({ mount: false });
+    this.setState({ mounted: false });
   }
 
   render() {

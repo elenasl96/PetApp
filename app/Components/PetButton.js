@@ -13,40 +13,45 @@ import { AuthContext } from "../Components/AuthContext";
 class PetButton extends React.Component {
   state = {
     pet: null,
-    mounted: false,
+    mounted: true,
   };
 
   componentDidMount() {
     this.setState({ mounted: true });
-    const navigation = this.props.navigation;
-    const pets = this.props.pets;
-    var petButtons = [];
+  }
 
-    pets.map((petID) => {
-      db.getUserAnimal(this.props.uid, petID).then((animal) => {
-        petButtons.push(
-          <TouchableHighlight
-            style={styles.pet}
-            value={petID}
-            key={petID}
-            onPress={() =>
-              navigation.push("Pet", {
-                pet: animal,
-                petID: petID,
-              })
-            }
-          >
-            <Image
-              source={require("../../assets/images/Gioia.jpg")}
-              style={styles.petImage}
-            ></Image>
-          </TouchableHighlight>
-        );
-        if (this.state.mounted) {
-          this.setState({ pet: petButtons });
-        }
+  componentDidUpdate() {
+    if (this.state.pet == null && this.state.mounted) {
+      const navigation = this.props.navigation;
+      const pets = this.props.pets;
+      var petButtons = [];
+
+      pets.map((petID) => {
+        db.getUserAnimal(this.props.uid, petID).then((animal) => {
+          petButtons.push(
+            <TouchableHighlight
+              style={styles.pet}
+              value={petID}
+              key={petID}
+              onPress={() =>
+                navigation.push("Pet", {
+                  pet: animal,
+                  petID: petID,
+                })
+              }
+            >
+              <Image
+                source={require("../../assets/images/Gioia.jpg")}
+                style={styles.petImage}
+              ></Image>
+            </TouchableHighlight>
+          );
+          if (this.state.mounted) {
+            this.setState({ pet: petButtons });
+          }
+        });
       });
-    });
+    }
   }
 
   componentWillUnmount() {

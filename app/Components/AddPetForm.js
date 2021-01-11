@@ -15,10 +15,11 @@ import {
 import db from "../firebase/DatabaseManager";
 import ImagePickerExample from "../screens/camera";
 import { AuthContext } from "../Components/AuthContext";
+import { withNavigation } from "react-navigation";
 
 import mainStyle from "../styles/mainStyle";
 
-export default class AddPetForm extends Component {
+class AddPetForm extends Component {
   static contextType = AuthContext;
   state = {
     name: null,
@@ -29,7 +30,7 @@ export default class AddPetForm extends Component {
     diseases: null,
   };
 
-  registerPet() {
+  registerPet(props) {
     db.addUserAnimal(
       this.context.uid,
       "1",
@@ -40,7 +41,6 @@ export default class AddPetForm extends Component {
       "",
       this.state.diseases
     );
-    this.props.navigation.navigate("App");
   }
 
   setPhoto = (photo) => {
@@ -196,3 +196,5 @@ const styles = StyleSheet.create({
     width: "80%",
   },
 });
+
+export default withNavigation(AddPetForm);

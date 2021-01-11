@@ -13,15 +13,18 @@ import {
 } from "react-native";
 import firebase from "firebase";
 import mainStyle from "../styles/mainStyle";
+import db from "../firebase/DatabaseManager";
+import { AuthContext } from "../Components/AuthContext";
+import { withNavigation } from "react-navigation";
+
 class PetScreen extends React.Component {
+  static contextType = AuthContext;
+
   state = { user: {} };
-  componentDidMount() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user != null) {
-        this.setState({ user: user });
-      }
-    });
-  }
+
+  deletePet = () => {
+    db.deleteAnimal(this.context.uid, this.props.navigation.state.params.petID);
+  };
   render() {
     const pet = this.props.navigation.state.params.pet;
     return (
@@ -51,7 +54,10 @@ class PetScreen extends React.Component {
                 </ImageBackground>
               </View>
               <View style={styles.buttons}>
-                <TouchableOpacity style={styles.button} onPress={null}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={this.deletePet}
+                >
                   <Text style={styles.buttonText}>Delete pet</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button} onPress={null}>
@@ -241,4 +247,4 @@ const styles = StyleSheet.create({
     tintColor: "orange",
   },
 });
-export default PetScreen;
+export default withNavigation(PetScreen);

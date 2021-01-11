@@ -17,7 +17,7 @@ class AddPetScreen extends React.Component {
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.mainContent}>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <AddPetForm></AddPetForm>
+            <AddPetForm navigation={this.props.navigation}></AddPetForm>
           </ScrollView>
         </View>
 
