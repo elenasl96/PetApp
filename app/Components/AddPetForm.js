@@ -38,11 +38,14 @@ export default class AddPetForm extends Component {
       this.state.breed,
       this.state.size,
       "",
-      this.state.diseases,
-      ""
+      this.state.diseases
     );
     this.props.navigation.navigate("App");
   }
+
+  setPhoto = (photo) => {
+    this.setState({ photo: photo });
+  };
 
   render() {
     return (
@@ -116,10 +119,7 @@ export default class AddPetForm extends Component {
           />
         </View>
         <Text style={[mainStyle.text, { margin: 10 }]}>Select an image:</Text>
-        <ImagePickerExample
-          photo={this.state.photo}
-          setPhoto={(photo) => this.setState({ photo })}
-        ></ImagePickerExample>
+        <ImagePickerExample setPhoto={this.setPhoto}></ImagePickerExample>
         <Text style={styles.error}>{this.state.error}</Text>
 
         <TouchableOpacity

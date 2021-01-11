@@ -1,19 +1,36 @@
 export default class Place {
-
   name: string;
-  type : string;
+  type: string;
   description: string;
   photo: string;
   uid: string;
+  address: string;
   region: Object;
 
-  constructor(name, type, description, photo, uid, latitude, longitude, latitudeDelta, longitudeDelta) {
+  constructor(
+    name,
+    type,
+    description,
+    photo,
+    uid,
+    address,
+    latitude,
+    longitude,
+    latitudeDelta,
+    longitudeDelta
+  ) {
     this.name = name;
     this.type = type;
     this.description = description;
     this.photo = photo;
     this.uid = uid;
-    this.region = {latitude: latitude, longitude: longitude, latitudeDelta: latitudeDelta, longitudeDelta: longitudeDelta};
+    (this.address = address),
+      (this.region = {
+        latitude: latitude,
+        longitude: longitude,
+        latitudeDelta: latitudeDelta,
+        longitudeDelta: longitudeDelta,
+      });
   }
 
   // getters
@@ -21,24 +38,28 @@ export default class Place {
     return name;
   }
 
-  getType(){
+  getType() {
     return type;
   }
 
-  getDescription(){
+  getDescription() {
     return description;
   }
 
   getPhoto() {
-      return photo;
+    return photo;
   }
 
-  getUid(){
-      return uid;
+  getUid() {
+    return uid;
   }
 
-  getRegion(){
-      return region;
+  getAddress() {
+    return address;
+  }
+
+  getRegion() {
+    return region;
   }
 
   //serialize
@@ -49,8 +70,8 @@ export default class Place {
       description: this.description,
       photo: this.photo,
       uid: this.uid,
+      address: this.address,
       region: this.region,
     };
   }
 }
-

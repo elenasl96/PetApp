@@ -7,67 +7,60 @@ import {
   View,
 } from "react-native";
 import firebase from "firebase";
+import db from "../firebase/DatabaseManager.js";
 import { AuthContext } from "../Components/AuthContext";
 
 class PetButton extends React.Component {
-  static contextType = AuthContext;
-
-  showPet = () => {
-    this.props.navigation.navigate("Pet");
+  state = {
+    pet: null,
+    mounted: false,
   };
 
-  render() {
+  componentDidMount() {
+    this.setState({ mounted: true });
     const navigation = this.props.navigation;
     const pets = this.props.pets;
-    console.log(pets);
     var petButtons = [];
-    pets.map((pet, i) =>
-      petButtons.push(
-        <TouchableHighlight
-          style={styles.pet}
-          value={i}
-          key={i}
-          onPress={() =>
-            navigation.push("Pet", {
-              pet: pet,
-            })
-          }
-        >
-          <Image
-            source={require("../../assets/images/Gioia.jpg")}
-            style={styles.petImage}
-          ></Image>
-        </TouchableHighlight>
-      )
-    );
-    {
-      /*} for (var i = 0; i < this.state.pets.length; i++) {
-      petButtons.push(
-        <View value={i} key={"viewButton" + i}>
+
+    pets.map((petID) => {
+      db.getUserAnimal(this.props.uid, petID).then((animal) => {
+        petButtons.push(
           <TouchableHighlight
             style={styles.pet}
-            value={i}
-            key={i}
-            onPress={
-              () => {
-              console.log("AAA");
-              console.log(this.props.value);
+            value={petID}
+            key={petID}
+            onPress={() =>
               navigation.push("Pet", {
-                pet: this.state.pets[i],
-              });
-            }} 
-        
+                pet: animal,
+                petID: petID,
+              })
+            }
           >
             <Image
               source={require("../../assets/images/Gioia.jpg")}
               style={styles.petImage}
             ></Image>
           </TouchableHighlight>
-        </View>
-      );
-    } */
-    }
-    return petButtons;
+        );
+        if (this.state.mounted) {
+          this.setState({ pet: petButtons });
+        }
+      });
+    });
+  }
+
+  componentWillUnmount() {
+    this.setState({ mounted: false });
+  }
+
+  showPet = () => {
+    this.props.navigation.navigate("Pet");
+  };
+
+  render() {
+    console.log("pet buttons");
+    console.log(this.state.pet);
+    return this.state.pet;
   }
 }
 

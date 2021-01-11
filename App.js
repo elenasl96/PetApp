@@ -1,4 +1,3 @@
-/*
 import React from "react";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 
@@ -41,7 +40,7 @@ function App() {
   );
 }
 export default App;
-*/
+/*
 
 
 import React, { useState, useEffect } from 'react';
@@ -136,4 +135,4 @@ export default function ImagePickerExample() {
  }
 
 
-
+*/
