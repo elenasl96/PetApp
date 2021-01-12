@@ -18,19 +18,21 @@ import db from "../../firebase/DatabaseManager";
 export default class HomeBusiness extends React.Component {
   state = {
     places: [],
+    mounted: false,
   };
   static contextType = AuthContext;
 
   componentDidMount() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        db.getPlaces(this.context.uid).then((places) =>
-          this.setState({ places: places })
-        );
-      }
-      console.log("Loading places");
-      console.log(this.state);
-    });
+    this.setState({ mounted: true });
+    if (this.state.mounted) {
+      db.getPlaces(this.context.uid).then((places) =>
+        this.setState({ places: places })
+      );
+    }
+  }
+
+  componentWillUnmount() {
+    this.setState({ mounted: false });
   }
 
   render() {
@@ -38,12 +40,8 @@ export default class HomeBusiness extends React.Component {
       //this.props.navigation.navigate("AddPet");
     };
 
-    const showPet = () => {
+    const showPlace = () => {
       this.props.navigation.navigate("Pet");
-    };
-
-    const showVet = () => {
-      this.props.navigation.navigate("Vet");
     };
 
     return (
@@ -57,42 +55,42 @@ export default class HomeBusiness extends React.Component {
                   vertical={true}
                   showsHorizontalScrollIndicator={false}
                 >
-                  <TouchableHighlight onPress={showVet} style={styles.place}>
+                  <TouchableHighlight onPress={showPlace} style={styles.place}>
                     <Image
                       source={require("../../../assets/images/vet.jpg")}
                       style={styles.placeImage}
                     ></Image>
                   </TouchableHighlight>
 
-                  <TouchableHighlight onPress={showVet} style={styles.place}>
+                  <TouchableHighlight onPress={showPlace} style={styles.place}>
                     <Image
                       source={require("../../../assets/images/vet.jpg")}
                       style={styles.placeImage}
                     ></Image>
                   </TouchableHighlight>
 
-                  <TouchableHighlight onPress={showVet} style={styles.place}>
+                  <TouchableHighlight onPress={showPlace} style={styles.place}>
                     <Image
                       source={require("../../../assets/images/vet.jpg")}
                       style={styles.placeImage}
                     ></Image>
                   </TouchableHighlight>
 
-                  <TouchableHighlight onPress={showVet} style={styles.place}>
+                  <TouchableHighlight onPress={showPlace} style={styles.place}>
                     <Image
                       source={require("../../../assets/images/vet.jpg")}
                       style={styles.placeImage}
                     ></Image>
                   </TouchableHighlight>
 
-                  <TouchableHighlight onPress={showVet} style={styles.place}>
+                  <TouchableHighlight onPress={showPlace} style={styles.place}>
                     <Image
                       source={require("../../../assets/images/vet.jpg")}
                       style={styles.placeImage}
                     ></Image>
                   </TouchableHighlight>
 
-                  <TouchableHighlight onPress={showVet} style={styles.place}>
+                  <TouchableHighlight onPress={showPlace} style={styles.place}>
                     <Image
                       source={require("../../../assets/images/vet.jpg")}
                       style={styles.placeImage}

@@ -2,6 +2,7 @@ import React from "react";
 import { View, StyleSheet, ActivityIndicator } from "react-native";
 import firebase from "firebase";
 import { AuthContext } from "../Components/AuthContext";
+import db from "../firebase/DatabaseManager";
 class LoadingScreen extends React.Component {
   static contextType = AuthContext;
 
@@ -13,6 +14,14 @@ class LoadingScreen extends React.Component {
           return idToken;
         });*/
         this.context.saveUserUID(user.uid);
+        db.getUser(user.uid).then((user) => {
+          if (user.getType == "user") {
+            this.props.navigation.navigate("App");
+          } else {
+            this.props.navigation.navigate("AppBusiness");
+          }
+        });
+
         this.props.navigation.navigate("App");
       } else {
         this.props.navigation.navigate("SignUp");
