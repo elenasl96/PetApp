@@ -12,12 +12,12 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
-import db from "../firebase/DatabaseManager";
-import ImagePickerExample from "../screens/camera";
-import { AuthContext } from "../Components/AuthContext";
+import db from "../../firebase/DatabaseManager";
+import ImagePickerExample from "../../screens/camera";
+import { AuthContext } from "../AuthContext";
 import { withNavigation } from "react-navigation";
 
-import mainStyle from "../styles/mainStyle";
+import mainStyle from "../../styles/mainStyle";
 
 class AddPetForm extends Component {
   static contextType = AuthContext;
@@ -30,7 +30,7 @@ class AddPetForm extends Component {
     diseases: null,
   };
 
-  registerPet(props) {
+  registerPet() {
     db.addUserAnimal(
       this.context.uid,
       "1",

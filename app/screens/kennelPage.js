@@ -11,7 +11,6 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
-import Line from "../Components/Line";
 import firebase from "firebase";
 class KennelScreen extends React.Component {
   state = { user: {} };
@@ -75,7 +74,7 @@ class KennelScreen extends React.Component {
             <View style={styles.feedContainer}>
               <View style={styles.feed}>
                 <Text>News2</Text>
-                <Line></Line>
+
                 <Text>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
                   ultricies posuere nulla, nec fermentum justo tempus ac. Donec
@@ -85,14 +84,14 @@ class KennelScreen extends React.Component {
                   elementum lacus ornare. Proin rutrum hendrerit felis fermentum
                   ultrices.
                 </Text>
-                <Line></Line>
+
                 <Text>12/12/2020 8:00</Text>
               </View>
             </View>
             <View style={styles.feedContainer}>
               <View style={styles.feed}>
                 <Text>News2</Text>
-                <Line></Line>
+
                 <Text>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
                   ultricies posuere nulla, nec fermentum justo tempus ac. Donec
@@ -102,14 +101,14 @@ class KennelScreen extends React.Component {
                   elementum lacus ornare. Proin rutrum hendrerit felis fermentum
                   ultrices.
                 </Text>
-                <Line></Line>
+
                 <Text>12/12/2020 8:00</Text>
               </View>
             </View>
             <View style={styles.feedContainer}>
               <View style={styles.feed}>
                 <Text>News2</Text>
-                <Line></Line>
+
                 <Text>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
                   ultricies posuere nulla, nec fermentum justo tempus ac. Donec
@@ -119,7 +118,7 @@ class KennelScreen extends React.Component {
                   elementum lacus ornare. Proin rutrum hendrerit felis fermentum
                   ultrices.
                 </Text>
-                <Line></Line>
+
                 <Text>12/12/2020 8:00</Text>
               </View>
             </View>

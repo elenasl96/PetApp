@@ -25,6 +25,15 @@ class PetScreen extends React.Component {
   deletePet = () => {
     db.deleteAnimal(this.context.uid, this.props.navigation.state.params.petID);
   };
+
+  reportLoss = () => {
+    this.props.navigation.navigate("ReportLoss", {
+      pet: this.props.navigation.state.params.pet,
+    });
+  };
+
+  addPetStat = () => {};
+
   render() {
     const pet = this.props.navigation.state.params.pet;
     return (
@@ -63,7 +72,10 @@ class PetScreen extends React.Component {
                 <TouchableOpacity style={styles.button} onPress={null}>
                   <Text style={styles.buttonText}>Add information</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={null}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={this.reportLoss}
+                >
                   <Text style={styles.buttonText}>Report loss</Text>
                 </TouchableOpacity>
               </View>

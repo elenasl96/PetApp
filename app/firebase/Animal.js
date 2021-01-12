@@ -1,48 +1,46 @@
 export default class Animal {
+  name: string;
+  age: int;
+  breed: string;
+  size: string;
+  photo: string;
 
-     name : string;
-     age : int;
-     breed : string;
-     size : string;
-     photo : string;
+  constructor(name, age, breed, size, photo, diseases) {
+    this.name = name;
+    this.age = age;
+    this.breed = breed;
+    this.size = size;
+    this.photo = photo;
+  }
 
-     constructor(name,age,breed,size,photo,diseases){
-          this.name = name;
-          this.age = age;
-          this.breed = breed;
-          this.size = size;
-          this.photo = photo;
-     }
+  getName() {
+    console.log(this.name);
+    return this.name;
+  }
 
-     getName(){
-       return name;
-     }
+  getAge() {
+    return this.age;
+  }
 
-     getAge(){
-       return age;
-     }
+  getBreed() {
+    return this.breed;
+  }
 
-     getBreed(){
-       return breed;
-     }
+  getSize() {
+    return this.size;
+  }
 
-     getSize(){
-       return size;
-     }
+  getPhoto() {
+    return this.photo;
+  }
 
-     getPhoto(){
-       return photo;
-     }
-
-
-     toFirestore() {
-         return {
-           name : this.name,
-           age : this.age,
-           breed : this.breed,
-           size : this.size,
-           photo : this.photo,
-      };
-     }
-
+  toFirestore() {
+    return {
+      name: this.name,
+      age: this.age,
+      breed: this.breed,
+      size: this.size,
+      photo: this.photo,
+    };
+  }
 }

@@ -1,12 +1,13 @@
 import { createStackNavigator } from "react-navigation-stack";
-import HomeScreen from "../screens/HomeScreen";
-import PetScreen from "../screens/petPage";
-import KennelScreen from "../screens/kennelPage";
-import VetScreen from "../screens/vetPage";
+import HomeScreen from "../../screens/HomeScreen";
+import PetScreen from "../../screens/petPage";
+import KennelScreen from "../../screens/kennelPage";
+import VetScreen from "../../screens/vetPage";
 import React from "react";
-import NavBar from "../screens/NavBar";
-import AddPetScreen from "../screens/AddPet";
-import HomeBusiness from "../screens/BusinessUser/HomeBusiness";
+import NavBar from "../../screens/NavBar";
+import AddPetScreen from "../../screens/AddPet";
+import HomeBusiness from "../../screens/BusinessUser/HomeBusiness";
+import ReportLossScreen from "../../screens/ReportLoss";
 
 const HomeNavigator = createStackNavigator(
   {
@@ -48,6 +49,13 @@ const HomeNavigator = createStackNavigator(
       // Optional: Override the `navigationOptions` for the screen
       navigationOptions: ({ navigation }) => ({
         title: "Add new pet",
+      }),
+    },
+
+    ReportLoss: {
+      screen: ReportLossScreen,
+      navigationOptions: ({ navigation }) => ({
+        title: "Report Loss",
       }),
     },
 

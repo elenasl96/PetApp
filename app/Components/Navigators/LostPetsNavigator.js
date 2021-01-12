@@ -1,18 +1,16 @@
 import { createStackNavigator } from "react-navigation-stack";
-import PetScreen from "../screens/petPage";
-import KennelScreen from "../screens/kennelPage";
-import VetScreen from "../screens/vetPage";
+import PetScreen from "../../screens/petPage";
 import React from "react";
-import NavBar from "../screens/NavBar";
-import AddPetScreen from "../screens/AddPet";
-import HomeBusiness from "../screens/BusinessUser/HomeBusiness";
+import NavBar from "../../screens/NavBar";
+import AddPetScreen from "../../screens/AddPet";
+import LostPetsScreen from "../../screens/LostPetsScreen";
 
-const HomeBusinessNavigator = createStackNavigator(
+const LostPetsNavigator = createStackNavigator(
   {
-    HomeBusiness: {
-      screen: HomeBusiness,
+    LostPets: {
+      screen: LostPetsScreen,
       // Optional: When deep linking or using react-navigation in a web app, this path is used:
-      path: "homeBusiness",
+      path: "home",
       // The action and route params are extracted from the path.
 
       // Optional: Override the `navigationOptions` for the screen
@@ -37,27 +35,9 @@ const HomeBusinessNavigator = createStackNavigator(
         title: "Add new pet",
       }),
     },
-
-    Kennel: {
-      screen: KennelScreen,
-      path: "kennelProfile/:kennel",
-      // Optional: Override the `navigationOptions` for the screen
-      navigationOptions: ({ navigation }) => ({
-        title: "-name- profile",
-      }),
-    },
-
-    Vet: {
-      screen: VetScreen,
-      path: "vetProfile/:vet",
-      // Optional: Override the `navigationOptions` for the screen
-      navigationOptions: ({ navigation }) => ({
-        title: "-name- profile",
-      }),
-    },
   },
   {
-    initialRouteName: "HomeBusiness",
+    initialRouteName: "LostPets",
     /* The header config from HomeScreen is now here */
     defaultNavigationOptions: {
       headerTitle: () => <NavBar />,
@@ -72,4 +52,4 @@ const HomeBusinessNavigator = createStackNavigator(
   }
 );
 
-export default HomeBusinessNavigator;
+export default LostPetsNavigator;

@@ -210,23 +210,6 @@ const db = {
       });
   },
 
-  getUserAnimalsObjects: function (uid) {
-    var animalObjects = [];
-    this.getUserAnimals(uid).then((animalIDs) => {
-      animalIDs.forEach((animalID) => {
-        this.getUserAnimal(uid, animalID).then((animal) => {
-          animalObjects.push(animal);
-
-          return animalObjects;
-        });
-        console.log("animals");
-        console.log(animalObjects);
-        return animalObjects;
-      });
-      return animalObjects;
-    });
-  },
-
   getAnimalStats: function (uid, aid) {
     const users = firestore.collection("Users");
     const animals = users.doc(uid).collection("Animals");

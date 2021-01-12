@@ -10,7 +10,7 @@ import {
   ScrollView,
 } from "react-native";
 import firebase from "firebase";
-import AddPetForm from "../Components/AddPetForm";
+import AddPetForm from "../Components/Forms/AddPetForm";
 class AddPetScreen extends React.Component {
   render() {
     return (

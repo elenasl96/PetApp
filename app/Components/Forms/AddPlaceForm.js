@@ -9,11 +9,11 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
 } from "react-native";
-import db from "../firebase/DatabaseManager";
-import ImagePickerExample from "../screens/camera";
-import { AuthContext } from "../Components/AuthContext";
+import db from "../../firebase/DatabaseManager";
+import ImagePickerExample from "../../screens/camera";
+import { AuthContext } from "../AuthContext";
 
-import mainStyle from "../styles/mainStyle";
+import mainStyle from "../../styles/mainStyle";
 
 export default class AddPlaceForm extends Component {
   static contextType = AuthContext;

@@ -1,16 +1,18 @@
 import { createStackNavigator } from "react-navigation-stack";
-import PetScreen from "../screens/petPage";
+import PetScreen from "../../screens/petPage";
+import KennelScreen from "../../screens/kennelPage";
+import VetScreen from "../../screens/vetPage";
 import React from "react";
-import NavBar from "../screens/NavBar";
-import AddPetScreen from "../screens/AddPet";
-import LostPetsScreen from "../screens/LostPetsScreen";
+import NavBar from "../../screens/NavBar";
+import AddPetScreen from "../../screens/AddPet";
+import HomeBusiness from "../../screens/BusinessUser/HomeBusiness";
 
-const LostPetsNavigator = createStackNavigator(
+const HomeBusinessNavigator = createStackNavigator(
   {
-    LostPets: {
-      screen: LostPetsScreen,
+    HomeBusiness: {
+      screen: HomeBusiness,
       // Optional: When deep linking or using react-navigation in a web app, this path is used:
-      path: "home",
+      path: "homeBusiness",
       // The action and route params are extracted from the path.
 
       // Optional: Override the `navigationOptions` for the screen
@@ -35,9 +37,27 @@ const LostPetsNavigator = createStackNavigator(
         title: "Add new pet",
       }),
     },
+
+    Kennel: {
+      screen: KennelScreen,
+      path: "kennelProfile/:kennel",
+      // Optional: Override the `navigationOptions` for the screen
+      navigationOptions: ({ navigation }) => ({
+        title: "-name- profile",
+      }),
+    },
+
+    Vet: {
+      screen: VetScreen,
+      path: "vetProfile/:vet",
+      // Optional: Override the `navigationOptions` for the screen
+      navigationOptions: ({ navigation }) => ({
+        title: "-name- profile",
+      }),
+    },
   },
   {
-    initialRouteName: "LostPets",
+    initialRouteName: "HomeBusiness",
     /* The header config from HomeScreen is now here */
     defaultNavigationOptions: {
       headerTitle: () => <NavBar />,
@@ -52,4 +72,4 @@ const LostPetsNavigator = createStackNavigator(
   }
 );
 
-export default LostPetsNavigator;
+export default HomeBusinessNavigator;
