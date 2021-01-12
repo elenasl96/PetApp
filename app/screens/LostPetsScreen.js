@@ -13,83 +13,54 @@ import firebase from "firebase";
 import { AuthContext } from "../Components/AuthContext";
 import PetButton from "../Components/PetButton";
 import db from "../firebase/DatabaseManager";
+import PetLostButton from "../Components/Buttons/PetLostButton";
 
 export default class LostPetsScreen extends React.Component {
   state = {
-    places: [],
+    lostPets: null,
+    mounted: false,
   };
   static contextType = AuthContext;
 
   componentDidMount() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        db.getPlaces(this.context.uid).then((places) =>
-          this.setState({ places: places })
-        );
-      }
-      console.log("Loading places");
-      console.log(this.state);
-    });
+    this.setState({ mounted: true });
+  }
+
+  componentDidUpdate() {
+    if (this.state.lostPets == null) {
+      db.getLostPetNotifications().then((lostPetsIDs) => {
+        if (this.state.mounted) {
+          console.log("lostpets");
+          console.log(lostPetsIDs);
+          this.setState({ lostPets: lostPetsIDs });
+        }
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    this.setState({ mounted: false });
   }
 
   render() {
-    const showPet = () => {
-      this.props.navigation.navigate("Pet");
-    };
-
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.mainContent}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.myPlacesContainer}>
-              <Text style={styles.title}>My Places</Text>
-              <View style={styles.myPlaces}>
-                <ScrollView
-                  vertical={true}
-                  showsHorizontalScrollIndicator={false}
-                >
-                  <TouchableHighlight onPress={showPet} style={styles.place}>
-                    <Image
-                      source={require("../../assets/images/Gioia.jpg")}
-                      style={styles.placeImage}
-                    ></Image>
-                  </TouchableHighlight>
-
-                  <TouchableHighlight onPress={showPet} style={styles.place}>
-                    <Image
-                      source={require("../../assets/images/Gioia.jpg")}
-                      style={styles.placeImage}
-                    ></Image>
-                  </TouchableHighlight>
-
-                  <TouchableHighlight onPress={showPet} style={styles.place}>
-                    <Image
-                      source={require("../../assets/images/Gioia.jpg")}
-                      style={styles.placeImage}
-                    ></Image>
-                  </TouchableHighlight>
-
-                  <TouchableHighlight onPress={showPet} style={styles.place}>
-                    <Image
-                      source={require("../../assets/images/Gioia.jpg")}
-                      style={styles.placeImage}
-                    ></Image>
-                  </TouchableHighlight>
-
-                  <TouchableHighlight onPress={showPet} style={styles.place}>
-                    <Image
-                      source={require("../../assets/images/vet.jpg")}
-                      style={styles.placeImage}
-                    ></Image>
-                  </TouchableHighlight>
-
-                  <TouchableHighlight onPress={showPet} style={styles.place}>
-                    <Image
-                      source={require("../../assets/images/vet.jpg")}
-                      style={styles.placeImage}
-                    ></Image>
-                  </TouchableHighlight>
-                </ScrollView>
+              <Text style={styles.title}>Lost Pets</Text>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                  justifyContent: "center",
+                }}
+              >
+                <PetLostButton
+                  navigation={this.props.navigation}
+                  pets={this.state.lostPets}
+                ></PetLostButton>
               </View>
             </View>
           </ScrollView>
@@ -155,13 +126,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   myPlaces: {
-    flexWrap: "nowrap",
-    flexDirection: "column",
+    flex: 1,
+    flexDirection: "row",
     paddingTop: 10,
     paddingBottom: 10,
     backgroundColor: "white",
   },
   place: {
+    width: "100%",
     marginLeft: 15,
     marginRight: 15,
     marginBottom: 15,

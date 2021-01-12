@@ -4,6 +4,7 @@ import React from "react";
 import NavBar from "../../screens/NavBar";
 import AddPetScreen from "../../screens/AddPet";
 import LostPetsScreen from "../../screens/LostPetsScreen";
+import LostPetNotifyScreen from "../../screens/LostPetNotifyScreen";
 
 const LostPetsNavigator = createStackNavigator(
   {
@@ -19,8 +20,8 @@ const LostPetsNavigator = createStackNavigator(
       }),
     },
 
-    Pet: {
-      screen: PetScreen,
+    LostPet: {
+      screen: LostPetNotifyScreen,
       path: "petProfile/:pet",
       // Optional: Override the `navigationOptions` for the screen
       navigationOptions: ({ navigation }) => ({
