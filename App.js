@@ -1,3 +1,4 @@
+/*
 import React from "react";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 
@@ -39,7 +40,7 @@ function App() {
   );
 }
 export default App;
-/*
+*/
 
 
 import React, { useState, useEffect } from 'react';
@@ -109,19 +110,22 @@ export default function ImagePickerExample() {
         //db.addAnimalStat('axr4185','juiay','weight',20);
         //db.addAnimalStat('axr4185','juiay','height',50);
         //db.addAnimalStat('axr4185','juiay','weight',21);
-        //db.addUserAnimal('axr4185','juioo','Willy',11,'Labrador','Medium','willy.jpg');
+        db.addUserAnimal('juioo','Willy',11,'Labrador','Medium','willy.jpg');
         //db.deleteAnimal('axr4185','juioo');
         //db.addUserFeed('axr4185','yyyhgd','Labrador needs extra hugs','Labrador are extremely emphatic dogs, needs constantly kindness and love');
         //db.deleteUserFeed('axr4185','yyyhgd');
         //db.deleteAdoptableAnimalPlace('yghuiow','juiay');
-        db.addAnimalStat('axr4185','juiay','weight');
-        db.addAnimalStatSample('axr4185','juiay','weight',20);
-        db.addAnimalStat('axr4185','juiay','height');
-        db.addAnimalStatSample('axr4185','juiay','height',50);
+        //db.addAnimalStat('axr4185','juiay','weight');
+        //db.addAnimalStatSample('axr4185','juiay','weight',20);
+        //db.addAnimalStat('axr4185','juiay','height');
+        //db.addAnimalStatSample('axr4185','juiay','height',50);
+
     }
 
     const getUser = async() => {
-       db.deleteUser('axr4185','user');
+       db.getPlaces('test').then(function(places){
+         console.log(places);
+       });
     }
 
    return (
@@ -134,4 +138,4 @@ export default function ImagePickerExample() {
  }
 
 
-*/
+

@@ -86,12 +86,12 @@ const db = {
 
   //--------------UserAnimal----------------------------------------
 
-  addUserAnimal: function (uid, aid, name, age, breed, size, photo, diseases) {
+  addUserAnimal: function (uid,name, age, breed, size, photo, diseases) {
     const users = firestore.collection("Users");
     const animals = users.doc(uid).collection("Animals");
     let animal = new Animal(name, age, breed, size, photo);
     console.log(animal);
-    animals.doc(aid).set(animal.toFirestore());
+    animals.add(animal.toFirestore());
   },
   /* how to call get from outside
   db.UserAnimals('axr4183').then(function(animals){
@@ -104,14 +104,14 @@ const db = {
     animals.doc(aid).collection("Diseases").add({ disease });
   },
 
-  addAnimalStat: function (uid, aid, stat) {
+  addAnimalStat: function (uid, aid) {
     const users = firestore.collection("Users");
     const stats = users
       .doc(uid)
       .collection("Animals")
       .doc(aid)
       .collection("Stats");
-    stats.doc(stat).set({ name: stat });
+    stats.add({ name: stat });
   },
 
   addAnimalStatSample: function (uid, aid, stat, value) {
@@ -448,7 +448,7 @@ const db = {
 
   addSavedPlace: function (uid, pid) {
     const users = firestore.collection("Users");
-    users.doc(uid).collection("savedplaces").doc().set({ pid: pid });
+    users.doc(uid).collection("savedplaces").add({ pid: pid });
   },
 
   getSavedPlaces: function (uid) {
@@ -513,7 +513,6 @@ const db = {
 
   addAdoptableAnimal: function (
     pid,
-    aid,
     name,
     age,
     breed,
@@ -525,7 +524,7 @@ const db = {
     const places = firestore.collection("Places");
     let animal = new AdoptableAnimal(name, age, breed, size, photo, profile);
     console.log(animal);
-    places.doc(pid).collection("Animals").doc(aid).set(animal.toFirestore());
+    places.doc(pid).collection("Animals").add(animal.toFirestore());
   },
 
   getAdoptableAnimal: function (pid, aid) {
@@ -654,7 +653,6 @@ const db = {
   },
 
   addPlace: function (
-    pid,
     name,
     type,
     description,
@@ -679,7 +677,7 @@ const db = {
       latitudeDelta,
       longitudeDelta
     );
-    places.doc(pid).set(place.toFirestore());
+    places.add(place.toFirestore());
   },
 
   getPlace: function (pid) {
@@ -733,6 +731,28 @@ const db = {
       });
   },
 
+  getPlacesByUid : function(uid) {
+     const map = firestore.collection("Places");
+         var places = [];
+         return map
+         .where("uid","==",uid)
+           .get()
+           .then(function (querySnapshot) {
+             querySnapshot.forEach(function (doc) {
+               // doc.data() is never undefined for query doc snapshots
+               console.log(doc.id, " => ", doc.data());
+               places.push(doc.id);
+               //console.log(user);
+               return places;
+             });
+
+             return places;
+           })
+           .catch(function (error) {
+             console.log("Error getting documents: ", error);
+           });
+  },
+
   deletePlace: function (pid) {
     const places = firestore.collection("Places");
 
@@ -763,7 +783,7 @@ const db = {
 
   //----------------News---------------------------------------------------
 
-  addNews: function (pid, newsid, title, text) {
+  addNews: function (pid,title, text) {
     var date = new Date();
     var day = date.getDate();
     if (day < 10) day = "0" + day;
@@ -789,7 +809,7 @@ const db = {
     console.log(timestamp);
     const places = firestore.collection("Places");
     let news = new News(title, text, timestamp);
-    places.doc(pid).collection("News").doc(newsid).set(news.toFirestore());
+    places.doc(pid).collection("News").add(news.toFirestore());
   },
 
   getAllNews: function (pid) {
@@ -907,10 +927,10 @@ const db = {
       });
   },
 
-  addUserFeed: function (uid, fid, title, text) {
+  addUserFeed: function (uid,title, text) {
     const users = firestore.collection("Users");
     let feed = new Feed(title, text);
-    users.doc(uid).collection("Feed").doc(fid).set(feed.toFirestore());
+    users.doc(uid).collection("Feed").add(feed.toFirestore());
   },
 
   getUserFeed: function (uid, fid) {
@@ -975,7 +995,7 @@ const db = {
 
   //-------------------------Notifications-----------------------------------------------------------------------
 
-  addUserNotification: function (uid, nid, title, text) {
+  addUserNotification: function (uid,title, text) {
     const users = firestore.collection("Users");
     var date = new Date();
     var day = date.getDate();
@@ -1002,9 +1022,7 @@ const db = {
     let notification = new Notification(title, text, timestamp);
     users
       .doc(uid)
-      .collection("Notifications")
-      .doc(nid)
-      .set(notification.toFirestore());
+      .collection("Notifications").add(notification.toFirestore());
   },
 
   getUserNotifications: function (uid) {
@@ -1071,7 +1089,6 @@ const db = {
   //-----------------------------Lost Pets Notify ------------------------------
 
   addLostPetNotify: function (
-    lid,
     name,
     photo,
     size,
@@ -1119,7 +1136,7 @@ const db = {
       email,
       phone
     );
-    lostPets.doc(lid).set(notification.toFirestore());
+    lostPets.add(notification.toFirestore());
   },
 
   getLostPetNotifications: function () {
@@ -1188,7 +1205,6 @@ const db = {
   //-----------------------------Lost Pets Seen ------------------------------
 
   addLostPetSeen: function (
-    lid,
     photo,
     size,
     color,
@@ -1234,7 +1250,7 @@ const db = {
       email,
       phone
     );
-    lostPets.doc(lid).set(notification.toFirestore());
+    lostPets.add(notification.toFirestore());
   },
 
   getLostPetsSeen: function () {
