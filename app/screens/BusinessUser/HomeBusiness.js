@@ -11,8 +11,6 @@ import {
 import { SafeAreaView } from "react-navigation";
 import firebase from "firebase";
 import { AuthContext } from "../../Components/AuthContext";
-import PlusIcon from "../../Components/PlusIcon";
-import PetButton from "../../Components/PetButton";
 import db from "../../firebase/DatabaseManager";
 
 export default class HomeBusiness extends React.Component {
@@ -24,11 +22,12 @@ export default class HomeBusiness extends React.Component {
 
   componentDidMount() {
     this.setState({ mounted: true });
-    if (this.state.mounted) {
-      db.getPlaces(this.context.uid).then((places) =>
-        this.setState({ places: places })
-      );
-    }
+
+    db.getPlaces(this.context.uid).then((places) => {
+      if (this.state.mounted) {
+        this.setState({ places: places });
+      }
+    });
   }
 
   componentWillUnmount() {
@@ -37,7 +36,7 @@ export default class HomeBusiness extends React.Component {
 
   render() {
     const addPlace = () => {
-      //this.props.navigation.navigate("AddPet");
+      this.props.navigation.navigate("AddPlace");
     };
 
     const showPlace = () => {
@@ -55,6 +54,12 @@ export default class HomeBusiness extends React.Component {
                   vertical={true}
                   showsHorizontalScrollIndicator={false}
                 >
+                  <TouchableHighlight onPress={null} style={styles.placeButton}>
+                    <Image
+                      source={require("../../../assets/images/add.png")}
+                      style={styles.addButton}
+                    ></Image>
+                  </TouchableHighlight>
                   <TouchableHighlight onPress={showPlace} style={styles.place}>
                     <Image
                       source={require("../../../assets/images/vet.jpg")}
@@ -124,6 +129,21 @@ const styles = StyleSheet.create({
   },
   mainContent: {
     flex: 1,
+  },
+  placeButton: {
+    width: 80,
+    height: 80,
+    borderRadius: 75,
+    backgroundColor: "orange",
+    alignSelf: "center",
+    marginBottom: 10,
+  },
+  addButton: {
+    width: 50,
+    height: 50,
+    borderRadius: 75,
+    resizeMode: "cover",
+    margin: 15,
   },
   topBar: {
     flexDirection: "row",

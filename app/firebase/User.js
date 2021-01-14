@@ -1,5 +1,4 @@
 export default class User {
-
   name: string;
   photo: string;
   type: string;
@@ -14,22 +13,22 @@ export default class User {
 
   // getters
   getName() {
-    return name;
+    return this.name;
   }
 
   getPhoto() {
-      return photo;
+    return this.photo;
   }
 
   getType() {
-    return type;
+    return this.type;
   }
 
-  getAddress(){
-    return address;
+  getAddress() {
+    return this.address;
   }
 
-  //serialize 
+  //serialize
   toFirestore() {
     return {
       name: this.name,
@@ -39,4 +38,3 @@ export default class User {
     };
   }
 }
-

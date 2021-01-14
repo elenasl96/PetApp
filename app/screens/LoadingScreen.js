@@ -15,7 +15,8 @@ class LoadingScreen extends React.Component {
         });*/
         this.context.saveUserUID(user.uid);
         db.getUser(user.uid).then((user) => {
-          if (user.getType == "user") {
+          console.log("usertype:" + user.getType());
+          if (user.getType() == "user") {
             this.props.navigation.navigate("App");
           } else {
             this.props.navigation.navigate("AppBusiness");
