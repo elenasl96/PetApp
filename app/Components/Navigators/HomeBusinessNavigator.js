@@ -4,7 +4,7 @@ import KennelScreen from "../../screens/kennelPage";
 import VetScreen from "../../screens/vetPage";
 import React from "react";
 import NavBar from "../../screens/NavBar";
-import AddPetScreen from "../../screens/AddPet";
+import AddPlaceScreen from "../../screens/BusinessUser/AddPlace";
 import HomeBusiness from "../../screens/BusinessUser/HomeBusiness";
 
 const HomeBusinessNavigator = createStackNavigator(
@@ -30,11 +30,11 @@ const HomeBusinessNavigator = createStackNavigator(
       }),
     },
 
-    AddPet: {
-      screen: AddPetScreen,
+    AddPlace: {
+      screen: AddPlaceScreen,
       // Optional: Override the `navigationOptions` for the screen
       navigationOptions: ({ navigation }) => ({
-        title: "Add new pet",
+        title: "Add new place",
       }),
     },
 

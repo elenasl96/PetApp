@@ -23,23 +23,20 @@ class AddPetForm extends Component {
   static contextType = AuthContext;
   state = {
     name: null,
-    age: null,
-    breed: null,
-    size: null,
+    type: null,
+    description: null,
     photo: null,
-    diseases: null,
+    address: null,
   };
 
   registerPet() {
-    db.addUserAnimal(
-      this.context.uid,
-      "1",
+    db.addPlace(
       this.state.name,
-      this.state.age,
-      this.state.breed,
-      this.state.size,
-      "",
-      this.state.diseases
+      this.state.type,
+      this.state.description,
+      this.state.photo,
+      this.context.uid,
+      this.state.address
     );
   }
 
@@ -75,49 +72,25 @@ class AddPetForm extends Component {
         <View style={mainStyle.form}>
           <TextInput
             style={mainStyle.inputText}
-            placeholder="Age"
+            placeholder="description"
             placeholderTextColor="#616161"
             returnKeyType="next"
-            keyboardType="email-address"
-            textContentType="emailAddress"
-            value={this.state.age}
-            onChangeText={(age) => this.setState({ age })}
+            value={this.state.description}
+            onChangeText={(description) => this.setState({ description })}
           />
         </View>
         <View style={mainStyle.form}>
           <TextInput
             style={mainStyle.inputText}
-            placeholder="Size"
-            placeholderTextColor="#616161"
-            returnKeyType="next"
-            keyboardType="email-address"
-            textContentType="emailAddress"
-            value={this.state.size}
-            onChangeText={(size) => this.setState({ size })}
-          />
-        </View>
-        <View style={mainStyle.form}>
-          <TextInput
-            style={mainStyle.inputText}
-            placeholder="Breed"
+            placeholder="Address"
             placeholderTextColor="#616161"
             returnKeyType="next"
             textContentType="addressCity"
-            value={this.state.breed}
-            onChangeText={(breed) => this.setState({ breed })}
+            value={this.state.address}
+            onChangeText={(address) => this.setState({ address })}
           />
         </View>
-        <View style={mainStyle.form}>
-          <TextInput
-            style={mainStyle.inputText}
-            placeholder="Diseases"
-            placeholderTextColor="#616161"
-            returnKeyType="next"
-            textContentType="addressCity"
-            value={this.state.diseases}
-            onChangeText={(diseases) => this.setState({ diseases })}
-          />
-        </View>
+
         <Text style={[mainStyle.text, { margin: 10 }]}>Select an image:</Text>
         <ImagePickerExample setPhoto={this.setPhoto}></ImagePickerExample>
         <Text style={styles.error}>{this.state.error}</Text>
@@ -132,7 +105,7 @@ class AddPetForm extends Component {
           onPress={this.registerPet.bind(this)}
         >
           <View style={styles.button}>
-            <Text style={styles.buttonText}>Register Pet</Text>
+            <Text style={styles.buttonText}>Register Place</Text>
           </View>
         </TouchableOpacity>
       </SafeAreaView>

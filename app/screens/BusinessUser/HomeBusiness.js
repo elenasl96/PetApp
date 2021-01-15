@@ -54,7 +54,10 @@ export default class HomeBusiness extends React.Component {
                   vertical={true}
                   showsHorizontalScrollIndicator={false}
                 >
-                  <TouchableHighlight onPress={null} style={styles.placeButton}>
+                  <TouchableHighlight
+                    onPress={addPlace}
+                    style={styles.placeButton}
+                  >
                     <Image
                       source={require("../../../assets/images/add.png")}
                       style={styles.addButton}

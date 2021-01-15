@@ -54,7 +54,7 @@ export default class AddPlaceForm extends Component {
           keyboardVerticalOffset={Platform.OS == "ios" ? 0 : 20}
           enabled={Platform.OS === "ios" ? true : false}
         ></KeyboardAvoidingView>
-        <Text style={styles.title}>Add new Pet</Text>
+        <Text style={styles.title}>Add new place</Text>
         <View style={mainStyle.form}>
           <TextInput
             style={mainStyle.inputText}
@@ -81,7 +81,7 @@ export default class AddPlaceForm extends Component {
             placeholder="Description"
             placeholderTextColor="#616161"
             returnKeyType="next"
-            multiline="true"
+            multiline
             value={this.state.description}
             onChangeText={(description) => this.setState({ description })}
           />

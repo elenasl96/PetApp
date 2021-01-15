@@ -10,9 +10,9 @@ import {
   ScrollView,
 } from "react-native";
 import firebase from "firebase";
-import AddPlaceForm from "../../Components/AddPlaceForm.js";
+import AddPlaceForm from "../../Components/Forms/AddPlaceForm";
 
-class AddPlace extends React.Component {
+class AddPlaceScreen extends React.Component {
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -26,7 +26,7 @@ class AddPlace extends React.Component {
           <TouchableHighlight onPress={null}>
             <View style={styles.mainButtonContainer}>
               <Image
-                source={require("../../assets/images/paw.png")}
+                source={require("../../../assets/images/paw.png")}
                 style={styles.mainButton}
               ></Image>
             </View>
@@ -153,4 +153,4 @@ const styles = StyleSheet.create({
     tintColor: "orange",
   },
 });
-export default AddPetScreen;
+export default AddPlaceScreen;
