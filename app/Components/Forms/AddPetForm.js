@@ -23,20 +23,22 @@ class AddPetForm extends Component {
   static contextType = AuthContext;
   state = {
     name: null,
-    type: null,
-    description: null,
-    photo: null,
-    address: null,
+    age: null,
+    breed: null,
+    size: null,
+    photo: "",
+    diseases: null,
   };
 
   registerPet() {
-    db.addPlace(
-      this.state.name,
-      this.state.type,
-      this.state.description,
-      this.state.photo,
+    db.addUserAnimal(
       this.context.uid,
-      this.state.address
+      this.state.name,
+      this.state.age,
+      this.state.breed,
+      this.state.size,
+      this.state.photo,
+      this.state.diseases
     );
   }
 
@@ -72,22 +74,41 @@ class AddPetForm extends Component {
         <View style={mainStyle.form}>
           <TextInput
             style={mainStyle.inputText}
-            placeholder="description"
+            placeholder="Name"
             placeholderTextColor="#616161"
             returnKeyType="next"
-            value={this.state.description}
-            onChangeText={(description) => this.setState({ description })}
+            value={this.state.age}
+            onChangeText={(age) => this.setState({ age })}
           />
         </View>
         <View style={mainStyle.form}>
           <TextInput
             style={mainStyle.inputText}
-            placeholder="Address"
+            placeholder="Name"
             placeholderTextColor="#616161"
             returnKeyType="next"
-            textContentType="addressCity"
-            value={this.state.address}
-            onChangeText={(address) => this.setState({ address })}
+            value={this.state.breed}
+            onChangeText={(breed) => this.setState({ breed })}
+          />
+        </View>
+        <View style={mainStyle.form}>
+          <TextInput
+            style={mainStyle.inputText}
+            placeholder="Name"
+            placeholderTextColor="#616161"
+            returnKeyType="next"
+            value={this.state.size}
+            onChangeText={(size) => this.setState({ size })}
+          />
+        </View>
+        <View style={mainStyle.form}>
+          <TextInput
+            style={mainStyle.inputText}
+            placeholder="description"
+            placeholderTextColor="#616161"
+            returnKeyType="next"
+            value={this.state.description}
+            onChangeText={(description) => this.setState({ description })}
           />
         </View>
 

@@ -1,6 +1,7 @@
 import React from "react";
 import MapView from "react-native-maps";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
+import * as Location from "expo-location";
 
 export default class MapScreen extends React.Component {
   render() {

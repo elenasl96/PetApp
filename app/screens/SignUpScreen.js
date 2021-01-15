@@ -28,6 +28,7 @@ class SignUpScreen extends React.Component {
     address: "",
     errorMessage: "",
     loading: false,
+    mounted: true,
   };
 
   async signInWithFacebook() {

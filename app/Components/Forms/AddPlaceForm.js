@@ -14,6 +14,7 @@ import ImagePickerExample from "../../screens/camera";
 import { AuthContext } from "../AuthContext";
 
 import mainStyle from "../../styles/mainStyle";
+import * as Location from "expo-location";
 
 export default class AddPlaceForm extends Component {
   static contextType = AuthContext;
@@ -25,20 +26,28 @@ export default class AddPlaceForm extends Component {
     address: null,
   };
 
-  registerPlace() {
-    db.addPlace(
-      "",
-      this.state.name,
-      this.state.photo,
-      this.state.description,
-      this.state.photo,
-      this.context.uid,
-      "latitude",
-      "longitude",
-      "latitudeDelta",
-      "longitudeDelta"
-    );
-    this.props.navigation.navigate("App");
+  async registerPlace() {
+    let { status } = await Location.requestPermissionsAsync();
+    if (status !== "granted") {
+      setErrorMsg("Permission to access location was denied");
+      return;
+    }
+    Location.geocodeAsync(this.state.address).then((coordinates) => {
+      console.log("latitude");
+      console.log(coordinates[0].latitude);
+      db.addPlace(
+        this.state.name,
+        this.state.type,
+        this.state.description,
+        this.state.photo,
+        this.context.uid,
+        this.state.address,
+        coordinates[0].latitude,
+        coordinates[0].longitude,
+        "latitudeDelta",
+        "longitudeDelta"
+      );
+    });
   }
 
   render() {
