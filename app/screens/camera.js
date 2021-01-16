@@ -3,6 +3,7 @@ import { Button, Image, View, Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
 import db from "./../firebase/DatabaseManager.js";
+import * as Permissions from "expo-permissions";
 
 export default function ImagePickerExample(props) {
   const [image, setImage] = useState(null);
@@ -13,7 +14,7 @@ export default function ImagePickerExample(props) {
       if (Platform.OS !== "web") {
         const {
           status,
-        } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);//ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== "granted") {
           alert("Sorry, we need camera roll permissions to make this work!");
         }
