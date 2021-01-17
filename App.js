@@ -1,3 +1,4 @@
+
 import React from "react";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 
@@ -39,14 +40,16 @@ function App() {
   );
 }
 export default App;
+
+
+
 /*
-
-
 import React, { useState, useEffect } from 'react';
 import { Button, Image, View, Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import db from "./app/firebase/DatabaseManager.js";
+
 
 export default function ImagePickerExample() {
 
@@ -122,9 +125,14 @@ export default function ImagePickerExample() {
     }
 
     const getUser = async() => {
-       db.getPlaces('test').then(function(places){
-         console.log(places);
+       var id = 0;
+       db.getRandomBreed('ibdvNck5OYYT4ocQmt1PW8dQ8ro2','cat').then(function(breed){
+         console.log(breed);
+         db.getFeedsByFilter('Cat','Breed',breed,id).then(function(feeds){
+           console.log(feeds);
+         });
        });
+
     }
 
    return (
@@ -137,5 +145,5 @@ export default function ImagePickerExample() {
  }
 
 
-
 */
+

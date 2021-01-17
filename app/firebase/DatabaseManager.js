@@ -86,10 +86,12 @@ const db = {
 
   //--------------UserAnimal----------------------------------------
 
-  addUserAnimal: function (uid, name, age, breed, size, photo, diseases) {
+
+  addUserAnimal: function (uid,name, age, breed, size, photo,type) {
+
     const users = firestore.collection("Users");
     const animals = users.doc(uid).collection("Animals");
-    let animal = new Animal(name, age, breed, size, photo);
+    let animal = new Animal(name, age, breed, size, photo,type);
     console.log(animal);
     animals.add(animal.toFirestore());
   },
@@ -158,7 +160,7 @@ const db = {
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
           // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
+          //console.log(doc.id, " => ", doc.data());
           animals.push(doc.id);
           /*
                            animals.push(new UserAnimal(
@@ -193,14 +195,16 @@ const db = {
       .get()
       .then(function (doc) {
         // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data());
+        //console.log(doc.id, " => ", doc.data());
         let data = doc.data();
+        //console.log(data);
         animal = new Animal(
           data.name,
           data.age,
           data.breed,
           data.size,
-          data.photo
+          data.photo,
+          data.type
         );
         //console.log(user);
         return animal;
@@ -511,10 +515,20 @@ const db = {
 
   //----------------------Places----------------------------------------------------------
 
-  addAdoptableAnimal: function (pid, name, age, breed, size, photo, profile) {
+  addAdoptableAnimal: function (
+    pid,
+    name,
+    age,
+    breed,
+    size,
+    photo,
+    type,
+    profile
+  ) {
+
     console.log("addAdoptableAnimal");
     const places = firestore.collection("Places");
-    let animal = new AdoptableAnimal(name, age, breed, size, photo, profile);
+    let animal = new AdoptableAnimal(name, age, breed, size, photo,type, profile);
     console.log(animal);
     places.doc(pid).collection("Animals").add(animal.toFirestore());
   },
@@ -538,6 +552,7 @@ const db = {
           data.breed,
           data.size,
           data.photo,
+          data.type,
           data.profile
         );
         //console.log(user);
@@ -871,13 +886,14 @@ const db = {
 
   //--------------------- Feed ------------------------------------------------------------------
 
-  getFeedsByFilter(pet, filter, value) {
+  getFeedsByFilter(pet, filter, value, id) {
     const ref = firestore.collection("Feed").doc(pet).collection(filter);
     //console.log(ref);
     var feeds = [];
     return (
       ref
         .where("name", "==", value)
+        .where("id", "==", id)
         .get()
         //.where("name","==",value)
         .then(function (querySnapshot) {
@@ -986,6 +1002,58 @@ const db = {
         console.error("Error removing document: ", error);
       });
   },
+
+  getAgeString : function(age){
+
+          var string;
+          if ( age < 0 ){
+             console.log("Age must be a positive integer");
+             string = "error";
+          }
+
+          if(age<= 6 && age >=0)
+             string = "young";
+
+          if(age > 6 && age <=12)
+             string = "medium";
+
+          if(age > 12)
+             string = "old";
+
+          return string;
+
+       },
+
+
+  getRandomBreed: function (uid,type) {
+       const users = firestore.collection("Users");
+       var breeds = [];
+       var winner;
+       return users
+         .doc(uid)
+         .collection("Animals")
+         .where("type","==",type)
+         .get()
+         .then(function (querySnapshot) {
+           querySnapshot.forEach(function (doc) {
+             // doc.data() is never undefined for query doc snapshots
+             console.log(doc.id, " => ", doc.data());
+             var breed = doc.data().breed;
+             if (!breeds.includes(breed)){
+                breeds.push(breed);
+             }
+             return breeds;
+           });
+           console.log(breeds);
+           winner = breeds[Math.floor(Math.random() * breeds.length)];
+           return winner;
+         })
+         .catch(function (error) {
+           console.log("Error getting documents: ", error);
+         });
+     },
+
+
 
   //-------------------------Notifications-----------------------------------------------------------------------
 

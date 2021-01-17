@@ -4,13 +4,15 @@ export default class Animal {
   breed: string;
   size: string;
   photo: string;
+  type: string;
 
-  constructor(name, age, breed, size, photo, diseases) {
+  constructor(name, age, breed, size, photo,type) {
     this.name = name;
     this.age = age;
     this.breed = breed;
     this.size = size;
     this.photo = photo;
+    this.type = type;
   }
 
   getName() {
@@ -34,6 +36,10 @@ export default class Animal {
     return this.photo;
   }
 
+  getType(){
+    return this.type;
+  }
+
   toFirestore() {
     return {
       name: this.name,
@@ -41,6 +47,7 @@ export default class Animal {
       breed: this.breed,
       size: this.size,
       photo: this.photo,
+      type: this.type,
     };
   }
 }
