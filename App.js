@@ -1,4 +1,3 @@
-
 import React from "react";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 
@@ -11,7 +10,7 @@ import SignIn from "./app/screens/SignInScreen";
 import * as Notifications from "expo-notifications";
 import TabNavigator from "./app/Components/Navigators/TabNavigator.js";
 import AuthContextProvider from "./app/Components/AuthContext.js";
-import HomeBusinessNavigator from "./app/Components/Navigators/HomeBusinessNavigator.js";
+import TabBusinessNavigator from "./app/Components/Navigators/TabBusinessNavigator";
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -22,7 +21,7 @@ const AppContainer = createAppContainer(
     {
       Auth: AuthNavigator,
       App: TabNavigator,
-      AppBusiness: HomeBusinessNavigator,
+      AppBusiness: TabBusinessNavigator,
       // App: CalendarApp,
       //SignIn: SignIn,
     },
@@ -40,8 +39,6 @@ function App() {
   );
 }
 export default App;
-
-
 
 /*
 import React, { useState, useEffect } from 'react';
@@ -146,4 +143,3 @@ export default function ImagePickerExample() {
 
 
 */
-
