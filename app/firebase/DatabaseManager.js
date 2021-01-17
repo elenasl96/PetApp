@@ -86,7 +86,7 @@ const db = {
 
   //--------------UserAnimal----------------------------------------
 
-  addUserAnimal: function (uid,name, age, breed, size, photo, diseases) {
+  addUserAnimal: function (uid, name, age, breed, size, photo, diseases) {
     const users = firestore.collection("Users");
     const animals = users.doc(uid).collection("Animals");
     let animal = new Animal(name, age, breed, size, photo);
@@ -511,15 +511,7 @@ const db = {
 
   //----------------------Places----------------------------------------------------------
 
-  addAdoptableAnimal: function (
-    pid,
-    name,
-    age,
-    breed,
-    size,
-    photo,
-    profile
-  ) {
+  addAdoptableAnimal: function (pid, name, age, breed, size, photo, profile) {
     console.log("addAdoptableAnimal");
     const places = firestore.collection("Places");
     let animal = new AdoptableAnimal(name, age, breed, size, photo, profile);
@@ -690,18 +682,20 @@ const db = {
         // doc.data() is never undefined for query doc snapshots
         console.log(doc.id, " => ", doc.data());
         let data = doc.data();
+        console.log("region");
+        console.log(data.region);
         place = new Place(
           data.name,
           data.type,
           data.description,
           data.photo,
           data.uid,
-          data.latitude,
-          data.longitude,
-          data.latitudeDelta,
-          data.longitudeDelta
+          data.address,
+          data.region.latitude,
+          data.region.longitude,
+          data.region.latitudeDelta,
+          data.region.longitudeDelta
         );
-        //console.log(user);
         return place;
       })
       .catch(function (error) {
@@ -731,26 +725,26 @@ const db = {
       });
   },
 
-  getPlacesByUid : function(uid) {
-     const map = firestore.collection("Places");
-         var places = [];
-         return map
-         .where("uid","==",uid)
-           .get()
-           .then(function (querySnapshot) {
-             querySnapshot.forEach(function (doc) {
-               // doc.data() is never undefined for query doc snapshots
-               console.log(doc.id, " => ", doc.data());
-               places.push(doc.id);
-               //console.log(user);
-               return places;
-             });
+  getPlacesByUid: function (uid) {
+    const map = firestore.collection("Places");
+    var places = [];
+    return map
+      .where("uid", "==", uid)
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          // doc.data() is never undefined for query doc snapshots
+          console.log(doc.id, " => ", doc.data());
+          places.push(doc.id);
+          //console.log(user);
+          return places;
+        });
 
-             return places;
-           })
-           .catch(function (error) {
-             console.log("Error getting documents: ", error);
-           });
+        return places;
+      })
+      .catch(function (error) {
+        console.log("Error getting documents: ", error);
+      });
   },
 
   deletePlace: function (pid) {
@@ -783,7 +777,7 @@ const db = {
 
   //----------------News---------------------------------------------------
 
-  addNews: function (pid,title, text) {
+  addNews: function (pid, title, text) {
     var date = new Date();
     var day = date.getDate();
     if (day < 10) day = "0" + day;
@@ -927,7 +921,7 @@ const db = {
       });
   },
 
-  addUserFeed: function (uid,title, text) {
+  addUserFeed: function (uid, title, text) {
     const users = firestore.collection("Users");
     let feed = new Feed(title, text);
     users.doc(uid).collection("Feed").add(feed.toFirestore());
@@ -995,7 +989,7 @@ const db = {
 
   //-------------------------Notifications-----------------------------------------------------------------------
 
-  addUserNotification: function (uid,title, text) {
+  addUserNotification: function (uid, title, text) {
     const users = firestore.collection("Users");
     var date = new Date();
     var day = date.getDate();
@@ -1020,9 +1014,7 @@ const db = {
       ":" +
       seconds;
     let notification = new Notification(title, text, timestamp);
-    users
-      .doc(uid)
-      .collection("Notifications").add(notification.toFirestore());
+    users.doc(uid).collection("Notifications").add(notification.toFirestore());
   },
 
   getUserNotifications: function (uid) {

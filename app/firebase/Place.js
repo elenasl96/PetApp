@@ -24,42 +24,42 @@ export default class Place {
     this.description = description;
     this.photo = photo;
     this.uid = uid;
-    (this.address = address),
-      (this.region = {
-        latitude: latitude,
-        longitude: longitude,
-        latitudeDelta: latitudeDelta,
-        longitudeDelta: longitudeDelta,
-      });
+    this.address = address;
+    this.region = {
+      latitude: latitude,
+      longitude: longitude,
+      latitudeDelta: latitudeDelta,
+      longitudeDelta: longitudeDelta,
+    };
   }
 
   // getters
   getName() {
-    return name;
+    return this.name;
   }
 
   getType() {
-    return type;
+    return this.type;
   }
 
   getDescription() {
-    return description;
+    return this.description;
   }
 
   getPhoto() {
-    return photo;
+    return this.photo;
   }
 
   getUid() {
-    return uid;
+    return this.uid;
   }
 
   getAddress() {
-    return address;
+    return this.address;
   }
 
   getRegion() {
-    return region;
+    return this.region;
   }
 
   //serialize
