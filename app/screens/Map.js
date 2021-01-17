@@ -21,6 +21,19 @@ export default class MapScreen extends React.Component {
 
   constructor() {
     super();
+    Location.getCurrentPositionAsync({
+      accuracy: Location.Accuracy.Lowest,
+    }).then((location) => {
+      console.log("CurrentPosition: ");
+      console.log(location);
+      let regionCurrentPosition = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      };
+      this.setState({ region: regionCurrentPosition });
+    });
     db.getPlaces().then((placesIds) => {
       placesIds.map((placeId) => {
         db.getPlace(placeId).then((place) => {
@@ -41,21 +54,6 @@ export default class MapScreen extends React.Component {
     console.log("aaaaa");
   }
 
-  loadMarkers(region) {
-    db.getPlaces()
-      .then((placesIds) => {
-        placesIds.map((placeId) => {
-          db.getPlace(placeId).then((place) => {
-            console.log(place);
-            this.state.markers.push(place);
-            console.log("MARKERS");
-            console.log(this.state.markers);
-          });
-        });
-      })
-      .then(this.setState({ markersAreLoaded: true }));
-  }
-
   componentDidMount() {
     this.setState({ mounted: true });
   }
@@ -70,7 +68,6 @@ export default class MapScreen extends React.Component {
         <MapView
           region={this.state.region}
           style={styles.mapStyle}
-          onMapReady={this.loadMarkers.bind(this)}
           onRegionChangeComplete={this.onRegionChange.bind(this)}
         >
           {this.state.markers.map((marker, index) => (
