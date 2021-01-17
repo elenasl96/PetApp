@@ -21,29 +21,30 @@ export default class MapScreen extends React.Component {
 
   constructor() {
     super();
-    Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.Lowest,
-    }).then((location) => {
-      console.log("CurrentPosition: ");
-      console.log(location);
-      let regionCurrentPosition = {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-      };
-      this.setState({ region: regionCurrentPosition });
-    });
-    db.getPlaces().then((placesIds) => {
-      placesIds.map((placeId) => {
-        db.getPlace(placeId).then((place) => {
-          console.log(place);
-          this.state.markers.push(place);
-          console.log("MARKERS");
-          console.log(this.state.markers);
+    db.getPlaces()
+      .then((placesIds) => {
+        placesIds.map((placeId) => {
+          db.getPlace(placeId).then((place) => {
+            console.log(place);
+            this.state.markers.push(place);
+            console.log("MARKERS");
+            console.log(this.state.markers);
+          });
+        });
+      })
+      .then(() => {
+        Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Lowest,
+        }).then((location) => {
+          let regionCurrentPosition = {
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          };
+          this.setState({ region: regionCurrentPosition });
         });
       });
-    });
   }
 
   onRegionChange(region) {
@@ -74,6 +75,7 @@ export default class MapScreen extends React.Component {
     return (
       <View style={styles.container}>
         <MapView
+          initialRegion={this.state.region}
           region={this.state.region}
           style={styles.mapStyle}
           onRegionChangeComplete={this.onRegionChange.bind(this)}
@@ -96,10 +98,9 @@ export default class MapScreen extends React.Component {
               />
               <Callout>
                 <TouchableHighlight>
-                  <View>
+                  <View style={styles.infoWindow}>
+                    <Text style={styles.placeName}>{marker.name}</Text>
                     <Text>
-                      {marker.name}
-                      {"\n"}
                       {marker.description}
                       {"\n"}
                       {marker.address}
@@ -125,5 +126,11 @@ const styles = StyleSheet.create({
   mapStyle: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
+  },
+  infoWindow: {
+    minWidth: 120,
+  },
+  placeName: {
+    fontWeight: "bold",
   },
 });
