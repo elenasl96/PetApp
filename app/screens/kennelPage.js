@@ -11,17 +11,34 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
-import firebase from "firebase";
+import db from "../firebase/DatabaseManager";
+import { AuthContext } from "../Components/AuthContext";
+import News from "../Components/News";
 class KennelScreen extends React.Component {
-  state = { user: {} };
+  static contextType = AuthContext;
+  state = { news: [], mounted: false };
+
   componentDidMount() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user != null) {
-        this.setState({ user: user });
+    console.log("TYYYY:" + this.context.user);
+    const pid = this.props.navigation.state.params.pid;
+    this.setState({ mounted: true });
+    db.getUser(this.context.uid);
+    db.getAllNews(pid).then((news) => {
+      if (this.state.mounted) {
+        this.setState({ news: news });
+        console.log("NEWS");
+        console.log(this.state.news);
       }
     });
   }
+
+  componentWillUnmount() {
+    this.setState({ mounted: false });
+  }
+
   render() {
+    const place = this.props.navigation.state.params.place;
+    const pid = this.props.navigation.state.params.pid;
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <View>
@@ -47,12 +64,13 @@ class KennelScreen extends React.Component {
                   },
                 ]}
               >
-                Kennel
+                {place.getName()}
               </Text>
               <View style={[styles.details]}>
                 <Text>
-                  Via Milano, 10 Milano, Mi{"\n"}
-                  Tel. 02/123455
+                  {place.getAddress()}
+                  {"\n"}
+                  {place.getDescription()}
                 </Text>
               </View>
             </View>
@@ -65,63 +83,23 @@ class KennelScreen extends React.Component {
           <TouchableOpacity style={styles.button} onPress={null}>
             <Text style={styles.buttonText}>Open in map</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() =>
+              this.props.navigation.navigate("AddNews", {
+                pid: pid,
+              })
+            }
+          >
+            <Text style={styles.buttonText}> + News</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.mainContent}>
           <ScrollView
             showsVerticalScrollIndicator={false}
             style={{ paddingTop: 10 }}
           >
-            <View style={styles.feedContainer}>
-              <View style={styles.feed}>
-                <Text>News2</Text>
-
-                <Text>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-                  ultricies posuere nulla, nec fermentum justo tempus ac. Donec
-                  magna lorem, maximus et hendrerit id, rutrum vel sapien. Sed
-                  sed imperdiet ipsum. Duis venenatis ultrices mi dignissim
-                  molestie. Quisque vestibulum ipsum id nulla venenatis, in
-                  elementum lacus ornare. Proin rutrum hendrerit felis fermentum
-                  ultrices.
-                </Text>
-
-                <Text>12/12/2020 8:00</Text>
-              </View>
-            </View>
-            <View style={styles.feedContainer}>
-              <View style={styles.feed}>
-                <Text>News2</Text>
-
-                <Text>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-                  ultricies posuere nulla, nec fermentum justo tempus ac. Donec
-                  magna lorem, maximus et hendrerit id, rutrum vel sapien. Sed
-                  sed imperdiet ipsum. Duis venenatis ultrices mi dignissim
-                  molestie. Quisque vestibulum ipsum id nulla venenatis, in
-                  elementum lacus ornare. Proin rutrum hendrerit felis fermentum
-                  ultrices.
-                </Text>
-
-                <Text>12/12/2020 8:00</Text>
-              </View>
-            </View>
-            <View style={styles.feedContainer}>
-              <View style={styles.feed}>
-                <Text>News2</Text>
-
-                <Text>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-                  ultricies posuere nulla, nec fermentum justo tempus ac. Donec
-                  magna lorem, maximus et hendrerit id, rutrum vel sapien. Sed
-                  sed imperdiet ipsum. Duis venenatis ultrices mi dignissim
-                  molestie. Quisque vestibulum ipsum id nulla venenatis, in
-                  elementum lacus ornare. Proin rutrum hendrerit felis fermentum
-                  ultrices.
-                </Text>
-
-                <Text>12/12/2020 8:00</Text>
-              </View>
-            </View>
+            <News pid={pid} news={this.state.news}></News>
           </ScrollView>
         </View>
 

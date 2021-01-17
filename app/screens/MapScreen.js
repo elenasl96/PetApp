@@ -57,7 +57,7 @@ export default class MapScreen extends React.Component {
     if (place.getType() == "kennel") {
       this.props.navigation.navigate("Kennel", {
         place: place,
-        pid: pid,
+        pid: this.state.pids[index],
       });
     } else {
       this.props.navigation.navigate("Vet", {
