@@ -11,6 +11,7 @@ export default class MapScreen extends React.Component {
     mounted: false,
     markersAreLoaded: false,
     markers: [],
+    pids: [],
     region: {
       latitude: 45.464664,
       longitude: 9.18854,
@@ -27,6 +28,7 @@ export default class MapScreen extends React.Component {
           db.getPlace(placeId).then((place) => {
             console.log(place);
             this.state.markers.push(place);
+            this.state.pids.push(placeId);
             console.log("MARKERS");
             console.log(this.state.markers);
           });
@@ -51,14 +53,16 @@ export default class MapScreen extends React.Component {
     this.setState({ region });
   }
 
-  showPlace(place) {
+  showPlace(place, index) {
     if (place.getType() == "kennel") {
       this.props.navigation.navigate("Kennel", {
         place: place,
+        pid: pid,
       });
     } else {
       this.props.navigation.navigate("Vet", {
         place: place,
+        pid: this.state.pids[index],
       });
     }
   }
@@ -89,7 +93,7 @@ export default class MapScreen extends React.Component {
               }}
               title={marker.name}
               description={marker.address}
-              onCalloutPress={() => this.showPlace(marker)}
+              onCalloutPress={() => this.showPlace(marker, index)}
               tracksViewChanges={false}
             >
               <Image

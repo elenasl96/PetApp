@@ -13,14 +13,28 @@ import {
 } from "react-native";
 import firebase from "firebase";
 import db from "../firebase/DatabaseManager";
+import News from "../Components/News";
+import { AuthContext } from "../Components/AuthContext";
+
 class VetScreen extends React.Component {
-  state = { user: {} };
+  static contextType = AuthContext;
+  state = { news: [], mounted: false };
+
   componentDidMount() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user != null) {
-        this.setState({ user: user });
+    const pid = this.props.navigation.state.params.pid;
+    this.setState({ mounted: true });
+    db.getUser(this.context.uid);
+    db.getAllNews(pid).then((news) => {
+      if (this.state.mounted) {
+        this.setState({ news: news });
+        console.log("NEWS");
+        console.log(this.state.news);
       }
     });
+  }
+
+  componentWillUnmount() {
+    this.setState({ mounted: false });
   }
 
   render() {
@@ -84,57 +98,7 @@ class VetScreen extends React.Component {
             showsVerticalScrollIndicator={false}
             style={{ paddingTop: 10 }}
           >
-            <View style={styles.feedContainer}>
-              <View style={styles.feed}>
-                <Text>News2</Text>
-
-                <Text>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-                  ultricies posuere nulla, nec fermentum justo tempus ac. Donec
-                  magna lorem, maximus et hendrerit id, rutrum vel sapien. Sed
-                  sed imperdiet ipsum. Duis venenatis ultrices mi dignissim
-                  molestie. Quisque vestibulum ipsum id nulla venenatis, in
-                  elementum lacus ornare. Proin rutrum hendrerit felis fermentum
-                  ultrices.
-                </Text>
-
-                <Text>12/12/2020 8:00</Text>
-              </View>
-            </View>
-            <View style={styles.feedContainer}>
-              <View style={styles.feed}>
-                <Text>News2</Text>
-
-                <Text>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-                  ultricies posuere nulla, nec fermentum justo tempus ac. Donec
-                  magna lorem, maximus et hendrerit id, rutrum vel sapien. Sed
-                  sed imperdiet ipsum. Duis venenatis ultrices mi dignissim
-                  molestie. Quisque vestibulum ipsum id nulla venenatis, in
-                  elementum lacus ornare. Proin rutrum hendrerit felis fermentum
-                  ultrices.
-                </Text>
-
-                <Text>12/12/2020 8:00</Text>
-              </View>
-            </View>
-            <View style={styles.feedContainer}>
-              <View style={styles.feed}>
-                <Text>News2</Text>
-
-                <Text>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-                  ultricies posuere nulla, nec fermentum justo tempus ac. Donec
-                  magna lorem, maximus et hendrerit id, rutrum vel sapien. Sed
-                  sed imperdiet ipsum. Duis venenatis ultrices mi dignissim
-                  molestie. Quisque vestibulum ipsum id nulla venenatis, in
-                  elementum lacus ornare. Proin rutrum hendrerit felis fermentum
-                  ultrices.
-                </Text>
-
-                <Text>12/12/2020 8:00</Text>
-              </View>
-            </View>
+            <News pid={pid} news={this.state.news}></News>
           </ScrollView>
         </View>
 
@@ -194,27 +158,7 @@ const styles = StyleSheet.create({
   buttonText: {
     alignSelf: "center",
   },
-  feedContainer: {
-    width: "95%",
-    paddingBottom: 20,
-    alignSelf: "center",
-  },
-  feed: {
-    backgroundColor: "white",
-    borderRadius: 20,
-    marginLeft: 10,
-    marginRight: 10,
-    padding: 15,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.18,
-    shadowRadius: 1.0,
 
-    elevation: 1,
-  },
   title: {
     fontWeight: "bold",
     fontSize: 20,
