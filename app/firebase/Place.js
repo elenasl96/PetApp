@@ -74,4 +74,9 @@ export default class Place {
       region: this.region,
     };
   }
+
+  //utility
+  isKennel() {
+    return this.type == "kennel";
+  }
 }

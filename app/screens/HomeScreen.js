@@ -96,19 +96,6 @@ class HomeScreen extends React.Component {
                     pets={this.state.pets}
                     navigation={this.props.navigation}
                   ></PetButton>
-                  {/*}   <TouchableHighlight onPress={showPet} style={styles.pet}>
-                    <Image
-                      source={require("../../assets/images/Gioia.jpg")}
-                      style={styles.petImage}
-                    ></Image>
-                  </TouchableHighlight>
-
-                  <TouchableHighlight onPress={showPet} style={styles.pet}>
-                    <Image
-                      source={require("../../assets/images/Cipolla.jpg")}
-                      style={styles.petImage}
-                    ></Image>
-    </TouchableHighlight> */}
 
                   <TouchableHighlight onPress={addPet} style={styles.pet}>
                     <Image

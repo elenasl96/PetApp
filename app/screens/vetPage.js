@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import firebase from "firebase";
+import db from "../firebase/DatabaseManager";
 class VetScreen extends React.Component {
   state = { user: {} };
   componentDidMount() {
@@ -21,7 +22,10 @@ class VetScreen extends React.Component {
       }
     });
   }
+
   render() {
+    const place = this.props.navigation.state.params.place;
+    const pid = this.props.navigation.state.params.pid;
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <View>
@@ -47,12 +51,13 @@ class VetScreen extends React.Component {
                   },
                 ]}
               >
-                Veterinary
+                {place.getName()}
               </Text>
               <View style={[styles.details]}>
                 <Text>
-                  Via Milano, 10 Milano, Mi{"\n"}
-                  Tel. 02/123455
+                  {place.getAddress()}
+                  {"\n"}
+                  {place.getDescription()}
                 </Text>
               </View>
             </View>
@@ -60,12 +65,20 @@ class VetScreen extends React.Component {
         </View>
         <View style={styles.buttons}>
           <TouchableOpacity style={styles.button} onPress={null}>
-            <Text style={styles.buttonText}>Make Appointment</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={null}>
             <Text style={styles.buttonText}>Open in map</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() =>
+              this.props.navigation.navigate("AddNews", {
+                pid: pid,
+              })
+            }
+          >
+            <Text style={styles.buttonText}> + News</Text>
+          </TouchableOpacity>
         </View>
+
         <View style={styles.mainContent}>
           <ScrollView
             showsVerticalScrollIndicator={false}
@@ -169,6 +182,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignContent: "center",
+    marginBottom: 10,
   },
   button: {
     backgroundColor: "#F9844A",
@@ -186,11 +200,20 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   feed: {
-    backgroundColor: "powderblue",
+    backgroundColor: "white",
     borderRadius: 20,
     marginLeft: 10,
     marginRight: 10,
     padding: 15,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.18,
+    shadowRadius: 1.0,
+
+    elevation: 1,
   },
   title: {
     fontWeight: "bold",

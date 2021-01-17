@@ -78,7 +78,7 @@ class PetLostButton extends React.Component {
     if (this.state.lostPets != null) {
       return this.state.lostPets;
     } else {
-      return <Text>No Pet Lost</Text>;
+      return <Text style={{ textAlign: "center" }}>No Pet Lost</Text>;
     }
   }
 }

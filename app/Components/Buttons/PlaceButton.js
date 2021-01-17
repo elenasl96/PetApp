@@ -7,8 +7,11 @@ import {
   View,
 } from "react-native";
 import db from "../../firebase/DatabaseManager";
+import { AuthContext } from "../AuthContext";
 
 class PlaceButton extends React.Component {
+  static contextType = AuthContext;
+
   state = {
     places: null,
     mounted: false,
@@ -18,52 +21,42 @@ class PlaceButton extends React.Component {
     this.setState({ mounted: true });
   }
 
+  showPlace(placesID, place) {
+    if (place.isKennel() && this.state.mounted) {
+      this.props.navigation.navigate("Kennel", {
+        pid: placesID,
+        place: place,
+      });
+    } else {
+      this.props.navigation.navigate("Vet", {
+        pid: placesID,
+        place: place,
+      });
+    }
+  }
+
   componentDidUpdate() {
     if (this.state.places == null && this.state.mounted) {
-      const navigation = this.props.navigation;
       const places = this.props.places;
-      if (places == undefined) return;
       var placeButtons = [];
 
-      pets.map((petID) => {
-        db.getPlaces().then((places) => {
+      places.map((placesID) => {
+        db.getPlace(placesID).then((place) => {
           placeButtons.push(
-            <View key={petID}>
+            <View key={placesID}>
               <TouchableHighlight
-                style={{
-                  backgroundColor: "orange",
-
-                  width: 180,
-                  height: 240,
-                  marginLeft: 10,
-                  marginBottom: 10,
-                  borderRadius: 35,
-                  padding: 10,
-                }}
-                value={petID}
-                onPress={() =>
-                  navigation.push("LostPet", {
-                    pet: animal,
-                    petID: petID,
-                  })
-                }
+                onPress={() => this.showPlace(placesID, place)}
+                style={styles.place}
               >
-                <View>
-                  <Image
-                    source={require("../../../assets/images/Gioia.jpg")}
-                    style={styles.petImage}
-                  ></Image>
-                  <View style={{ padding: 5 }}>
-                    <Text>{animal.getName()}</Text>
-                    <Text>{animal.getPlace()}</Text>
-                    <Text>{animal.getTimestamp()}</Text>
-                  </View>
-                </View>
+                <Image
+                  source={require("../../../assets/images/vet.jpg")}
+                  style={styles.placeImage}
+                ></Image>
               </TouchableHighlight>
             </View>
           );
           if (this.state.mounted) {
-            this.setState({ lostPets: lostPetsButtons });
+            this.setState({ places: placeButtons });
           }
         });
       });
@@ -75,10 +68,10 @@ class PlaceButton extends React.Component {
   }
 
   render() {
-    if (this.state.lostPets != null) {
-      return this.state.lostPets;
+    if (this.state.places != null) {
+      return this.state.places;
     } else {
-      return <Text>No Pet Lost</Text>;
+      return <Text style={{ textAlign: "center" }}>Add new place</Text>;
     }
   }
 }
@@ -90,10 +83,19 @@ const styles = StyleSheet.create({
     borderRadius: 75,
     backgroundColor: "orange",
   },
-  petImage: {
+
+  place: {
+    marginLeft: 15,
+    marginRight: 15,
+    marginBottom: 15,
+    flex: 1,
+    borderRadius: 35,
+    backgroundColor: "lightgreen",
+  },
+  placeImage: {
     width: "100%",
     height: 150,
-    borderRadius: 25,
+    borderRadius: 35,
     resizeMode: "cover",
   },
 });

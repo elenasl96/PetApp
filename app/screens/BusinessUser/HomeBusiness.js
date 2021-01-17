@@ -12,6 +12,7 @@ import { SafeAreaView } from "react-navigation";
 import firebase from "firebase";
 import { AuthContext } from "../../Components/AuthContext";
 import db from "../../firebase/DatabaseManager";
+import PlaceButton from "../../Components/Buttons/PlaceButton";
 
 export default class HomeBusiness extends React.Component {
   state = {
@@ -22,10 +23,14 @@ export default class HomeBusiness extends React.Component {
 
   componentDidMount() {
     this.setState({ mounted: true });
-
-    db.getPlaces(this.context.uid).then((places) => {
-      if (this.state.mounted) {
-        this.setState({ places: places });
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        db.getUser(this.context.uid);
+        db.getPlaces(this.context.uid).then((places) => {
+          if (this.state.mounted) {
+            this.setState({ places: places });
+          }
+        });
       }
     });
   }
@@ -63,47 +68,11 @@ export default class HomeBusiness extends React.Component {
                       style={styles.addButton}
                     ></Image>
                   </TouchableHighlight>
-                  <TouchableHighlight onPress={showPlace} style={styles.place}>
-                    <Image
-                      source={require("../../../assets/images/vet.jpg")}
-                      style={styles.placeImage}
-                    ></Image>
-                  </TouchableHighlight>
-
-                  <TouchableHighlight onPress={showPlace} style={styles.place}>
-                    <Image
-                      source={require("../../../assets/images/vet.jpg")}
-                      style={styles.placeImage}
-                    ></Image>
-                  </TouchableHighlight>
-
-                  <TouchableHighlight onPress={showPlace} style={styles.place}>
-                    <Image
-                      source={require("../../../assets/images/vet.jpg")}
-                      style={styles.placeImage}
-                    ></Image>
-                  </TouchableHighlight>
-
-                  <TouchableHighlight onPress={showPlace} style={styles.place}>
-                    <Image
-                      source={require("../../../assets/images/vet.jpg")}
-                      style={styles.placeImage}
-                    ></Image>
-                  </TouchableHighlight>
-
-                  <TouchableHighlight onPress={showPlace} style={styles.place}>
-                    <Image
-                      source={require("../../../assets/images/vet.jpg")}
-                      style={styles.placeImage}
-                    ></Image>
-                  </TouchableHighlight>
-
-                  <TouchableHighlight onPress={showPlace} style={styles.place}>
-                    <Image
-                      source={require("../../../assets/images/vet.jpg")}
-                      style={styles.placeImage}
-                    ></Image>
-                  </TouchableHighlight>
+                  <PlaceButton
+                    uid={this.context.uid}
+                    places={this.state.places}
+                    navigation={this.props.navigation}
+                  ></PlaceButton>
                 </ScrollView>
               </View>
             </View>
