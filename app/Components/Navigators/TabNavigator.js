@@ -1,13 +1,14 @@
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 import HomeScreen from "../../screens/HomeScreen.js";
-import MapScreen from "../../screens/Map.js";
+import MapScreen from "../../screens/MapScreen.js";
 import HomeNavigator from "./HomeNavigator.js";
 import LostPetsNavigator from "./LostPetsNavigator.js";
+import MapNavigator from "./MapNavigator.js";
 
 const TabNavigator = createMaterialBottomTabNavigator(
   {
+    Map: { screen: MapNavigator },
     Home: { screen: HomeNavigator },
-    Map: { screen: MapScreen },
     Lost: { screen: LostPetsNavigator },
   },
   {

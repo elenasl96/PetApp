@@ -50,8 +50,16 @@ export default class MapScreen extends React.Component {
     this.setState({ region });
   }
 
-  showPlace() {
-    console.log("aaaaa");
+  showPlace(place) {
+    if (place.getType() == "kennel") {
+      this.props.navigation.navigate("Kennel", {
+        place: place,
+      });
+    } else {
+      this.props.navigation.navigate("Vet", {
+        place: place,
+      });
+    }
   }
 
   componentDidMount() {
@@ -79,7 +87,7 @@ export default class MapScreen extends React.Component {
               }}
               title={marker.name}
               description={marker.address}
-              onCalloutPress={() => console.log("press")}
+              onCalloutPress={() => this.showPlace(marker)}
               tracksViewChanges={false}
             >
               <Image
