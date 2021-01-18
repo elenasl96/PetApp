@@ -16,9 +16,9 @@ class StarButton extends React.Component {
     super(props);
     db.getSavedPlaces(this.props.uid).then((savedPlaces) => {
       savedPlaces.forEach((savedPlaceId) => {
-        db.getSavedPlace(this.props.uid, savedPlaceId).then(() => {
-          if (props.placeId == savedPlaceId.pid)
-            this.setState({ favorite: true });
+        db.getSavedPlace(this.props.uid, savedPlaceId).then((place) => {
+          console.log(this.props.pid + "-----" + place);
+          if (this.props.pid == place) this.setState({ favorite: true });
         });
       });
     });
