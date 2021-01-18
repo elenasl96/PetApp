@@ -77,8 +77,15 @@ class KennelScreen extends React.Component {
           </ImageBackground>
         </View>
         <View style={styles.buttons}>
-          <TouchableOpacity style={styles.button} onPress={null}>
-            <Text style={styles.buttonText}>See Animals</Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() =>
+              this.props.navigation.navigate("AnimalsToAdopt", {
+                pid: pid,
+              })
+            }
+          >
+            <Text style={styles.buttonText}>Adopt</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={null}>
             <Text style={styles.buttonText}>Open in map</Text>

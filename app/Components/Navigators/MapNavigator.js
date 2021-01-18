@@ -7,6 +7,7 @@ import React from "react";
 import NavBar from "../../screens/NavBar";
 
 import MapScreen from "../../screens/MapScreen";
+import AnimalsToAdoptScreen from "../../screens/AnimalsToAdopt";
 
 const MapNavigator = createStackNavigator(
   {
@@ -37,6 +38,15 @@ const MapNavigator = createStackNavigator(
       // Optional: Override the `navigationOptions` for the screen
       navigationOptions: ({ navigation }) => ({
         title: "-name- profile",
+      }),
+    },
+
+    AnimalsToAdopt: {
+      screen: AnimalsToAdoptScreen,
+      path: "kennelProfile/:kennel",
+      // Optional: Override the `navigationOptions` for the screen
+      navigationOptions: ({ navigation }) => ({
+        title: "Animals to adopt",
       }),
     },
 
