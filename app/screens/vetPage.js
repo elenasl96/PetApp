@@ -15,6 +15,10 @@ import firebase from "firebase";
 import db from "../firebase/DatabaseManager";
 import News from "../Components/News";
 import { AuthContext } from "../Components/AuthContext";
+import { AntDesign } from "@expo/vector-icons";
+
+import { LinearGradient } from "expo-linear-gradient";
+import StarButton from "../Components/Buttons/StarButton";
 
 class VetScreen extends React.Component {
   static contextType = AuthContext;
@@ -52,7 +56,6 @@ class VetScreen extends React.Component {
                 flex: 1,
                 flexDirection: "column",
                 justifyContent: "space-between",
-                padding: 10,
               }}
             >
               <Text
@@ -67,30 +70,40 @@ class VetScreen extends React.Component {
               >
                 {place.getName()}
               </Text>
-              <View style={[styles.details]}>
-                <Text>
-                  {place.getAddress()}
-                  {"\n"}
-                  {place.getDescription()}
-                </Text>
-              </View>
+
+              <LinearGradient
+                style={styles.buttons}
+                // Background Linear Gradient
+                colors={[
+                  "rgba(255,255,255, 0.8)",
+                  "rgba(255,255,255,0.95)",
+                  "rgba(255,255,255,1)",
+                ]}
+              >
+                <TouchableOpacity style={styles.button} onPress={null}>
+                  <Text style={styles.buttonText}>Open in map M</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() =>
+                    this.props.navigation.navigate("AddNews", {
+                      pid: pid,
+                    })
+                  }
+                >
+                  <Text style={styles.buttonText}> + News N</Text>
+                </TouchableOpacity>
+                <StarButton uid={this.context.uid} pid={pid} />
+              </LinearGradient>
             </View>
           </ImageBackground>
         </View>
-        <View style={styles.buttons}>
-          <TouchableOpacity style={styles.button} onPress={null}>
-            <Text style={styles.buttonText}>Open in map</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() =>
-              this.props.navigation.navigate("AddNews", {
-                pid: pid,
-              })
-            }
-          >
-            <Text style={styles.buttonText}> + News</Text>
-          </TouchableOpacity>
+        <View style={styles.details}>
+          <Text>
+            {place.getAddress()}
+            {"\n"}
+            {place.getDescription()}
+          </Text>
         </View>
 
         <View style={styles.mainContent}>
@@ -140,35 +153,44 @@ const styles = StyleSheet.create({
   mainTitle: {
     fontSize: 25,
     fontWeight: "bold",
+    margin: 10,
   },
   buttons: {
-    marginTop: 10,
+    paddingTop: 5,
     flexDirection: "row",
     justifyContent: "center",
-    alignContent: "center",
-    marginBottom: 10,
+    alignItems: "center",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
   button: {
-    backgroundColor: "#F9844A",
-    height: 44,
-    borderRadius: 22,
+    //backgroundColor: "#F9844A",
+    //height: 44,
+    //borderRadius: 22,
+
     padding: 10,
     marginLeft: 10,
+    borderBottomColor: "orange",
+    borderBottomWidth: 2,
   },
+
   buttonText: {
+    color: "orange",
     alignSelf: "center",
+    fontWeight: "bold",
   },
 
   title: {
     fontWeight: "bold",
     fontSize: 20,
+    margin: 10,
   },
   details: {
-    paddingVertical: 5,
-    paddingHorizontal: 10,
+    paddingTop: 15,
+    paddingHorizontal: 25,
     color: "black",
-    backgroundColor: "rgba(255,255,255,0.6)",
-    borderRadius: 20,
+
+    //backgroundColor: "rgba(255,255,255,0.6)",
   },
   vetImage: {
     width: "100%",
@@ -176,7 +198,6 @@ const styles = StyleSheet.create({
     borderRadius: 75,
     resizeMode: "cover",
   },
-
   bottomMenu: {
     position: "absolute",
     bottom: 0,

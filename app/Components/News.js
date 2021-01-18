@@ -64,7 +64,7 @@ class News extends React.Component {
 
 const styles = StyleSheet.create({
   feedContainer: {
-    width: "95%",
+    width: "97%",
     paddingBottom: 20,
     alignSelf: "center",
   },
