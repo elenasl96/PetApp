@@ -18,6 +18,7 @@ import * as Facebook from "expo-facebook";
 import mainStyle from "../styles/mainStyle";
 import db from "./../firebase/DatabaseManager.js";
 import { AuthContext } from "../Components/AuthContext.js";
+import { Picker } from "@react-native-picker/picker";
 
 class SignUpScreen extends React.Component {
   static contextType = AuthContext;
@@ -26,6 +27,7 @@ class SignUpScreen extends React.Component {
     email: "",
     password: "",
     address: "",
+    type: "",
     errorMessage: "",
     loading: false,
     mounted: true,
@@ -140,6 +142,18 @@ class SignUpScreen extends React.Component {
                 value={this.state.password}
                 onChangeText={(password) => this.setState({ password })}
               />
+            </View>
+            <View style={mainStyle.form}>
+              <Picker
+                selectedValue={this.state.type}
+                style={{ height: 50, width: "100%" }}
+                onValueChange={(itemValue, itemIndex) =>
+                  this.setState({ type: itemValue })
+                }
+              >
+                <Picker.Item label="Basic user" value="user" />
+                <Picker.Item label="Business user" value="businessUser" />
+              </Picker>
             </View>
             {this.renderLoading()}
             <Text style={styles.error}>{this.state.error}</Text>

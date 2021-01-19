@@ -15,6 +15,7 @@ import { AuthContext } from "../AuthContext";
 
 import mainStyle from "../../styles/mainStyle";
 import * as Location from "expo-location";
+import { Picker } from "@react-native-picker/picker";
 
 export default class AddPlaceForm extends Component {
   static contextType = AuthContext;
@@ -65,6 +66,19 @@ export default class AddPlaceForm extends Component {
         ></KeyboardAvoidingView>
         <Text style={styles.title}>Add new place</Text>
         <View style={mainStyle.form}>
+          <Picker
+            selectedValue={this.state.type}
+            style={{ height: 50, width: "100%" }}
+            onValueChange={(itemValue, itemIndex) =>
+              this.setState({ type: itemValue })
+            }
+          >
+            <Picker.Item label="Veterinary" value="vet" />
+            <Picker.Item label="Kennel" value="kennel" />
+            <Picker.Item label="Other" value="other" />
+          </Picker>
+        </View>
+        <View style={mainStyle.form}>
           <TextInput
             style={mainStyle.inputText}
             placeholder="Name"
@@ -74,16 +88,7 @@ export default class AddPlaceForm extends Component {
             onChangeText={(name) => this.setState({ name })}
           />
         </View>
-        <View style={mainStyle.form}>
-          <TextInput
-            style={mainStyle.inputText}
-            placeholder="Type"
-            placeholderTextColor="#616161"
-            returnKeyType="next"
-            value={this.state.type}
-            onChangeText={(type) => this.setState({ type })}
-          />
-        </View>
+
         <View style={mainStyle.form}>
           <TextInput
             style={mainStyle.inputText}
