@@ -63,9 +63,9 @@ class PetButton extends React.Component {
   };
 
   render() {
-    console.log("pet buttons");
-    console.log(this.state.pet);
-    return this.state.pet;
+    if (this.state.mounted) {
+      return this.state.pet;
+    }
   }
 }
 

@@ -57,6 +57,8 @@ class PlaceButton extends React.Component {
           );
           if (this.state.mounted) {
             this.setState({ places: placeButtons });
+            console.log("PlacerBUTTOMS");
+            console.log(this.state.places);
           }
         });
       });
@@ -85,6 +87,7 @@ const styles = StyleSheet.create({
   },
 
   place: {
+    minWidth: 250,
     marginLeft: 15,
     marginRight: 15,
     marginBottom: 15,

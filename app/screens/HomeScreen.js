@@ -14,6 +14,7 @@ import { AuthContext } from "../Components/AuthContext";
 import PlusIcon from "../Components/PlusIcon";
 import PetButton from "../Components/PetButton";
 import db from "../firebase/DatabaseManager";
+import PlaceButton from "../Components/Buttons/PlaceButton";
 
 class HomeScreen extends React.Component {
   state = {
@@ -33,6 +34,20 @@ class HomeScreen extends React.Component {
           if (this.state.mounted) {
             this.setState({ pets: pets });
           }
+        });
+        var places = [];
+        db.getSavedPlaces(this.context.uid).then((placeIds) => {
+          placeIds.forEach((placeId) => {
+            db.getSavedPlace(this.context.uid, placeId).then((savedPlace) => {
+              places.push(savedPlace);
+              console.log(places);
+              if (this.state.mounted) {
+                this.setState({ places: places });
+                console.log("AAA");
+                console.log(this.state.places);
+              }
+            });
+          });
         });
       }
     });
@@ -114,12 +129,11 @@ class HomeScreen extends React.Component {
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}
                 >
-                  <TouchableHighlight onPress={showVet} style={styles.place}>
-                    <Image
-                      source={require("../../assets/images/vet.jpg")}
-                      style={styles.placeImage}
-                    ></Image>
-                  </TouchableHighlight>
+                  <PlaceButton
+                    uid={this.context.uid}
+                    places={this.state.places}
+                    navigation={this.props.navigation}
+                  ></PlaceButton>
                 </ScrollView>
               </View>
             </View>
