@@ -16,7 +16,6 @@ export default class Animal {
   }
 
   getName() {
-    console.log(this.name);
     return this.name;
   }
 

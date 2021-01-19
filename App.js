@@ -1,3 +1,6 @@
+
+/*
+
 import React from "react";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 
@@ -40,7 +43,10 @@ function App() {
 }
 export default App;
 
-/*
+*/
+
+
+
 import React, { useState, useEffect } from 'react';
 import { Button, Image, View, Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
@@ -122,13 +128,7 @@ export default function ImagePickerExample() {
     }
 
     const getUser = async() => {
-       var id = 0;
-       db.getRandomBreed('ibdvNck5OYYT4ocQmt1PW8dQ8ro2','cat').then(function(breed){
-         console.log(breed);
-         db.getFeedsByFilter('Cat','Breed',breed,id).then(function(feeds){
-           console.log(feeds);
-         });
-       });
+       db.addBreedFeeds('ibdvNck5OYYT4ocQmt1PW8dQ8ro2',0);
 
     }
 
@@ -142,4 +142,4 @@ export default function ImagePickerExample() {
  }
 
 
-*/
+

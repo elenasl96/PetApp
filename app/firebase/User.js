@@ -3,12 +3,29 @@ export default class User {
   photo: string;
   type: string;
   address: string;
+  days: int;
+  lastlogin: string;
 
   constructor(name, photo, type, address) {
     this.name = name;
     this.photo = photo;
     this.type = type;
     this.address = address;
+    this.days = 0;
+    var date = new Date();
+        var day = date.getDate();
+        if (day < 10) day = "0" + day;
+        var month = date.getMonth();
+        month = month + 1;
+        if (month < 10) month = "0" + month;
+        var year = date.getFullYear();
+        var timestamp =
+          day +
+          "/" +
+          month +
+          "/" +
+          year;
+    this.lastlogin =timestamp;
   }
 
   // getters
@@ -28,6 +45,14 @@ export default class User {
     return this.address;
   }
 
+  getDays(){
+    return this.days;
+  }
+
+  getLastLogin(){
+    return this.lastlogin;
+  }
+
   //serialize
   toFirestore() {
     return {
@@ -35,6 +60,8 @@ export default class User {
       photo: this.photo,
       type: this.type,
       address: this.address,
+      days: this.days,
+      lastlogin: this.lastlogin,
     };
   }
 }

@@ -28,7 +28,7 @@ const db = {
         // doc.data() is never undefined for query doc snapshots
         console.log(doc.id, " => ", doc.data());
         let data = doc.data();
-        user = new User(data.name, data.photo, data.type, data.address);
+        user = new User(data.name, data.photo, data.type, data.address, data.days, data.lastlogin);
         //console.log(user);
         return user;
       })
@@ -890,7 +890,7 @@ const db = {
     const ref = firestore.collection("Feed").doc(pet).collection(filter);
     //console.log(ref);
     var feeds = [];
-    return (
+    return(
       ref
         .where("name", "==", value)
         .where("id", "==", id)
@@ -901,17 +901,15 @@ const db = {
             // doc.data() is never undefined for query doc snapshots
             console.log(doc.id, " => ", doc.data());
             let data = doc.data();
-            let feed = new Feed(data.title, data.text);
+            let feed = new Feed(data.title, data.text,filter);
             feeds.push(feed);
-            //console.log(feed);
             return feeds;
           });
           return feeds;
         })
         .catch(function (error) {
           console.log("Error getting documents: ", error);
-        })
-    );
+        }));
   },
 
   getGeneralFeeds(pet) {
@@ -925,7 +923,7 @@ const db = {
           // doc.data() is never undefined for query doc snapshots
           console.log(doc.id, " => ", doc.data());
           let data = doc.data();
-          let feed = new Feed(data.title, data.text);
+          let feed = new Feed(data.title, data.text,'General');
           feeds.push(feed);
           //console.log(feed);
           return feeds;
@@ -937,9 +935,9 @@ const db = {
       });
   },
 
-  addUserFeed: function (uid, title, text) {
+  addUserFeed: function (uid, title, text,type) {
     const users = firestore.collection("Users");
-    let feed = new Feed(title, text);
+    let feed = new Feed(title, text,type);
     users.doc(uid).collection("Feed").add(feed.toFirestore());
   },
 
@@ -1024,36 +1022,100 @@ const db = {
 
        },
 
+  getUserAnimalsByType: function (uid,type) {
+      const users = firestore.collection("Users");
+      var animals = [];
+      return users
+        .doc(uid)
+        .collection("Animals")
+        .where("type","==",type)
+        .get()
+        .then(function (querySnapshot) {
+          querySnapshot.forEach(function (doc) {
+            // doc.data() is never undefined for query doc snapshots
+            //console.log(doc.id, " => ", doc.data());
+            let data = doc.data();
+            //animals.push(doc.id);
 
-  getRandomBreed: function (uid,type) {
-       const users = firestore.collection("Users");
+                             animals.push(new Animal(
+                                   data.name,
+                                   data.age,
+                                   data.breed,
+                                   data.size,
+                                   data.photo,
+                                   data.type,
+                                 ));
+
+            //console.log(user);
+            return animals;
+          });
+
+          return animals;
+        })
+        .catch(function (error) {
+          console.log("Error getting documents: ", error);
+        });
+    },
+
+
+  addBreedFeeds: function (uid,id) {
+
+       db.getUserAnimalsByType(uid,'Dog').then(function(dogs){
+         db.getUserAnimalsByType(uid,'Cat').then(function(cats){
+
+           var choice;
+           if (dogs.length!=0 && cats.length!=0){
+               choice =  Math.floor(Math.random() * 2);
+           }
+           else if(dogs.length==0){
+               choice = 0;
+           }else{
+               choice = 1;
+           }
+
+           var animals;
+           var type;
+
+           if (choice == 0){
+              animals = cats;
+              type = "Cat";
+           }
+           else{
+              animals = dogs;
+              type = "Dog";
+           }
+
+           console.log("Type:");
+           console.log(type);
+           console.log(animals);
+
+
        var breeds = [];
-       var winner;
-       return users
-         .doc(uid)
-         .collection("Animals")
-         .where("type","==",type)
-         .get()
-         .then(function (querySnapshot) {
-           querySnapshot.forEach(function (doc) {
-             // doc.data() is never undefined for query doc snapshots
-             console.log(doc.id, " => ", doc.data());
-             var breed = doc.data().breed;
-             if (!breeds.includes(breed)){
-                breeds.push(breed);
-             }
-             return breeds;
-           });
-           console.log(breeds);
-           winner = breeds[Math.floor(Math.random() * breeds.length)];
-           return winner;
-         })
-         .catch(function (error) {
-           console.log("Error getting documents: ", error);
+       animals.forEach(function(animal){
+          if(!breeds.includes(animal.breed)){
+              breeds.push(animal.breed);
+          }
+       });
+
+       console.log("Breeds:");
+       console.log(breeds);
+       console.log("Breed taken by chance:");
+       var breed = breeds[Math.floor(Math.random() * breeds.length)];
+       //console.log(id);
+
+       db.getFeedsByFilter(type,'Breed',breed,id).then(function(feeds){
+                  console.log("Breed feeds:");
+                  console.log(feeds);
+                  feeds.forEach(function(feed){
+                    db.addUserFeed(uid,feed.title,feed.text,feed.type);
+                    console.log("Feed loaded successfully!!: "+ feed.title);
+                  });
+       });
+
          });
+       });
+
      },
-
-
 
   //-------------------------Notifications-----------------------------------------------------------------------
 
