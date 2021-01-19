@@ -9,6 +9,7 @@ class StarButton extends React.Component {
 
   state = {
     favorite: false,
+    id: undefined,
     mounted: false,
   };
 
@@ -17,7 +18,10 @@ class StarButton extends React.Component {
     db.getSavedPlaces(this.props.uid).then((savedPlaces) => {
       savedPlaces.forEach((savedPlaceId) => {
         db.getSavedPlace(this.props.uid, savedPlaceId).then((place) => {
-          if (this.props.pid == place) this.setState({ favorite: true });
+          if (this.props.pid == place) {
+            this.setState({ id: savedPlaceId });
+            this.setState({ favorite: true });
+          }
         });
       });
     });
@@ -38,7 +42,7 @@ class StarButton extends React.Component {
   }
 
   deleteFromFavorite() {
-    db.deleteSavedPlace(this.props.uid, this.props.pid);
+    db.deleteSavedPlace(this.props.uid, this.state.id);
     this.setState({ favorite: false });
   }
 
