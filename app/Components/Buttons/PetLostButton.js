@@ -31,7 +31,7 @@ class PetLostButton extends React.Component {
             <View key={petID}>
               <TouchableHighlight
                 style={{
-                  backgroundColor: "orange",
+                  backgroundColor: "white",
 
                   width: 180,
                   height: 240,
@@ -39,6 +39,15 @@ class PetLostButton extends React.Component {
                   marginBottom: 10,
                   borderRadius: 35,
                   padding: 10,
+                  shadowColor: "#000",
+                  shadowOffset: {
+                    width: 0,
+                    height: 1,
+                  },
+                  shadowOpacity: 0.18,
+                  shadowRadius: 1.0,
+
+                  elevation: 1,
                 }}
                 value={petID}
                 onPress={() =>

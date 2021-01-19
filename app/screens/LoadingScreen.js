@@ -22,14 +22,15 @@ class LoadingScreen extends React.Component {
         db.getUser(user.uid).then((user) => {
           console.log("usertype:" + user.getType());
           if (user.getType() == "user") {
-            this.props.navigation.navigate("App");
+            if (this.state.mounted) {
+              this.props.navigation.navigate("App");
+            }
           } else {
-            this.props.navigation.navigate("AppBusiness");
+            if (this.state.mounted) {
+              this.props.navigation.navigate("AppBusiness");
+            }
           }
         });
-        if (this.state.mounted) {
-          this.props.navigation.navigate("App");
-        }
       } else {
         if (this.state.mounted) {
           this.props.navigation.navigate("SignUp");

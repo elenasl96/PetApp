@@ -57,8 +57,6 @@ class PlaceButton extends React.Component {
           );
           if (this.state.mounted) {
             this.setState({ places: placeButtons });
-            console.log("PlacerBUTTOMS");
-            console.log(this.state.places);
           }
         });
       });

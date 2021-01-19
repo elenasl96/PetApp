@@ -5,6 +5,15 @@ import { AuthContext } from "../Components/AuthContext.js";
 
 class NavBar extends Component {
   static contextType = AuthContext;
+  state = { mounted: false };
+
+  componentDidMount() {
+    this.setState({ mounted: true });
+  }
+
+  componentWillUnmount() {
+    this.setState({ mounted: false });
+  }
 
   render() {
     return (
@@ -16,7 +25,9 @@ class NavBar extends Component {
             color="#43AA8B"
             title="LogOff"
             onPress={() => {
-              firebase.auth().signOut();
+              if (this.state.mounted) {
+                firebase.auth().signOut();
+              }
             }}
           />
           {/*<Text style={styles.username}>{this.context.username}</Text>*/}
