@@ -112,7 +112,6 @@ export default class AddPlaceForm extends Component {
           />
         </View>
 
-        <Text style={[mainStyle.text, { margin: 10 }]}>Select an image:</Text>
         <ImagePickerExample
           photo={this.state.photo}
           setPhoto={(photo) => this.setState({ photo })}

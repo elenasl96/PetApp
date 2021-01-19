@@ -65,12 +65,22 @@ export default function ImagePickerExample({ setPhoto }) {
   };
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Button title="Pick an image from camera roll" onPress={pickImage} />
+    <View
+      style={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: 15,
+      }}
+    >
+      <Button title="Pick an image from gallery" onPress={pickImage} />
       {image && (
-        <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+        <Image
+          source={{ uri: image }}
+          style={{ marginTop: 15, width: 200, height: 200 }}
+        />
       )}
-      <Button title="Open the camera" onPress={openCamera} />
+      {/* <Button title="Open the camera" onPress={openCamera} /> */}
     </View>
   );
 }

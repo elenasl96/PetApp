@@ -115,8 +115,6 @@ class AddPetForm extends Component {
             <Picker.Item label="Cat" value="cat" />
           </Picker>
         </View>
-
-        <Text style={[mainStyle.text, { margin: 10 }]}>Select an image:</Text>
         <ImagePickerExample setPhoto={this.setPhoto}></ImagePickerExample>
         <Text style={styles.error}>{this.state.error}</Text>
 

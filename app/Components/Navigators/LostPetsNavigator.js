@@ -5,11 +5,24 @@ import NavBar from "../../screens/NavBar";
 import AddPetScreen from "../../screens/AddPet";
 import LostPetsScreen from "../../screens/LostPetsScreen";
 import LostPetNotifyScreen from "../../screens/LostPetNotifyScreen";
+import LostPetsSeenScreen from "../../screens/LostPetsSeenScreen";
 
 const LostPetsNavigator = createStackNavigator(
   {
     LostPets: {
       screen: LostPetsScreen,
+      // Optional: When deep linking or using react-navigation in a web app, this path is used:
+      path: "home",
+      // The action and route params are extracted from the path.
+
+      // Optional: Override the `navigationOptions` for the screen
+      navigationOptions: ({ navigation }) => ({
+        title: "Homepage    ",
+      }),
+    },
+
+    LostPetsSeen: {
+      screen: LostPetsSeenScreen,
       // Optional: When deep linking or using react-navigation in a web app, this path is used:
       path: "home",
       // The action and route params are extracted from the path.

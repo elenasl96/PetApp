@@ -7,20 +7,18 @@ import {
   Image,
   TouchableHighlight,
   ScrollView,
-  TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import firebase from "firebase";
 import { AuthContext } from "../Components/AuthContext";
 import PetButton from "../Components/PetButton";
 import db from "../firebase/DatabaseManager";
-import PetLostButton from "../Components/Buttons/PetLostButton";
-import StarButton from "../Components/Buttons/StarButton";
-import mainStyle from "../styles/mainStyle";
 
-export default class LostPetsScreen extends React.Component {
+import PetLostSeenButton from "../Components/Buttons/PetLostSeenButton";
+
+export default class LostPetsSeenScreen extends React.Component {
   state = {
-    lostPets: null,
+    lostPetsSeen: null,
     mounted: false,
   };
   static contextType = AuthContext;
@@ -30,12 +28,12 @@ export default class LostPetsScreen extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.state.lostPets == null) {
-      db.getLostPetNotifications().then((lostPetsIDs) => {
+    if (this.state.lostPetsSeen == null) {
+      db.getLostPetsSeen().then((lostPetsSeenIDs) => {
         if (this.state.mounted) {
-          console.log("lostpets");
-          console.log(lostPetsIDs);
-          this.setState({ lostPets: lostPetsIDs });
+          console.log("lostpetsSeen");
+          console.log(lostPetsSeenIDs);
+          this.setState({ lostPetsSeen: lostPetsSeenIDs });
         }
       });
     }
@@ -52,16 +50,6 @@ export default class LostPetsScreen extends React.Component {
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.myPlacesContainer}>
               <Text style={styles.title}>Lost Pets</Text>
-
-              <View style={styles.buttons}>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => this.props.navigation.navigate("LostPetsSeen")}
-                >
-                  <Text style={styles.buttonText}>Go to pets sights > S</Text>
-                </TouchableOpacity>
-              </View>
-
               <View
                 style={{
                   flex: 1,
@@ -70,10 +58,10 @@ export default class LostPetsScreen extends React.Component {
                   justifyContent: "center",
                 }}
               >
-                <PetLostButton
+                <PetLostSeenButton
                   navigation={this.props.navigation}
-                  pets={this.state.lostPets}
-                ></PetLostButton>
+                  pets={this.state.lostPetsSeen}
+                ></PetLostSeenButton>
               </View>
             </View>
           </ScrollView>
@@ -109,33 +97,6 @@ const styles = StyleSheet.create({
     paddingTop: 35,
     padding: 10,
   },
-  buttons: {
-    paddingTop: 5,
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    marginBottom: 10,
-    paddingRight: 20,
-  },
-  button: {
-    //backgroundColor: "#F9844A",
-    //height: 44,
-    //borderRadius: 22,
-
-    padding: 10,
-    marginLeft: 10,
-    borderBottomColor: "orange",
-    borderBottomWidth: 2,
-  },
-
-  buttonText: {
-    color: "orange",
-    alignSelf: "center",
-    fontWeight: "bold",
-  },
-
   mainTitle: {
     fontSize: 25,
     fontWeight: "bold",
