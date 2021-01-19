@@ -5,7 +5,7 @@ import Constants from "expo-constants";
 import db from "./../firebase/DatabaseManager.js";
 import * as Permissions from "expo-permissions";
 
-export default function ImagePickerExample(props) {
+export default function ImagePickerExample({ setPhoto }) {
   const [image, setImage] = useState(null);
 
   // grant permissions
@@ -60,6 +60,7 @@ export default function ImagePickerExample(props) {
     console.log("File");
     db.toStorage("uid", file).then((url) => {
       console.log("tostore: " + url);
+      setPhoto(url);
     });
   };
 

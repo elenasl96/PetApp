@@ -16,6 +16,7 @@ import db from "../../firebase/DatabaseManager";
 import ImagePickerExample from "../../screens/camera";
 import { AuthContext } from "../AuthContext";
 import { withNavigation } from "react-navigation";
+import { Picker } from "@react-native-picker/picker";
 
 import mainStyle from "../../styles/mainStyle";
 
@@ -27,7 +28,7 @@ class AddPetForm extends Component {
     breed: null,
     size: null,
     photo: "",
-    diseases: null,
+    type: null,
   };
 
   registerPet() {
@@ -38,12 +39,13 @@ class AddPetForm extends Component {
       this.state.breed,
       this.state.size,
       this.state.photo,
-      this.state.diseases
+      this.state.type
     );
   }
 
   setPhoto = (photo) => {
     this.setState({ photo: photo });
+    console.log("photo: " + this.state.photo);
   };
 
   render() {
@@ -74,7 +76,7 @@ class AddPetForm extends Component {
         <View style={mainStyle.form}>
           <TextInput
             style={mainStyle.inputText}
-            placeholder="Name"
+            placeholder="Age"
             placeholderTextColor="#616161"
             returnKeyType="next"
             value={this.state.age}
@@ -84,7 +86,7 @@ class AddPetForm extends Component {
         <View style={mainStyle.form}>
           <TextInput
             style={mainStyle.inputText}
-            placeholder="Name"
+            placeholder="Breed"
             placeholderTextColor="#616161"
             returnKeyType="next"
             value={this.state.breed}
@@ -94,7 +96,7 @@ class AddPetForm extends Component {
         <View style={mainStyle.form}>
           <TextInput
             style={mainStyle.inputText}
-            placeholder="Name"
+            placeholder="Size"
             placeholderTextColor="#616161"
             returnKeyType="next"
             value={this.state.size}
@@ -102,14 +104,16 @@ class AddPetForm extends Component {
           />
         </View>
         <View style={mainStyle.form}>
-          <TextInput
-            style={mainStyle.inputText}
-            placeholder="description"
-            placeholderTextColor="#616161"
-            returnKeyType="next"
-            value={this.state.description}
-            onChangeText={(description) => this.setState({ description })}
-          />
+          <Picker
+            selectedValue={this.state.type}
+            style={{ height: 50, width: "100%" }}
+            onValueChange={(itemValue, itemIndex) =>
+              this.setState({ type: itemValue })
+            }
+          >
+            <Picker.Item label="Dog" value="dog" />
+            <Picker.Item label="Cat" value="cat" />
+          </Picker>
         </View>
 
         <Text style={[mainStyle.text, { margin: 10 }]}>Select an image:</Text>
@@ -126,7 +130,7 @@ class AddPetForm extends Component {
           onPress={this.registerPet.bind(this)}
         >
           <View style={styles.button}>
-            <Text style={styles.buttonText}>Register Place</Text>
+            <Text style={styles.buttonText}>Register Pet</Text>
           </View>
         </TouchableOpacity>
       </SafeAreaView>

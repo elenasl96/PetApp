@@ -28,7 +28,14 @@ const db = {
         // doc.data() is never undefined for query doc snapshots
         console.log(doc.id, " => ", doc.data());
         let data = doc.data();
-        user = new User(data.name, data.photo, data.type, data.address, data.days, data.lastlogin);
+        user = new User(
+          data.name,
+          data.photo,
+          data.type,
+          data.address,
+          data.days,
+          data.lastlogin
+        );
         //console.log(user);
         return user;
       })
@@ -86,12 +93,10 @@ const db = {
 
   //--------------UserAnimal----------------------------------------
 
-
-  addUserAnimal: function (uid,name, age, breed, size, photo,type) {
-
+  addUserAnimal: function (uid, name, age, breed, size, photo, type) {
     const users = firestore.collection("Users");
     const animals = users.doc(uid).collection("Animals");
-    let animal = new Animal(name, age, breed, size, photo,type);
+    let animal = new Animal(name, age, breed, size, photo, type);
     console.log(animal);
     animals.add(animal.toFirestore());
   },
@@ -525,10 +530,17 @@ const db = {
     type,
     profile
   ) {
-
     console.log("addAdoptableAnimal");
     const places = firestore.collection("Places");
-    let animal = new AdoptableAnimal(name, age, breed, size, photo,type, profile);
+    let animal = new AdoptableAnimal(
+      name,
+      age,
+      breed,
+      size,
+      photo,
+      type,
+      profile
+    );
     console.log(animal);
     places.doc(pid).collection("Animals").add(animal.toFirestore());
   },
@@ -890,7 +902,7 @@ const db = {
     const ref = firestore.collection("Feed").doc(pet).collection(filter);
     //console.log(ref);
     var feeds = [];
-    return(
+    return (
       ref
         .where("name", "==", value)
         .where("id", "==", id)
@@ -901,7 +913,7 @@ const db = {
             // doc.data() is never undefined for query doc snapshots
             console.log(doc.id, " => ", doc.data());
             let data = doc.data();
-            let feed = new Feed(data.title, data.text,filter);
+            let feed = new Feed(data.title, data.text, filter);
             feeds.push(feed);
             return feeds;
           });
@@ -909,7 +921,8 @@ const db = {
         })
         .catch(function (error) {
           console.log("Error getting documents: ", error);
-        }));
+        })
+    );
   },
 
   getGeneralFeeds(pet) {
@@ -923,7 +936,7 @@ const db = {
           // doc.data() is never undefined for query doc snapshots
           console.log(doc.id, " => ", doc.data());
           let data = doc.data();
-          let feed = new Feed(data.title, data.text,'General');
+          let feed = new Feed(data.title, data.text, "General");
           feeds.push(feed);
           //console.log(feed);
           return feeds;
@@ -935,9 +948,9 @@ const db = {
       });
   },
 
-  addUserFeed: function (uid, title, text,type) {
+  addUserFeed: function (uid, title, text, type) {
     const users = firestore.collection("Users");
-    let feed = new Feed(title, text,type);
+    let feed = new Feed(title, text, type);
     users.doc(uid).collection("Feed").add(feed.toFirestore());
   },
 
@@ -1001,121 +1014,110 @@ const db = {
       });
   },
 
-  getAgeString : function(age){
+  getAgeString: function (age) {
+    var string;
+    if (age < 0) {
+      console.log("Age must be a positive integer");
+      string = "error";
+    }
 
-          var string;
-          if ( age < 0 ){
-             console.log("Age must be a positive integer");
-             string = "error";
-          }
+    if (age <= 6 && age >= 0) string = "young";
 
-          if(age<= 6 && age >=0)
-             string = "young";
+    if (age > 6 && age <= 12) string = "medium";
 
-          if(age > 6 && age <=12)
-             string = "medium";
+    if (age > 12) string = "old";
 
-          if(age > 12)
-             string = "old";
+    return string;
+  },
 
-          return string;
+  getUserAnimalsByType: function (uid, type) {
+    const users = firestore.collection("Users");
+    var animals = [];
+    return users
+      .doc(uid)
+      .collection("Animals")
+      .where("type", "==", type)
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          // doc.data() is never undefined for query doc snapshots
+          //console.log(doc.id, " => ", doc.data());
+          let data = doc.data();
+          //animals.push(doc.id);
 
-       },
+          animals.push(
+            new Animal(
+              data.name,
+              data.age,
+              data.breed,
+              data.size,
+              data.photo,
+              data.type
+            )
+          );
 
-  getUserAnimalsByType: function (uid,type) {
-      const users = firestore.collection("Users");
-      var animals = [];
-      return users
-        .doc(uid)
-        .collection("Animals")
-        .where("type","==",type)
-        .get()
-        .then(function (querySnapshot) {
-          querySnapshot.forEach(function (doc) {
-            // doc.data() is never undefined for query doc snapshots
-            //console.log(doc.id, " => ", doc.data());
-            let data = doc.data();
-            //animals.push(doc.id);
-
-                             animals.push(new Animal(
-                                   data.name,
-                                   data.age,
-                                   data.breed,
-                                   data.size,
-                                   data.photo,
-                                   data.type,
-                                 ));
-
-            //console.log(user);
-            return animals;
-          });
-
+          //console.log(user);
           return animals;
-        })
-        .catch(function (error) {
-          console.log("Error getting documents: ", error);
         });
-    },
 
+        return animals;
+      })
+      .catch(function (error) {
+        console.log("Error getting documents: ", error);
+      });
+  },
 
-  addBreedFeeds: function (uid,id) {
+  addBreedFeeds: function (uid, id) {
+    db.getUserAnimalsByType(uid, "Dog").then(function (dogs) {
+      db.getUserAnimalsByType(uid, "Cat").then(function (cats) {
+        var choice;
+        if (dogs.length != 0 && cats.length != 0) {
+          choice = Math.floor(Math.random() * 2);
+        } else if (dogs.length == 0) {
+          choice = 0;
+        } else {
+          choice = 1;
+        }
 
-       db.getUserAnimalsByType(uid,'Dog').then(function(dogs){
-         db.getUserAnimalsByType(uid,'Cat').then(function(cats){
+        var animals;
+        var type;
 
-           var choice;
-           if (dogs.length!=0 && cats.length!=0){
-               choice =  Math.floor(Math.random() * 2);
-           }
-           else if(dogs.length==0){
-               choice = 0;
-           }else{
-               choice = 1;
-           }
+        if (choice == 0) {
+          animals = cats;
+          type = "Cat";
+        } else {
+          animals = dogs;
+          type = "Dog";
+        }
 
-           var animals;
-           var type;
+        console.log("Type:");
+        console.log(type);
+        console.log(animals);
 
-           if (choice == 0){
-              animals = cats;
-              type = "Cat";
-           }
-           else{
-              animals = dogs;
-              type = "Dog";
-           }
-
-           console.log("Type:");
-           console.log(type);
-           console.log(animals);
-
-
-       var breeds = [];
-       animals.forEach(function(animal){
-          if(!breeds.includes(animal.breed)){
-              breeds.push(animal.breed);
+        var breeds = [];
+        animals.forEach(function (animal) {
+          if (!breeds.includes(animal.breed)) {
+            breeds.push(animal.breed);
           }
-       });
+        });
 
-       console.log("Breeds:");
-       console.log(breeds);
-       console.log("Breed taken by chance:");
-       var breed = breeds[Math.floor(Math.random() * breeds.length)];
-       //console.log(id);
+        console.log("Breeds:");
+        console.log(breeds);
+        console.log("Breed taken by chance:");
+        var breed = breeds[Math.floor(Math.random() * breeds.length)];
+        //console.log(id);
 
-       db.getFeedsByFilter(type,'Breed',breed,id).then(function(feeds){
-                  console.log("Breed feeds:");
-                  console.log(feeds);
-                  feeds.forEach(function(feed){
-                    db.addUserFeed(uid,feed.title,feed.text,feed.type);
-                    console.log("Feed loaded successfully!!: "+ feed.title);
-                  });
-       });
-
-         });
-       });
-
-     },
+        db.getFeedsByFilter(type, "Breed", breed, id).then(function (feeds) {
+          console.log("Breed feeds:");
+          console.log(feeds);
+          feeds.forEach(function (feed) {
+            db.addUserFeed(uid, feed.title, feed.text, feed.type);
+            console.log("Feed loaded successfully!!: " + feed.title);
+          });
+        });
+      });
+    });
+  },
 
   //-------------------------Notifications-----------------------------------------------------------------------
 
@@ -1452,14 +1454,14 @@ const db = {
     //Create a filename
     let date = new Date().getTime();
     let filename = uid + date;
-    var urlString;
+
+    var urlToStore;
     // Upload file and metadata
     return storageRef
       .child("images/" + filename)
       .put(file, metadata)
       .then(() => {
-        var urlToStore;
-        db.fromStorage(filename).then((url) => {
+        return db.fromStorage(filename).then((url) => {
           urlToStore = url;
           return urlToStore;
         });

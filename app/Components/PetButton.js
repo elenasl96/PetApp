@@ -41,7 +41,7 @@ class PetButton extends React.Component {
               }
             >
               <Image
-                source={require("../../assets/images/Gioia.jpg")}
+                source={{ uri: animal.photo }}
                 style={styles.petImage}
               ></Image>
             </TouchableHighlight>

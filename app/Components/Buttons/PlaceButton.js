@@ -91,7 +91,6 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     flex: 1,
     borderRadius: 35,
-    backgroundColor: "lightgreen",
   },
   placeImage: {
     width: "100%",
