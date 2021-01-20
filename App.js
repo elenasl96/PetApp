@@ -1,3 +1,4 @@
+
 import React from "react";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 
@@ -21,7 +22,7 @@ const AppContainer = createAppContainer(
     {
       Auth: AuthNavigator,
       App: TabNavigator,
-      AppBusiness: TabBusinessNavigator,
+     AppBusiness: TabBusinessNavigator,
       // App: CalendarApp,
       //SignIn: SignIn,
     },
@@ -40,15 +41,16 @@ function App() {
 }
 export default App;
 
+
+
 /*
-
-
 
 import React, { useState, useEffect } from 'react';
 import { Button, Image, View, Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import db from "./app/firebase/DatabaseManager.js";
+import Animal from "./app/firebase/Animal.js";
 
 
 export default function ImagePickerExample() {
@@ -125,7 +127,14 @@ export default function ImagePickerExample() {
     }
 
     const getUser = async() => {
-       db.addBreedFeeds('ibdvNck5OYYT4ocQmt1PW8dQ8ro2',0);
+       //db.addRandomFeeds('ibdvNck5OYYT4ocQmt1PW8dQ8ro2',0);
+
+       var animals = [];
+       animals.push(new Animal('boh',1,'boh','boh','boh','Cat'));
+       animals.push(new Animal('boh',7,'boh','boh','boh','Dog'));
+       animals.push(new Animal('boh',13,'boh','boh','boh','Dog'));
+       var day = '20/01/2021';
+       db.addRandomFeeds(animals,'ibdvNck5OYYT4ocQmt1PW8dQ8ro2',day,0);
 
     }
 
@@ -137,6 +146,5 @@ export default function ImagePickerExample() {
      </View>
    );
  }
-
 
 */
