@@ -11,23 +11,38 @@ import db from "../firebase/DatabaseManager.js";
 import { AuthContext } from "../Components/AuthContext";
 
 class PetButton extends React.Component {
+
   state = {
     pet: null,
     mounted: true,
+    prevState: null,
   };
+
+  static contextType = AuthContext;
+
 
   componentDidMount() {
     this.setState({ mounted: true });
+    console.log(this.context.pets);
   }
 
   componentDidUpdate() {
-    if (this.state.pet == null && this.state.mounted) {
+    var pets = this.context.pets;
+    console.log("Listen");
+    if ( (this.state.pet == null || this.state.prevState.length != pets.length) && this.state.mounted) {
+      console.log("Update!");
       const navigation = this.props.navigation;
-      const pets = this.props.pets;
+      console.log("PrevState:" + this.state.prevState);
+      this.state.prevState = pets;
+      console.log("Pets:" + pets);
+
+      //const pets = this.props.pets;
+      //const pets = this.context.pets;
       var petButtons = [];
 
       pets.map((petID) => {
         db.getUserAnimal(this.props.uid, petID).then((animal) => {
+          console.log(animal);
           petButtons.push(
             <TouchableHighlight
               style={styles.pet}
@@ -84,4 +99,5 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
 });
+
 export default PetButton;

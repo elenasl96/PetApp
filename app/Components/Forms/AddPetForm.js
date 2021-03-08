@@ -13,6 +13,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import db from "../../firebase/DatabaseManager";
+import Animal from "../../firebase/Animal.js";
 import ImagePickerExample from "../../screens/camera";
 import { AuthContext } from "../AuthContext";
 import { withNavigation } from "react-navigation";
@@ -32,6 +33,7 @@ class AddPetForm extends Component {
   };
 
   registerPet() {
+
     db.addUserAnimal(
       this.context.uid,
       this.state.name,
@@ -41,6 +43,16 @@ class AddPetForm extends Component {
       this.state.photo,
       this.state.type
     );
+
+    var animal = new Animal(this.state.name,
+                                   this.state.age,
+                                   this.state.breed,
+                                   this.state.size,
+                                   this.state.photo,
+                                   this.state.type);
+
+    this.context.savePet(animal);
+
   }
 
   setPhoto = (photo) => {

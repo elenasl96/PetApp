@@ -18,7 +18,7 @@ import PlaceButton from "../Components/Buttons/PlaceButton";
 
 class HomeScreen extends React.Component {
   state = {
-    pets: [],
+    //pets: [],
     places: [],
     update: false,
     mounted: false,
@@ -32,7 +32,14 @@ class HomeScreen extends React.Component {
         db.getUser(this.context.uid);
         db.getUserAnimals(this.context.uid).then((pets) => {
           if (this.state.mounted) {
-            this.setState({ pets: pets });
+            //this.setState({ pets: pets });
+            //console.log(pets);
+            //var test = ["test1","test2"];
+            console.log("Pets retrieved from db " + pets);
+            pets.map((pet) => {
+               this.context.savePet(pet);
+            });
+            //console.log(this.context.test);
           }
         });
         var places = [];
@@ -108,7 +115,8 @@ class HomeScreen extends React.Component {
                 >
                   <PetButton
                     uid={this.context.uid}
-                    pets={this.state.pets}
+                    //pets={this.state.pets}
+                    pets = {this.context.pets}
                     navigation={this.props.navigation}
                   ></PetButton>
 

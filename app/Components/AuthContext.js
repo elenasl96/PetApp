@@ -7,11 +7,14 @@ import db from "../firebase/DatabaseManager";
 export const AuthContext = React.createContext();
 
 class AuthContextProvider extends Component {
+
   state = {
     user: null,
     loading: false,
     uid: "",
+    pets: [],
   };
+
 
   saveUserUID = (uid) => {
     this.setState({ uid: uid });
@@ -22,6 +25,12 @@ class AuthContextProvider extends Component {
     this.setState({ user: user });
     console.log("this user");
     console.log(this.state.user);
+  };
+
+  savePet = (pet) => {
+    this.state.pets.push(pet);
+    console.log("pets in context:");
+    console.log(this.state.pets);
   };
 
   onLoginSuccess() {
@@ -81,6 +90,7 @@ class AuthContextProvider extends Component {
           signInWithGoogle: this.signInWithGoogle,
           saveUserUID: this.saveUserUID,
           saveUser: this.saveUser,
+          savePet: this.savePet,
         }}
       >
         {this.props.children}
