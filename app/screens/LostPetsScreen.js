@@ -58,7 +58,9 @@ export default class LostPetsScreen extends React.Component {
                   style={styles.button}
                   onPress={() => this.props.navigation.navigate("LostPetsSeen")}
                 >
-                  <Text style={styles.buttonText}>Go to pets sights > S</Text>
+                  <Text style={styles.buttonText}>
+                    Go to pets sights &gt; S
+                  </Text>
                 </TouchableOpacity>
               </View>
 

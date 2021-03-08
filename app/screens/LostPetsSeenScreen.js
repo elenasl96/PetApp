@@ -6,6 +6,7 @@ import {
   Button,
   Image,
   TouchableHighlight,
+  TouchableOpacity,
   ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
@@ -50,6 +51,16 @@ export default class LostPetsSeenScreen extends React.Component {
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.myPlacesContainer}>
               <Text style={styles.title}>Lost Pets</Text>
+              <View style={styles.buttons}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => this.props.navigation.navigate("LostPets")}
+                >
+                  <Text style={styles.buttonText}>
+                    Go to pets sights &gt; S
+                  </Text>
+                </TouchableOpacity>
+              </View>
               <View
                 style={{
                   flex: 1,
@@ -89,6 +100,32 @@ const styles = StyleSheet.create({
   },
   mainContent: {
     flex: 1,
+  },
+  buttons: {
+    paddingTop: 5,
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    marginBottom: 10,
+    paddingRight: 20,
+  },
+  button: {
+    //backgroundColor: "#F9844A",
+    //height: 44,
+    //borderRadius: 22,
+
+    padding: 10,
+    marginLeft: 10,
+    borderBottomColor: "orange",
+    borderBottomWidth: 2,
+  },
+
+  buttonText: {
+    color: "orange",
+    alignSelf: "center",
+    fontWeight: "bold",
   },
   topBar: {
     flexDirection: "row",
