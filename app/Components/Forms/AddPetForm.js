@@ -29,7 +29,7 @@ class AddPetForm extends Component {
     breed: null,
     size: null,
     photo: "",
-    type: null,
+    type: "dog",
   };
 
   registerPet() {
