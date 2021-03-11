@@ -12,7 +12,7 @@ class AuthContextProvider extends Component {
     user: null,
     loading: false,
     uid: "",
-    pets: [],
+ //   pets: [],
   };
 
 
@@ -27,12 +27,13 @@ class AuthContextProvider extends Component {
     console.log(this.state.user);
   };
 
+/*
   savePet = (pet) => {
     this.state.pets.push(pet);
     console.log("pets in context:");
     console.log(this.state.pets);
   };
-
+*/
   onLoginSuccess() {
     this.props.navigation.navigate("App");
   }
@@ -90,7 +91,7 @@ class AuthContextProvider extends Component {
           signInWithGoogle: this.signInWithGoogle,
           saveUserUID: this.saveUserUID,
           saveUser: this.saveUser,
-          savePet: this.savePet,
+          //savePet: this.savePet,
         }}
       >
         {this.props.children}

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, {useContext,useEffect} from "react";
 import {
   StyleSheet,
   Text,
@@ -9,35 +9,34 @@ import {
 import firebase from "firebase";
 import db from "../firebase/DatabaseManager.js";
 import { AuthContext } from "../Components/AuthContext";
+//import Animal from "../firebase/Animal.js";
 
 class PetButton extends React.Component {
 
   state = {
     pet: null,
     mounted: true,
-    prevState: null,
+    //prevState: [],
   };
 
-  static contextType = AuthContext;
+ // static contextType = AuthContext;
 
 
   componentDidMount() {
     this.setState({ mounted: true });
-    console.log(this.context.pets);
+    //console.log(this.state.pet);
   }
+  /*
+  useEffect(() => {
+    console.log("Context change detected!");
+    changePetButtons(this.context.pets);
+  }, [this.context.pets]);
+  */
 
-  componentDidUpdate() {
-    var pets = this.context.pets;
-    console.log("Listen");
-    if ( (this.state.pet == null || this.state.prevState.length != pets.length) && this.state.mounted) {
-      console.log("Update!");
+componentDidUpdate() {
+    if (this.state.pet == null && this.state.mounted) {
       const navigation = this.props.navigation;
-      console.log("PrevState:" + this.state.prevState);
-      this.state.prevState = pets;
-      console.log("Pets:" + pets);
-
-      //const pets = this.props.pets;
-      //const pets = this.context.pets;
+      const pets = this.props.pets;
       var petButtons = [];
 
       pets.map((petID) => {
@@ -47,27 +46,27 @@ class PetButton extends React.Component {
             <TouchableHighlight
               style={styles.pet}
               value={petID}
-              key={petID}
-              onPress={() =>
-                navigation.push("Pet", {
-                  pet: animal,
-                  petID: petID,
-                })
-              }
-            >
-              <Image
-                source={{ uri: animal.photo }}
-                style={styles.petImage}
-              ></Image>
-            </TouchableHighlight>
-          );
-          if (this.state.mounted) {
-            this.setState({ pet: petButtons });
-          }
-        });
-      });
-    }
-  }
+                            key={petID}
+                            onPress={() =>
+                              navigation.push("Pet", {
+                                pet: animal,
+                                petID: petID,
+                              })
+                            }
+                          >
+                            <Image
+                              source={{ uri: animal.photo }}
+                              style={styles.petImage}
+                            ></Image>
+                          </TouchableHighlight>
+                        );
+                        if (this.state.mounted) {
+                          this.setState({ pet: petButtons });
+                        }
+                      });
+                    });
+                  }
+                }
 
   componentWillUnmount() {
     this.setState({ mounted: false });
