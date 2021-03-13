@@ -40,9 +40,8 @@ class SignUpScreen extends React.Component {
   async signUpWithEmail() {
     await auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then((userCredential) => {
+      .then((user) => {
         auth().setPersistence(auth.Auth.Persistence.LOCAL);
-        const user = auth().currentUser;
         db.addUser(user.uid, this.state.name, "", "user", "via veglia").then(
           "User Registered"
         );

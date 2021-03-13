@@ -11,6 +11,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
+import { auth } from "../firebase/firebaseconfig.js";
 import "firebase/firestore";
 
 import mainStyle from "../styles/mainStyle";
@@ -28,6 +29,30 @@ class SignInScreen extends React.Component {
         </View>
       );
     }
+  }
+
+  onLoginFailure(errorMessage) {
+    this.setState({ error: errorMessage, loading: false });
+  }
+
+  async signInWithEmail() {
+    await auth()
+      .signInWithEmailAndPassword(this.state.email, this.state.password)
+      .then((user) => {
+        auth().setPersistence(auth.Auth.Persistence.LOCAL);
+        db.getUser(user.uid).then((userFromDb) => {
+          this.context.saveUser(userFromDb);
+        });
+      })
+      .catch((error) => {
+        let errorCode = error.code;
+        let errorMessage = error.message;
+        if (errorCode == "auth/weak-password") {
+          this.onLoginFailure.bind(this)("Weak Password!");
+        } else {
+          this.onLoginFailure.bind(this)(errorMessage);
+        }
+      });
   }
 
   render() {
@@ -73,7 +98,7 @@ class SignInScreen extends React.Component {
             <Text style={mainStyle.error}>{this.state.error}</Text>
             <TouchableOpacity
               style={styles.signIn}
-              onPress={this.context.signInWithEmail}
+              onPress={this.signInWithEmail.bind(this)}
             >
               <Text>Sign In</Text>
             </TouchableOpacity>
