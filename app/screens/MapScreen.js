@@ -7,18 +7,20 @@ import {
   Dimensions,
   Image,
   Button,
+  TouchableHighlight,
 } from "react-native";
 import * as Location from "expo-location";
 import { Marker, Callout, CustomCalloutView } from "react-native-maps";
 import db from "../firebase/DatabaseManager";
-import { TouchableHighlight } from "react-native-gesture-handler";
 import * as Permissions from "expo-permissions";
+import { Feather } from "@expo/vector-icons";
 
 export default class MapScreen extends React.Component {
   state = {
     mounted: false,
     markersAreLoaded: false,
-    markers: [],
+    places: [],
+    visibleMarkers: [],
     pids: [],
     map: null,
     region: {
@@ -28,58 +30,11 @@ export default class MapScreen extends React.Component {
       longitudeDelta: 0.0421,
     },
     currentPosition: null,
+    pin: [],
   };
 
   constructor() {
     super();
-  }
-
-  onRegionChange(region) {
-    this.setState({ region });
-  }
-
-  showPlace(place, index) {
-    if (place.getType() == "kennel") {
-      this.props.navigation.navigate("Kennel", {
-        place: place,
-        pid: this.state.pids[index],
-      });
-    } else {
-      this.props.navigation.navigate("Vet", {
-        place: place,
-        pid: this.state.pids[index],
-      });
-    }
-  }
-
-  async setMapOnCurrentPosition() {
-    const { status } = await Permissions.askAsync(Permissions.LOCATION);
-    if (status === "granted") {
-      let location = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.Lowest,
-      });
-      this.setState({ currentPosition: location });
-      let regionUpdate = {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-      };
-      this.state.map.animateToRegion(regionUpdate, 1);
-    } else {
-      throw new Error("Location permission not granted");
-    }
-  }
-
-  getPlaceColor(placeType) {
-    switch (placeType) {
-      case "vet":
-        return "blue";
-      case "kennel":
-        return "orange";
-      default:
-        return "green";
-    }
   }
 
   componentDidMount() {
@@ -87,7 +42,8 @@ export default class MapScreen extends React.Component {
     db.getPlaces().then((placesIds) => {
       placesIds.map((placeId) => {
         db.getPlace(placeId).then((place) => {
-          this.state.markers.push(place);
+          this.state.places.push(place);
+          this.state.visibleMarkers.push(place);
           this.state.pids.push(placeId);
           this.setState({ mounted: true });
         });
@@ -118,14 +74,109 @@ export default class MapScreen extends React.Component {
     this.setState({ mounted: false });
   }
 
+  async setMapOnCurrentPosition() {
+    const { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status === "granted") {
+      let location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Lowest,
+      });
+      this.setState({ currentPosition: location });
+      let regionUpdate = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      };
+      this.state.map.animateToRegion(regionUpdate, 1);
+    } else {
+      throw new Error("Location permission not granted");
+    }
+  }
+
+  getPlaceColor(placeType) {
+    if (placeType == "kennel" || placeType == "Kennel") {
+      return "orange";
+    } else if (placeType === "Vet" || placeType === "vet") {
+      return "lightblue";
+    } else {
+      return "green";
+    }
+  }
+
+  showVetMarkers() {
+    let vetMarkers = this.state.places.filter(
+      (marker) => marker.type === "Vet" || marker.type === "vet"
+    );
+    this.setState({ visibleMarkers: vetMarkers });
+  }
+
+  showKennelMarkers() {
+    let kennelMarkers = this.state.places.filter(
+      (marker) => marker.type === "kennel" || marker.type === "Kennel"
+    );
+    console.log(kennelMarkers);
+    this.setState({ visibleMarkers: kennelMarkers });
+  }
+
+  showAllMarkers() {
+    this.setState({ visibleMarkers: this.state.places });
+  }
+
+  onRegionChange(region) {
+    this.setState({ region });
+  }
+
+  showPlace(place, index) {
+    if (place.getType() == "kennel") {
+      this.props.navigation.navigate("Kennel", {
+        place: place,
+        pid: this.state.pids[index],
+      });
+    } else {
+      this.props.navigation.navigate("Vet", {
+        place: place,
+        pid: this.state.pids[index],
+      });
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Button
-          style={styles.currentPositionButton}
-          title="P"
-          onPress={this.setMapOnCurrentPosition.bind(this)}
-        />
+        <View style={styles.overlay}>
+          <TouchableHighlight
+            style={styles.mapButton}
+            onPress={this.showVetMarkers.bind(this)}
+            underlayColor={"rgb(200,200,200)"}
+          >
+            <Text style={{ textAlign: "center" }}>Vet</Text>
+          </TouchableHighlight>
+          <TouchableHighlight
+            style={styles.mapButton}
+            onPress={this.showKennelMarkers.bind(this)}
+            underlayColor={"rgb(200,200,200)"}
+          >
+            <Text style={{ textAlign: "center" }}>Kennel</Text>
+          </TouchableHighlight>
+          <TouchableHighlight
+            style={styles.mapButton}
+            onPress={this.showAllMarkers.bind(this)}
+            underlayColor={"rgb(200,200,200)"}
+          >
+            <Text style={{ textAlign: "center" }}>All</Text>
+          </TouchableHighlight>
+        </View>
+        <View style={styles.bottomOverlay}>
+          <TouchableHighlight
+            style={styles.mapButton}
+            onPress={this.setMapOnCurrentPosition.bind(this)}
+            underlayColor={"rgb(200,200,200)"}
+          >
+            <Text style={{ textAlign: "center" }}>
+              <Feather name="map-pin" size={24} color="black" />
+            </Text>
+          </TouchableHighlight>
+        </View>
         <MapView
           ref={(map) => {
             this.state.map = map;
@@ -135,7 +186,7 @@ export default class MapScreen extends React.Component {
           style={styles.mapStyle}
           onRegionChangeComplete={this.onRegionChange.bind(this)}
         >
-          {this.state.markers.map((marker, index) => (
+          {this.state.visibleMarkers.map((marker, index) => (
             <Marker
               key={index}
               coordinate={{
@@ -184,7 +235,8 @@ const styles = StyleSheet.create({
   },
   mapStyle: {
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height - 150,
+    height: Dimensions.get("window").height,
+    zIndex: -1,
   },
   infoWindow: {
     minWidth: 120,
@@ -192,14 +244,32 @@ const styles = StyleSheet.create({
   placeName: {
     fontWeight: "bold",
   },
-  currentPositionButton: {
-    position: "absolute",
-    right: 20,
-    top: 400,
-    zIndex: 1,
+  mapButton: {
+    padding: 10,
+    borderRadius: 25,
+    backgroundColor: "rgba(255, 255, 255, 1)",
+    overflow: "hidden",
+    elevation: 2,
+    marginHorizontal: 5,
   },
   markerImage: {
     height: 35,
     width: 35,
+  },
+  overlay: {
+    position: "absolute",
+    flex: 1,
+    top: 10,
+    right: 10,
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  bottomOverlay: {
+    position: "absolute",
+    bottom: 20,
+    right: 10,
+    flex: 1,
+    flexDirection: "row",
   },
 });
