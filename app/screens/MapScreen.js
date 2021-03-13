@@ -40,18 +40,23 @@ export default class MapScreen extends React.Component {
   componentDidMount() {
     this.setState({ mounted: true });
     db.getPlaces().then((placesIds) => {
-      placesIds.map((placeId) => {
-        db.getPlace(placeId).then((place) => {
-          this.state.places.push(place);
-          this.state.visibleMarkers.push(place);
+      let promises = placesIds.map((placeId) => {
+        return db.getPlace(placeId).then((place) => {
           this.state.pids.push(placeId);
-          this.setState({ mounted: true });
+          return place;
         });
+      });
+      Promise.all(promises).then((places) => {
+        console.log("PLACES");
+        console.log(places);
+        this.setState({ places: places });
+        this.showAllMarkers();
+        this.setMapOnCurrentPosition();
       });
     });
   }
 
-  componentDidUpdate() {
+  /* componentDidUpdate() {
     if (this.state.markersAreLoaded) {
       Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.Lowest,
@@ -68,7 +73,7 @@ export default class MapScreen extends React.Component {
         })
         .then(this.setState({ markersAreLoaded: false }));
     }
-  }
+  }*/
 
   componentWillUnmount() {
     this.setState({ mounted: false });
@@ -114,7 +119,6 @@ export default class MapScreen extends React.Component {
     let kennelMarkers = this.state.places.filter(
       (marker) => marker.type === "kennel" || marker.type === "Kennel"
     );
-    console.log(kennelMarkers);
     this.setState({ visibleMarkers: kennelMarkers });
   }
 

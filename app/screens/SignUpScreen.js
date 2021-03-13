@@ -23,12 +23,12 @@ import { Picker } from "@react-native-picker/picker";
 class SignUpScreen extends React.Component {
   static contextType = AuthContext;
   state = {
-    name: "",
-    email: "",
-    password: "",
-    address: "",
-    type: "",
-    errorMessage: "",
+    name: null,
+    email: null,
+    password: null,
+    address: null,
+    type: null,
+    errorMessage: null,
     loading: false,
     mounted: true,
   };
@@ -38,26 +38,36 @@ class SignUpScreen extends React.Component {
   }
 
   async signUpWithEmail() {
-    await auth()
-      .createUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then((user) => {
-        auth().setPersistence(auth.Auth.Persistence.LOCAL);
-        db.addUser(user.uid, this.state.name, "", "user", "via veglia").then(
-          "User Registered"
-        );
-        db.getUser(user.uid).then((userFromDb) => {
-          this.context.saveUser(userFromDb);
+    if (
+      this.state.name &&
+      this.state.email &&
+      this.state.password &&
+      this.state.address &&
+      this.state.type
+    ) {
+      await auth()
+        .createUserWithEmailAndPassword(this.state.email, this.state.password)
+        .then((user) => {
+          auth().setPersistence(auth.Auth.Persistence.LOCAL);
+          db.addUser(user.uid, this.state.name, "", "user", "via veglia").then(
+            "User Registered"
+          );
+          db.getUser(user.uid).then((userFromDb) => {
+            this.context.saveUser(userFromDb);
+          });
+        })
+        .catch((error) => {
+          let errorCode = error.code;
+          let errorMessage = error.message;
+          if (errorCode == "auth/weak-password") {
+            this.onLoginFailure.bind(this)("Weak Password!");
+          } else {
+            this.onLoginFailure.bind(this)(errorMessage);
+          }
         });
-      })
-      .catch((error) => {
-        let errorCode = error.code;
-        let errorMessage = error.message;
-        if (errorCode == "auth/weak-password") {
-          this.onLoginFailure.bind(this)("Weak Password!");
-        } else {
-          this.onLoginFailure.bind(this)(errorMessage);
-        }
-      });
+    } else {
+      this.onLoginFailure.bind(this)("Compilare tutti i campi");
+    }
   }
 
   async signInWithFacebook() {

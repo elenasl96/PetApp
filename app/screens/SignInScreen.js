@@ -36,23 +36,27 @@ class SignInScreen extends React.Component {
   }
 
   async signInWithEmail() {
-    await auth()
-      .signInWithEmailAndPassword(this.state.email, this.state.password)
-      .then((user) => {
-        auth().setPersistence(auth.Auth.Persistence.LOCAL);
-        db.getUser(user.uid).then((userFromDb) => {
-          this.context.saveUser(userFromDb);
+    if (this.state.email && this.state.password) {
+      await auth()
+        .signInWithEmailAndPassword(this.state.email, this.state.password)
+        .then((user) => {
+          auth().setPersistence(auth.Auth.Persistence.LOCAL);
+          db.getUser(user.uid).then((userFromDb) => {
+            this.context.saveUser(userFromDb);
+          });
+        })
+        .catch((error) => {
+          let errorCode = error.code;
+          let errorMessage = error.message;
+          if (errorCode == "auth/weak-password") {
+            this.onLoginFailure.bind(this)("Weak Password!");
+          } else {
+            this.onLoginFailure.bind(this)(errorMessage);
+          }
         });
-      })
-      .catch((error) => {
-        let errorCode = error.code;
-        let errorMessage = error.message;
-        if (errorCode == "auth/weak-password") {
-          this.onLoginFailure.bind(this)("Weak Password!");
-        } else {
-          this.onLoginFailure.bind(this)(errorMessage);
-        }
-      });
+    } else {
+      this.onLoginFailure.bind(this)("Compilare tutti i campi");
+    }
   }
 
   render() {
