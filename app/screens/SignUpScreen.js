@@ -23,15 +23,52 @@ import { Picker } from "@react-native-picker/picker";
 class SignUpScreen extends React.Component {
   static contextType = AuthContext;
   state = {
-    displayName: "",
-    email: "",
-    password: "",
-    address: "",
-    type: "",
-    errorMessage: "",
+    name: null,
+    email: null,
+    password: null,
+    address: null,
+    type: null,
+    errorMessage: null,
     loading: false,
     mounted: true,
   };
+
+  onLoginFailure(errorMessage) {
+    this.setState({ error: errorMessage, loading: false });
+  }
+
+  async signUpWithEmail() {
+    if (
+      this.state.name &&
+      this.state.email &&
+      this.state.password &&
+      this.state.address &&
+      this.state.type
+    ) {
+      await auth()
+        .createUserWithEmailAndPassword(this.state.email, this.state.password)
+        .then((user) => {
+          auth().setPersistence(auth.Auth.Persistence.LOCAL);
+          db.addUser(user.uid, this.state.name, "", "user", "via veglia").then(
+            "User Registered"
+          );
+          db.getUser(user.uid).then((userFromDb) => {
+            this.context.saveUser(userFromDb);
+          });
+        })
+        .catch((error) => {
+          let errorCode = error.code;
+          let errorMessage = error.message;
+          if (errorCode == "auth/weak-password") {
+            this.onLoginFailure.bind(this)("Weak Password!");
+          } else {
+            this.onLoginFailure.bind(this)(errorMessage);
+          }
+        });
+    } else {
+      this.onLoginFailure.bind(this)("Compilare tutti i campi");
+    }
+  }
 
   async signInWithFacebook() {
     try {
@@ -104,8 +141,8 @@ class SignUpScreen extends React.Component {
                 placeholderTextColor="#616161"
                 returnKeyType="next"
                 textContentType="name"
-                value={this.state.displayName}
-                onChangeText={(displayName) => this.setState({ displayName })}
+                value={this.state.name}
+                onChangeText={(name) => this.setState({ name })}
               />
             </View>
             <View style={mainStyle.form}>
@@ -159,7 +196,7 @@ class SignUpScreen extends React.Component {
             <Text style={styles.error}>{this.state.error}</Text>
             <TouchableOpacity
               style={styles.text}
-              onPress={this.signupWithEmail}
+              onPress={this.signUpWithEmail.bind(this)}
             >
               <Text>Sign Up</Text>
             </TouchableOpacity>

@@ -7,14 +7,12 @@ import db from "../firebase/DatabaseManager";
 export const AuthContext = React.createContext();
 
 class AuthContextProvider extends Component {
-
   state = {
     user: null,
     loading: false,
     uid: "",
- //   pets: [],
+    //   pets: [],
   };
-
 
   saveUserUID = (uid) => {
     this.setState({ uid: uid });
@@ -27,7 +25,7 @@ class AuthContextProvider extends Component {
     console.log(this.state.user);
   };
 
-/*
+  /*
   savePet = (pet) => {
     this.state.pets.push(pet);
     console.log("pets in context:");
@@ -36,27 +34,6 @@ class AuthContextProvider extends Component {
 */
   onLoginSuccess() {
     this.props.navigation.navigate("App");
-  }
-
-  onLoginFailure(errorMessage) {
-    this.setState({ error: errorMessage, loading: false });
-  }
-
-  async signInWithEmail(state) {
-    await firebase
-      .auth()
-      .signInWithEmailAndPassword(this.state.email, this.state.password)
-      .then(this.onLoginSuccess.bind(this))
-      .then(console.log(state))
-      .catch((error) => {
-        let errorCode = error.code;
-        let errorMessage = error.message;
-        if (errorCode == "auth/weak-password") {
-          //this.onLoginFailure.bind(this)("Weak Password!");
-        } else {
-          this.onLoginFailure.bind(this)(errorMessage);
-        }
-      });
   }
 
   async signInWithGoogle() {
