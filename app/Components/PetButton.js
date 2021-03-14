@@ -41,7 +41,7 @@ componentDidUpdate() {
 
       pets.map((petID) => {
         db.getUserAnimal(this.props.uid, petID).then((animal) => {
-          console.log("Adding animal: " + animal.name);
+          //console.log("Adding animal: " + animal.name);
           db.getAnimalStatSamples(this.props.uid,petID,'weight').then((WIDs) => {  // WID weight sample id
             db.getAnimalStatSamples(this.props.uid,petID,'height').then((HIDs) => { // HID height sample id
               db.getAnimalDiseases(this.props.uid,petID).then((DIDs) => {   //DID disease id

@@ -17,17 +17,19 @@ export default class Chart extends React.Component {
   }
 
   constructor(props){
+
     super(props);
     //this.state.labels=this.props.labels;
     //this.state.data = this.props.data;
   }
 
   ComponentDidMount()  {
-    console.log("Data " + this.props.data );
-    console.log("Labels " + this.props.labels);
+    //console.log("Data " + this.props.data );
+    //console.log("Labels " + this.props.labels);
   }
 
   render() {
+
     return (
         <View style={styles.container}>
           <View>

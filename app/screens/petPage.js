@@ -3,6 +3,7 @@ import React,{useState} from "react";
 import {
   StyleSheet,
   Text,
+  TextInput,
   View,
   SafeAreaView,
   Button,
@@ -20,6 +21,7 @@ import { withNavigation } from "react-navigation";
 
 import Chart from "./PetChart.js";
 
+
 class PetScreen extends React.Component {
 
   state = {
@@ -29,7 +31,15 @@ class PetScreen extends React.Component {
           dataHeight: [],
           labelsHeight: [],
           diseases: [],
+          data: [],
+          labels: [],
+          newdata: null,
+          newlabel: null,
+          newtype: null,
+          mounted: true,
   }
+
+
 
   //state = { user: {} };
 
@@ -37,27 +47,36 @@ class PetScreen extends React.Component {
 
   componentDidMount(){
 
+    this.setState({newtype:"weight"});
+
     const WIDs = this.props.navigation.state.params.WIDs;
     WIDs.map((wid) => {
       db.getAnimalStatSample(this.context.uid,this.props.navigation.state.params.petID,"weight",wid).then((sample) => {
          this.state.dataWeight.push(sample.value);
-         this.state.dataHeight.push(sample.label);
+         this.state.labelsWeight.push(sample.label);
+         this.state.data.push(sample.value);
+         this.state.labels.push(sample.label);
+         //console.log("weight label: "+ sample.label);
+         this.setState({mounted:true});
       });
     });
 
     const HIDs = this.props.navigation.state.params.HIDs;
     HIDs.map((hid) => {
       db.getAnimalStatSample(this.context.uid,this.props.navigation.state.params.petID,"height",hid).then((sample) => {
-                this.state.dataWeight.push(sample.value);
-                this.state.dataHeight.push(sample.label);
+                this.state.dataHeight.push(sample.value);
+                this.state.labelsHeight.push(sample.label);
+                this.setState({mounted:true});
              });
     });
 
     const DIDs = this.props.navigation.state.params.DIDs;
-    console.log("DIDs in mount: "+  DIDs);
+    //console.log("DIDs in mount: "+  DIDs);
     DIDs.map((did) => {
       db.getAnimalDisease(this.context.uid,this.props.navigation.state.params.petID,did).then((disease) => {
+                      //console.log("Disease retrieved: "+ disease.name);
                       this.state.diseases.push(disease.name);
+                      this.setState({mounted:true});
                    });
     });
 
@@ -73,27 +92,87 @@ class PetScreen extends React.Component {
     });
   };
 
-  addPetStat = () => {};
+  addPetStatSample = () => {
+     console.log("addPetStatSample");
+     db.addAnimalStatSample(this.context.uid,this.props.navigation.state.params.petID,this.state.newtype,this.state.newdata);
+     var date = new Date();
+         var day = date.getDate();
+         if (day < 10) day = "0" + day;
+         var month = date.getMonth();
+         month = month + 1;
+         if (month < 10) month = "0" + month;
+         var year = date.getFullYear();
+         /*
+         var hours = date.getHours();
+         if (hours < 10) hours = "0" + hours;
+         var minutes = date.getMinutes();
+         if (minutes < 10) minutes = "0" + minutes;
+         var seconds = date.getSeconds();
+         if (seconds < 10) seconds = "0" + seconds; */
+         var timestamp =
+           day +
+           "/" +
+           month +
+           "/" +
+           year ;
+     if (this.state.newtype == "weight"){
+        this.state.dataWeight.push(this.state.newdata);
+        this.state.data.push(this.state.newdata);
+        this.state.labelsWeight.push(timestamp);
+        this.state.labels.push(timestamp);
+     }
+
+     if (this.state.newtype == "height"){
+             this.state.dataHeight.push(this.state.newdata);
+             this.state.data.push(this.state.newdata);
+             this.state.labelsHeight.push(timestamp);
+             this.state.labels.push(timestamp);
+     }
+
+     console.log("Added new sample with value: " + this.state.newdata + " and label: " + timestamp);
+     this.setState({mounted:true});
+
+  };
+
+  showWeight = () => {
+    //console.log("Weight");
+    this.state.data = this.state.dataWeight;
+    this.state.labels = this.state.labelsWeight;
+    //console.log("samples: "+ this.state.data);
+    //console.log("labels: " + this.state.labels);
+    this.setState({mounted:true});
+    this.setState({newtype:"weight"});
+  }
+
+  showHeight = () => {
+    //console.log("Height");
+    this.state.data = this.state.dataHeight;
+    this.state.labels = this.state.labelsHeight;
+    //console.log("samples: "+ this.state.data);
+    //console.log("labels: " + this.state.labels);
+    this.setState({newtype:"height"});
+  }
 
   render() {
 
     const pet = this.props.navigation.state.params.pet;
-    const dataWeight = this.state.dataWeight;
-    const labelsWeight = this.state.labelsWeight;
-    const dataHeight = this.state.dataHeight;
-    const labelsHeight = this.state.labelsHeight;
-    const diseases = this.state.diseases;
+    //const data = this.state.data;
+    //const labels = this.state.labels;
+    var diseases = "";
+    this.state.diseases.forEach((disease) => {
+      if (diseases.length != 0) { diseases = diseases + ","; }
+      diseases = diseases + disease ;
+    });
 
-    console.log("Weight samples : "+ dataWeight);
-    console.log("Height samples : "+ dataHeight);
-    console.log("Diseases : "+ diseases);
+    //console.log("Weight samples : "+ this.state.data);
+    //console.log("Weight labels : "+ this.state.labels);
+    //console.log("Diseases : "+ diseases);
 
 
-    /*
-    this.state.data = [30,40,50,60];
-    this.state.labels = ['09/03/2021','10/03/2021','11/03/2021','12/03/2021'];
-    const data = this.state.data;
-    const labels = this.state.labels; */
+    //this.state.data = [30,40,50,60];
+    //this.state.labels = ['09/03/2021','10/03/2021','11/03/2021','12/03/2021'];
+    const data = [30,40,50,60];
+    const labels = ['09/03/2021','10/03/2021','11/03/2021','12/03/2021'];
 
 
     return (
@@ -165,15 +244,17 @@ class PetScreen extends React.Component {
 
               <TouchableHighlight>
                 <View style={styles.info}>
-                  <Text>Disease</Text>
-                  <Text>{pet.diseases}</Text>
+                  <Text>Diseases</Text>
+
+                    <Text>{diseases}</Text>
+
                 </View>
               </TouchableHighlight>
             </ScrollView>
 
             <TouchableHighlight
                         style={styles.petButton}
-                        //onPress={this.showAllMarkers.bind(this)}
+                        onPress={this.showWeight.bind(this)}
                         underlayColor={"rgb(200,200,200)"}
                       >
                         <Text style={{ textAlign: "center" }}>weight</Text>
@@ -181,13 +262,38 @@ class PetScreen extends React.Component {
 
             <TouchableHighlight
                         style={styles.petButton}
-                        //onPress={this.showAllMarkers.bind(this)}
+                        onPress={this.showHeight.bind(this)}
                         underlayColor={"rgb(200,200,200)"}
                       >
                         <Text style={{ textAlign: "center" }}>height</Text>
                       </TouchableHighlight>
 
-            <Chart labels = {labelsWeight} data = {dataWeight} />
+
+            <Chart labels = {labels} data = {data} />
+
+
+            <Text style={styles.title}>Add new sample</Text>
+                    <View style={mainStyle.form}>
+                      <TextInput
+                        style={mainStyle.inputText}
+                        placeholder="Value"
+                        placeholderTextColor="#616161"
+                        returnKeyType="next"
+                        textContentType="name"
+                        value={this.state.newdata}
+                        onChangeText={(newdata) => this.setState({ newdata })}
+                      />
+                    </View>
+
+            <TouchableHighlight
+                                    style={styles.petButton}
+                                    onPress={this.addPetStatSample.bind(this)}
+                                    underlayColor={"rgb(200,200,200)"}
+                                  >
+                                    <Text style={{ textAlign: "center" }}>Save</Text>
+                                  </TouchableHighlight>
+
+
 
           </ScrollView>
         </View>

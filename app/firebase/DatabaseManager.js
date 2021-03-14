@@ -122,37 +122,37 @@ const db = {
   },
 
   addAnimalStatSample: function (uid, aid, stat, value) {
+
     const users = firestore.collection("Users");
     const animals = users.doc(uid).collection("Animals");
     var date = new Date();
-    var day = date.getDate();
-    if (day < 10) day = "0" + day;
-    var month = date.getMonth();
-    month = month + 1;
-    if (month < 10) month = "0" + month;
-    var year = date.getFullYear();
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
-    var seconds = date.getSeconds();
-    var timestamp =
-      day +
-      "/" +
-      month +
-      "/" +
-      year +
-      " " +
-      hours +
-      ":" +
-      minutes +
-      ":" +
-      seconds;
-    console.log(timestamp);
+             var day = date.getDate();
+             if (day < 10) day = "0" + day;
+             var month = date.getMonth();
+             month = month + 1;
+             if (month < 10) month = "0" + month;
+             var year = date.getFullYear();
+             /*
+             var hours = date.getHours();
+             if (hours < 10) hours = "0" + hours;
+             var minutes = date.getMinutes();
+             if (minutes < 10) minutes = "0" + minutes;
+             var seconds = date.getSeconds();
+             if (seconds < 10) seconds = "0" + seconds; */
+             var timestamp =
+               day +
+               "/" +
+               month +
+               "/" +
+               year ;
+    //console.log(timestamp);
     animals
       .doc(aid)
       .collection("Stats")
       .doc(stat)
       .collection("Samples")
-      .add({ timestamp: timestamp, value: value });
+      .doc(date.toString())
+      .set({ label: timestamp, value: value });
   },
 
   getUserAnimals: function (uid) {
@@ -231,7 +231,7 @@ const db = {
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
           // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
+          //console.log(doc.id, " => ", doc.data());
           stats.push(doc.id);
           //console.log(user);
           return stats;
@@ -254,7 +254,7 @@ const db = {
       .get()
       .then(function (doc) {
         // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data());
+        //console.log(doc.id, " => ", doc.data());
         stat = doc.data().name;
         //console.log(user);
         return stat;
@@ -279,7 +279,7 @@ const db = {
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
           // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
+          //console.log(doc.id, " => ", doc.data());
           samples.push(doc.id);
           //console.log(user);
           return samples;
@@ -306,7 +306,7 @@ const db = {
       .get()
       .then(function (doc) {
         // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data());
+        //console.log(doc.id, " => ", doc.data());
         sample = doc.data();
         //console.log(user);
         return sample;
@@ -329,7 +329,7 @@ const db = {
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
           // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
+          //console.log(doc.id, " => ", doc.data());
           diseases.push(doc.id);
           //console.log(user);
           return diseases;
@@ -354,8 +354,8 @@ const db = {
       .get()
       .then(function (doc) {
         // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data());
-        disease = doc.data().disease;
+        //console.log(doc.id, " => ", doc.data());
+        disease = doc.data();
         //console.log(user);
         return disease;
       })
