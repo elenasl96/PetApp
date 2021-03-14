@@ -1,4 +1,5 @@
-import React from "react";
+import React,{useState} from "react";
+
 import {
   StyleSheet,
   Text,
@@ -17,10 +18,50 @@ import db from "../firebase/DatabaseManager";
 import { AuthContext } from "../Components/AuthContext";
 import { withNavigation } from "react-navigation";
 
+import Chart from "./PetChart.js";
+
 class PetScreen extends React.Component {
+
+  state = {
+          user: {},
+          dataWeight:  [],
+          labelsWeight: [],
+          dataHeight: [],
+          labelsHeight: [],
+          diseases: [],
+  }
+
+  //state = { user: {} };
+
   static contextType = AuthContext;
 
-  state = { user: {} };
+  componentDidMount(){
+
+    const WIDs = this.props.navigation.state.params.WIDs;
+    WIDs.map((wid) => {
+      db.getAnimalStatSample(this.context.uid,this.props.navigation.state.params.petID,"weight",wid).then((sample) => {
+         this.state.dataWeight.push(sample.value);
+         this.state.dataHeight.push(sample.label);
+      });
+    });
+
+    const HIDs = this.props.navigation.state.params.HIDs;
+    HIDs.map((hid) => {
+      db.getAnimalStatSample(this.context.uid,this.props.navigation.state.params.petID,"height",hid).then((sample) => {
+                this.state.dataWeight.push(sample.value);
+                this.state.dataHeight.push(sample.label);
+             });
+    });
+
+    const DIDs = this.props.navigation.state.params.DIDs;
+    console.log("DIDs in mount: "+  DIDs);
+    DIDs.map((did) => {
+      db.getAnimalDisease(this.context.uid,this.props.navigation.state.params.petID,did).then((disease) => {
+                      this.state.diseases.push(disease.name);
+                   });
+    });
+
+    }
 
   deletePet = () => {
     db.deleteAnimal(this.context.uid, this.props.navigation.state.params.petID);
@@ -35,7 +76,26 @@ class PetScreen extends React.Component {
   addPetStat = () => {};
 
   render() {
+
     const pet = this.props.navigation.state.params.pet;
+    const dataWeight = this.state.dataWeight;
+    const labelsWeight = this.state.labelsWeight;
+    const dataHeight = this.state.dataHeight;
+    const labelsHeight = this.state.labelsHeight;
+    const diseases = this.state.diseases;
+
+    console.log("Weight samples : "+ dataWeight);
+    console.log("Height samples : "+ dataHeight);
+    console.log("Diseases : "+ diseases);
+
+
+    /*
+    this.state.data = [30,40,50,60];
+    this.state.labels = ['09/03/2021','10/03/2021','11/03/2021','12/03/2021'];
+    const data = this.state.data;
+    const labels = this.state.labels; */
+
+
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.mainContent}>
@@ -69,9 +129,6 @@ class PetScreen extends React.Component {
                 >
                   <Text style={styles.buttonText}>Delete pet</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={null}>
-                  <Text style={styles.buttonText}>Add information</Text>
-                </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.button}
                   onPress={this.reportLoss}
@@ -94,23 +151,16 @@ class PetScreen extends React.Component {
 
               <TouchableHighlight>
                 <View style={styles.info}>
-                  <Text>Weight</Text>
-                  <Text>20kg</Text>
-                </View>
-              </TouchableHighlight>
-
-              <TouchableHighlight>
-                <View style={styles.info}>
-                  <Text>Height</Text>
-                  <Text>50cm</Text>
-                </View>
-              </TouchableHighlight>
-
-              <TouchableHighlight>
-                <View style={styles.info}>
                   <Text>Breed</Text>
                   <Text>{pet.breed}</Text>
                 </View>
+              </TouchableHighlight>
+
+              <TouchableHighlight>
+                              <View style={styles.info}>
+                                <Text>Color</Text>
+                                <Text>{pet.color}</Text>
+                              </View>
               </TouchableHighlight>
 
               <TouchableHighlight>
@@ -121,9 +171,24 @@ class PetScreen extends React.Component {
               </TouchableHighlight>
             </ScrollView>
 
-            <View style={styles.descriptionContainer}>
-              <Text style={mainStyle.text}>Chart</Text>
-            </View>
+            <TouchableHighlight
+                        style={styles.petButton}
+                        //onPress={this.showAllMarkers.bind(this)}
+                        underlayColor={"rgb(200,200,200)"}
+                      >
+                        <Text style={{ textAlign: "center" }}>weight</Text>
+                      </TouchableHighlight>
+
+            <TouchableHighlight
+                        style={styles.petButton}
+                        //onPress={this.showAllMarkers.bind(this)}
+                        underlayColor={"rgb(200,200,200)"}
+                      >
+                        <Text style={{ textAlign: "center" }}>height</Text>
+                      </TouchableHighlight>
+
+            <Chart labels = {labelsWeight} data = {dataWeight} />
+
           </ScrollView>
         </View>
 
@@ -141,6 +206,7 @@ class PetScreen extends React.Component {
     );
   }
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -164,6 +230,16 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     paddingBottom: 10,
   },
+  petButton: {
+               padding: 10,
+               borderRadius: 25,
+               backgroundColor: "rgba(255, 255, 255, 1)",
+               overflow: "hidden",
+               elevation: 2,
+               marginHorizontal: 5,
+               width: 70,
+               height: 30,
+             },
   button: {
     backgroundColor: "#F9844A",
     minWidth: 100,

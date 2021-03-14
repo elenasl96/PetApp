@@ -3,8 +3,8 @@ export default class AdoptableAnimal extends Animal{
 
    profile : string;
 
-   constructor(name,age,breed,size,photo,type,profile){
-             super(name,age,breed,size,photo,type);
+   constructor(name,age,breed,size,color,photo,type,profile){
+             super(name,age,breed,size,color,photo,type);
              this.profile = profile;
    }
 
@@ -18,6 +18,7 @@ export default class AdoptableAnimal extends Animal{
               age : this.age,
               breed : this.breed,
               size : this.size,
+              color : this.color,
               photo : this.photo,
               type: this.type,
               profile : this.profile,

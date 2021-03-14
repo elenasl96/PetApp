@@ -1,50 +1,61 @@
-/*Example of React Native Chart Kit*/
+
 import * as React from 'react';
-//import React
+
 import { Text, View, StyleSheet, Dimensions, ScrollView } from 'react-native';
-//import Basic React Native Components
+
 
 import {
   LineChart
 } from 'react-native-chart-kit';
 //import React Native chart Kit for different kind of Chart
 
-export default class PetChart extends React.Component {
+export default class Chart extends React.Component {
+
+  state = {
+    labels : [],
+    data: [],
+  }
+
+  constructor(props){
+    super(props);
+    //this.state.labels=this.props.labels;
+    //this.state.data = this.props.data;
+  }
+
+  ComponentDidMount()  {
+    console.log("Data " + this.props.data );
+    console.log("Labels " + this.props.labels);
+  }
+
   render() {
     return (
         <View style={styles.container}>
           <View>
-            {/*Example of Bezier LineChart*/}
-            <Text
-              style={{
-                textAlign: 'center',
-                fontSize: 18,
-                padding: 16,
-                marginTop: 16,
-              }}>
-              Bezier Line Chart
-            </Text>
             <LineChart
+              /*
               data={{
                 labels: ['January', 'February', 'March', 'April'],
                 datasets: [
                   {
                     data: [
-                      Math.random() * 100,
-                      Math.random() * 100,
-                      Math.random() * 100,
-                      Math.random() * 100,
-                      Math.random() * 100,
-                      Math.random() * 100,
+                      25,
+                      22,
+                      30,
+                      35
                     ],
                   },
                 ],
               }}
+              */
+              data = {{
+                labels : this.props.labels,
+                datasets : [{ data : this.props.data, }],
+              }}
               width={Dimensions.get('window').width - 16} // from react-native
-              height={220}
-              yAxisLabel={'$'}
+              height={200}
+              //yAxisLabel={}
               chartConfig={{
-                backgroundColor: '#1cc910',
+                //backgroundColor: 'white',
                 backgroundGradientFrom: '#eff3ff',
                 backgroundGradientTo: '#efefef',
                 decimalPlaces: 2, // optional, defaults to 2dp
@@ -79,6 +90,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 8,
     paddingTop: 30,
-    backgroundColor: '#ecf0f1',
+    //backgroundColor: '#ecf000',
   },
 });

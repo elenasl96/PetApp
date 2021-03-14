@@ -41,32 +41,42 @@ componentDidUpdate() {
 
       pets.map((petID) => {
         db.getUserAnimal(this.props.uid, petID).then((animal) => {
-          console.log(animal);
-          petButtons.push(
-            <TouchableHighlight
-              style={styles.pet}
-              value={petID}
-                            key={petID}
-                            onPress={() =>
-                              navigation.push("Pet", {
-                                pet: animal,
-                                petID: petID,
-                              })
-                            }
-                          >
-                            <Image
-                              source={{ uri: animal.photo }}
-                              style={styles.petImage}
-                            ></Image>
-                          </TouchableHighlight>
-                        );
-                        if (this.state.mounted) {
-                          this.setState({ pet: petButtons });
-                        }
-                      });
+          console.log("Adding animal: " + animal.name);
+          db.getAnimalStatSamples(this.props.uid,petID,'weight').then((WIDs) => {  // WID weight sample id
+            db.getAnimalStatSamples(this.props.uid,petID,'height').then((HIDs) => { // HID height sample id
+              db.getAnimalDiseases(this.props.uid,petID).then((DIDs) => {   //DID disease id
+                      petButtons.push(
+                        <TouchableHighlight
+                          style={styles.pet}
+                          value={petID}
+                                        key={petID}
+                                        onPress={() =>
+                                          navigation.push("Pet", {
+                                            pet: animal,
+                                            petID: petID,
+                                            WIDs : WIDs,
+                                            HIDs: HIDs,
+                                            DIDs: DIDs,
+                                          })
+                                        }
+                                      >
+                                        <Image
+                                          source={{ uri: animal.photo }}
+                                          style={styles.petImage}
+                                        ></Image>
+                                      </TouchableHighlight>
+                                    );
+                                    if (this.state.mounted) {
+                                      this.setState({ pet: petButtons });
+                                    }
+              });
+            });
+           });
+          });
+
                     });
                   }
-                }
+  }
 
   componentWillUnmount() {
     this.setState({ mounted: false });

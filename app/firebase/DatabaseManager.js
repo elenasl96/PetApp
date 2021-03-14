@@ -93,10 +93,10 @@ const db = {
 
   //--------------UserAnimal----------------------------------------
 
-  addUserAnimal: function (uid, name, age, breed, size, photo, type) {
+  addUserAnimal: function (uid, name, age, breed, size, color , photo, type) {
     const users = firestore.collection("Users");
     const animals = users.doc(uid).collection("Animals");
-    let animal = new Animal(name, age, breed, size, photo, type);
+    let animal = new Animal(name, age, breed, size, color, photo, type);
     console.log(type);
     animals.add(animal.toFirestore());
   },
@@ -208,6 +208,7 @@ const db = {
           data.age,
           data.breed,
           data.size,
+          data.color,
           data.photo,
           data.type
         );
@@ -526,6 +527,7 @@ const db = {
     age,
     breed,
     size,
+    color,
     photo,
     type,
     profile
@@ -537,6 +539,7 @@ const db = {
       age,
       breed,
       size,
+      color,
       photo,
       type,
       profile
@@ -563,6 +566,7 @@ const db = {
           data.age,
           data.breed,
           data.size,
+          data.color,
           data.photo,
           data.type,
           data.profile

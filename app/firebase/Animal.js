@@ -3,14 +3,16 @@ export default class Animal {
   age: int;
   breed: string;
   size: string;
+  color: string;
   photo: string;
   type: string;
 
-  constructor(name, age, breed, size, photo,type) {
+  constructor(name, age, breed, size, color, photo,type) {
     this.name = name;
     this.age = age;
     this.breed = breed;
     this.size = size;
+    this.color = color;
     this.photo = photo;
     this.type = type;
   }
@@ -31,6 +33,10 @@ export default class Animal {
     return this.size;
   }
 
+  getColor(){
+    return this.color;
+  }
+
   getPhoto() {
     return this.photo;
   }
@@ -45,6 +51,7 @@ export default class Animal {
       age: this.age,
       breed: this.breed,
       size: this.size,
+      color: this.color,
       photo: this.photo,
       type: this.type,
     };

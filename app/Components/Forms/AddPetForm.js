@@ -28,6 +28,7 @@ class AddPetForm extends Component {
     age: null,
     breed: null,
     size: null,
+    color: null,
     photo: "",
     type: "dog",
   };
@@ -40,6 +41,7 @@ class AddPetForm extends Component {
       this.state.age,
       this.state.breed,
       this.state.size,
+      this.state.color,
       this.state.photo,
       this.state.type
     );
@@ -115,6 +117,16 @@ class AddPetForm extends Component {
             onChangeText={(size) => this.setState({ size })}
           />
         </View>
+        <View style={mainStyle.form}>
+                  <TextInput
+                    style={mainStyle.inputText}
+                    placeholder="Color"
+                    placeholderTextColor="#616161"
+                    returnKeyType="next"
+                    value={this.state.color}
+                    onChangeText={(color) => this.setState({ color })}
+                  />
+                </View>
         <View style={mainStyle.form}>
           <Picker
             selectedValue={this.state.type}
