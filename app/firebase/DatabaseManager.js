@@ -151,7 +151,7 @@ const db = {
       .collection("Stats")
       .doc(stat)
       .collection("Samples")
-      .doc(date.toString())
+      .doc(Date.now().toString())
       .set({ label: timestamp, value: value });
   },
 
