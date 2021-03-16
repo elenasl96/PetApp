@@ -43,7 +43,6 @@ class HomeScreen extends React.Component {
                 db.getUserAnimal(uid, aid).then((animal) => {
                   animals.push(animal);
                   if (pets.length == animals.length) {
-                    //this.setState({ mounted: true });
                     let promise = new Promise((resolve, reject) => {
                       db.addRandomFeeds(animals, uid, info.lastlogin, 0);
                       setTimeout(() => {
@@ -53,8 +52,9 @@ class HomeScreen extends React.Component {
                     promise.then(() => {
                       db.getUserFeeds(uid).then((feeds) => {
                         this.setState({ feeds: feeds });
-                        console.log("FEEDS");
+                        console.log("FEEDS ID");
                         console.log(this.state.feeds);
+                        this.setState({ mounted: true });
                       });
                     });
                   }
@@ -127,10 +127,12 @@ class HomeScreen extends React.Component {
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
               >
-                <FeedBox
-                  uid={this.context.uid}
-                  feeds={this.state.feeds}
-                ></FeedBox>
+                {this.state.feeds.length > 0 ? (
+                  <FeedBox
+                    uid={this.context.uid}
+                    feeds={this.state.feeds}
+                  ></FeedBox>
+                ) : null}
               </ScrollView>
             </View>
 

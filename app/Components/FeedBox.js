@@ -19,6 +19,7 @@ class FeedBox extends React.Component {
 
   componentDidMount() {
     this.setState({ mounted: true });
+    console.log("IN BOX");
     const feeds = this.props.feeds;
 
     let promises = feeds.map((feedID, index) => {
@@ -45,6 +46,7 @@ class FeedBox extends React.Component {
   }
 
   render() {
+    console.log("F");
     if (this.state.mounted) {
       return this.state.feeds;
     }
