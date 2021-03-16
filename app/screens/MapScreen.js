@@ -18,8 +18,8 @@ import { Feather } from "@expo/vector-icons";
 export default class MapScreen extends React.Component {
   state = {
     mounted: false,
-    markersAreLoaded: false,
     places: [],
+    markers: [],
     visibleMarkers: [],
     pids: [],
     map: null,
@@ -56,25 +56,6 @@ export default class MapScreen extends React.Component {
     });
   }
 
-  /* componentDidUpdate() {
-    if (this.state.markersAreLoaded) {
-      Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.Lowest,
-      })
-        .then((location) => {
-          let regionCurrentPosition = {
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          };
-          console.log("POSITION CHANGING");
-          this.setState({ region: regionCurrentPosition });
-        })
-        .then(this.setState({ markersAreLoaded: false }));
-    }
-  }*/
-
   componentWillUnmount() {
     this.setState({ mounted: false });
   }
@@ -109,13 +90,17 @@ export default class MapScreen extends React.Component {
   }
 
   showVetMarkers() {
+    this.hideCallouts();
+
     let vetMarkers = this.state.places.filter(
       (marker) => marker.type === "Vet" || marker.type === "vet"
     );
+    console.log("MARKERS:" + vetMarkers.length);
     this.setState({ visibleMarkers: vetMarkers });
   }
 
   showKennelMarkers() {
+    this.hideCallouts();
     let kennelMarkers = this.state.places.filter(
       (marker) => marker.type === "kennel" || marker.type === "Kennel"
     );
@@ -123,7 +108,20 @@ export default class MapScreen extends React.Component {
   }
 
   showAllMarkers() {
+    console.log("MARKERS:" + this.state.markers.length);
+    this.hideCallouts();
+    this.removeMarkers();
     this.setState({ visibleMarkers: this.state.places });
+  }
+
+  hideCallouts() {
+    this.state.markers.forEach((marker) => {
+      marker.hideCallout();
+    });
+  }
+
+  removeMarkers() {
+    this.state.markers = [];
   }
 
   onRegionChange(region) {
@@ -145,6 +143,8 @@ export default class MapScreen extends React.Component {
   }
 
   render() {
+    this.state.markers = [];
+    console.log(this.state.markers.length);
     return (
       <View style={styles.container}>
         <View style={styles.overlay}>
@@ -190,9 +190,13 @@ export default class MapScreen extends React.Component {
           style={styles.mapStyle}
           onRegionChangeComplete={this.onRegionChange.bind(this)}
         >
+          {(this.state.markers = [])}
           {this.state.visibleMarkers.map((marker, index) => (
             <Marker
               key={index}
+              ref={(ref) => {
+                this.state.markers[index] = ref;
+              }}
               coordinate={{
                 latitude: marker.region.latitude,
                 longitude: marker.region.longitude,

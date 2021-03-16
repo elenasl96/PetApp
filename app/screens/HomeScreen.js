@@ -15,6 +15,7 @@ import PlusIcon from "../Components/PlusIcon";
 import PetButton from "../Components/PetButton";
 import db from "../firebase/DatabaseManager";
 import PlaceButton from "../Components/Buttons/PlaceButton";
+import FeedBox from "../Components/FeedBox";
 
 class HomeScreen extends React.Component {
   state = {
@@ -35,46 +36,34 @@ class HomeScreen extends React.Component {
           if (this.state.mounted) {
             this.setState({ pets: pets });
             db.getUser(this.context.uid).then((info) => {
-                        console.log(info);
-                        var animals = [];
-                        var uid = this.context.uid;
-                        pets.forEach(function(aid){
-                             db.getUserAnimal(uid,aid).then((animal) => {
-                               animals.push(animal);
-                               if(pets.length == animals.length){
-                                 //this.setState({mounted:true});
-                                 let promise = new Promise((function(resolve, reject) {
-                                                             db.addRandomFeeds(animals,uid,info.lastlogin,0);
-                                                             setTimeout(function(){resolve()},1000);
-
-                                 }));
-                                 promise.then(()=>{
-                                     db.getUserFeeds(uid).then((feeds) =>{
-                                        console.log("feeds added succesfully");
-                                        console.log(feeds);
-                                        //console.log(this.state.feeds);
-                                        //this.setState({mounted:true});
-                                        /*
-                                        feeds.map((feed)=>{
-                                            this.state.feeds.push(feed);
-                                        });*/
-                                        //console.log(this.state.feeds);
-                                     });
-
-                                 });
-
-                               }
-                             });
-                             /*
+              console.log(info);
+              var animals = [];
+              var uid = this.context.uid;
+              pets.forEach((aid) => {
+                db.getUserAnimal(uid, aid).then((animal) => {
+                  animals.push(animal);
+                  if (pets.length == animals.length) {
+                    //this.setState({ mounted: true });
+                    let promise = new Promise((resolve, reject) => {
+                      db.addRandomFeeds(animals, uid, info.lastlogin, 0);
+                      setTimeout(() => {
+                        resolve();
+                      }, 1000);
+                    });
+                    promise.then(() => {
+                      db.getUserFeeds(uid).then((feeds) => {
+                        this.setState({ feeds: feeds });
+                        console.log("FEEDS");
+                        console.log(this.state.feeds);
+                      });
+                    });
+                  }
+                });
+                /*
                              if(pets.length == animals.length){
                                 db.addRandomFeeds(animals,this.context.uid,info.lastlogin,info.days);
                            */
-                        });
-                        /*
-                        db.getUserFeeds(this.context.uid).then((feeds) => {
-                          this.setState({ feeds: feeds });
-                          console.log("User feeds: " + this.state.feeds.length);
-                        });*/
+              });
             });
             //console.log(pets);
             //console.log("Pets retrieved from db " + pets);
@@ -100,11 +89,7 @@ class HomeScreen extends React.Component {
             });
           });
         });
-
-
-
       }
-
     });
   }
 
@@ -142,15 +127,10 @@ class HomeScreen extends React.Component {
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
               >
-                <View style={styles.feed}>
-                  <Text>Feed1</Text>
-                </View>
-                <View style={styles.feed}>
-                  <Text>Feed1</Text>
-                </View>
-                <View style={styles.feed}>
-                  <Text>Feed1</Text>
-                </View>
+                <FeedBox
+                  uid={this.context.uid}
+                  feeds={this.state.feeds}
+                ></FeedBox>
               </ScrollView>
             </View>
 
