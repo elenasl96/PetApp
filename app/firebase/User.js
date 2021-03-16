@@ -6,12 +6,14 @@ export default class User {
   days: int;
   lastlogin: string;
 
-  constructor(name, photo, type, address) {
+  constructor(name, photo, type, address, days, lastlogin) {
     this.name = name;
     this.photo = photo;
     this.type = type;
     this.address = address;
-    this.days = 0;
+    this.days = days;
+    this.lastlogin = lastlogin;
+    /*
     var date = new Date();
         var day = date.getDate();
         if (day < 10) day = "0" + day;
@@ -25,7 +27,7 @@ export default class User {
           month +
           "/" +
           year;
-    this.lastlogin =timestamp;
+    this.lastlogin =timestamp;*/
   }
 
   // getters
