@@ -14,7 +14,15 @@ const db = {
 
   addUser: function (uid, name, photo, type, address) {
     const users = firestore.collection("Users");
-    let user = new User(name, photo, type, address);
+    let date = new Date();
+    let day = date.getDate();
+    if (day < 10) day = "0" + day;
+    let month = date.getMonth();
+    month = month + 1;
+    if (month < 10) month = "0" + month;
+    let year = date.getFullYear();
+    let timestamp = day + "/" + month + "/" + year;
+    let user = new User(name, photo, type, address, 0, timestamp);
     users.doc(uid).set(user.toFirestore());
   },
 
@@ -94,7 +102,7 @@ const db = {
 
   //--------------UserAnimal----------------------------------------
 
-  addUserAnimal: function (uid, name, age, breed, size, color , photo, type) {
+  addUserAnimal: function (uid, name, age, breed, size, color, photo, type) {
     const users = firestore.collection("Users");
     const animals = users.doc(uid).collection("Animals");
     let animal = new Animal(name, age, breed, size, color, photo, type);
@@ -123,29 +131,23 @@ const db = {
   },
 
   addAnimalStatSample: function (uid, aid, stat, value) {
-
     const users = firestore.collection("Users");
     const animals = users.doc(uid).collection("Animals");
     var date = new Date();
-             var day = date.getDate();
-             if (day < 10) day = "0" + day;
-             var month = date.getMonth();
-             month = month + 1;
-             if (month < 10) month = "0" + month;
-             var year = date.getFullYear();
-             /*
+    var day = date.getDate();
+    if (day < 10) day = "0" + day;
+    var month = date.getMonth();
+    month = month + 1;
+    if (month < 10) month = "0" + month;
+    var year = date.getFullYear();
+    /*
              var hours = date.getHours();
              if (hours < 10) hours = "0" + hours;
              var minutes = date.getMinutes();
              if (minutes < 10) minutes = "0" + minutes;
              var seconds = date.getSeconds();
              if (seconds < 10) seconds = "0" + seconds; */
-             var timestamp =
-               day +
-               "/" +
-               month +
-               "/" +
-               year ;
+    var timestamp = day + "/" + month + "/" + year;
     //console.log(timestamp);
     animals
       .doc(aid)
@@ -1019,11 +1021,11 @@ const db = {
       });
   },
 
-  deleteUserFeeds: function (uid){
-    this.getUserFeeds(uid).then(function(feeds){
-       if(feeds.length !=0){
-         feeds.forEach((id) => db.deleteUserFeed(uid,id));
-       }
+  deleteUserFeeds: function (uid) {
+    this.getUserFeeds(uid).then(function (feeds) {
+      if (feeds.length != 0) {
+        feeds.forEach((id) => db.deleteUserFeed(uid, id));
+      }
     });
   },
 
@@ -1080,55 +1082,53 @@ const db = {
       });
   },
 
-
-  addRandomFeeds:  function (animals,uid,lastlogin,days){
-
+  addRandomFeeds: function (animals, uid, lastlogin, days) {
     var feeds = [];
     var alreadyLoggedInToday = false;
     var date = new Date();
-                    var day = date.getDate();
-                    if (day < 10) day = "0" + day;
-                    var month = date.getMonth();
-                    month = month + 1;
-                    if (month < 10) month = "0" + month;
-                    var year = date.getFullYear();
-                    var timestamp =
-                      day +
-                      "/" +
-                      month +
-                      "/" +
-                      year;
+    var day = date.getDate();
+    if (day < 10) day = "0" + day;
+    var month = date.getMonth();
+    month = month + 1;
+    if (month < 10) month = "0" + month;
+    var year = date.getFullYear();
+    var timestamp = day + "/" + month + "/" + year;
 
-    if (lastlogin != timestamp || days == 0){  // daily feed  days = 0 is the first access
-       var newdays = days + 1;
-       firestore.collection("Users").doc(uid).update({"lastlogin" : timestamp , "days" : newdays});
-       db.deleteUserFeeds(uid);
-       var id = days % 31;
-       //console.log(id);
-       var num = 1; // num general feeds
-       if (animals.length != 0 ) { //at least one animal
+    if (lastlogin != timestamp || days == 0) {
+      // daily feed  days = 0 is the first access
+      var newdays = days + 1;
+      firestore
+        .collection("Users")
+        .doc(uid)
+        .update({ lastlogin: timestamp, days: newdays });
+      db.deleteUserFeeds(uid);
+      var id = days % 31;
+      //console.log(id);
+      var num = 1; // num general feeds
+      if (animals.length != 0) {
+        //at least one animal
 
-          types = [];
-          animals.forEach(function(animal){
-                      if(!types.includes(animal.type)){
-                         //console.log("Type pet: " + animal.type);
-                         types.push(animal.type);
-                      }
-          });
+        types = [];
+        animals.forEach(function (animal) {
+          if (!types.includes(animal.type)) {
+            //console.log("Type pet: " + animal.type);
+            types.push(animal.type);
+          }
+        });
 
-          //console.log("Animals: " + animals);
-          //console.log("Types: " + types);
-          var type = types[Math.floor(Math.random() * types.length)];
-          //console.log("Breed selected: " + type);
-          //console.log("The  BreedFeed selected is: "+ db.addBreedFeeds(uid,type,id));
-          db.addBreedFeeds(uid,type,id);
-          type = types[Math.floor(Math.random() * types.length)];
-          //console.log("Age selected: " + type);
-          db.addAgeFeeds(uid,type,id);
-          type = types[Math.floor(Math.random() * types.length)];
-          db.addSizeFeeds(uid,type,id);
+        //console.log("Animals: " + animals);
+        //console.log("Types: " + types);
+        var type = types[Math.floor(Math.random() * types.length)];
+        //console.log("Breed selected: " + type);
+        //console.log("The  BreedFeed selected is: "+ db.addBreedFeeds(uid,type,id));
+        db.addBreedFeeds(uid, type, id);
+        type = types[Math.floor(Math.random() * types.length)];
+        //console.log("Age selected: " + type);
+        db.addAgeFeeds(uid, type, id);
+        type = types[Math.floor(Math.random() * types.length)];
+        db.addSizeFeeds(uid, type, id);
 
-          /*
+        /*
           var length = types.length;
           var existDiseases = false;
           for (let i=0; i< length; i++){
@@ -1139,134 +1139,123 @@ const db = {
           }
           if(!existDiseases){num = 2;}*/
 
-
-          num = 2;
-          id = "" + id + "";
-          db.addGeneralFeeds(uid,id,num);
-          //return feeds;
-          }
-       else{
-         num= 5;
-         id = "" + id + ""; // general wants a string not a number
-         db.addGeneralFeeds(uid,id,num);
-         //return feeds;
-       }
-        //});
-     }
-    else{
+        num = 2;
+        id = "" + id + "";
+        db.addGeneralFeeds(uid, id, num);
+        //return feeds;
+      } else {
+        num = 5;
+        id = "" + id + ""; // general wants a string not a number
+        db.addGeneralFeeds(uid, id, num);
+        //return feeds;
+      }
+      //});
+    } else {
       console.log("You have already logged in today!");
     }
   },
 
-
-  addBreedFeeds: function (uid,type,id) {
-    db.getUserAnimalsByType(uid,type).then(function (animals) {
-
-        var breeds = [];
-        animals.forEach(function (animal) {
-          if (!breeds.includes(animal.breed)) {
-            breeds.push(animal.breed);
-          }
-        });
-
-        //console.log("Breeds:");
-        //console.log(breeds);
-        //console.log("Breed taken by chance:");
-        var breed = breeds[Math.floor(Math.random() * breeds.length)];
-        //console.log(id);
-
-        db.getFeedsByFilter(type, "Breed", breed, id).then(function (feeds) {
-          //console.log("Breed feeds:");
-          //console.log(feeds);
-          feeds.forEach(function (feed) {
-
-            db.addUserFeed(uid, feed.title, feed.text, feed.type);
-            console.log("Feed loaded successfully!!: " + feed.title);
-          });
-          return feeds;
-        });
+  addBreedFeeds: function (uid, type, id) {
+    db.getUserAnimalsByType(uid, type).then(function (animals) {
+      var breeds = [];
+      animals.forEach(function (animal) {
+        if (!breeds.includes(animal.breed)) {
+          breeds.push(animal.breed);
+        }
       });
+
+      //console.log("Breeds:");
+      //console.log(breeds);
+      //console.log("Breed taken by chance:");
+      var breed = breeds[Math.floor(Math.random() * breeds.length)];
+      //console.log(id);
+
+      db.getFeedsByFilter(type, "Breed", breed, id).then(function (feeds) {
+        //console.log("Breed feeds:");
+        //console.log(feeds);
+        feeds.forEach(function (feed) {
+          db.addUserFeed(uid, feed.title, feed.text, feed.type);
+          console.log("Feed loaded successfully!!: " + feed.title);
+        });
+        return feeds;
+      });
+    });
   },
 
+  addAgeFeeds: function (uid, type, id) {
+    db.getUserAnimalsByType(uid, type).then(function (animals) {
+      //console.log("Type:");
+      //console.log(type);
+      //console.log(animals);
 
-  addAgeFeeds: function (uid,type, id) {
-      db.getUserAnimalsByType(uid,type).then(function (animals) {
+      var ages = [];
+      animals.forEach(function (animal) {
+        var age = db.getAgeString(animal.age);
+        if (!ages.includes(age)) {
+          ages.push(age);
+        }
+      });
 
-          //console.log("Type:");
-          //console.log(type);
-          //console.log(animals);
+      //console.log("Ages:");
+      //console.log(ages);
+      //console.log("Age taken by chance:");
+      var age = ages[Math.floor(Math.random() * ages.length)];
+      //console.log(id);
 
-          var ages = [];
-          animals.forEach(function (animal) {
-            var age = db.getAgeString(animal.age);
-            if (!ages.includes(age)) {
-              ages.push(age);
-            }
-          });
-
-          //console.log("Ages:");
-          //console.log(ages);
-          //console.log("Age taken by chance:");
-          var age = ages[Math.floor(Math.random() * ages.length)];
-          //console.log(id);
-
-          db.getFeedsByFilter(type, "Age", age, id).then(function (feeds) {
-            //console.log("Age feeds:");
-            //console.log(feeds);
-            feeds.forEach(function (feed) {
-              db.addUserFeed(uid, feed.title, feed.text, feed.type);
-              console.log("Feed loaded successfully!!: " + feed.title);
-            });
-          });
+      db.getFeedsByFilter(type, "Age", age, id).then(function (feeds) {
+        //console.log("Age feeds:");
+        //console.log(feeds);
+        feeds.forEach(function (feed) {
+          db.addUserFeed(uid, feed.title, feed.text, feed.type);
+          console.log("Feed loaded successfully!!: " + feed.title);
         });
-    },
+      });
+    });
+  },
 
-    addSizeFeeds: function (uid,type, id) {
-          db.getUserAnimalsByType(uid,type).then(function (animals) {
+  addSizeFeeds: function (uid, type, id) {
+    db.getUserAnimalsByType(uid, type).then(function (animals) {
+      //console.log("Type:");
+      //console.log(type);
+      //console.log(animals);
 
-              //console.log("Type:");
-              //console.log(type);
-              //console.log(animals);
+      var sizes = [];
+      animals.forEach(function (animal) {
+        if (!sizes.includes(animal.size)) {
+          sizes.push(animal.size);
+        }
+      });
 
-              var sizes = [];
-              animals.forEach(function (animal) {
-                if (!sizes.includes(animal.size)) {
-                  sizes.push(animal.size);
-                }
-              });
+      //console.log("Sizes:");
+      //console.log(sizes);
+      //console.log("Sizes taken by chance:");
+      var size = sizes[Math.floor(Math.random() * sizes.length)];
+      //console.log(id);
 
-              //console.log("Sizes:");
-              //console.log(sizes);
-              //console.log("Sizes taken by chance:");
-              var size = sizes[Math.floor(Math.random() * sizes.length)];
-              //console.log(id);
+      db.getFeedsByFilter(type, "Size", size, id).then(function (feeds) {
+        //console.log("Size feeds:");
+        //console.log(feeds);
+        feeds.forEach(function (feed) {
+          db.addUserFeed(uid, feed.title, feed.text, feed.type);
+          console.log("Feed loaded successfully!!: " + feed.title);
+        });
+      });
+    });
+  },
 
-              db.getFeedsByFilter(type, "Size", size, id).then(function (feeds) {
-                //console.log("Size feeds:");
-                //console.log(feeds);
-                feeds.forEach(function (feed) {
-                  db.addUserFeed(uid, feed.title, feed.text, feed.type);
-                  console.log("Feed loaded successfully!!: " + feed.title);
-                });
-              });
-            });
-        },
-
-
-
-    addGeneralFeeds: function (uid,id,num) {
-                  db.getGeneralFeeds(id).then(function (feeds) {
-                    //console.log("General feeds:");
-                    //console.log(feeds);
-                    for (let i=0; i<num; i++){
-                      var ind = Math.floor(Math.random() * feeds.length)
-                      var feed = feeds[ind];
-                      feeds.splice(ind,1);
-                      db.addUserFeed(uid, feed.title, feed.text, feed.type);
-                      console.log("Feed loaded successfully!!: " + feed.title);
-                    };
-                  });
-            },
+  addGeneralFeeds: function (uid, id, num) {
+    db.getGeneralFeeds(id).then(function (feeds) {
+      //console.log("General feeds:");
+      //console.log(feeds);
+      for (let i = 0; i < num; i++) {
+        var ind = Math.floor(Math.random() * feeds.length);
+        var feed = feeds[ind];
+        feeds.splice(ind, 1);
+        db.addUserFeed(uid, feed.title, feed.text, feed.type);
+        console.log("Feed loaded successfully!!: " + feed.title);
+      }
+    });
+  },
 
   //-------------------------Notifications-----------------------------------------------------------------------
 

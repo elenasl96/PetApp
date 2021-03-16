@@ -13,21 +13,6 @@ export default class User {
     this.address = address;
     this.days = days;
     this.lastlogin = lastlogin;
-    /*
-    var date = new Date();
-        var day = date.getDate();
-        if (day < 10) day = "0" + day;
-        var month = date.getMonth();
-        month = month + 1;
-        if (month < 10) month = "0" + month;
-        var year = date.getFullYear();
-        var timestamp =
-          day +
-          "/" +
-          month +
-          "/" +
-          year;
-    this.lastlogin =timestamp;*/
   }
 
   // getters
@@ -47,11 +32,11 @@ export default class User {
     return this.address;
   }
 
-  getDays(){
+  getDays() {
     return this.days;
   }
 
-  getLastLogin(){
+  getLastLogin() {
     return this.lastlogin;
   }
 
