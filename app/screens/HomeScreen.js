@@ -143,12 +143,14 @@ class HomeScreen extends React.Component {
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}
                 >
-                  <PetButton
-                    uid={this.context.uid}
-                    pets={this.state.pets}
-                    //pets = {this.context.pets}
-                    navigation={this.props.navigation}
-                  ></PetButton>
+                  {this.state.pets.length > 0 ? (
+                    <PetButton
+                      uid={this.context.uid}
+                      pets={this.state.pets}
+                      //pets = {this.context.pets}
+                      navigation={this.props.navigation}
+                    ></PetButton>
+                  ) : null}
 
                   <TouchableHighlight onPress={addPet} style={styles.pet}>
                     <Image
