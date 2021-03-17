@@ -1108,10 +1108,10 @@ const db = {
       if (animals.length != 0) {
         //at least one animal
 
-        types = [];
+        var types = [];
         animals.forEach(function (animal) {
           if (!types.includes(animal.type)) {
-            //console.log("Type pet: " + animal.type);
+            console.log("Type pet: " + animal.type);
             types.push(animal.type);
           }
         });
@@ -1144,6 +1144,7 @@ const db = {
         db.addGeneralFeeds(uid, id, num);
         //return feeds;
       } else {
+        console.log("No animals, general feeds");
         num = 5;
         id = "" + id + ""; // general wants a string not a number
         db.addGeneralFeeds(uid, id, num);

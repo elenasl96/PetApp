@@ -36,15 +36,15 @@ class HomeScreen extends React.Component {
           if (this.state.mounted) {
             this.setState({ pets: pets });
             db.getUser(this.context.uid).then((info) => {
-              console.log(info);
               var animals = [];
               var uid = this.context.uid;
+            if (pets.length != 0){
               pets.forEach((aid) => {
                 db.getUserAnimal(uid, aid).then((animal) => {
                   animals.push(animal);
                   if (pets.length == animals.length) {
                     let promise = new Promise((resolve, reject) => {
-                      db.addRandomFeeds(animals, uid, info.lastlogin, 0);
+                      db.addRandomFeeds(animals, uid, info.lastlogin,0);
                       setTimeout(() => {
                         resolve();
                       }, 1000);
@@ -52,27 +52,30 @@ class HomeScreen extends React.Component {
                     promise.then(() => {
                       db.getUserFeeds(uid).then((feeds) => {
                         this.setState({ feeds: feeds });
-                        console.log("FEEDS ID");
-                        console.log(this.state.feeds);
                         this.setState({ mounted: true });
                       });
                     });
                   }
                 });
-                /*
-                             if(pets.length == animals.length){
-                                db.addRandomFeeds(animals,this.context.uid,info.lastlogin,info.days);
-                           */
               });
+             }
+             else {
+               let promise = new Promise((resolve, reject) => {
+                                     db.addRandomFeeds(animals, uid, info.lastlogin, info.days);
+                                     setTimeout(() => {
+                                       resolve();
+                                     }, 1000);
+                                   });
+                                   promise.then(() => {
+                                     db.getUserFeeds(uid).then((feeds) => {
+                                       this.setState({ feeds: feeds });
+                                       this.setState({ mounted: true });
+                                     });
+                                   });
+             }
+
             });
-            //console.log(pets);
-            //console.log("Pets retrieved from db " + pets);
-            /*
-            pets.map((pet) => {
-               this.context.savePet(pet);
-            });
-            */
-            //console.log(this.context.test);
+
           }
         });
         var places = [];
