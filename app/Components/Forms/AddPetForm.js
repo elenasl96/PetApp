@@ -24,37 +24,65 @@ import mainStyle from "../../styles/mainStyle";
 class AddPetForm extends Component {
   static contextType = AuthContext;
   state = {
-    name: null,
+    name: "",
     age: null,
     breed: null,
     size: null,
     color: null,
-    photo: "",
+    photo: null,
     type: "dog",
+    //error: null,
+    //fields: [],
+    errors: {}, // dict
   };
+
+   handleValidation(){
+
+              let errors = {};
+              errors["name"] = null;
+              errors["photo"] = null;
+              let formIsValid = true;
+              console.log(this.state.name)
+              //Name
+              if(this.state.name == ""){
+
+                 formIsValid = false;
+                 errors["name"] = "Name cannot be empty";
+              }
+              else{
+                 if(!this.state.name.match(/^[a-zA-Z]+$/)){
+                                     formIsValid = false;
+                                     errors["name"] = "Only letters in name";
+                 }
+              }
+
+              //Photo
+              if(this.state.photo == null){
+                               formIsValid = false;
+                               errors["photo"] = "You must load a photo";
+              }
+
+
+             //console.log(errors);
+             this.setState({errors: errors});
+             return false;
+   }
 
   registerPet() {
 
-    db.addUserAnimal(
-      this.context.uid,
-      this.state.name,
-      this.state.age,
-      this.state.breed,
-      this.state.size,
-      this.state.color,
-      this.state.photo,
-      this.state.type
-    );
-/*
-    var animal = new Animal(this.state.name,
-                                   this.state.age,
-                                   this.state.breed,
-                                   this.state.size,
-                                   this.state.photo,
-                                   this.state.type);
-
-    this.context.savePet(animal);
-*/
+        if (this.handleValidation()){
+        console.log("Add animal");
+        db.addUserAnimal(
+          this.context.uid,
+          this.state.name,
+          this.state.age,
+          this.state.breed,
+          this.state.size,
+          this.state.color,
+          this.state.photo,
+          this.state.type
+        );
+       }
   }
 
   setPhoto = (photo) => {
@@ -87,6 +115,9 @@ class AddPetForm extends Component {
             onChangeText={(name) => this.setState({ name })}
           />
         </View>
+
+        {this.state.errors["name"]!= null  ? (<Text style={styles.error}>{this.state.errors["name"]}</Text>) : null }
+
         <View style={mainStyle.form}>
           <TextInput
             style={mainStyle.inputText}
@@ -140,7 +171,7 @@ class AddPetForm extends Component {
           </Picker>
         </View>
         <ImagePickerExample setPhoto={this.setPhoto}></ImagePickerExample>
-        <Text style={styles.error}>{this.state.error}</Text>
+        {this.state.errors["photo"]!=null ? (<Text style={styles.error}>{this.state.errors["photo"]}</Text>) : null }
 
         <TouchableOpacity
           style={{
@@ -156,6 +187,7 @@ class AddPetForm extends Component {
           </View>
         </TouchableOpacity>
       </SafeAreaView>
+
     );
   }
 }
