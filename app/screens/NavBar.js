@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, Text, Button, Image, StyleSheet } from "react-native";
 import firebase from "firebase";
 import { AuthContext } from "../Components/AuthContext.js";
+import { Ionicons } from "@expo/vector-icons";
 
 class NavBar extends Component {
   static contextType = AuthContext;
@@ -18,25 +19,30 @@ class NavBar extends Component {
   render() {
     return (
       <View style={styles.topBar}>
-        <Text style={styles.mainTitle}>{/*this.props.title*/} " AAA"</Text>
-
+        <Text style={styles.mainTitle}>{this.props.title} </Text>
         <View style={styles.profileContainer}>
-          <Button
-            color="#43AA8B"
-            title="LogOff"
+          {this.context.user.name ? (
+            <Text style={styles.username}>{this.context.user.name} </Text>
+          ) : null}
+          {this.context.user.photo ? (
+            <Image
+              source={{
+                uri: this.context.user.photo,
+              }}
+              style={styles.profileImage}
+            ></Image>
+          ) : null}
+          <Ionicons
+            name="md-exit"
+            size={28}
+            color="#f94144"
             onPress={() => {
               if (this.state.mounted) {
                 firebase.auth().signOut();
               }
             }}
+            style={styles.exitButton}
           />
-          {/*<Text style={styles.username}>{this.context.username}</Text>*/}
-          {/*<Image
-            source={{
-              uri: this.context.user.photo,
-            }}
-            style={styles.profileImage}
-          ></Image>*/}
         </View>
       </View>
     );
@@ -78,8 +84,8 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   profileImage: {
-    width: 50,
-    height: 50,
+    width: 45,
+    height: 45,
     borderRadius: 30,
     resizeMode: "cover",
     marginLeft: 10,
@@ -89,6 +95,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontWeight: "bold",
     fontSize: 20,
+  },
+  exitButton: {
+    marginHorizontal: 10,
   },
 });
 

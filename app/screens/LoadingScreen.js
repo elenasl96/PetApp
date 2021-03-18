@@ -20,6 +20,7 @@ class LoadingScreen extends React.Component {
 
         this.context.saveUserUID(user.uid);
         db.getUser(user.uid).then((user) => {
+          this.context.saveUser(user);
           console.log("usertype:" + user.getType());
           if (user.getType() == "user") {
             if (this.state.mounted) {

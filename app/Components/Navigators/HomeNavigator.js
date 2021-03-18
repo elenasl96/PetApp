@@ -89,24 +89,24 @@ const HomeNavigator = createStackNavigator(
   },
   {
     initialRouteName: "Home",
-    defaultNavigationOptions: {
+    /*defaultNavigationOptions: {
       headerTitle: () => <NavBar />,
-    },
-    /* defaultNavigationOptions: ({ navigation }) => ({
+    },*/
+    defaultNavigationOptions: ({ navigation }) => ({
       headerTitle: () => {
         console.log("STATEEEEE");
 
         const { routeName } = navigation.state;
         return <NavBar title={routeName} />;
-      },*/
-    headerStyle: {
-      backgroundColor: "#F9844A",
-    },
-    headerTintColor: "#fff",
-    headerTitleStyle: {
-      fontWeight: "italic",
-    },
-    //}),
+      },
+      headerStyle: {
+        backgroundColor: "#F9844A",
+      },
+      //headerTintColor: "#fff",
+      headerTitleStyle: {
+        fontWeight: "italic",
+      },
+    }),
   }
 );
 

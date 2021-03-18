@@ -87,6 +87,7 @@ class SignUpScreen extends React.Component {
         );
         const user = auth().currentUser;
         // .then(this.onLoginSuccess.bind(this))
+        console.log(facebookProfileData);
         if (facebookProfileData.additionalUserInfo.isNewUser) {
           db.addUser(
             auth().currentUser.uid,

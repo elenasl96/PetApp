@@ -22,7 +22,6 @@ class HomeScreen extends React.Component {
     pets: [],
     places: [],
     feeds: [],
-    update: false,
     mounted: false,
   };
   static contextType = AuthContext;
@@ -38,44 +37,41 @@ class HomeScreen extends React.Component {
             db.getUser(this.context.uid).then((info) => {
               var animals = [];
               var uid = this.context.uid;
-            if (pets.length != 0){
-              pets.forEach((aid) => {
-                db.getUserAnimal(uid, aid).then((animal) => {
-                  animals.push(animal);
-                  if (pets.length == animals.length) {
-                    let promise = new Promise((resolve, reject) => {
-                      db.addRandomFeeds(animals, uid, info.lastlogin,0);
-                      setTimeout(() => {
-                        resolve();
-                      }, 1000);
-                    });
-                    promise.then(() => {
-                      db.getUserFeeds(uid).then((feeds) => {
-                        this.setState({ feeds: feeds });
-                        this.setState({ mounted: true });
+              if (pets.length != 0) {
+                pets.forEach((aid) => {
+                  db.getUserAnimal(uid, aid).then((animal) => {
+                    animals.push(animal);
+                    if (pets.length == animals.length) {
+                      let promise = new Promise((resolve, reject) => {
+                        db.addRandomFeeds(animals, uid, info.lastlogin, 0);
+                        setTimeout(() => {
+                          resolve();
+                        }, 1000);
                       });
-                    });
-                  }
+                      promise.then(() => {
+                        db.getUserFeeds(uid).then((feeds) => {
+                          this.setState({ feeds: feeds });
+                          this.setState({ mounted: true });
+                        });
+                      });
+                    }
+                  });
                 });
-              });
-             }
-             else {
-               let promise = new Promise((resolve, reject) => {
-                                     db.addRandomFeeds(animals, uid, info.lastlogin, info.days);
-                                     setTimeout(() => {
-                                       resolve();
-                                     }, 1000);
-                                   });
-                                   promise.then(() => {
-                                     db.getUserFeeds(uid).then((feeds) => {
-                                       this.setState({ feeds: feeds });
-                                       this.setState({ mounted: true });
-                                     });
-                                   });
-             }
-
+              } else {
+                let promise = new Promise((resolve, reject) => {
+                  db.addRandomFeeds(animals, uid, info.lastlogin, info.days);
+                  setTimeout(() => {
+                    resolve();
+                  }, 1000);
+                });
+                promise.then(() => {
+                  db.getUserFeeds(uid).then((feeds) => {
+                    this.setState({ feeds: feeds });
+                    this.setState({ mounted: true });
+                  });
+                });
+              }
             });
-
           }
         });
         var places = [];
