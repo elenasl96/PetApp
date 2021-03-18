@@ -1,0 +1,37 @@
+{
+  "expo": {
+    "name": "PetApp",
+    "slug": "PetApp",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "facebookScheme": "fb401120257739037",
+    "facebookAppId": "401120257739037",
+    "facebookDisplayName": "Pet App",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "useNextNotificationsApi": true,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "permissions": [ "CAMERA", "WRITE_EXTERNAL_STORAGE","READ_EXTERNAL_STORAGE",  "CAMERA_ROLL" ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
