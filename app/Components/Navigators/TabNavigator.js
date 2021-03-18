@@ -15,9 +15,7 @@ const TabNavigator = createMaterialBottomTabNavigator(
   },
   {
     initialRouteName: "Home",
-
     barStyle: { backgroundColor: "#F9844A" },
-
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;

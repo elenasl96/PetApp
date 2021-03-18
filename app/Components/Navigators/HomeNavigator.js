@@ -89,9 +89,13 @@ const HomeNavigator = createStackNavigator(
   },
   {
     initialRouteName: "Home",
-    /* The header config from HomeScreen is now here */
-    defaultNavigationOptions: {
-      headerTitle: () => <NavBar />,
+    defaultNavigationOptions: ({ navigation }) => ({
+      headerTitle: () => {
+        console.log("STATEEEEE");
+
+        const { routeName } = navigation.state;
+        return <NavBar title={routeName} />;
+      },
       headerStyle: {
         backgroundColor: "#F9844A",
       },
@@ -99,7 +103,7 @@ const HomeNavigator = createStackNavigator(
       headerTitleStyle: {
         fontWeight: "italic",
       },
-    },
+    }),
   }
 );
 
