@@ -18,7 +18,7 @@ class NavBar extends Component {
   render() {
     return (
       <View style={styles.topBar}>
-        <Text style={styles.mainTitle}>{this.props.title} " AAA"</Text>
+        <Text style={styles.mainTitle}>{/*this.props.title*/} " AAA"</Text>
 
         <View style={styles.profileContainer}>
           <Button
