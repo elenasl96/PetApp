@@ -28,81 +28,78 @@ class AddPetForm extends Component {
     age: null,
     photo: null,
     typeSelected: "Dog",
-    prevTypeSelected : "Dog",
-    types: ["Dog","Cat"],
+    prevTypeSelected: "Dog",
+    types: ["Dog", "Cat"],
     breedSelected: "None",
-    breedsDog: ["None","Labrador","Golden Retriever"],
-    breedsCat: ["None","Bombay"],
+    breedsDog: ["None", "Labrador", "Golden Retriever"],
+    breedsCat: ["None", "Bombay"],
     colorSelected: "White",
-    colors: ["White","Black"],
+    colors: ["White", "Black"],
     sizeSelected: "Small",
-    sizes: ["Small","Medium","Big"],
+    sizes: ["Small", "Medium", "Big"],
     errors: {}, // dict
   };
 
-   handleValidation(){
+  handleValidation() {
+    let errors = {};
+    errors["name"] = null;
+    errors["photo"] = null;
+    errors["age"] = null;
+    let formIsValid = true;
+    //Name
+    if (this.state.name == "") {
+      formIsValid = false;
+      errors["name"] = "Name cannot be empty";
+    } else {
+      if (!this.state.name.match(/^[a-zA-Z]+$/)) {
+        formIsValid = false;
+        errors["name"] = "Only letters in name";
+      }
+    }
 
-              let errors = {};
-              errors["name"] = null;
-              errors["photo"] = null;
-              errors["age"] = null;
-              let formIsValid = true;
-              //Name
-              if(this.state.name == ""){
+    //Photo
+    if (this.state.photo == null) {
+      formIsValid = false;
+      errors["photo"] = "You must load a photo";
+    }
 
-                 formIsValid = false;
-                 errors["name"] = "Name cannot be empty";
-              }
-              else{
-                 if(!this.state.name.match(/^[a-zA-Z]+$/)){
-                                     formIsValid = false;
-                                     errors["name"] = "Only letters in name";
-                 }
-              }
+    //Age
 
-              //Photo
-              if(this.state.photo == null){
-                               formIsValid = false;
-                               errors["photo"] = "You must load a photo";
-              }
+    if (isNaN(this.state.age)) {
+      formIsValid = false;
+      errors["age"] = "Age must be a number";
+    } else {
+      if (
+        this.state.age > 20 ||
+        this.state.age < 0 ||
+        !Number.isInteger(Number(this.state.age))
+      ) {
+        console.log(this.state.age > 20);
+        console.log(this.state.age < 0);
+        console.log(!Number.isInteger(this.state.age));
+        formIsValid = false;
+        errors["age"] = "Age is an integer between 0 and 20 ";
+      }
+    }
 
-              //Age
-
-                            if (isNaN(this.state.age) ){
-                               formIsValid = false;
-                               errors["age"] = "Age must be a number";
-                            }
-                            else{
-                            if(this.state.age  > 20 || this.state.age < 0 || !Number.isInteger(Number(this.state.age))){
-                                                                         console.log(this.state.age  > 20);
-                                                                         console.log(this.state.age < 0);
-                                                                         console.log(!Number.isInteger(this.state.age));
-                                                                         formIsValid = false;
-                                                                         errors["age"] = "Age is an integer between 0 and 20 ";
-                                                        }
-
-                            }
-
-             //console.log(errors);
-             this.setState({errors: errors});
-             return false;
-   }
+    //console.log(errors);
+    this.setState({ errors: errors });
+    return false;
+  }
 
   registerPet() {
-
-        if (this.handleValidation()){
-
-        db.addUserAnimal(
-          this.context.uid,
-          this.state.name,
-          this.state.age,
-          this.state.breedSelected,
-          this.state.sizeSelected,
-          this.state.colorSelected,
-          this.state.photo,
-          this.state.typeSelected
-        );
-       }
+    if (this.handleValidation()) {
+      db.addUserAnimal(
+        this.context.uid,
+        this.state.name,
+        this.state.age,
+        this.state.breedSelected,
+        this.state.sizeSelected,
+        this.state.colorSelected,
+        this.state.photo,
+        this.state.typeSelected
+      );
+    }
   }
 
   setPhoto = (photo) => {
@@ -110,38 +107,33 @@ class AddPetForm extends Component {
     console.log("photo: " + this.state.photo);
   };
 
-  componentDidUpdate(){
-
-    if(this.state.prevTypeSelected != this.state.typeSelected ){
-
-        this.state.breedSelected = "None";
-        this.state.prevTypeSelected = this.state.typeSelected;
-
+  componentDidUpdate() {
+    if (this.state.prevTypeSelected != this.state.typeSelected) {
+      this.state.breedSelected = "None";
+      this.state.prevTypeSelected = this.state.typeSelected;
     }
-
   }
 
   render() {
+    let types = this.state.types.map((s, i) => {
+      return <Picker.Item key={i} value={s} label={s} />;
+    });
 
-    let types = this.state.types.map( (s, i) => {
-                  return <Picker.Item key={i} value={s} label={s} />
-              });
+    let breedsDog = this.state.breedsDog.map((s, i) => {
+      return <Picker.Item key={i} value={s} label={s} />;
+    });
 
-    let breedsDog = this.state.breedsDog.map( (s, i) => {
-                      return <Picker.Item key={i} value={s} label={s} />
-                  });
+    let breedsCat = this.state.breedsCat.map((s, i) => {
+      return <Picker.Item key={i} value={s} label={s} />;
+    });
 
-    let breedsCat = this.state.breedsCat.map( (s, i) => {
-                          return <Picker.Item key={i} value={s} label={s} />
-                      });
+    let colors = this.state.colors.map((s, i) => {
+      return <Picker.Item key={i} value={s} label={s} />;
+    });
 
-    let colors = this.state.colors.map( (s, i) => {
-                          return <Picker.Item key={i} value={s} label={s} />
-                      });
-
-    let sizes = this.state.sizes.map( (s, i) => {
-                          return <Picker.Item key={i} value={s} label={s} />
-                      });
+    let sizes = this.state.sizes.map((s, i) => {
+      return <Picker.Item key={i} value={s} label={s} />;
+    });
 
     return (
       <SafeAreaView
@@ -168,7 +160,9 @@ class AddPetForm extends Component {
           />
         </View>
 
-        {this.state.errors["name"]!= null  ? (<Text style={styles.error}>{this.state.errors["name"]}</Text>) : null }
+        {this.state.errors["name"] != null ? (
+          <Text style={styles.error}>{this.state.errors["name"]}</Text>
+        ) : null}
 
         <View style={mainStyle.form}>
           <TextInput
@@ -181,83 +175,52 @@ class AddPetForm extends Component {
           />
         </View>
 
-        {this.state.errors["age"]!=null ? (<Text style={styles.error}>{this.state.errors["age"]}</Text>) : null }
+        {this.state.errors["age"] != null ? (
+          <Text style={styles.error}>{this.state.errors["age"]}</Text>
+        ) : null}
 
         <View style={mainStyle.form}>
-          <TextInput
-            style={mainStyle.inputText}
-            placeholder="Breed"
-            placeholderTextColor="#616161"
-            returnKeyType="next"
-            value={this.state.breed}
-            onChangeText={(breed) => this.setState({ breed })}
-          />
-        </View>
-
-        <View style={mainStyle.form}>
-          <TextInput
-            style={mainStyle.inputText}
-            placeholder="Size"
-            placeholderTextColor="#616161"
-            returnKeyType="next"
-            value={this.state.size}
-            onChangeText={(size) => this.setState({ size })}
-          />
-        </View>
-        <View style={mainStyle.form}>
-                  <TextInput
-                    style={mainStyle.inputText}
-                    placeholder="Color"
-                    placeholderTextColor="#616161"
-                    returnKeyType="next"
-                    value={this.state.color}
-                    onChangeText={(color) => this.setState({ color })}
-                  />
-                </View>
-
-        <View style={mainStyle.form}>
-
           <Picker
             selectedValue={this.state.typeSelected}
             style={{ height: 50, width: "100%" }}
-            onValueChange={(type) => ( this.setState({typeSelected:type}) ) }
+            onValueChange={(type) => this.setState({ typeSelected: type })}
           >
-             {types}
+            {types}
           </Picker>
-
-
         </View>
-         <View style={mainStyle.form}>
-        <Picker
-                              selectedValue={this.state.breedSelected}
-                              style={{ height: 50, width: "100%" }}
-                              onValueChange={(breed) => ( this.setState({breedSelected:breed}) ) }
-                            >
-                               {this.state.typeSelected=="Dog" ? breedsDog : breedsCat}
-                            </Picker>
-         </View>
+        <View style={mainStyle.form}>
+          <Picker
+            selectedValue={this.state.breedSelected}
+            style={{ height: 50, width: "100%" }}
+            onValueChange={(breed) => this.setState({ breedSelected: breed })}
+          >
+            {this.state.typeSelected == "Dog" ? breedsDog : breedsCat}
+          </Picker>
+        </View>
 
-         <View style={mainStyle.form}>
-                 <Picker
-                                       selectedValue={this.state.colorSelected}
-                                       style={{ height: 50, width: "100%" }}
-                                       onValueChange={(color) => ( this.setState({colorSelected:color}) ) }
-                                     >
-                                        {colors}
-                                     </Picker>
-         </View>
+        <View style={mainStyle.form}>
+          <Picker
+            selectedValue={this.state.colorSelected}
+            style={{ height: 50, width: "100%" }}
+            onValueChange={(color) => this.setState({ colorSelected: color })}
+          >
+            {colors}
+          </Picker>
+        </View>
 
-         <View style={mainStyle.form}>
-                 <Picker
-                                       selectedValue={this.state.sizeSelected}
-                                       style={{ height: 50, width: "100%" }}
-                                       onValueChange={(size) => ( this.setState({sizeSelected:size}) ) }
-                                     >
-                                        {sizes}
-                                     </Picker>
+        <View style={mainStyle.form}>
+          <Picker
+            selectedValue={this.state.sizeSelected}
+            style={{ height: 50, width: "100%" }}
+            onValueChange={(size) => this.setState({ sizeSelected: size })}
+          >
+            {sizes}
+          </Picker>
         </View>
         <ImagePickerExample setPhoto={this.setPhoto}></ImagePickerExample>
-        {this.state.errors["photo"]!=null ? (<Text style={styles.error}>{this.state.errors["photo"]}</Text>) : null }
+        {this.state.errors["photo"] != null ? (
+          <Text style={styles.error}>{this.state.errors["photo"]}</Text>
+        ) : null}
 
         <TouchableOpacity
           style={{
@@ -273,7 +236,6 @@ class AddPetForm extends Component {
           </View>
         </TouchableOpacity>
       </SafeAreaView>
-
     );
   }
 }
