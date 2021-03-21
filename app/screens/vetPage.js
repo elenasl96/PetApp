@@ -21,7 +21,7 @@ import StarButton from "../Components/Buttons/StarButton";
 
 class VetScreen extends React.Component {
   static contextType = AuthContext;
-  state = { news: [], mounted: false };
+  state = { news: null, mounted: false };
 
   componentDidMount() {
     const pid = this.props.navigation.state.params.pid;
@@ -30,8 +30,6 @@ class VetScreen extends React.Component {
     db.getAllNews(pid).then((news) => {
       if (this.state.mounted) {
         this.setState({ news: news });
-        console.log("NEWS");
-        console.log(this.state.news);
       }
     });
   }
@@ -110,19 +108,10 @@ class VetScreen extends React.Component {
             showsVerticalScrollIndicator={false}
             style={{ paddingTop: 10 }}
           >
-            <News pid={pid} news={this.state.news}></News>
+            {this.state.news ? (
+              <News pid={pid} news={this.state.news}></News>
+            ) : null}
           </ScrollView>
-        </View>
-
-        <View style={styles.bottomMenu}>
-          <TouchableHighlight onPress={null}>
-            <View style={styles.mainButtonContainer}>
-              <Image
-                source={require("../../assets/images/paw.png")}
-                style={styles.mainButton}
-              ></Image>
-            </View>
-          </TouchableHighlight>
         </View>
       </SafeAreaView>
     );

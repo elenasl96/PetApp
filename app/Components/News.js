@@ -19,35 +19,29 @@ class News extends React.Component {
 
   componentDidMount() {
     this.setState({ mounted: true });
+    const pid = this.props.pid;
+    const news = this.props.news;
+    var newsContainers = [];
+
+    news.map((newsID) => {
+      db.getNews(pid, newsID).then((news) => {
+        newsContainers.unshift(
+          <View key={newsID} style={styles.feedContainer}>
+            <View style={styles.feed}>
+              <Text style={styles.newsTitle}>{news.getTitle()}</Text>
+              <Text>{news.getText()}</Text>
+              <Text style={styles.newsTime}>{news.getTimestamp()}</Text>
+            </View>
+          </View>
+        );
+        if (this.state.mounted) {
+          this.setState({ news: newsContainers });
+        }
+      });
+    });
   }
 
   deleteNews() {}
-
-  componentDidUpdate() {
-    if (this.state.news == null && this.state.mounted) {
-      const pid = this.props.pid;
-      const news = this.props.news;
-
-      var newsContainers = [];
-
-      news.map((newsID) => {
-        db.getNews(pid, newsID).then((news) => {
-          newsContainers.push(
-            <View key={newsID} style={styles.feedContainer}>
-              <View style={styles.feed}>
-                <Text style={styles.newsTitle}>{news.getTitle()}</Text>
-                <Text>{news.getText()}</Text>
-                <Text style={styles.newsTime}>{news.getTimestamp()}</Text>
-              </View>
-            </View>
-          );
-          if (this.state.mounted) {
-            this.setState({ news: newsContainers });
-          }
-        });
-      });
-    }
-  }
 
   componentWillUnmount() {
     this.setState({ mounted: false });
