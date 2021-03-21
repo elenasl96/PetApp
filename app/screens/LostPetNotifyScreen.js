@@ -14,6 +14,7 @@ import {
 import mainStyle from "../styles/mainStyle";
 import db from "../firebase/DatabaseManager";
 import { AuthContext } from "../Components/AuthContext";
+import NotifySightButton from "../Components/Buttons/NotifySightButton";
 
 class LostPetNotifyScreen extends React.Component {
   static contextType = AuthContext;
@@ -56,12 +57,7 @@ class LostPetNotifyScreen extends React.Component {
               </View>
 
               <View style={styles.buttons}>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={this.reportLoss}
-                >
-                  <Text style={styles.buttonText}>Reply to Loss</Text>
-                </TouchableOpacity>
+                <NotifySightButton userID={pet.getUid()}></NotifySightButton>
               </View>
             </View>
 
@@ -72,7 +68,7 @@ class LostPetNotifyScreen extends React.Component {
               <TouchableHighlight>
                 <View style={styles.info}>
                   <Text>Size</Text>
-                  <Text>{pet.size}</Text>
+                  <Text>{pet.getSize()}</Text>
                 </View>
               </TouchableHighlight>
 

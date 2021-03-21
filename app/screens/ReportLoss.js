@@ -19,7 +19,6 @@ class ReportLossScreen extends React.Component {
   static contextType = AuthContext;
 
   state = {
-    color: null,
     notes: null,
     place: null,
     email: null,
@@ -31,11 +30,10 @@ class ReportLossScreen extends React.Component {
     console.log("pet");
     console.log(this.context.uid);
     db.addLostPetNotify(
-      "lostID",
       pet.getName(),
       pet.getPhoto(),
       pet.getSize(),
-      this.state.color,
+      pet.getColor(),
       pet.getBreed(),
       this.state.notes,
       this.state.place,
@@ -62,16 +60,6 @@ class ReportLossScreen extends React.Component {
                 enabled={Platform.OS === "ios" ? true : false}
               ></KeyboardAvoidingView>
               <Text style={styles.title}>Report Loss</Text>
-              <View style={mainStyle.form}>
-                <TextInput
-                  style={mainStyle.inputText}
-                  placeholder="Color"
-                  placeholderTextColor="#616161"
-                  returnKeyType="next"
-                  value={this.state.color}
-                  onChangeText={(color) => this.setState({ color })}
-                />
-              </View>
               <View style={mainStyle.form}>
                 <TextInput
                   style={mainStyle.inputText}

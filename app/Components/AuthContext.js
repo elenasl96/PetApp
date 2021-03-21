@@ -25,7 +25,8 @@ class AuthContextProvider extends Component {
     console.log("this user");
     console.log(this.state.user);
   };
-/*
+
+  /*
   saveLastLogin = (lastlogin) => {
    this.setState({lastlogin: lastlogin});
    console.log("lastlogin:" + this.state.lastlogin);

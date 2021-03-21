@@ -22,7 +22,7 @@ const db = {
     if (month < 10) month = "0" + month;
     let year = date.getFullYear();
     let timestamp = day + "/" + month + "/" + year;
-    let user = new User(name, photo, type, address, 0, timestamp);
+    let user = new User(name, photo, type, address, 0, timestamp, "");
     users.doc(uid).set(user.toFirestore());
   },
 
@@ -43,7 +43,8 @@ const db = {
           data.type,
           data.address,
           data.days,
-          data.lastlogin
+          data.lastlogin,
+          data.notificationtoken
         );
         //console.log(user);
         return user;
@@ -97,6 +98,30 @@ const db = {
           });
         });
       }
+    });
+  },
+
+  //User notifications
+  getUserToken: function (uid) {
+    return firestore
+      .collection("Users")
+      .doc(uid)
+      .get()
+      .then(function (doc) {
+        // doc.data() is never undefined for query doc snapshots
+        let token = doc.data().notificationtoken;
+        console.log(doc.id, " => ", doc.data());
+        return token;
+      })
+      .catch(function (error) {
+        console.log("Error getting documents: ", error);
+      });
+  },
+
+  updateNotificationToken: function (uid, token) {
+    const users = firestore.collection("Users");
+    return users.doc(uid).update({
+      notificationtoken: token,
     });
   },
 

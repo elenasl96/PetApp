@@ -19,6 +19,7 @@ import mainStyle from "../styles/mainStyle";
 import db from "./../firebase/DatabaseManager.js";
 import { AuthContext } from "../Components/AuthContext.js";
 import { Picker } from "@react-native-picker/picker";
+import { Permissions, Notifications } from "expo";
 
 class SignUpScreen extends React.Component {
   static contextType = AuthContext;

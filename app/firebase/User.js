@@ -5,14 +5,16 @@ export default class User {
   address: string;
   days: int;
   lastlogin: string;
+  notificationtoken: String;
 
-  constructor(name, photo, type, address, days, lastlogin) {
+  constructor(name, photo, type, address, days, lastlogin, notificationtoken) {
     this.name = name;
     this.photo = photo;
     this.type = type;
     this.address = address;
     this.days = days;
     this.lastlogin = lastlogin;
+    this.notificationtoken = notificationtoken;
   }
 
   // getters
@@ -40,6 +42,10 @@ export default class User {
     return this.lastlogin;
   }
 
+  getNotificationToken() {
+    return this.notificationToken;
+  }
+
   //serialize
   toFirestore() {
     return {
@@ -49,6 +55,7 @@ export default class User {
       address: this.address,
       days: this.days,
       lastlogin: this.lastlogin,
+      notificationtoken: this.notificationtoken,
     };
   }
 }

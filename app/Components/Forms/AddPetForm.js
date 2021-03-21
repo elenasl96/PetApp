@@ -84,11 +84,12 @@ class AddPetForm extends Component {
 
     //console.log(errors);
     this.setState({ errors: errors });
-    return false;
+    return true;
   }
 
   registerPet() {
     if (this.handleValidation()) {
+      console.log("Registering pet...");
       db.addUserAnimal(
         this.context.uid,
         this.state.name,
