@@ -12,7 +12,7 @@ import { SafeAreaView } from "react-navigation";
 import firebase from "firebase";
 import { AuthContext } from "../Components/AuthContext";
 import PlusIcon from "../Components/PlusIcon";
-import PetButton from "../Components/PetButton";
+import PetButton from "../Components/Buttons/PetButton";
 import db from "../firebase/DatabaseManager";
 import PlaceButton from "../Components/Buttons/PlaceButton";
 import FeedBox from "../Components/FeedBox";
@@ -84,8 +84,6 @@ class HomeScreen extends React.Component {
               places.push(savedPlace);
               if (this.state.mounted) {
                 this.setState({ places: places });
-                //console.log("AAA");
-                console.log(this.state.places);
               }
             });
           });
@@ -181,17 +179,6 @@ class HomeScreen extends React.Component {
             </View>
           </ScrollView>
         </View>
-
-        <View style={styles.bottomMenu}>
-          <TouchableHighlight onPress={null}>
-            <View style={styles.mainButtonContainer}>
-              <Image
-                source={require("../../assets/images/paw.png")}
-                style={styles.mainButton}
-              ></Image>
-            </View>
-          </TouchableHighlight>
-        </View>
       </SafeAreaView>
     );
   }
@@ -236,8 +223,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingTop: 20,
     paddingBottom: 20,
-
-    backgroundColor: "powderblue",
+    backgroundColor: "white",
   },
   feed: {
     width: 300,

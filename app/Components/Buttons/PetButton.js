@@ -7,8 +7,8 @@ import {
   View,
 } from "react-native";
 import firebase from "firebase";
-import db from "../firebase/DatabaseManager.js";
-import { AuthContext } from "../Components/AuthContext";
+import db from "../../firebase/DatabaseManager.js";
+import { AuthContext } from "../AuthContext";
 //import Animal from "../firebase/Animal.js";
 
 class PetButton extends React.Component {

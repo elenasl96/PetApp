@@ -42,8 +42,12 @@ export default StyleSheet.create({
     height: 50,
     color: "white",
   },
+  title: {
+    fontSize: 23,
+    fontWeight: "bold",
+  },
   text: {
-    fontSize: 20,
+    fontSize: 18,
   },
   button: {
     backgroundColor: "#3A559F",

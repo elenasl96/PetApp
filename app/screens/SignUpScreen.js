@@ -35,7 +35,9 @@ class SignUpScreen extends React.Component {
   };
 
   onLoginFailure(errorMessage) {
-    this.setState({ error: errorMessage, loading: false });
+    if (this.state.mounted) {
+      this.setState({ error: errorMessage, loading: false });
+    }
   }
 
   async signUpWithEmail() {
@@ -87,8 +89,9 @@ class SignUpScreen extends React.Component {
           credential
         );
         const user = auth().currentUser;
-        // .then(this.onLoginSuccess.bind(this))
-        console.log(facebookProfileData);
+
+        //console.log("Facebook data:");
+        //console.log(facebookProfileData);
         if (facebookProfileData.additionalUserInfo.isNewUser) {
           db.addUser(
             auth().currentUser.uid,
@@ -102,9 +105,6 @@ class SignUpScreen extends React.Component {
         db.getUser(user.uid).then((userFromDb) => {
           this.context.saveUser(userFromDb);
         });
-
-        //console.log("Facebook data:");
-        //console.log(facebookProfileData);
       }
     } catch ({ message }) {
       alert(`Facebook Login Error: ${message}`);

@@ -19,7 +19,13 @@ import { AuthContext } from "../Components/AuthContext";
 
 class SignInScreen extends React.Component {
   static contextType = AuthContext;
-  state = { email: "", password: "", errorMessage: "", loading: false };
+  state = {
+    email: "",
+    password: "",
+    errorMessage: "",
+    loading: false,
+    mounted: false,
+  };
 
   renderLoading() {
     if (this.state.loading) {
@@ -32,7 +38,17 @@ class SignInScreen extends React.Component {
   }
 
   onLoginFailure(errorMessage) {
-    this.setState({ error: errorMessage, loading: false });
+    if (this.state.mounted) {
+      this.setState({ error: errorMessage, loading: false });
+    }
+  }
+
+  componentDidMount() {
+    this.setState({ mounted: true });
+  }
+
+  componentWillUnmount() {
+    this.setState({ mounted: false });
   }
 
   async signInWithEmail() {

@@ -12,7 +12,6 @@ import {
 import { SafeAreaView } from "react-navigation";
 import firebase from "firebase";
 import { AuthContext } from "../Components/AuthContext";
-import PetButton from "../Components/PetButton";
 import db from "../firebase/DatabaseManager";
 
 import PetLostSeenButton from "../Components/Buttons/PetLostSeenButton";

@@ -16,7 +16,6 @@ import db from "../firebase/DatabaseManager";
 import News from "../Components/News";
 import { AuthContext } from "../Components/AuthContext";
 import { AntDesign } from "@expo/vector-icons";
-
 import { LinearGradient } from "expo-linear-gradient";
 import StarButton from "../Components/Buttons/StarButton";
 

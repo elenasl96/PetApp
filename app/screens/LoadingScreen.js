@@ -13,15 +13,9 @@ class LoadingScreen extends React.Component {
     this.setState({ mounted: true });
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        /*user.getIdToken().then(function (idToken) {
-          console.log(idToken);
-          return idToken;
-        });*/
-
         this.context.saveUserUID(user.uid);
         db.getUser(user.uid).then((user) => {
           this.context.saveUser(user);
-          console.log("usertype:" + user.getType());
           if (user.getType() == "user") {
             if (this.state.mounted) {
               this.props.navigation.navigate("App");
@@ -44,7 +38,6 @@ class LoadingScreen extends React.Component {
     this.setState({ mounted: false });
   }
   render() {
-    console.log(this.context);
     return (
       <View style={styles.container}>
         <ActivityIndicator size="large" />

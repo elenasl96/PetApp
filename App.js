@@ -1,4 +1,3 @@
-
 import React from "react";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 
@@ -22,7 +21,7 @@ const AppContainer = createAppContainer(
     {
       Auth: AuthNavigator,
       App: TabNavigator,
-     AppBusiness: TabBusinessNavigator,
+      AppBusiness: TabBusinessNavigator,
       // App: CalendarApp,
       //SignIn: SignIn,
     },
@@ -40,9 +39,6 @@ function App() {
   );
 }
 export default App;
-
-
-
 
 /*
 import * as React from 'react';

@@ -94,8 +94,6 @@ const HomeNavigator = createStackNavigator(
     },*/
     defaultNavigationOptions: ({ navigation }) => ({
       headerTitle: () => {
-        console.log("STATEEEEE");
-
         const { routeName } = navigation.state;
         return <NavBar title={routeName} />;
       },

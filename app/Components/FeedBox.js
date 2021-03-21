@@ -9,6 +9,8 @@ import {
 import firebase from "firebase";
 import db from "../firebase/DatabaseManager.js";
 import { AuthContext } from "../Components/AuthContext";
+import mainStyle from "../styles/mainStyle.js";
+import { LinearGradient } from "expo-linear-gradient";
 //import Animal from "../firebase/Animal.js";
 
 class FeedBox extends React.Component {
@@ -19,23 +21,27 @@ class FeedBox extends React.Component {
 
   componentDidMount() {
     this.setState({ mounted: true });
-    //console.log("IN BOX");
     const feeds = this.props.feeds;
 
     let promises = feeds.map((feedID, index) => {
       return db.getUserFeed(this.props.uid, feedID).then((feed) => {
         return (
-          <View key={index} style={styles.feed}>
-            <Text>{feed.getTitle()}</Text>
-            <Text>{feed.getText()}</Text>
-          </View>
+          <LinearGradient
+            key={index}
+            style={styles.feed}
+            // Background Linear Gradient
+            colors={["#caf0f8", "#48cae4", "#00b4d8"]}
+            start={{ x: 0.8, y: 0 }}
+            locations={[0, 0.5, 1]}
+          >
+            <Text style={mainStyle.title}>{feed.getTitle()}</Text>
+            <Text style={mainStyle.text}>{feed.getText()}</Text>
+          </LinearGradient>
         );
       });
     });
 
     Promise.all(promises).then((feeds) => {
-      //console.log("FEEDS");
-      //console.log(feeds);
       if (this.state.mounted) {
         this.setState({ feeds: feeds });
       }
@@ -58,11 +64,13 @@ const styles = StyleSheet.create({
   feed: {
     width: 300,
     height: 250,
-    backgroundColor: "white",
+    backgroundColor: "#caf0f8",
     borderRadius: 20,
     marginLeft: 10,
     marginRight: 10,
     padding: 15,
+    elevation: 7,
+    marginBottom: 10,
   },
   petImage: {
     width: 150,
