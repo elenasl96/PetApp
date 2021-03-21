@@ -80,7 +80,7 @@ export default function ImagePickerExample({ setPhoto }) {
           style={{ marginTop: 15, width: 200, height: 200 }}
         />
       )}
-      {/* <Button title="Open the camera" onPress={openCamera} /> */}
+      { <Button title="Open the camera" onPress={openCamera} /> }
     </View>
   );
 }

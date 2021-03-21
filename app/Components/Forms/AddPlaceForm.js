@@ -16,18 +16,62 @@ import { AuthContext } from "../AuthContext";
 import mainStyle from "../../styles/mainStyle";
 import * as Location from "expo-location";
 import { Picker } from "@react-native-picker/picker";
+import constants from "../../shared/constants";
+
+const typesPlaces = ["Veterinary","Kennel","Other"];
+
 
 export default class AddPlaceForm extends Component {
   static contextType = AuthContext;
   state = {
-    name: null,
-    type: null,
-    description: null,
+    name: "",
+    type: "Veterinary",
+    description: "",
     photo: null,
-    address: null,
+    address: "",
+    errors: {}, //dict
   };
 
+  handleValidation() {
+
+      let errors = {};
+      errors["name"] = null;
+      errors["description"] = null;
+      errors["address"] = null;
+      let formIsValid = true;
+
+      // Name
+      if (this.state.name == "") {
+            formIsValid = false;
+            errors["name"] = "Name cannot be empty";
+      }
+
+      // Description
+      if (this.state.description == "") {
+                formIsValid = false;
+                errors["description"] = "Description cannot be empty";
+      }
+
+      //Photo
+      if (this.state.photo == null) {
+            formIsValid = false;
+            errors["photo"] = "You must load a photo";
+      }
+
+
+      // Address
+      if (this.state.address == "") {
+                    formIsValid = false;
+                    errors["address"] = "Address cannot be empty";
+      }
+
+      this.setState({ errors: errors });
+      return formIsValid;
+    }
+
   async registerPlace() {
+
+  if ( this.handleValidation()){
     let { status } = await Location.requestPermissionsAsync();
     if (status !== "granted") {
       setErrorMsg("Permission to access location was denied");
@@ -49,9 +93,15 @@ export default class AddPlaceForm extends Component {
         "longitudeDelta"
       );
     });
+   }
   }
 
   render() {
+
+    let types = constants.TYPES_PLACES.map((s, i) => {
+              return <Picker.Item key={i} value={s} label={s} />;
+        });
+
     return (
       <SafeAreaView
         style={{
@@ -73,9 +123,7 @@ export default class AddPlaceForm extends Component {
               this.setState({ type: itemValue })
             }
           >
-            <Picker.Item label="Veterinary" value="vet" />
-            <Picker.Item label="Kennel" value="kennel" />
-            <Picker.Item label="Other" value="other" />
+            {types}
           </Picker>
         </View>
         <View style={mainStyle.form}>
@@ -89,6 +137,10 @@ export default class AddPlaceForm extends Component {
           />
         </View>
 
+        {this.state.errors["name"] != null ? (
+                          <Text style={styles.error}>{this.state.errors["name"]}</Text>
+         ) : null}
+
         <View style={mainStyle.form}>
           <TextInput
             style={mainStyle.inputText}
@@ -100,6 +152,11 @@ export default class AddPlaceForm extends Component {
             onChangeText={(description) => this.setState({ description })}
           />
         </View>
+
+        {this.state.errors["description"] != null ? (
+                  <Text style={styles.error}>{this.state.errors["description"]}</Text>
+                ) : null}
+
         <View style={mainStyle.form}>
           <TextInput
             style={mainStyle.inputText}
@@ -112,11 +169,17 @@ export default class AddPlaceForm extends Component {
           />
         </View>
 
+        {this.state.errors["address"] != null ? (
+                  <Text style={styles.error}>{this.state.errors["address"]}</Text>
+                ) : null}
+
         <ImagePickerExample
           photo={this.state.photo}
           setPhoto={(photo) => this.setState({ photo })}
         ></ImagePickerExample>
-        <Text style={styles.error}>{this.state.error}</Text>
+        {this.state.errors["photo"] != null ? (
+                  <Text style={styles.error}>{this.state.errors["photo"]}</Text>
+                ) : null}
 
         <TouchableOpacity
           style={{

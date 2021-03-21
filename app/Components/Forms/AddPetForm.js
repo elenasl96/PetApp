@@ -25,7 +25,7 @@ class AddPetForm extends Component {
   static contextType = AuthContext;
   state = {
     name: "",
-    age: null,
+    age: "",
     photo: null,
     typeSelected: "Dog",
     prevTypeSelected: "Dog",
@@ -65,6 +65,11 @@ class AddPetForm extends Component {
 
     //Age
 
+    if(this.state.age == ""){
+      formIsValid = false;
+      errors["age"] = "Age cannot be empty";
+    }
+    else {
     if (isNaN(this.state.age)) {
       formIsValid = false;
       errors["age"] = "Age must be a number";
@@ -81,10 +86,10 @@ class AddPetForm extends Component {
         errors["age"] = "Age is an integer between 0 and 20 ";
       }
     }
-
+   }
     //console.log(errors);
     this.setState({ errors: errors });
-    return true;
+    return formIsValid;
   }
 
   registerPet() {
