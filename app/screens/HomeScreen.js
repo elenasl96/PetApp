@@ -11,12 +11,13 @@ import {
 import { SafeAreaView } from "react-navigation";
 import firebase from "firebase";
 import { AuthContext } from "../Components/AuthContext";
-import PlusIcon from "../Components/PlusIcon";
 import PetButton from "../Components/Buttons/PetButton";
 import db from "../firebase/DatabaseManager";
 import PlaceButton from "../Components/Buttons/PlaceButton";
 import FeedBox from "../Components/FeedBox";
 import NotificationsHandler from "../Components/NotificationsHandler";
+import { AntDesign } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
 
 class HomeScreen extends React.Component {
   state = {
@@ -137,12 +138,12 @@ class HomeScreen extends React.Component {
             </View>
 
             <View style={styles.myPetsContainer}>
-              <Text style={styles.title}>My Pets</Text>
               <View style={styles.myPets}>
                 <ScrollView
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}
                 >
+                  <Text style={styles.title}>My Pets</Text>
                   {this.state.pets.length > 0 ? (
                     <PetButton
                       uid={this.context.uid}
@@ -152,30 +153,30 @@ class HomeScreen extends React.Component {
                     ></PetButton>
                   ) : null}
 
-                  <TouchableHighlight onPress={addPet} style={styles.pet}>
-                    <Image
-                      source={require("../../assets/images/add.png")}
-                      style={styles.addPetButton}
-                    ></Image>
+                  <TouchableHighlight
+                    onPress={addPet}
+                    style={styles.addPetButton}
+                  >
+                    <AntDesign name="plus" size={50} style={styles.plus} />
                   </TouchableHighlight>
                 </ScrollView>
               </View>
             </View>
 
-            <View style={styles.myPetsContainer}>
+            <View style={styles.myPlaceContainer}>
               <Text style={styles.title}>My Favourite Places</Text>
-              <View style={styles.myPlaces}>
+              {/*} <View style={styles.myPlaces}>
                 <ScrollView
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}
-                >
-                  <PlaceButton
-                    uid={this.context.uid}
-                    places={this.state.places}
-                    navigation={this.props.navigation}
-                  ></PlaceButton>
-                </ScrollView>
-              </View>
+                  > */}
+              <PlaceButton
+                uid={this.context.uid}
+                places={this.state.places}
+                navigation={this.props.navigation}
+              ></PlaceButton>
+              {/*    </ScrollView>
+              </View> */}
             </View>
           </ScrollView>
         </View>
@@ -237,6 +238,7 @@ const styles = StyleSheet.create({
   myPetsContainer: {
     flexDirection: "column",
   },
+
   title: {
     marginLeft: 15,
     marginTop: 10,
@@ -250,13 +252,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     backgroundColor: "white",
   },
-  pet: {
-    marginLeft: 15,
-    width: 150,
-    height: 150,
-    borderRadius: 75,
-    backgroundColor: "orange",
-  },
+
   petImage: {
     width: 150,
     height: 150,
@@ -264,11 +260,17 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   addPetButton: {
-    width: 110,
-    height: 110,
-    borderRadius: 75,
-    resizeMode: "cover",
-    margin: 20,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 20,
+  },
+  plus: {
+    color: "#F3722C",
+  },
+  myPlaceContainer: {
+    flexDirection: "column",
+    paddingHorizontal: 10,
   },
   myPlaces: {
     flexWrap: "nowrap",

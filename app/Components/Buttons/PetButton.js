@@ -94,11 +94,12 @@ class PetButton extends React.Component {
 
 const styles = StyleSheet.create({
   pet: {
-    marginLeft: 15,
+    marginRight: 15,
     width: 150,
     height: 150,
     borderRadius: 75,
     backgroundColor: "orange",
+    elevation: 5,
   },
   petImage: {
     width: 150,

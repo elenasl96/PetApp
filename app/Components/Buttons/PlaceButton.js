@@ -5,6 +5,7 @@ import {
   Image,
   TouchableHighlight,
   View,
+  ImageBackground,
 } from "react-native";
 import db from "../../firebase/DatabaseManager";
 import { AuthContext } from "../AuthContext";
@@ -48,10 +49,27 @@ class PlaceButton extends React.Component {
                 onPress={() => this.showPlace(placesID, place)}
                 style={styles.place}
               >
-                <Image
+                <ImageBackground
                   source={require("../../../assets/images/vet.jpg")}
                   style={styles.placeImage}
-                ></Image>
+                  imageStyle={{ borderRadius: 20 }}
+                >
+                  <View style={styles.overlay}>
+                    <Text
+                      style={[
+                        styles.title,
+                        {
+                          color: "white",
+                          textShadowColor: "black",
+                          textShadowRadius: 2,
+                          alignSelf: "center",
+                        },
+                      ]}
+                    >
+                      OOOP
+                    </Text>
+                  </View>
+                </ImageBackground>
               </TouchableHighlight>
             </View>
           );
@@ -77,26 +95,23 @@ class PlaceButton extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  pet: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
-    backgroundColor: "orange",
+  place: {
+    width: "100%",
+    elevation: 2,
+    marginVertical: 7,
+    borderRadius: 20,
   },
 
-  place: {
-    minWidth: 250,
-    marginLeft: 15,
-    marginRight: 15,
-    marginBottom: 15,
-    flex: 1,
-    borderRadius: 35,
-  },
   placeImage: {
     width: "100%",
     height: 150,
-    borderRadius: 35,
+    borderRadius: 20,
     resizeMode: "cover",
+  },
+  overlay: {
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    width: "100%",
+    height: "100%",
   },
 });
 export default PlaceButton;
