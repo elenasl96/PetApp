@@ -8,21 +8,14 @@ import Notification from "./Notification.js";
 import News from "./News.js";
 import LostPetNotify from "./LostPetNotify.js";
 import LostPetSeen from "./LostPetSeen.js";
+import utils from "../Components/utilities";
 
 const db = {
   // ----------------User-----------------------------------------------------------
 
   addUser: function (uid, name, photo, type, address) {
     const users = firestore.collection("Users");
-    let date = new Date();
-    let day = date.getDate();
-    if (day < 10) day = "0" + day;
-    let month = date.getMonth();
-    month = month + 1;
-    if (month < 10) month = "0" + month;
-    let year = date.getFullYear();
-    let timestamp = day + "/" + month + "/" + year;
-    let user = new User(name, photo, type, address, 0, timestamp, "");
+    let user = new User(name, photo, type, address, 0, utils.timestamp(), "");
     users.doc(uid).set(user.toFirestore());
   },
 
@@ -158,29 +151,13 @@ const db = {
   addAnimalStatSample: function (uid, aid, stat, value) {
     const users = firestore.collection("Users");
     const animals = users.doc(uid).collection("Animals");
-    var date = new Date();
-    var day = date.getDate();
-    if (day < 10) day = "0" + day;
-    var month = date.getMonth();
-    month = month + 1;
-    if (month < 10) month = "0" + month;
-    var year = date.getFullYear();
-    /*
-             var hours = date.getHours();
-             if (hours < 10) hours = "0" + hours;
-             var minutes = date.getMinutes();
-             if (minutes < 10) minutes = "0" + minutes;
-             var seconds = date.getSeconds();
-             if (seconds < 10) seconds = "0" + seconds; */
-    var timestamp = day + "/" + month + "/" + year;
-    //console.log(timestamp);
     animals
       .doc(aid)
       .collection("Stats")
       .doc(stat)
       .collection("Samples")
       .doc(Date.now().toString())
-      .set({ label: timestamp, value: value });
+      .set({ label: utils.timestamp(), value: value });
   },
 
   getUserAnimals: function (uid) {
@@ -837,31 +814,8 @@ const db = {
   //----------------News---------------------------------------------------
 
   addNews: function (pid, title, text) {
-    var date = new Date();
-    var day = date.getDate();
-    if (day < 10) day = "0" + day;
-    var month = date.getMonth();
-    month = month + 1;
-    if (month < 10) month = "0" + month;
-    var year = date.getFullYear();
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
-    var seconds = date.getSeconds();
-    var timestamp =
-      day +
-      "/" +
-      month +
-      "/" +
-      year +
-      " " +
-      hours +
-      ":" +
-      minutes +
-      ":" +
-      seconds;
-    console.log(timestamp);
     const places = firestore.collection("Places");
-    let news = new News(title, text, timestamp);
+    let news = new News(title, text, utils.timestampAccurate());
     places.doc(pid).collection("News").add(news.toFirestore());
   },
 
@@ -1110,22 +1064,14 @@ const db = {
   addRandomFeeds: function (animals, uid, lastlogin, days) {
     var feeds = [];
     var alreadyLoggedInToday = false;
-    var date = new Date();
-    var day = date.getDate();
-    if (day < 10) day = "0" + day;
-    var month = date.getMonth();
-    month = month + 1;
-    if (month < 10) month = "0" + month;
-    var year = date.getFullYear();
-    var timestamp = day + "/" + month + "/" + year;
 
-    if (lastlogin != timestamp || days == 0) {
+    if (lastlogin != utils.timestamp() || days == 0) {
       // daily feed  days = 0 is the first access
       var newdays = days + 1;
       firestore
         .collection("Users")
         .doc(uid)
-        .update({ lastlogin: timestamp, days: newdays });
+        .update({ lastlogin: utils.timestamp(), days: newdays });
       db.deleteUserFeeds(uid);
       var id = days % 31;
       //console.log(id);
@@ -1287,29 +1233,7 @@ const db = {
 
   addUserNotification: function (uid, title, text) {
     const users = firestore.collection("Users");
-    var date = new Date();
-    var day = date.getDate();
-    if (day < 10) day = "0" + day;
-    var month = date.getMonth();
-    month = month + 1;
-    if (month < 10) month = "0" + month;
-    var year = date.getFullYear();
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
-    var seconds = date.getSeconds();
-    var timestamp =
-      day +
-      "/" +
-      month +
-      "/" +
-      year +
-      " " +
-      hours +
-      ":" +
-      minutes +
-      ":" +
-      seconds;
-    let notification = new Notification(title, text, timestamp);
+    let notification = new Notification(title, text, utils.timestampAccurate());
     users.doc(uid).collection("Notifications").add(notification.toFirestore());
   },
 
@@ -1389,28 +1313,6 @@ const db = {
     phone
   ) {
     const lostPets = firestore.collection("LostPetNotify");
-    var date = new Date();
-    var day = date.getDate();
-    if (day < 10) day = "0" + day;
-    var month = date.getMonth();
-    month = month + 1;
-    if (month < 10) month = "0" + month;
-    var year = date.getFullYear();
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
-    var seconds = date.getSeconds();
-    var timestamp =
-      day +
-      "/" +
-      month +
-      "/" +
-      year +
-      " " +
-      hours +
-      ":" +
-      minutes +
-      ":" +
-      seconds;
     let notification = new LostPetNotify(
       name,
       photo,
@@ -1419,7 +1321,7 @@ const db = {
       breed,
       notes,
       place,
-      timestamp,
+      utils.timestampAccurate(),
       uid,
       email,
       phone
@@ -1504,28 +1406,7 @@ const db = {
     phone
   ) {
     const lostPets = firestore.collection("LostPetSeen");
-    var date = new Date();
-    var day = date.getDate();
-    if (day < 10) day = "0" + day;
-    var month = date.getMonth();
-    month = month + 1;
-    if (month < 10) month = "0" + month;
-    var year = date.getFullYear();
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
-    var seconds = date.getSeconds();
-    var timestamp =
-      day +
-      "/" +
-      month +
-      "/" +
-      year +
-      " " +
-      hours +
-      ":" +
-      minutes +
-      ":" +
-      seconds;
+
     let notification = new LostPetSeen(
       photo,
       size,
@@ -1533,7 +1414,7 @@ const db = {
       breed,
       notes,
       place,
-      timestamp,
+      utils.timestampAccurate(),
       uid,
       email,
       phone
