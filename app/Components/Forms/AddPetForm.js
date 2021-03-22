@@ -18,6 +18,7 @@ import ImagePickerExample from "../../screens/camera";
 import { AuthContext } from "../AuthContext";
 import { withNavigation } from "react-navigation";
 import { Picker } from "@react-native-picker/picker";
+import constants from "../../shared/constants";
 
 import mainStyle from "../../styles/mainStyle";
 
@@ -29,14 +30,14 @@ class AddPetForm extends Component {
     photo: null,
     typeSelected: "Dog",
     prevTypeSelected: "Dog",
-    types: ["Dog", "Cat"],
+    //types: ["Dog", "Cat"],
     breedSelected: "None",
-    breedsDog: ["None", "Labrador", "Golden Retriever"],
-    breedsCat: ["None", "Bombay"],
+    //breedsDog: ["None", "Labrador", "Golden Retriever"],
+    //breedsCat: ["None", "Bombay"],
     colorSelected: "White",
-    colors: ["White", "Black"],
+    //colors: ["White", "Black"],
     sizeSelected: "Small",
-    sizes: ["Small", "Medium", "Big"],
+    //sizes: ["Small", "Medium", "Big"],
     errors: {}, // dict
   };
 
@@ -121,23 +122,23 @@ class AddPetForm extends Component {
   }
 
   render() {
-    let types = this.state.types.map((s, i) => {
+    let types = constants.TYPES_PETS.map((s, i) => {
       return <Picker.Item key={i} value={s} label={s} />;
     });
 
-    let breedsDog = this.state.breedsDog.map((s, i) => {
+    let breedsDog = constants.BREEDS_DOG.map((s, i) => {
       return <Picker.Item key={i} value={s} label={s} />;
     });
 
-    let breedsCat = this.state.breedsCat.map((s, i) => {
+    let breedsCat = constants.BREEDS_CAT.map((s, i) => {
       return <Picker.Item key={i} value={s} label={s} />;
     });
 
-    let colors = this.state.colors.map((s, i) => {
+    let colors = constants.COLORS_PETS.map((s, i) => {
       return <Picker.Item key={i} value={s} label={s} />;
     });
 
-    let sizes = this.state.sizes.map((s, i) => {
+    let sizes = constants.SIZES_PETS.map((s, i) => {
       return <Picker.Item key={i} value={s} label={s} />;
     });
 

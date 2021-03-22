@@ -18,8 +18,6 @@ import * as Location from "expo-location";
 import { Picker } from "@react-native-picker/picker";
 import constants from "../../shared/constants";
 
-const typesPlaces = ["Veterinary","Kennel","Other"];
-
 
 export default class AddPlaceForm extends Component {
   static contextType = AuthContext;

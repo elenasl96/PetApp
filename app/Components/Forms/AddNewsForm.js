@@ -13,6 +13,7 @@ import db from "../../firebase/DatabaseManager";
 import ImagePickerExample from "../../screens/camera";
 import { AuthContext } from "../AuthContext";
 
+
 import mainStyle from "../../styles/mainStyle";
 
 export default class AddNewsForm extends Component {

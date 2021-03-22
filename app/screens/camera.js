@@ -4,10 +4,12 @@ import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
 import db from "./../firebase/DatabaseManager.js";
 import * as Permissions from "expo-permissions";
+import * as MediaLibrary from 'expo-media-library';
 
 export default function ImagePickerExample({ setPhoto }) {
   const [image, setImage] = useState(null);
 
+/*
   // grant permissions
   useEffect(() => {
     (async () => {
@@ -18,10 +20,16 @@ export default function ImagePickerExample({ setPhoto }) {
         }
       }
     })();
-  }, []);
+  }, []); */
 
   // method to pick images from gallery
   const pickImage = async () => {
+    const { status } = await MediaLibrary.requestPermissionsAsync();
+    if (status !== "granted") {
+      alert("Sorry, we need gallery roll permissions to make this work!");
+    }
+    else {
+    console.log("Gallery permissions granted");
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -35,10 +43,18 @@ export default function ImagePickerExample({ setPhoto }) {
       let filename = upload(result.uri);
       console.log("photourl:" + filename);
     }
+    }
   };
 
   // method to open the camera
   const openCamera = async () => {
+
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status !== "granted") {
+      alert("Sorry, we need camera roll permissions to make this work!");
+    }
+    else{
+    console.log("Camera permissions granted");
     let result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -52,6 +68,7 @@ export default function ImagePickerExample({ setPhoto }) {
 
       let filename = upload(result.uri);
     }
+  }
   };
 
   const upload = async (uri) => {
