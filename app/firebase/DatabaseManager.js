@@ -8,7 +8,7 @@ import Notification from "./Notification.js";
 import News from "./News.js";
 import LostPetNotify from "./LostPetNotify.js";
 import LostPetSeen from "./LostPetSeen.js";
-import utils from "../Components/utilities";
+import utils from "../shared/utilities";
 
 const db = {
   // ----------------User-----------------------------------------------------------

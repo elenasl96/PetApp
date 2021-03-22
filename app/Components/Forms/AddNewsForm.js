@@ -19,13 +19,43 @@ import mainStyle from "../../styles/mainStyle";
 export default class AddNewsForm extends Component {
   static contextType = AuthContext;
   state = {
-    title: null,
-    text: null,
+    title: "",
+    text: "",
+    errors: {}, // dict
   };
 
+  handleValidation() {
+
+      let errors = {};
+      errors["title"] = null;
+      errors["text"] = null;
+      let formIsValid = true;
+
+      //title
+      if (this.state.title == "") {
+        formIsValid = false;
+        errors["title"] = "Title cannot be empty";
+      }
+
+      //text
+      if (this.state.text == "") {
+              formIsValid = false;
+              errors["text"] = "Text cannot be empty";
+
+      }
+
+      this.setState({ errors: errors });
+      return formIsValid;
+
+     }
+
   addNews() {
+    console.log("AddNews");
+    if (this.handleValidation()){
+    console.log("Valid");
     const pid = this.props.pid;
     db.addNews(pid, this.state.title, this.state.text);
+    }
   }
 
   render() {
@@ -54,6 +84,10 @@ export default class AddNewsForm extends Component {
           />
         </View>
 
+        {this.state.errors["title"] != null ? (
+                  <Text style={styles.error}>{this.state.errors["title"]}</Text>
+                ) : null}
+
         <View style={mainStyle.form}>
           <TextInput
             style={mainStyle.inputText}
@@ -65,6 +99,10 @@ export default class AddNewsForm extends Component {
             onChangeText={(text) => this.setState({ text })}
           />
         </View>
+
+        {this.state.errors["text"] != null ? (
+                          <Text style={styles.error}>{this.state.errors["text"]}</Text>
+                        ) : null}
 
         <TouchableOpacity
           style={{

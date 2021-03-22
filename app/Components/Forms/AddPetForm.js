@@ -30,14 +30,9 @@ class AddPetForm extends Component {
     photo: null,
     typeSelected: "Dog",
     prevTypeSelected: "Dog",
-    //types: ["Dog", "Cat"],
     breedSelected: "None",
-    //breedsDog: ["None", "Labrador", "Golden Retriever"],
-    //breedsCat: ["None", "Bombay"],
     colorSelected: "White",
-    //colors: ["White", "Black"],
     sizeSelected: "Small",
-    //sizes: ["Small", "Medium", "Big"],
     errors: {}, // dict
   };
 

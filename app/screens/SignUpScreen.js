@@ -52,7 +52,7 @@ class SignUpScreen extends React.Component {
         .createUserWithEmailAndPassword(this.state.email, this.state.password)
         .then((user) => {
           auth().setPersistence(auth.Auth.Persistence.LOCAL);
-          db.addUser(user.uid, this.state.name, "", "user", "via veglia").then(
+          db.addUser(user.uid, this.state.name, "", this.state.type,this.state.address).then(
             "User Registered"
           );
           db.getUser(user.uid).then((userFromDb) => {
@@ -69,7 +69,7 @@ class SignUpScreen extends React.Component {
           }
         });
     } else {
-      this.onLoginFailure.bind(this)("Compilare tutti i campi");
+      this.onLoginFailure.bind(this)("Fill in all the fields");
     }
   }
 

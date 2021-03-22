@@ -71,7 +71,7 @@ class SignInScreen extends React.Component {
           }
         });
     } else {
-      this.onLoginFailure.bind(this)("Compilare tutti i campi");
+      this.onLoginFailure.bind(this)("Fill in all the fields");
     }
   }
 

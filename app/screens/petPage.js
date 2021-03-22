@@ -20,7 +20,7 @@ import { AuthContext } from "../Components/AuthContext";
 import { withNavigation } from "react-navigation";
 
 import Chart from "./PetChart.js";
-import utils from "../Components/utilities";
+import utils from "../shared/utilities";
 
 class PetScreen extends React.Component {
   state = {
