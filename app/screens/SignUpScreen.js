@@ -78,40 +78,44 @@ class SignUpScreen extends React.Component {
   }
 
   async signInWithFacebook() {
-    try {
-      var appId = "401120257739037";
-      var appName = "Pet App";
-      await Facebook.initializeAsync({ appId, appName });
+    if (this.state.address && this.state.type) {
+      try {
+        var appId = "401120257739037";
+        var appName = "Pet App";
+        await Facebook.initializeAsync({ appId, appName });
 
-      const { type, token } = await Facebook.logInWithReadPermissionsAsync({
-        permissions: ["public_profile"],
-      });
-      if (type === "success") {
-        await auth().setPersistence(auth.Auth.Persistence.LOCAL);
-        const credential = auth.FacebookAuthProvider.credential(token);
-        const facebookProfileData = await auth().signInWithCredential(
-          credential
-        );
-        const user = auth().currentUser;
-
-        //console.log("Facebook data:");
-        //console.log(facebookProfileData);
-        if (facebookProfileData.additionalUserInfo.isNewUser) {
-          db.addUser(
-            auth().currentUser.uid,
-            facebookProfileData.additionalUserInfo.profile.name,
-            facebookProfileData.additionalUserInfo.profile.picture.data.url,
-            "user",
-            "via veglia"
-          ).then("User Registered");
-        }
-
-        db.getUser(user.uid).then((userFromDb) => {
-          this.context.saveUser(userFromDb);
+        const { type, token } = await Facebook.logInWithReadPermissionsAsync({
+          permissions: ["public_profile"],
         });
+        if (type === "success") {
+          await auth().setPersistence(auth.Auth.Persistence.LOCAL);
+          const credential = auth.FacebookAuthProvider.credential(token);
+          const facebookProfileData = await auth().signInWithCredential(
+            credential
+          );
+          const user = auth().currentUser;
+
+          //console.log("Facebook data:");
+          //console.log(facebookProfileData);
+          if (facebookProfileData.additionalUserInfo.isNewUser) {
+            db.addUser(
+              auth().currentUser.uid,
+              facebookProfileData.additionalUserInfo.profile.name,
+              facebookProfileData.additionalUserInfo.profile.picture.data.url,
+              this.state.type,
+              this.state.address
+            ).then("User Registered");
+          }
+
+          db.getUser(user.uid).then((userFromDb) => {
+            this.context.saveUser(userFromDb);
+          });
+        }
+      } catch ({ message }) {
+        alert(`Facebook Login Error: ${message}`);
       }
-    } catch ({ message }) {
-      alert(`Facebook Login Error: ${message}`);
+    } else {
+      this.onLoginFailure.bind(this)("Fill address and choose user type");
     }
   }
 
