@@ -137,7 +137,7 @@ const db = {
     const animals = users.doc(uid).collection("Animals");
     animals.doc(aid).collection("Diseases").add({ disease });
   },
-
+/*
   addAnimalStat: function (uid, aid) {
     const users = firestore.collection("Users");
     const stats = users
@@ -148,6 +148,8 @@ const db = {
     stats.add({ name: stat });
   },
 
+  */
+
   addAnimalStatSample: function (uid, aid, stat, value) {
     const users = firestore.collection("Users");
     const animals = users.doc(uid).collection("Animals");
@@ -157,8 +159,11 @@ const db = {
       .doc(stat)
       .collection("Samples")
       .doc(Date.now().toString())
-      .set({ label: utils.timestamp(), value: value });
+      .set({ //label: utils.timestamp(),
+        value: value });
   },
+
+
 
   getUserAnimals: function (uid) {
     const users = firestore.collection("Users");
@@ -224,7 +229,7 @@ const db = {
         console.log("Error getting documents: ", error);
       });
   },
-
+/*
   getAnimalStats: function (uid, aid) {
     const users = firestore.collection("Users");
     const animals = users.doc(uid).collection("Animals");
@@ -268,6 +273,36 @@ const db = {
         console.log("Error getting documents: ", error);
       });
   },
+
+  getAnimalStatSampleByLabel: function (uid, aid, stat,label) {
+      const users = firestore.collection("Users");
+      const animals = users.doc(uid).collection("Animals");
+      var sample;
+      return animals
+        .doc(aid)
+        .collection("Stats")
+        .doc(stat)
+        .where("label","==",label)
+        .get()
+        .then(function (doc) {
+          // doc.data() is never undefined for query doc snapshots
+          //console.log(doc.id, " => ", doc.data());
+          sample = doc.id;
+          //console.log(user);
+          return sample;
+        })
+        .catch(function (error) {
+          console.log("Error getting documents: ", error);
+        });
+    },
+
+    deleteAnimalStatSampleByLabel: function(uid, aid, stat,label){
+       getAnimalStatSampleByLabel(uid, aid, stat,label).then((id)=>{
+         db.deleteAnimalStatSample(uid,aid,stat,id);
+       });
+    },
+
+    */
 
   getAnimalStatSamples: function (uid, aid, stat) {
     const stats = firestore
@@ -386,7 +421,7 @@ const db = {
         console.error("Error removing document: ", error);
       });
   },
-
+/*
   deleteAnimalStat: function (uid, aid, id) {
     const animals = firestore
       .collection("Users")
@@ -404,6 +439,8 @@ const db = {
         console.error("Error removing document: ", error);
       });
   },
+
+  */
 
   deleteAnimalStatSample: function (uid, aid, stat, id) {
     const animals = firestore
