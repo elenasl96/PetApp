@@ -49,7 +49,6 @@ export default class LostPetsSeenScreen extends React.Component {
         <View style={styles.mainContent}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.myPlacesContainer}>
-              <Text style={styles.title}>Lost Pets</Text>
               <View style={styles.buttons}>
                 <TouchableOpacity
                   style={styles.button}

@@ -53,16 +53,19 @@ const LostPetsNavigator = createStackNavigator(
   {
     initialRouteName: "LostPets",
     /* The header config from HomeScreen is now here */
-    defaultNavigationOptions: {
-      headerTitle: () => <NavBar />,
+    defaultNavigationOptions: ({ navigation }) => ({
+      headerTitle: () => {
+        const { routeName } = navigation.state;
+        return <NavBar title={routeName} />;
+      },
       headerStyle: {
         backgroundColor: "#F9844A",
       },
-      headerTintColor: "#fff",
+      //headerTintColor: "#fff",
       headerTitleStyle: {
         fontWeight: "italic",
       },
-    },
+    }),
   }
 );
 

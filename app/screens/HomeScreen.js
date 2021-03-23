@@ -143,7 +143,6 @@ class HomeScreen extends React.Component {
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}
                 >
-                  <Text style={styles.title}>My Pets</Text>
                   {this.state.pets.length > 0 ? (
                     <PetButton
                       uid={this.context.uid}
@@ -151,7 +150,9 @@ class HomeScreen extends React.Component {
                       //pets = {this.context.pets}
                       navigation={this.props.navigation}
                     ></PetButton>
-                  ) : null}
+                  ) : (
+                    <Text style={styles.largeText}>Your pets</Text>
+                  )}
 
                   <TouchableHighlight
                     onPress={addPet}
@@ -164,7 +165,7 @@ class HomeScreen extends React.Component {
             </View>
 
             <View style={styles.myPlaceContainer}>
-              <Text style={styles.title}>My Favourite Places</Text>
+              <Text style={styles.largeText}>Your Places</Text>
               {/*} <View style={styles.myPlaces}>
                 <ScrollView
                   horizontal={true}
@@ -270,7 +271,7 @@ const styles = StyleSheet.create({
   },
   myPlaceContainer: {
     flexDirection: "column",
-    paddingHorizontal: 10,
+    paddingHorizontal: 0,
   },
   myPlaces: {
     flexWrap: "nowrap",
@@ -312,6 +313,11 @@ const styles = StyleSheet.create({
     height: 50,
     resizeMode: "cover",
     tintColor: "orange",
+  },
+  largeText: {
+    fontSize: 30,
+    marginHorizontal: 10,
+    marginVertical: 5,
   },
 });
 export default HomeScreen;

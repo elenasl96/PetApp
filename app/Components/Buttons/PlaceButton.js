@@ -89,7 +89,11 @@ class PlaceButton extends React.Component {
     if (this.state.places != null) {
       return this.state.places;
     } else {
-      return <Text style={{ textAlign: "center" }}>Add new place</Text>;
+      return (
+        <Text style={{ textAlign: "center" }}>
+          Places you'll find and like in the map will appear here!
+        </Text>
+      );
     }
   }
 }

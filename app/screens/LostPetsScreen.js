@@ -50,8 +50,6 @@ export default class LostPetsScreen extends React.Component {
         <View style={styles.mainContent}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.myPlacesContainer}>
-              <Text style={styles.title}>Lost Pets</Text>
-
               <View style={styles.buttons}>
                 <TouchableOpacity
                   style={styles.button}
@@ -78,17 +76,6 @@ export default class LostPetsScreen extends React.Component {
               </View>
             </View>
           </ScrollView>
-        </View>
-
-        <View style={styles.bottomMenu}>
-          <TouchableHighlight onPress={null}>
-            <View style={styles.mainButtonContainer}>
-              <Image
-                source={require("../../assets/images/paw.png")}
-                style={styles.mainButton}
-              ></Image>
-            </View>
-          </TouchableHighlight>
         </View>
       </SafeAreaView>
     );
