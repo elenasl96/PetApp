@@ -38,6 +38,12 @@ class VetScreen extends React.Component {
     this.setState({ mounted: false });
   }
 
+  openInMap = () => {
+    this.props.navigation.navigate("Map", {
+      pet: this.props.navigation.state.params.pet,
+    });
+  };
+
   render() {
     const place = this.props.navigation.state.params.place;
     const pid = this.props.navigation.state.params.pid;
@@ -77,8 +83,11 @@ class VetScreen extends React.Component {
                   "rgba(255,255,255,1)",
                 ]}
               >
-                <TouchableOpacity style={styles.button} onPress={null}>
-                  <Text style={styles.buttonText}>Open in map M</Text>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={this.openInMap}
+                >
+                  <Text style={styles.buttonText}>Open in map </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.button}
@@ -88,7 +97,7 @@ class VetScreen extends React.Component {
                     })
                   }
                 >
-                  <Text style={styles.buttonText}> + News N</Text>
+                  <Text style={styles.buttonText}> + News </Text>
                 </TouchableOpacity>
                 <StarButton uid={this.context.uid} pid={pid} />
               </LinearGradient>
