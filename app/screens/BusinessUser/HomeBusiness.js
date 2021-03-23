@@ -25,8 +25,7 @@ export default class HomeBusiness extends React.Component {
     this.setState({ mounted: true });
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        db.getUser(this.context.uid);
-        db.getPlaces(this.context.uid).then((places) => {
+        db.getPlacesByUid(this.context.uid).then((places) => {
           if (this.state.mounted) {
             this.setState({ places: places });
           }
