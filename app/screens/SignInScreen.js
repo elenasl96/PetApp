@@ -55,10 +55,12 @@ class SignInScreen extends React.Component {
     if (this.state.email && this.state.password) {
       await auth()
         .signInWithEmailAndPassword(this.state.email, this.state.password)
-        .then((user) => {
+        .then((credential) => {
           auth().setPersistence(auth.Auth.Persistence.LOCAL);
-          db.getUser(user.uid).then((userFromDb) => {
-            this.context.saveUser(userFromDb);
+          db.getUser(credential.user.uid).then((userFromDb) => {
+            if (this.state.mounted) {
+              this.context.saveUser(userFromDb);
+            }
           });
         })
         .catch((error) => {

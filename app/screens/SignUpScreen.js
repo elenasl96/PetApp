@@ -28,7 +28,7 @@ class SignUpScreen extends React.Component {
     email: null,
     password: null,
     address: null,
-    type: null,
+    type: "user",
     errorMessage: null,
     loading: false,
     mounted: true,
@@ -36,6 +36,7 @@ class SignUpScreen extends React.Component {
 
   onLoginFailure(errorMessage) {
     if (this.state.mounted) {
+      console.log(this.state);
       this.setState({ error: errorMessage, loading: false });
     }
   }
@@ -50,14 +51,17 @@ class SignUpScreen extends React.Component {
     ) {
       await auth()
         .createUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then((user) => {
+        .then((credential) => {
           auth().setPersistence(auth.Auth.Persistence.LOCAL);
-          db.addUser(user.uid, this.state.name, "", this.state.type,this.state.address).then(
-            "User Registered"
+          let user = credential.user;
+          console.log(user);
+          db.addUser(
+            user.uid,
+            this.state.name,
+            "",
+            this.state.type,
+            this.state.address
           );
-          db.getUser(user.uid).then((userFromDb) => {
-            this.context.saveUser(userFromDb);
-          });
         })
         .catch((error) => {
           let errorCode = error.code;
