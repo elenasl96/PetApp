@@ -19,7 +19,8 @@ const AffixAdornment = ({
   textStyle,
   topPosition,
   onLayout,
-  visible
+  visible,
+  paddingHorizontal
 }) => {
   return /*#__PURE__*/React.createElement(AffixContext.Provider, {
     value: {
@@ -27,7 +28,8 @@ const AffixAdornment = ({
       textStyle,
       topPosition,
       onLayout,
-      visible
+      visible,
+      paddingHorizontal
     }
   }, affix);
 };
@@ -42,12 +44,14 @@ const TextInputAffix = ({
     onLayout,
     topPosition,
     side,
-    visible
+    visible,
+    paddingHorizontal
   } = React.useContext(AffixContext);
   const textColor = color(theme.colors.text).alpha(theme.dark ? 0.7 : 0.54).rgb().string();
+  const offset = typeof paddingHorizontal === 'number' ? paddingHorizontal : AFFIX_OFFSET;
   const style = {
     top: topPosition,
-    [side]: AFFIX_OFFSET
+    [side]: offset
   };
   return /*#__PURE__*/React.createElement(Animated.View, {
     style: [styles.container, style, {

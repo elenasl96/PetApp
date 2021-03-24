@@ -102,6 +102,7 @@ const RadioButtonIOS = ({
                     });
                   }
             }
+            // @ts-expect-error We keep old a11y props for backwards compat with old RN versions
             accessibilityTraits={disabled ? ['button', 'disabled'] : 'button'}
             accessibilityComponentType={
               checked ? 'radiobutton_checked' : 'radiobutton_unchecked'
@@ -140,4 +141,6 @@ const styles = StyleSheet.create({
 export default withTheme(RadioButtonIOS);
 
 // @component-docs ignore-next-line
-export { RadioButtonIOS };
+const RadioButtonIOSWithTheme = withTheme(RadioButtonIOS);
+// @component-docs ignore-next-line
+export { RadioButtonIOSWithTheme as RadioButtonIOS };

@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { Text as NativeText, TextStyle, StyleProp } from 'react-native';
+import {
+  Text as NativeText,
+  TextStyle,
+  StyleProp,
+  StyleSheet,
+} from 'react-native';
 import { withTheme } from '../../core/theming';
 
 type Props = React.ComponentProps<typeof NativeText> & {
@@ -15,7 +20,7 @@ type Props = React.ComponentProps<typeof NativeText> & {
 /**
  * Text component which follows styles from the theme.
  *
- * @extends Text props https://facebook.github.io/react-native/docs/text.html#props
+ * @extends Text props https://reactnative.dev/docs/text#props
  */
 const Text: React.RefForwardingComponent<{}, Props> = (
   { style, theme, ...rest }: Props,
@@ -35,12 +40,18 @@ const Text: React.RefForwardingComponent<{}, Props> = (
         {
           ...theme.fonts.regular,
           color: theme.colors.text,
-          textAlign: 'left',
         },
+        styles.text,
         style,
       ]}
     />
   );
 };
+
+const styles = StyleSheet.create({
+  text: {
+    textAlign: 'left',
+  },
+});
 
 export default withTheme(React.forwardRef(Text));
