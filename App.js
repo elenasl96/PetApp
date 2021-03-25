@@ -14,6 +14,7 @@ import TabBusinessNavigator from "./app/Components/Navigators/TabBusinessNavigat
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
+
 }
 
 const AppContainer = createAppContainer(

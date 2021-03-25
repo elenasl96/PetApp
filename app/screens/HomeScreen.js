@@ -30,6 +30,7 @@ class HomeScreen extends React.Component {
 
   componentDidMount() {
     this.setState({ mounted: true });
+    //db.populateDb();  --- for populate the db
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         db.getUserAnimals(this.context.uid).then((pets) => {

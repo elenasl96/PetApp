@@ -54,7 +54,7 @@ class SignUpScreen extends React.Component {
         .then((credential) => {
           auth().setPersistence(auth.Auth.Persistence.LOCAL);
           let user = credential.user;
-          console.log(user);
+          //console.log(user);
           db.addUser(
             user.uid,
             this.state.name,

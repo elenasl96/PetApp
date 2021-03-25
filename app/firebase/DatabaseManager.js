@@ -977,6 +977,24 @@ const db = {
     users.doc(uid).collection("Feed").add(feed.toFirestore());
   },
 
+  addFeedToGeneral: function (id,title,text) {
+      const feeds = firestore.collection("Feed").doc("General");
+      let feed = new Feed(title, text, "General");
+      feeds.collection(id).add(feed.toFirestore());
+    },
+
+  addPetFeed: function (pet,type,id,title,text){
+      const feeds = firestore.collection("Feed").doc(pet);
+            let feed = {
+                        id: id,
+                        title: title,
+                        text: text,
+                        type: type,
+                        };
+            feeds.collection(type).add(feed);
+      },
+
+
   getUserFeed: function (uid, fid) {
     const users = firestore.collection("Users");
     var feed;
@@ -1573,6 +1591,14 @@ const db = {
         console.log("error");
       });
   },
+
+  //-----populate db-------------------
+
+  populateDb: function(){
+      console.log("populate db");
+      db.addFeedToGeneral("3","general feed", "test for a general feed");
+      db.addPetFeed("Cat","Age","3","feed","a feed for cats about age");
+  }
 };
 
 export default db;
