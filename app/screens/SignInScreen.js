@@ -13,16 +13,17 @@ import {
 } from "react-native";
 import { auth } from "../firebase/firebaseconfig.js";
 import "firebase/firestore";
-
+import * as Facebook from "expo-facebook";
+import db from "./../firebase/DatabaseManager.js";
 import mainStyle from "../styles/mainStyle";
 import { AuthContext } from "../Components/AuthContext";
 
 class SignInScreen extends React.Component {
   static contextType = AuthContext;
   state = {
-    email: "",
-    password: "",
-    errorMessage: "",
+    email: null,
+    password: null,
+    errorMessage: null,
     loading: false,
     mounted: false,
   };
@@ -39,7 +40,7 @@ class SignInScreen extends React.Component {
 
   onLoginFailure(errorMessage) {
     if (this.state.mounted) {
-      this.setState({ error: errorMessage, loading: false });
+      this.setState({ errorMessage: errorMessage, loading: false });
     }
   }
 
@@ -74,6 +75,44 @@ class SignInScreen extends React.Component {
         });
     } else {
       this.onLoginFailure.bind(this)("Fill in all the fields");
+    }
+  }
+
+  async signInWithFacebook() {
+    try {
+      var appId = "401120257739037";
+      var appName = "Pet App";
+      await Facebook.initializeAsync({ appId, appName });
+
+      const { type, token } = await Facebook.logInWithReadPermissionsAsync({
+        permissions: ["public_profile"],
+      });
+      if (type === "success") {
+        await auth().setPersistence(auth.Auth.Persistence.LOCAL);
+        const credential = auth.FacebookAuthProvider.credential(token);
+        const facebookProfileData = await auth().signInWithCredential(
+          credential
+        );
+        const user = auth().currentUser;
+
+        //console.log("Facebook data:");
+        //console.log(facebookProfileData);
+        if (facebookProfileData.additionalUserInfo.isNewUser) {
+          db.addUser(
+            auth().currentUser.uid,
+            facebookProfileData.additionalUserInfo.profile.name,
+            facebookProfileData.additionalUserInfo.profile.picture.data.url,
+            this.state.type,
+            this.state.address
+          ).then("User Registered");
+        }
+
+        db.getUser(user.uid).then((userFromDb) => {
+          this.context.saveUser(userFromDb);
+        });
+      }
+    } catch ({ message }) {
+      alert(`Facebook Login Error: ${message}`);
     }
   }
 
@@ -117,19 +156,24 @@ class SignInScreen extends React.Component {
               />
             </View>
             {this.renderLoading()}
-            <Text style={mainStyle.error}>{this.state.error}</Text>
+            <Text style={mainStyle.error}>{this.state.errorMessage}</Text>
             <TouchableOpacity
-              style={styles.signIn}
+              style={{ width: "80%", marginVertical: 8 }}
               onPress={this.signInWithEmail.bind(this)}
             >
-              <Text>Sign In</Text>
+              <View style={styles.emailButton}>
+                <Text style={styles.text}>Sign In with email</Text>
+              </View>
             </TouchableOpacity>
+
+            <Text style={{ marginVertical: 10 }}>OR</Text>
+
             <TouchableOpacity
               style={styles.continueButton}
-              onPress={this.context.signInWithFacebook}
+              onPress={this.signInWithFacebook.bind(this)}
             >
               <View style={styles.button}>
-                <Text style={styles.facebookText}>Continue with Facebook</Text>
+                <Text style={styles.lightText}>Continue with Facebook</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity
@@ -137,7 +181,7 @@ class SignInScreen extends React.Component {
               onPress={this.context.signInWithGoogle}
             >
               <View style={styles.googleButton}>
-                <Text style={styles.googleText}>Continue with Google</Text>
+                <Text style={styles.lightText}>Continue with Google</Text>
               </View>
             </TouchableOpacity>
             <View>
@@ -173,7 +217,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 10,
   },
-  facebookText: {
+  lightText: {
     letterSpacing: 0.5,
     fontSize: 16,
     color: "#FFFFFF",
@@ -183,7 +227,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#303030",
   },
-  googleButton: {
+  emailButton: {
     backgroundColor: "#FFFFFF",
     height: 44,
     flexDirection: "row",
@@ -192,6 +236,20 @@ const styles = StyleSheet.create({
     borderRadius: 22,
     borderWidth: 1,
     borderColor: "#707070",
+  },
+  googleButton: {
+    backgroundColor: "rgb(255, 50, 50)",
+    height: 44,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 22,
+    borderWidth: 1,
+    borderColor: "#707070",
+  },
+  text: {
+    fontSize: 17,
+    textAlign: "center",
   },
 });
 export default SignInScreen;

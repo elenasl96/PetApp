@@ -19,7 +19,6 @@ import mainStyle from "../styles/mainStyle";
 import db from "./../firebase/DatabaseManager.js";
 import { AuthContext } from "../Components/AuthContext.js";
 import { Picker } from "@react-native-picker/picker";
-import { Permissions, Notifications } from "expo";
 
 class SignUpScreen extends React.Component {
   static contextType = AuthContext;
@@ -28,94 +27,120 @@ class SignUpScreen extends React.Component {
     email: null,
     password: null,
     address: null,
-    type: "user",
+    type: null,
     errorMessage: null,
     loading: false,
     mounted: true,
+    emailSignup: false,
+    facebookSignup: false,
+    googleSignup: false,
   };
 
   onLoginFailure(errorMessage) {
     if (this.state.mounted) {
-      console.log(this.state);
-      this.setState({ error: errorMessage, loading: false });
+      this.setState({ errorMessage: errorMessage, loading: false });
     }
   }
 
   async signUpWithEmail() {
-    if (
-      this.state.name &&
-      this.state.email &&
-      this.state.password &&
-      this.state.address &&
-      this.state.type
-    ) {
-      await auth()
-        .createUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then((credential) => {
-          auth().setPersistence(auth.Auth.Persistence.LOCAL);
-          let user = credential.user;
-          //console.log(user);
-          db.addUser(
-            user.uid,
-            this.state.name,
-            "",
-            this.state.type,
-            this.state.address
-          );
-        })
-        .catch((error) => {
-          let errorCode = error.code;
-          let errorMessage = error.message;
-          if (errorCode == "auth/weak-password") {
-            this.onLoginFailure.bind(this)("Weak Password!");
-          } else {
-            this.onLoginFailure.bind(this)(errorMessage);
-          }
-        });
+    if (this.state.emailSignup) {
+      console.log(this.state);
+      if (
+        this.state.name &&
+        this.state.email &&
+        this.state.password &&
+        this.state.address &&
+        this.state.type &&
+        this.state.type !== ""
+      ) {
+        await auth()
+          .createUserWithEmailAndPassword(this.state.email, this.state.password)
+          .then((credential) => {
+            auth().setPersistence(auth.Auth.Persistence.LOCAL);
+            let user = credential.user;
+            //console.log(user);
+            db.addUser(
+              user.uid,
+              this.state.name,
+              "",
+              this.state.type,
+              this.state.address
+            );
+          })
+          .catch((error) => {
+            let errorCode = error.code;
+            let errorMessage = error.message;
+            if (errorCode == "auth/weak-password") {
+              this.onLoginFailure.bind(this)("Weak Password!");
+            } else {
+              this.onLoginFailure.bind(this)(errorMessage);
+            }
+          });
+      } else {
+        this.onLoginFailure.bind(this)("Fill in all the fields");
+      }
     } else {
-      this.onLoginFailure.bind(this)("Fill in all the fields");
+      if (this.state.mounted) {
+        this.setState({
+          emailSignup: true,
+          facebookSignup: false,
+          googleSignup: false,
+          errorMessage: null,
+        });
+      }
     }
   }
 
   async signInWithFacebook() {
-    if (this.state.address && this.state.type) {
-      try {
-        var appId = "401120257739037";
-        var appName = "Pet App";
-        await Facebook.initializeAsync({ appId, appName });
+    if (this.state.facebookSignup) {
+      if (this.state.address && this.state.type) {
+        try {
+          var appId = "401120257739037";
+          var appName = "Pet App";
+          await Facebook.initializeAsync({ appId, appName });
 
-        const { type, token } = await Facebook.logInWithReadPermissionsAsync({
-          permissions: ["public_profile"],
-        });
-        if (type === "success") {
-          await auth().setPersistence(auth.Auth.Persistence.LOCAL);
-          const credential = auth.FacebookAuthProvider.credential(token);
-          const facebookProfileData = await auth().signInWithCredential(
-            credential
-          );
-          const user = auth().currentUser;
-
-          //console.log("Facebook data:");
-          //console.log(facebookProfileData);
-          if (facebookProfileData.additionalUserInfo.isNewUser) {
-            db.addUser(
-              auth().currentUser.uid,
-              facebookProfileData.additionalUserInfo.profile.name,
-              facebookProfileData.additionalUserInfo.profile.picture.data.url,
-              this.state.type,
-              this.state.address
-            ).then("User Registered");
-          }
-
-          db.getUser(user.uid).then((userFromDb) => {
-            this.context.saveUser(userFromDb);
+          const { type, token } = await Facebook.logInWithReadPermissionsAsync({
+            permissions: ["public_profile"],
           });
+          if (type === "success") {
+            await auth().setPersistence(auth.Auth.Persistence.LOCAL);
+            const credential = auth.FacebookAuthProvider.credential(token);
+            const facebookProfileData = await auth().signInWithCredential(
+              credential
+            );
+            const user = auth().currentUser;
+
+            //console.log("Facebook data:");
+            //console.log(facebookProfileData);
+            if (facebookProfileData.additionalUserInfo.isNewUser) {
+              db.addUser(
+                auth().currentUser.uid,
+                facebookProfileData.additionalUserInfo.profile.name,
+                facebookProfileData.additionalUserInfo.profile.picture.data.url,
+                this.state.type,
+                this.state.address
+              ).then("User Registered");
+            }
+
+            db.getUser(user.uid).then((userFromDb) => {
+              this.context.saveUser(userFromDb);
+            });
+          }
+        } catch ({ message }) {
+          alert(`Facebook Login Error: ${message}`);
         }
-      } catch ({ message }) {
-        alert(`Facebook Login Error: ${message}`);
+      } else {
+        this.onLoginFailure.bind(this)("Fill all the fields");
       }
     } else {
-      this.onLoginFailure.bind(this)("Fill address and choose user type");
+      if (this.state.mounted) {
+        this.setState({
+          facebookSignup: true,
+          emailSignup: false,
+          googleSignup: false,
+          errorMessage: null,
+        });
+      }
     }
   }
 
@@ -144,93 +169,114 @@ class SignUpScreen extends React.Component {
             enabled={Platform.OS === "ios" ? true : false}
           >
             <Text style={mainStyle.logo}>PetApp</Text>
-            <View style={mainStyle.form}>
-              <TextInput
-                style={mainStyle.inputText}
-                placeholder="Name"
-                placeholderTextColor="#616161"
-                returnKeyType="next"
-                textContentType="name"
-                value={this.state.name}
-                onChangeText={(name) => this.setState({ name })}
-              />
-            </View>
-            <View style={mainStyle.form}>
-              <TextInput
-                style={mainStyle.inputText}
-                placeholder="Email"
-                placeholderTextColor="#616161"
-                returnKeyType="next"
-                keyboardType="email-address"
-                textContentType="emailAddress"
-                value={this.state.email}
-                onChangeText={(email) => this.setState({ email })}
-              />
-            </View>
-            <View style={mainStyle.form}>
-              <TextInput
-                style={mainStyle.inputText}
-                placeholder="Address"
-                placeholderTextColor="#616161"
-                returnKeyType="next"
-                textContentType="addressCity"
-                value={this.state.address}
-                onChangeText={(address) => this.setState({ address })}
-              />
-            </View>
-            <View style={mainStyle.form}>
-              <TextInput
-                style={mainStyle.inputText}
-                placeholder="Password"
-                placeholderTextColor="#616161"
-                returnKeyType="done"
-                textContentType="newPassword"
-                secureTextEntry={true}
-                value={this.state.password}
-                onChangeText={(password) => this.setState({ password })}
-              />
-            </View>
-            <View style={mainStyle.form}>
-              <Picker
-                selectedValue={this.state.type}
-                style={{ height: 50, width: "100%" }}
-                onValueChange={(itemValue, itemIndex) =>
-                  this.setState({ type: itemValue })
-                }
-              >
-                <Picker.Item label="Basic user" value="user" />
-                <Picker.Item label="Business user" value="businessUser" />
-              </Picker>
-            </View>
+            {this.state.emailSignup ? (
+              <View style={mainStyle.form}>
+                <TextInput
+                  style={mainStyle.inputText}
+                  placeholder="Name"
+                  placeholderTextColor="#616161"
+                  returnKeyType="next"
+                  textContentType="name"
+                  value={this.state.name}
+                  onChangeText={(name) => this.setState({ name })}
+                />
+              </View>
+            ) : null}
+
+            {this.state.emailSignup ? (
+              <View style={mainStyle.form}>
+                <TextInput
+                  style={mainStyle.inputText}
+                  placeholder="Email"
+                  placeholderTextColor="#616161"
+                  returnKeyType="next"
+                  keyboardType="email-address"
+                  textContentType="emailAddress"
+                  value={this.state.email}
+                  onChangeText={(email) => this.setState({ email })}
+                />
+              </View>
+            ) : null}
+
+            {this.state.emailSignup ? (
+              <View style={mainStyle.form}>
+                <TextInput
+                  style={mainStyle.inputText}
+                  placeholder="Password"
+                  placeholderTextColor="#616161"
+                  returnKeyType="done"
+                  textContentType="newPassword"
+                  secureTextEntry={true}
+                  value={this.state.password}
+                  onChangeText={(password) => this.setState({ password })}
+                />
+              </View>
+            ) : null}
+
+            {this.state.emailSignup ||
+            this.state.facebookSignup ||
+            this.state.googleSignup ? (
+              <View style={mainStyle.form}>
+                <TextInput
+                  style={mainStyle.inputText}
+                  placeholder="Address"
+                  placeholderTextColor="#616161"
+                  returnKeyType="next"
+                  textContentType="addressCity"
+                  value={this.state.address}
+                  onChangeText={(address) => this.setState({ address })}
+                />
+              </View>
+            ) : null}
+
+            {this.state.emailSignup ||
+            this.state.facebookSignup ||
+            this.state.googleSignup ? (
+              <View style={mainStyle.form}>
+                <Picker
+                  selectedValue={""}
+                  style={{ height: 50, width: "100%" }}
+                  onValueChange={(itemValue, itemIndex) =>
+                    this.setState({ type: itemValue })
+                  }
+                >
+                  <Picker.Item label="Select user type" value="" />
+                  <Picker.Item label="Basic user" value="user" />
+                  <Picker.Item label="Business user" value="businessUser" />
+                </Picker>
+              </View>
+            ) : null}
+
             {this.renderLoading()}
-            <Text style={styles.error}>{this.state.error}</Text>
+            <Text style={styles.error}>{this.state.errorMessage}</Text>
             <TouchableOpacity
-              style={styles.text}
+              style={{ width: "80%", marginVertical: 8 }}
               onPress={this.signUpWithEmail.bind(this)}
             >
-              <Text>Sign Up</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{ width: "80%", marginTop: 10 }}
-              onPress={this.signInWithFacebook.bind(this)}
-            >
-              <View style={styles.button}>
-                <Text style={styles.buttonText}>Continue with Facebook</Text>
+              <View style={styles.emailButton}>
+                <Text style={styles.text}>Sign Up with email</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity
-              style={{ width: "80%", marginTop: 15 }}
+              style={{ width: "80%", marginVertical: 8 }}
+              onPress={this.signInWithFacebook.bind(this)}
+            >
+              <View style={styles.button}>
+                <Text style={styles.buttonText}>Signup with Facebook</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{ width: "80%", marginVertical: 8 }}
               onPress={this.context.signInWithGoogle}
             >
               <View style={styles.googleButton}>
-                <Text style={styles.text}>Continue with Google</Text>
+                <Text style={styles.buttonText}>Signup with Google</Text>
               </View>
             </TouchableOpacity>
             <View style={{ marginTop: 10 }}>
               <Text
                 style={styles.text}
                 onPress={() => {
-                  //db.getUser("Anna Black");
                   this.props.navigation.navigate("SignIn");
                 }}
               >
@@ -282,6 +328,16 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
   googleButton: {
+    backgroundColor: "rgb(255, 50, 50)",
+    height: 44,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 22,
+    borderWidth: 1,
+    borderColor: "#707070",
+  },
+  emailButton: {
     backgroundColor: "#FFFFFF",
     height: 44,
     flexDirection: "row",
