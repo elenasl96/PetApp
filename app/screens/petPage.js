@@ -72,21 +72,20 @@ class PetScreen extends React.Component {
     });
 
     const DIDs = this.props.navigation.state.params.DIDs;
-    console.log("DIDs in mount: "+  DIDs);
     DIDs.map((did) => {
       db.getAnimalDisease(
         this.context.uid,
         this.props.navigation.state.params.petID,
         did
       ).then((disease) => {
-        console.log("Disease retrieved: "+ disease.name);
-        if(this.state.diseaseSelected==null){
-          this.state.diseaseSelected=disease.name;
+        if(this.state.diseaseShown==null){
+          this.setState({diseaseShown:disease.name});
         }
-        db.getDiseaseDescription(disease.name).then((description) => {
-          this.state.diseases[disease.name] = description;
+        db.getDiseaseDescription(disease.name).then((descriptions) => {
+          this.state.diseases[disease.name] = descriptions[0];
+          this.setState({ mounted: true });
         });
-        this.setState({ mounted: true });
+
       });
     });
 
@@ -160,7 +159,6 @@ class PetScreen extends React.Component {
       );
 
     this.setState({errors: errors});
-    //this.setState({ mounted: true });
     }
   };
 
@@ -179,9 +177,19 @@ class PetScreen extends React.Component {
   };
 
   addDisease = () => {
+
     db.addAnimalDisease(this.context.uid,this.props.navigation.state.params.petID,this.state.diseaseSelected);
 
-    this.state.diseases[this.state.diseaseSelected] = "description";
+    var disease = this.state.diseaseSelected;
+
+    if(this.state.diseaseShown==null){
+              this.setState({diseaseShown:disease});
+    }
+
+    db.getDiseaseDescription(this.state.diseaseSelected).then((descriptions) => {
+              this.state.diseases[this.state.diseaseSelected] = descriptions[0];
+    });
+
   };
 
   deleteStatSample = () => {
@@ -228,9 +236,23 @@ class PetScreen extends React.Component {
   render() {
     const pet = this.props.navigation.state.params.pet;
     const data = this.state.data;
+    const descriptionShown = this.state.diseases[this.state.diseaseShown];
     const labels = [];
-    //const labels = this.state.labels;
-    //const diseases = this.state.diseases;
+    const temp = Object.keys(this.state.diseases);
+    let diseases = temp.map((s) => {
+        console.log("s: "+ s);
+        return ( <TouchableHighlight
+                                      style={styles.info}
+                                      value={s}
+                                      key={s}
+                                      onPress={() => this.setState({diseaseShown:s})}
+                                    >
+            <View style={styles.info}>
+                   <Text>{s}</Text>
+              </View>
+          </TouchableHighlight>   );
+    });
+
 
     var diseasesSelectable = [];
 
@@ -313,13 +335,24 @@ class PetScreen extends React.Component {
                     <Text>{pet.color}</Text>
                   </View>
                 </TouchableHighlight>
-
-                <TouchableHighlight>
-                  <View style={styles.info}>
-                    <Text>Diseases</Text>
-                  </View>
-                </TouchableHighlight>
               </ScrollView>
+
+              <TouchableHighlight>
+                                <View style={styles.info}>
+                                  <Text>Diseases</Text>
+                                </View>
+             </TouchableHighlight>
+
+             <ScrollView
+                             horizontal={true}
+                             showsHorizontalScrollIndicator={false}
+            >
+            {diseases}
+            </ScrollView>
+
+            <View style={styles.info}>
+               <Text>{descriptionShown}</Text>
+            </View>
 
               <View style={styles.info}>
                <Text>AddDiseases</Text>

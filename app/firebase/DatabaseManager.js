@@ -1604,18 +1604,23 @@ const db = {
     getDiseaseDescription(name){
       console.log("Description of disease " + name);
       var ref = firestore.collection("DiseaseDescriptions");
+      var descriptions = [];
       return ref
             .where("name","==",name)
             .get()
-            .then(function(doc) {
-                                 if (doc.exists){
-                                   let description = doc.data().description;
-                                   return description;
-                                 } else {
-                                   console.log("No such document!");
-                                 }}).catch((error) => {
-                                   console.log("Error getting document:", error);
-                                 });
+            .then
+            (function (querySnapshot) {
+                    querySnapshot.forEach(function (doc) {
+                      // doc.data() is never undefined for query doc snapshots
+                      descriptions.push(doc.data().description);
+                      //console.log(user);
+                      return descriptions;
+                    });
+                    return descriptions;
+                 })
+         .catch(function (error) {
+                            console.log("Error getting documents: ", error);
+         });
     }
 
 };
