@@ -1598,7 +1598,26 @@ const db = {
       console.log("populate db");
       db.addFeedToGeneral("3","general feed", "test for a general feed");
       db.addPetFeed("Cat","Age","3","feed","a feed for cats about age");
-  }
+  },
+
+  // get disease descriptions
+    getDiseaseDescription(name){
+      console.log("Description of disease " + name);
+      var ref = firestore.collection("DiseaseDescriptions");
+      return ref
+            .where("name","==",name)
+            .get()
+            .then(function(doc) {
+                                 if (doc.exists){
+                                   let description = doc.data().description;
+                                   return description;
+                                 } else {
+                                   console.log("No such document!");
+                                 }}).catch((error) => {
+                                   console.log("Error getting document:", error);
+                                 });
+    }
+
 };
 
 export default db;

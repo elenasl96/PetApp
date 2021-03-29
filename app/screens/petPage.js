@@ -18,21 +18,21 @@ import mainStyle from "../styles/mainStyle";
 import db from "../firebase/DatabaseManager";
 import { AuthContext } from "../Components/AuthContext";
 import { withNavigation } from "react-navigation";
+import { Picker } from "@react-native-picker/picker";
 
 import Chart from "./PetChart.js";
 import utils from "../shared/utilities";
+import constants from "../shared/constants";
 
 class PetScreen extends React.Component {
   state = {
     dataWeight: [],
-    //labelsWeight: [],
     dataHeight: [],
-    //labelsHeight: [],
-    diseases: "",
     data: [],
-    //labels: [],
     newdata: "",
-    //newlabel: null,
+    diseases: {},
+    diseaseShown: null,
+    diseaseSelected: null,
     newtype: null,
     mounted: true,
     deletesample: "",
@@ -53,10 +53,7 @@ class PetScreen extends React.Component {
         wid
       ).then((sample) => {
         this.state.dataWeight.push(sample.value);
-        //this.state.labelsWeight.push(sample.label);
         this.state.data.push(sample.value);
-        //this.state.labels.push(sample.label);
-        //console.log("weight label: "+ sample.label);
         this.setState({ mounted: true });
       });
     });
@@ -70,28 +67,37 @@ class PetScreen extends React.Component {
         hid
       ).then((sample) => {
         this.state.dataHeight.push(sample.value);
-        //this.state.labelsHeight.push(sample.label);
         this.setState({ mounted: true });
       });
     });
 
     const DIDs = this.props.navigation.state.params.DIDs;
-    //console.log("DIDs in mount: "+  DIDs);
+    console.log("DIDs in mount: "+  DIDs);
     DIDs.map((did) => {
       db.getAnimalDisease(
         this.context.uid,
         this.props.navigation.state.params.petID,
         did
       ).then((disease) => {
-        //console.log("Disease retrieved: "+ disease.name);
-
-        if (this.state.diseases != "") {
-          this.state.diseases = this.state.diseases + ",";
+        console.log("Disease retrieved: "+ disease.name);
+        if(this.state.diseaseSelected==null){
+          this.state.diseaseSelected=disease.name;
         }
-        this.state.diseases = this.state.diseases + disease.name;
+        db.getDiseaseDescription(disease.name).then((description) => {
+          this.state.diseases[disease.name] = description;
+        });
         this.setState({ mounted: true });
       });
     });
+
+    const pet = this.props.navigation.state.params.pet;
+
+    if(pet.type == "Dog"){
+          this.setState({diseaseSelected:constants.DISEASES_DOG[0]});
+        }
+        else{
+          this.setState({diseaseSelected:constants.DISEASES_CAT[0]});
+    }
   }
 
   handleValidation() {
@@ -133,17 +139,11 @@ class PetScreen extends React.Component {
 
       if (this.state.newtype == "weight") {
         this.state.dataWeight.push(Number(this.state.newdata));
-        //this.state.data.push(Number(this.state.newdata));
-        //this.state.labelsWeight.push(utils.timestamp());
-        //this.state.labels.push(timestamp);
         this.showWeight();
       }
 
       if (this.state.newtype == "height") {
         this.state.dataHeight.push(Number(this.state.newdata));
-        //this.state.data.push(Number(this.state.newdata));
-        //this.state.labelsHeight.push(utils.timestamp());
-        //this.state.labels.push(timestamp);
         this.showHeight();
       }
       db.addAnimalStatSample(
@@ -166,7 +166,6 @@ class PetScreen extends React.Component {
 
   showWeight = () => {
     this.state.data = this.state.dataWeight;
-    //this.state.labels = this.state.labelsWeight;
     let errors = {};
     this.setState({errors: errors}); // clean errors
     this.setState({ newtype: "weight" });
@@ -174,10 +173,15 @@ class PetScreen extends React.Component {
 
   showHeight = () => {
     this.state.data = this.state.dataHeight;
-    //this.state.labels = this.state.labelsHeight;
     let errors = {};
     this.setState({errors: errors}); // clean errors
     this.setState({ newtype: "height" });
+  };
+
+  addDisease = () => {
+    db.addAnimalDisease(this.context.uid,this.props.navigation.state.params.petID,this.state.diseaseSelected);
+
+    this.state.diseases[this.state.diseaseSelected] = "description";
   };
 
   deleteStatSample = () => {
@@ -226,8 +230,22 @@ class PetScreen extends React.Component {
     const data = this.state.data;
     const labels = [];
     //const labels = this.state.labels;
-    const diseases = this.state.diseases;
+    //const diseases = this.state.diseases;
 
+    var diseasesSelectable = [];
+
+    if(pet.type == "Dog"){
+    diseasesSelectable = constants.DISEASES_DOG.map((s, i) => {
+          return <Picker.Item key={i} value={s} label={s} />;
+        });
+
+    }
+    else{
+
+      diseasesSelectable = constants.DISEASES_CAT.map((s, i) => {
+                return <Picker.Item key={i} value={s} label={s} />;
+              });
+    }
 
       return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -299,11 +317,31 @@ class PetScreen extends React.Component {
                 <TouchableHighlight>
                   <View style={styles.info}>
                     <Text>Diseases</Text>
-
-                    <Text>{diseases}</Text>
                   </View>
                 </TouchableHighlight>
               </ScrollView>
+
+              <View style={styles.info}>
+               <Text>AddDiseases</Text>
+              </View>
+
+              <View style={mainStyle.form}>
+                        <Picker
+                          selectedValue={this.state.diseaseSelected}
+                          style={{ height: 50, width: "100%" }}
+                          onValueChange={(disease) => this.setState({ diseaseSelected: disease })}
+                        >
+                          {diseasesSelectable}
+                        </Picker>
+              </View>
+
+              <TouchableHighlight
+                              style={styles.petButton}
+                              onPress={this.addDisease.bind(this)}
+                              underlayColor={"rgb(200,200,200)"}
+                            >
+                              <Text style={{ textAlign: "center" }}>add</Text>
+              </TouchableHighlight>
 
               <TouchableHighlight
                 style={styles.petButton}
