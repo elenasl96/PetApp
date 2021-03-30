@@ -135,9 +135,9 @@ const db = {
   addAnimalDisease: function (uid, aid, disease) {
     const users = firestore.collection("Users");
     const animals = users.doc(uid).collection("Animals");
-    animals.doc(aid).collection("Diseases").add({ name:disease });
+    animals.doc(aid).collection("Diseases").add({ name: disease });
   },
-/*
+  /*
   addAnimalStat: function (uid, aid) {
     const users = firestore.collection("Users");
     const stats = users
@@ -159,11 +159,11 @@ const db = {
       .doc(stat)
       .collection("Samples")
       .doc(Date.now().toString())
-      .set({ //label: utils.timestamp(),
-        value: value });
+      .set({
+        //label: utils.timestamp(),
+        value: value,
+      });
   },
-
-
 
   getUserAnimals: function (uid) {
     const users = firestore.collection("Users");
@@ -229,7 +229,7 @@ const db = {
         console.log("Error getting documents: ", error);
       });
   },
-/*
+  /*
   getAnimalStats: function (uid, aid) {
     const users = firestore.collection("Users");
     const animals = users.doc(uid).collection("Animals");
@@ -405,29 +405,29 @@ const db = {
   },
 
   getAnimalDiseaseByName: function (uid, aid, name) {
-      const animals = firestore
-        .collection("Users")
-        .doc(uid)
-        .collection("Animals");
-      var diseases = [];
-      return animals
-        .doc(aid)
-        .collection("Diseases")
-        .where("name","==",name)
-        .get()
-        .then(function (querySnapshot) {
-                 querySnapshot.forEach(function (doc) {
-                   diseases.push(doc.id);
-                   return diseases;
-                 });
-                 return diseases;
-               })
-        .catch(function (error) {
-          console.log("Error getting documents: ", error);
+    const animals = firestore
+      .collection("Users")
+      .doc(uid)
+      .collection("Animals");
+    var diseases = [];
+    return animals
+      .doc(aid)
+      .collection("Diseases")
+      .where("name", "==", name)
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          diseases.push(doc.id);
+          return diseases;
         });
-    },
+        return diseases;
+      })
+      .catch(function (error) {
+        console.log("Error getting documents: ", error);
+      });
+  },
 
-  deleteAnimalDisease: function (uid, aid,id) {
+  deleteAnimalDisease: function (uid, aid, id) {
     const animals = firestore
       .collection("Users")
       .doc(uid)
@@ -445,8 +445,8 @@ const db = {
       });
   },
 
-  deleteAnimalDiseaseByName: function (uid, aid,name) {
-    db.getAnimalDiseaseByName(uid,aid,name).then((ids) => {
+  deleteAnimalDiseaseByName: function (uid, aid, name) {
+    db.getAnimalDiseaseByName(uid, aid, name).then((ids) => {
       var id = ids[0];
       const animals = firestore
         .collection("Users")
@@ -463,9 +463,9 @@ const db = {
         .catch(function (error) {
           console.error("Error removing document: ", error);
         });
-      });
-    },
-/*
+    });
+  },
+  /*
   deleteAnimalStat: function (uid, aid, id) {
     const animals = firestore
       .collection("Users")
@@ -1021,23 +1021,22 @@ const db = {
     users.doc(uid).collection("Feed").add(feed.toFirestore());
   },
 
-  addFeedToGeneral: function (id,title,text) {
-      const feeds = firestore.collection("Feed").doc("General");
-      let feed = new Feed(title, text, "General");
-      feeds.collection(id).add(feed.toFirestore());
-    },
+  addFeedToGeneral: function (id, title, text) {
+    const feeds = firestore.collection("Feed").doc("General");
+    let feed = new Feed(title, text, "General");
+    feeds.collection(id).add(feed.toFirestore());
+  },
 
-  addPetFeed: function (pet,type,id,title,text){
-      const feeds = firestore.collection("Feed").doc(pet);
-            let feed = {
-                        id: id,
-                        title: title,
-                        text: text,
-                        type: type,
-                        };
-            feeds.collection(type).add(feed);
-      },
-
+  addPetFeed: function (pet, type, id, title, text) {
+    const feeds = firestore.collection("Feed").doc(pet);
+    let feed = {
+      id: id,
+      title: title,
+      text: text,
+      type: type,
+    };
+    feeds.collection(type).add(feed);
+  },
 
   getUserFeed: function (uid, fid) {
     const users = firestore.collection("Users");
@@ -1552,6 +1551,7 @@ const db = {
         console.log(doc.id, " => ", doc.data());
         let data = doc.data();
         notification = new LostPetSeen(
+          data.photo,
           data.size,
           data.color,
           data.breed,
@@ -1638,35 +1638,33 @@ const db = {
 
   //-----populate db-------------------
 
-  populateDb: function(){
-      console.log("populate db");
-      db.addFeedToGeneral("3","general feed", "test for a general feed");
-      db.addPetFeed("Cat","Age","3","feed","a feed for cats about age");
+  populateDb: function () {
+    console.log("populate db");
+    db.addFeedToGeneral("3", "general feed", "test for a general feed");
+    db.addPetFeed("Cat", "Age", "3", "feed", "a feed for cats about age");
   },
 
   // get disease descriptions
-    getDiseaseDescription(name){
-      //console.log("Description of disease " + name);
-      var ref = firestore.collection("DiseaseDescriptions");
-      var descriptions = [];
-      return ref
-            .where("name","==",name)
-            .get()
-            .then
-            (function (querySnapshot) {
-                    querySnapshot.forEach(function (doc) {
-                      // doc.data() is never undefined for query doc snapshots
-                      descriptions.push(doc.data().description);
-                      //console.log(user);
-                      return descriptions;
-                    });
-                    return descriptions;
-                 })
-         .catch(function (error) {
-                            console.log("Error getting documents: ", error);
-         });
-    }
-
+  getDiseaseDescription(name) {
+    //console.log("Description of disease " + name);
+    var ref = firestore.collection("DiseaseDescriptions");
+    var descriptions = [];
+    return ref
+      .where("name", "==", name)
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          // doc.data() is never undefined for query doc snapshots
+          descriptions.push(doc.data().description);
+          //console.log(user);
+          return descriptions;
+        });
+        return descriptions;
+      })
+      .catch(function (error) {
+        console.log("Error getting documents: ", error);
+      });
+  },
 };
 
 export default db;

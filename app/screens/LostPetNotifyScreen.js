@@ -51,7 +51,7 @@ class LostPetNotifyScreen extends React.Component {
                       },
                     ]}
                   >
-                    {pet.getName()}
+                    {pet.name ? pet.name : null}
                   </Text>
                 </ImageBackground>
               </View>
