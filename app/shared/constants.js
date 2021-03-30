@@ -8,7 +8,7 @@ const constants = {
    SIZES_PETS: ["Small","Medium","Big"],
    TYPES_PETS: ["Dog","Cat"],
    DISEASES_DOG: ["Disease1","Disease2"],
-   DISEASES_CAT: ["Disease3","Disease4"],
+   DISEASES_CAT: ["Disease3","Disease4","Disease5"],
 }
 
 export default constants;

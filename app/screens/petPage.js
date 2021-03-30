@@ -178,17 +178,49 @@ class PetScreen extends React.Component {
 
   addDisease = () => {
 
-    db.addAnimalDisease(this.context.uid,this.props.navigation.state.params.petID,this.state.diseaseSelected);
-
     var disease = this.state.diseaseSelected;
+    var diseases = Object.keys(this.state.diseases);
+    let errors = {};
+
+    if ( diseases.includes(disease)){
+           errors["addDisease"] = "Disease already present!";
+           console.log(errors["addDisease"]);
+    }else{
+
+    db.addAnimalDisease(this.context.uid,this.props.navigation.state.params.petID,disease);
 
     if(this.state.diseaseShown==null){
               this.setState({diseaseShown:disease});
     }
 
-    db.getDiseaseDescription(this.state.diseaseSelected).then((descriptions) => {
-              this.state.diseases[this.state.diseaseSelected] = descriptions[0];
-    });
+    db.getDiseaseDescription(disease).then((descriptions) => {
+              this.state.diseases[disease] = descriptions[0];
+              this.setState({mounted:true});
+      });
+    }
+
+    this.setState({errors: errors});
+    this.setState({mounted:true});
+
+
+  };
+
+  deleteDisease = () => {
+
+    var disease = this.state.diseaseShown;
+    let errors = {};
+    db.deleteAnimalDiseaseByName(this.context.uid,this.props.navigation.state.params.petID,disease);
+    delete this.state.diseases[disease];
+    this.setState({errors: errors}); // clean errors
+    var diseases = Object.keys(this.state.diseases);
+    if(diseases.length !=0){
+      this.setState({diseaseShown:diseases[0]});
+      this.setState({descriptionShown:this.state.diseases[diseases[0]]});
+    }
+    else{
+      this.setState({diseaseShown:null});
+      this.setState({descriptionShown:null});
+    }
 
   };
 
@@ -240,7 +272,7 @@ class PetScreen extends React.Component {
     const labels = [];
     const temp = Object.keys(this.state.diseases);
     let diseases = temp.map((s) => {
-        console.log("s: "+ s);
+        //console.log("s: "+ s);
         return ( <TouchableHighlight
                                       style={styles.info}
                                       value={s}
@@ -350,9 +382,11 @@ class PetScreen extends React.Component {
             {diseases}
             </ScrollView>
 
+            {temp.length != 0 ? (
             <View style={styles.info}>
                <Text>{descriptionShown}</Text>
             </View>
+            ) : null}
 
               <View style={styles.info}>
                <Text>AddDiseases</Text>
@@ -368,6 +402,7 @@ class PetScreen extends React.Component {
                         </Picker>
               </View>
 
+
               <TouchableHighlight
                               style={styles.petButton}
                               onPress={this.addDisease.bind(this)}
@@ -375,6 +410,21 @@ class PetScreen extends React.Component {
                             >
                               <Text style={{ textAlign: "center" }}>add</Text>
               </TouchableHighlight>
+
+              {this.state.errors["addDisease"] != null ? (
+                        <Text style={styles.error}>{this.state.errors["addDisease"]}</Text>
+                      ) : null}
+
+              {temp.length != 0 ? (
+                                     <TouchableHighlight
+                                                     style={styles.petButton}
+                                                     onPress={this.deleteDisease.bind(this)}
+                                                     underlayColor={"rgb(200,200,200)"}
+                                                   >
+                                                     <Text style={{ textAlign: "center" }}>delete</Text>
+                                                   </TouchableHighlight>
+
+                                    ) : null}
 
               <TouchableHighlight
                 style={styles.petButton}

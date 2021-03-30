@@ -135,7 +135,7 @@ const db = {
   addAnimalDisease: function (uid, aid, disease) {
     const users = firestore.collection("Users");
     const animals = users.doc(uid).collection("Animals");
-    animals.doc(aid).collection("Diseases").add({ disease });
+    animals.doc(aid).collection("Diseases").add({ name:disease });
   },
 /*
   addAnimalStat: function (uid, aid) {
@@ -404,7 +404,30 @@ const db = {
       });
   },
 
-  deleteAnimalDisease: function (uid, aid, id) {
+  getAnimalDiseaseByName: function (uid, aid, name) {
+      const animals = firestore
+        .collection("Users")
+        .doc(uid)
+        .collection("Animals");
+      var diseases = [];
+      return animals
+        .doc(aid)
+        .collection("Diseases")
+        .where("name","==",name)
+        .get()
+        .then(function (querySnapshot) {
+                 querySnapshot.forEach(function (doc) {
+                   diseases.push(doc.id);
+                   return diseases;
+                 });
+                 return diseases;
+               })
+        .catch(function (error) {
+          console.log("Error getting documents: ", error);
+        });
+    },
+
+  deleteAnimalDisease: function (uid, aid,id) {
     const animals = firestore
       .collection("Users")
       .doc(uid)
@@ -421,6 +444,27 @@ const db = {
         console.error("Error removing document: ", error);
       });
   },
+
+  deleteAnimalDiseaseByName: function (uid, aid,name) {
+    db.getAnimalDiseaseByName(uid,aid,name).then((ids) => {
+      var id = ids[0];
+      const animals = firestore
+        .collection("Users")
+        .doc(uid)
+        .collection("Animals");
+      animals
+        .doc(aid)
+        .collection("Diseases")
+        .doc(id)
+        .delete()
+        .then(function () {
+          console.log("Document successfully deleted!");
+        })
+        .catch(function (error) {
+          console.error("Error removing document: ", error);
+        });
+      });
+    },
 /*
   deleteAnimalStat: function (uid, aid, id) {
     const animals = firestore
@@ -1602,7 +1646,7 @@ const db = {
 
   // get disease descriptions
     getDiseaseDescription(name){
-      console.log("Description of disease " + name);
+      //console.log("Description of disease " + name);
       var ref = firestore.collection("DiseaseDescriptions");
       var descriptions = [];
       return ref
