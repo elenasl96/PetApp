@@ -18,6 +18,7 @@ import { AuthContext } from "../Components/AuthContext";
 import { AntDesign } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import StarButton from "../Components/Buttons/StarButton";
+import { withNavigation } from "react-navigation";
 
 class VetScreen extends React.Component {
   static contextType = AuthContext;
@@ -39,8 +40,8 @@ class VetScreen extends React.Component {
   }
 
   openInMap = () => {
-    this.props.navigation.navigate("Map", {
-      pet: this.props.navigation.state.params.pet,
+    this.props.navigation.push("Map", {
+      currentPlace: this.props.navigation.state.params.place,
     });
   };
 
@@ -85,10 +86,11 @@ class VetScreen extends React.Component {
               >
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={this.openInMap}
+                  onPress={this.openInMap.bind(this)}
                 >
                   <Text style={styles.buttonText}>Open in map </Text>
                 </TouchableOpacity>
+
                 <TouchableOpacity
                   style={styles.button}
                   onPress={() =>
@@ -217,4 +219,4 @@ const styles = StyleSheet.create({
     tintColor: "orange",
   },
 });
-export default VetScreen;
+export default withNavigation(VetScreen);

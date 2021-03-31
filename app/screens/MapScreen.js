@@ -14,6 +14,9 @@ import { Marker, Callout, CustomCalloutView } from "react-native-maps";
 import db from "../firebase/DatabaseManager";
 import * as Permissions from "expo-permissions";
 import { Feather } from "@expo/vector-icons";
+import { TextInput } from "react-native-gesture-handler";
+import mainStyle from "../styles/mainStyle";
+import utils from "../shared/utilities";
 
 export default class MapScreen extends React.Component {
   state = {
@@ -30,7 +33,9 @@ export default class MapScreen extends React.Component {
       longitudeDelta: 0.0421,
     },
     currentPosition: null,
+    placeFocused: null,
     pin: [],
+    search: null,
   };
 
   constructor() {
@@ -54,6 +59,13 @@ export default class MapScreen extends React.Component {
         this.setMapOnCurrentPosition();
       });
     });
+  }
+
+  componentDidUpdate() {
+    if (this.props.navigation.state.params && !this.state.placeFocused) {
+      const currentPlace = this.props.navigation.state.params.currentPlace;
+      this.focusMapOn(currentPlace);
+    }
   }
 
   componentWillUnmount() {
@@ -142,12 +154,63 @@ export default class MapScreen extends React.Component {
     }
   }
 
+  focusMapOn(place) {
+    let regionUpdate = {
+      latitude: place.region.latitude,
+      longitude: place.region.longitude,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    };
+    console.log(this.state.map);
+    if (this.state.map) {
+      this.state.map.animateToRegion(regionUpdate, 1);
+      this.setState({ placeFocused: true });
+    }
+  }
+
+  searchPlace() {
+    let matchingPlaces = [];
+    let matchingCoordinates = [];
+    this.state.places.forEach((place) => {
+      if (
+        utils.similarity(place.getName(), this.state.search) > 0.9 ||
+        place.getName().includes(this.state.search)
+      ) {
+        matchingPlaces.push(place);
+        matchingCoordinates.push(place.getLatLng());
+      }
+    });
+    if (this.state.mounted) {
+      this.setState({ visibleMarkers: matchingPlaces });
+      this.state.map.fitToCoordinates(matchingCoordinates);
+    }
+  }
+
   render() {
     this.state.markers = [];
-    console.log(this.state.markers.length);
+    //console.log(this.state.markers.length);
     return (
       <View style={styles.container}>
         <View style={styles.overlay}>
+          <View style={styles.mapSearch}>
+            <TextInput
+              placeholder="Search"
+              placeholderTextColor="#616161"
+              returnKeyType="next"
+              value={this.state.search}
+              onChangeText={(search) => this.setState({ search })}
+            />
+          </View>
+          <TouchableHighlight
+            style={styles.mapButton}
+            onPress={this.searchPlace.bind(this)}
+            underlayColor={"rgb(200,200,200)"}
+          >
+            <Text style={{ textAlign: "center" }}>
+              <Feather name="search" size={18} color="black" />
+            </Text>
+          </TouchableHighlight>
+
           <TouchableHighlight
             style={styles.mapButton}
             onPress={this.showVetMarkers.bind(this)}
@@ -259,6 +322,15 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     elevation: 2,
     marginHorizontal: 5,
+  },
+  mapSearch: {
+    width: "40%",
+    backgroundColor: "#FFF",
+    borderRadius: 25,
+
+    justifyContent: "center",
+    paddingHorizontal: 20,
+    elevation: 2,
   },
   markerImage: {
     height: 35,

@@ -62,6 +62,13 @@ export default class Place {
     return this.region;
   }
 
+  getLatLng() {
+    return {
+      latitude: this.region.latitude,
+      longitude: this.region.longitude,
+    };
+  }
+
   //serialize
   toFirestore() {
     return {

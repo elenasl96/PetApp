@@ -78,47 +78,43 @@ class PetScreen extends React.Component {
         this.props.navigation.state.params.petID,
         did
       ).then((disease) => {
-        if(this.state.diseaseShown==null){
-          this.setState({diseaseShown:disease.name});
+        if (this.state.diseaseShown == null) {
+          this.setState({ diseaseShown: disease.name });
         }
         db.getDiseaseDescription(disease.name).then((descriptions) => {
           this.state.diseases[disease.name] = descriptions[0];
           this.setState({ mounted: true });
         });
-
       });
     });
 
     const pet = this.props.navigation.state.params.pet;
 
-    if(pet.type == "Dog"){
-          this.setState({diseaseSelected:constants.DISEASES_DOG[0]});
-        }
-        else{
-          this.setState({diseaseSelected:constants.DISEASES_CAT[0]});
+    if (pet.type == "Dog") {
+      this.setState({ diseaseSelected: constants.DISEASES_DOG[0] });
+    } else {
+      this.setState({ diseaseSelected: constants.DISEASES_CAT[0] });
     }
   }
 
   handleValidation() {
-      let formIsValid = true;
-      let errors = {};
-      errors["samples"] = null;
+    let formIsValid = true;
+    let errors = {};
+    errors["samples"] = null;
 
-      if(this.state.newdata == ""){
-        formIsValid = false;
-        errors["samples"] = "Sample cannot be empty";
-      }
-      else {
+    if (this.state.newdata == "") {
+      formIsValid = false;
+      errors["samples"] = "Sample cannot be empty";
+    } else {
       if (isNaN(this.state.newdata)) {
         formIsValid = false;
         errors["samples"] = "Sample must be a number";
       }
-
-     }
-      //console.log(errors);
-      this.setState({ errors: errors });
-      return formIsValid;
     }
+    //console.log(errors);
+    this.setState({ errors: errors });
+    return formIsValid;
+  }
 
   deletePet = () => {
     db.deleteAnimal(this.context.uid, this.props.navigation.state.params.petID);
@@ -131,10 +127,10 @@ class PetScreen extends React.Component {
   };
 
   addPetStatSample = () => {
-    if ( this.handleValidation()){
-    //console.log("Valid sample");
-    let errors = {};
-    errors["samples"] = null;
+    if (this.handleValidation()) {
+      //console.log("Valid sample");
+      let errors = {};
+      errors["samples"] = null;
 
       if (this.state.newtype == "weight") {
         this.state.dataWeight.push(Number(this.state.newdata));
@@ -158,112 +154,126 @@ class PetScreen extends React.Component {
           utils.timestamp()
       );
 
-    this.setState({errors: errors});
+      this.setState({ errors: errors });
     }
   };
 
   showWeight = () => {
     this.state.data = this.state.dataWeight;
     let errors = {};
-    this.setState({errors: errors}); // clean errors
+    this.setState({ errors: errors }); // clean errors
     this.setState({ newtype: "weight" });
   };
 
   showHeight = () => {
     this.state.data = this.state.dataHeight;
     let errors = {};
-    this.setState({errors: errors}); // clean errors
+    this.setState({ errors: errors }); // clean errors
     this.setState({ newtype: "height" });
   };
 
   addDisease = () => {
-
     var disease = this.state.diseaseSelected;
     var diseases = Object.keys(this.state.diseases);
     let errors = {};
 
-    if ( diseases.includes(disease)){
-           errors["addDisease"] = "Disease already present!";
-           console.log(errors["addDisease"]);
-    }else{
+    if (diseases.includes(disease)) {
+      errors["addDisease"] = "Disease already present!";
+      console.log(errors["addDisease"]);
+    } else {
+      db.addAnimalDisease(
+        this.context.uid,
+        this.props.navigation.state.params.petID,
+        disease
+      );
 
-    db.addAnimalDisease(this.context.uid,this.props.navigation.state.params.petID,disease);
+      if (this.state.diseaseShown == null) {
+        this.setState({ diseaseShown: disease });
+      }
 
-    if(this.state.diseaseShown==null){
-              this.setState({diseaseShown:disease});
-    }
-
-    db.getDiseaseDescription(disease).then((descriptions) => {
-              this.state.diseases[disease] = descriptions[0];
-              this.setState({mounted:true});
+      db.getDiseaseDescription(disease).then((descriptions) => {
+        this.state.diseases[disease] = descriptions[0];
+        this.setState({ mounted: true });
       });
     }
 
-    this.setState({errors: errors});
-    this.setState({mounted:true});
-
-
+    this.setState({ errors: errors });
+    this.setState({ mounted: true });
   };
 
   deleteDisease = () => {
-
     var disease = this.state.diseaseShown;
     let errors = {};
-    db.deleteAnimalDiseaseByName(this.context.uid,this.props.navigation.state.params.petID,disease);
+    db.deleteAnimalDiseaseByName(
+      this.context.uid,
+      this.props.navigation.state.params.petID,
+      disease
+    );
     delete this.state.diseases[disease];
-    this.setState({errors: errors}); // clean errors
+    this.setState({ errors: errors }); // clean errors
     var diseases = Object.keys(this.state.diseases);
-    if(diseases.length !=0){
-      this.setState({diseaseShown:diseases[0]});
-      this.setState({descriptionShown:this.state.diseases[diseases[0]]});
+    if (diseases.length != 0) {
+      this.setState({ diseaseShown: diseases[0] });
+      this.setState({ descriptionShown: this.state.diseases[diseases[0]] });
+    } else {
+      this.setState({ diseaseShown: null });
+      this.setState({ descriptionShown: null });
     }
-    else{
-      this.setState({diseaseShown:null});
-      this.setState({descriptionShown:null});
-    }
-
   };
 
   deleteStatSample = () => {
+    let errors = {};
+    errors["delete"] = null;
 
-        let errors = {};
-        errors["delete"] = null;
+    if (this.state.newtype == "weight") {
+      if (this.state.dataWeight.length == 0) {
+        errors["delete"] = "No samples for weight";
+      } else {
+        // Update component
+        this.state.dataWeight.pop();
+        this.showWeight();
+        // Update db
+        db.getAnimalStatSamples(
+          this.context.uid,
+          this.props.navigation.state.params.petID,
+          this.state.newtype
+        ).then((SIDs) => {
+          let lastid = SIDs[SIDs.length - 1];
+          db.deleteAnimalStatSample(
+            this.context.uid,
+            this.props.navigation.state.params.petID,
+            this.state.newtype,
+            lastid
+          );
+        });
+      }
+    } else {
+      if (this.state.dataHeight.length == 0) {
+        errors["delete"] = "No samples for height";
+      } else {
+        // Update component
+        this.state.dataHeight.pop();
+        this.showHeight();
+        // Update db
+        db.getAnimalStatSamples(
+          this.context.uid,
+          this.props.navigation.state.params.petID,
+          this.state.newtype
+        ).then((SIDs) => {
+          let lastid = SIDs[SIDs.length - 1];
+          db.deleteAnimalStatSample(
+            this.context.uid,
+            this.props.navigation.state.params.petID,
+            this.state.newtype,
+            lastid
+          );
+        });
+      }
+    }
 
-
-        if (this.state.newtype == "weight"){
-           if (this.state.dataWeight.length == 0){
-             errors["delete"] = "No samples for weight";
-           }
-           else{
-             // Update component
-             this.state.dataWeight.pop();
-             this.showWeight();
-             // Update db
-             db.getAnimalStatSamples(this.context.uid,this.props.navigation.state.params.petID,this.state.newtype).then((SIDs)=>{
-                        let lastid = SIDs[SIDs.length - 1];
-                        db.deleteAnimalStatSample(this.context.uid,this.props.navigation.state.params.petID,this.state.newtype,lastid);
-             });
-           }
-        }
-        else{
-          if (this.state.dataHeight.length == 0){
-                       errors["delete"] = "No samples for height";
-          }
-          else{
-            // Update component
-            this.state.dataHeight.pop();
-            this.showHeight();
-            // Update db
-            db.getAnimalStatSamples(this.context.uid,this.props.navigation.state.params.petID,this.state.newtype).then((SIDs)=>{
-               let lastid = SIDs[SIDs.length - 1];
-               db.deleteAnimalStatSample(this.context.uid,this.props.navigation.state.params.petID,this.state.newtype,lastid);
-            });
-          }
-        }
-
-        this.setState({ errors: errors });
-        //db.deleteAnimalStatSample(this.context.uid,this.props.navigation.state.params.petID,this.state.newtype,id);
-  }
+    this.setState({ errors: errors });
+    //db.deleteAnimalStatSample(this.context.uid,this.props.navigation.state.params.petID,this.state.newtype,id);
+  };
 
   render() {
     const pet = this.props.navigation.state.params.pet;
@@ -272,230 +282,230 @@ class PetScreen extends React.Component {
     const labels = [];
     const temp = Object.keys(this.state.diseases);
     let diseases = temp.map((s) => {
-        //console.log("s: "+ s);
-        return ( <TouchableHighlight
-                                      style={styles.info}
-                                      value={s}
-                                      key={s}
-                                      onPress={() => this.setState({diseaseShown:s})}
-                                    >
-            <View style={styles.info}>
-                   <Text>{s}</Text>
-              </View>
-          </TouchableHighlight>   );
+      //console.log("s: "+ s);
+      return (
+        <TouchableHighlight
+          style={styles.info}
+          value={s}
+          key={s}
+          onPress={() => this.setState({ diseaseShown: s })}
+        >
+          <View style={styles.info}>
+            <Text>{s}</Text>
+          </View>
+        </TouchableHighlight>
+      );
     });
-
 
     var diseasesSelectable = [];
 
-    if(pet.type == "Dog"){
-    diseasesSelectable = constants.DISEASES_DOG.map((s, i) => {
-          return <Picker.Item key={i} value={s} label={s} />;
-        });
-
-    }
-    else{
-
+    if (pet.type == "Dog") {
+      diseasesSelectable = constants.DISEASES_DOG.map((s, i) => {
+        return <Picker.Item key={i} value={s} label={s} />;
+      });
+    } else {
       diseasesSelectable = constants.DISEASES_CAT.map((s, i) => {
-                return <Picker.Item key={i} value={s} label={s} />;
-              });
+        return <Picker.Item key={i} value={s} label={s} />;
+      });
     }
 
-      return (
-        <SafeAreaView style={{ flex: 1 }}>
-          <View style={styles.mainContent}>
-            <ScrollView showsVerticalScrollIndicator={false}>
-              <View style={styles.petContainer}>
-                <View style={styles.pet}>
-                  <ImageBackground
-                    source={require("../../assets/images/Gioia.jpg")}
-                    style={styles.petImage}
-                    imageStyle={{ borderRadius: 50 }}
+    return (
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={styles.mainContent}>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={styles.petContainer}>
+              <View style={styles.pet}>
+                <ImageBackground
+                  source={require("../../assets/images/Gioia.jpg")}
+                  style={styles.petImage}
+                  imageStyle={{ borderRadius: 50 }}
+                >
+                  <Text
+                    style={[
+                      styles.title,
+                      {
+                        color: "white",
+                        textShadowColor: "black",
+                        textShadowRadius: 2,
+                        alignSelf: "center",
+                      },
+                    ]}
                   >
-                    <Text
-                      style={[
-                        styles.title,
-                        {
-                          color: "white",
-                          textShadowColor: "black",
-                          textShadowRadius: 2,
-                          alignSelf: "center",
-                        },
-                      ]}
-                    >
-                      {pet.name}
-                    </Text>
-                  </ImageBackground>
-                </View>
-                <View style={styles.buttons}>
-                  <TouchableOpacity
-                    style={styles.button}
-                    onPress={this.deletePet}
-                  >
-                    <Text style={styles.buttonText}>Delete pet</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.button}
-                    onPress={this.reportLoss}
-                  >
-                    <Text style={styles.buttonText}>Report loss</Text>
-                  </TouchableOpacity>
-                </View>
+                    {pet.name}
+                  </Text>
+                </ImageBackground>
               </View>
+              <View style={styles.buttons}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={this.deletePet}
+                >
+                  <Text style={styles.buttonText}>Delete pet</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={this.reportLoss}
+                >
+                  <Text style={styles.buttonText}>Report loss</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
 
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-              >
-                <TouchableHighlight>
-                  <View style={styles.info}>
-                    <Text>Size</Text>
-                    <Text>{pet.size}</Text>
-                  </View>
-                </TouchableHighlight>
-
-                <TouchableHighlight>
-                  <View style={styles.info}>
-                    <Text>Breed</Text>
-                    <Text>{pet.breed}</Text>
-                  </View>
-                </TouchableHighlight>
-
-                <TouchableHighlight>
-                  <View style={styles.info}>
-                    <Text>Color</Text>
-                    <Text>{pet.color}</Text>
-                  </View>
-                </TouchableHighlight>
-              </ScrollView>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            >
+              <TouchableHighlight>
+                <View style={styles.info}>
+                  <Text>Size</Text>
+                  <Text>{pet.size}</Text>
+                </View>
+              </TouchableHighlight>
 
               <TouchableHighlight>
-                                <View style={styles.info}>
-                                  <Text>Diseases</Text>
-                                </View>
-             </TouchableHighlight>
+                <View style={styles.info}>
+                  <Text>Breed</Text>
+                  <Text>{pet.breed}</Text>
+                </View>
+              </TouchableHighlight>
 
-             <ScrollView
-                             horizontal={true}
-                             showsHorizontalScrollIndicator={false}
+              <TouchableHighlight>
+                <View style={styles.info}>
+                  <Text>Color</Text>
+                  <Text>{pet.color}</Text>
+                </View>
+              </TouchableHighlight>
+            </ScrollView>
+
+            <TouchableHighlight>
+              <View style={styles.info}>
+                <Text>Diseases</Text>
+              </View>
+            </TouchableHighlight>
+
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
             >
-            {diseases}
+              {diseases}
             </ScrollView>
 
             {temp.length != 0 ? (
-            <View style={styles.info}>
-               <Text>{descriptionShown}</Text>
-            </View>
+              <View style={styles.info}>
+                <Text>{descriptionShown}</Text>
+              </View>
             ) : null}
 
-              <View style={styles.info}>
-               <Text>AddDiseases</Text>
-              </View>
+            <View style={styles.info}>
+              <Text>AddDiseases</Text>
+            </View>
 
-              <View style={mainStyle.form}>
-                        <Picker
-                          selectedValue={this.state.diseaseSelected}
-                          style={{ height: 50, width: "100%" }}
-                          onValueChange={(disease) => this.setState({ diseaseSelected: disease })}
-                        >
-                          {diseasesSelectable}
-                        </Picker>
-              </View>
-
-
-              <TouchableHighlight
-                              style={styles.petButton}
-                              onPress={this.addDisease.bind(this)}
-                              underlayColor={"rgb(200,200,200)"}
-                            >
-                              <Text style={{ textAlign: "center" }}>add</Text>
-              </TouchableHighlight>
-
-              {this.state.errors["addDisease"] != null ? (
-                        <Text style={styles.error}>{this.state.errors["addDisease"]}</Text>
-                      ) : null}
-
-              {temp.length != 0 ? (
-                                     <TouchableHighlight
-                                                     style={styles.petButton}
-                                                     onPress={this.deleteDisease.bind(this)}
-                                                     underlayColor={"rgb(200,200,200)"}
-                                                   >
-                                                     <Text style={{ textAlign: "center" }}>delete</Text>
-                                                   </TouchableHighlight>
-
-                                    ) : null}
-
-              <TouchableHighlight
-                style={styles.petButton}
-                onPress={this.showWeight.bind(this)}
-                underlayColor={"rgb(200,200,200)"}
+            <View style={mainStyle.form}>
+              <Picker
+                selectedValue={this.state.diseaseSelected}
+                style={{ height: 50, width: "100%" }}
+                onValueChange={(disease) =>
+                  this.setState({ diseaseSelected: disease })
+                }
               >
-                <Text style={{ textAlign: "center" }}>weight</Text>
-              </TouchableHighlight>
+                {diseasesSelectable}
+              </Picker>
+            </View>
 
-              <TouchableHighlight
-                style={styles.petButton}
-                onPress={this.showHeight.bind(this)}
-                underlayColor={"rgb(200,200,200)"}
-              >
-                <Text style={{ textAlign: "center" }}>height</Text>
-              </TouchableHighlight>
-
-             {this.state.data.length != 0 ? (<Chart labels={labels} data={data} /> ) : null }
-
-              <Text style={styles.title}>Add new sample</Text>
-              <View style={mainStyle.form}>
-                <TextInput
-                  style={mainStyle.inputText}
-                  placeholder="Value"
-                  placeholderTextColor="#616161"
-                  returnKeyType="next"
-                  textContentType="name"
-                  value={this.state.newdata}
-                  onChangeText={(newdata) => this.setState({ newdata })}
-                />
-              </View>
-
-              <TouchableHighlight
-                style={styles.petButton}
-                onPress={this.addPetStatSample.bind(this)}
-                underlayColor={"rgb(200,200,200)"}
-              >
-                <Text style={{ textAlign: "center" }}>Save</Text>
-              </TouchableHighlight>
-              {this.state.errors["samples"] != null ? (
-                        <Text style={styles.error}>{this.state.errors["samples"]}</Text>
-                      ) : null}
-
-              <TouchableHighlight
-                              style={styles.petButton}
-                              onPress={this.deleteStatSample.bind(this)}
-                              underlayColor={"rgb(200,200,200)"}
-                            >
-                              <Text style={{ textAlign: "center" }}>Delete</Text>
-                            </TouchableHighlight>
-
-              {this.state.errors["delete"] != null ? (
-                                      <Text style={styles.error}>{this.state.errors["delete"]}</Text>
-                                    ) : null}
-
-            </ScrollView>
-          </View>
-
-          <View style={styles.bottomMenu}>
-            <TouchableHighlight onPress={null}>
-              <View style={styles.mainButtonContainer}>
-                <Image
-                  source={require("../../assets/images/paw.png")}
-                  style={styles.mainButton}
-                ></Image>
-              </View>
+            <TouchableHighlight
+              style={styles.petButton}
+              onPress={this.addDisease.bind(this)}
+              underlayColor={"rgb(200,200,200)"}
+            >
+              <Text style={{ textAlign: "center" }}>add</Text>
             </TouchableHighlight>
-          </View>
-        </SafeAreaView>
-      );
 
+            {this.state.errors["addDisease"] != null ? (
+              <Text style={styles.error}>
+                {this.state.errors["addDisease"]}
+              </Text>
+            ) : null}
+
+            {temp.length != 0 ? (
+              <TouchableHighlight
+                style={styles.petButton}
+                onPress={this.deleteDisease.bind(this)}
+                underlayColor={"rgb(200,200,200)"}
+              >
+                <Text style={{ textAlign: "center" }}>delete</Text>
+              </TouchableHighlight>
+            ) : null}
+
+            <TouchableHighlight
+              style={styles.petButton}
+              onPress={this.showWeight.bind(this)}
+              underlayColor={"rgb(200,200,200)"}
+            >
+              <Text style={{ textAlign: "center" }}>weight</Text>
+            </TouchableHighlight>
+
+            <TouchableHighlight
+              style={styles.petButton}
+              onPress={this.showHeight.bind(this)}
+              underlayColor={"rgb(200,200,200)"}
+            >
+              <Text style={{ textAlign: "center" }}>height</Text>
+            </TouchableHighlight>
+
+            {this.state.data.length != 0 ? (
+              <Chart labels={labels} data={data} />
+            ) : null}
+
+            <Text style={styles.title}>Add new sample</Text>
+            <View style={mainStyle.form}>
+              <TextInput
+                style={mainStyle.inputText}
+                placeholder="Value"
+                placeholderTextColor="#616161"
+                returnKeyType="next"
+                textContentType="name"
+                value={this.state.newdata}
+                onChangeText={(newdata) => this.setState({ newdata })}
+              />
+            </View>
+
+            <TouchableHighlight
+              style={styles.petButton}
+              onPress={this.addPetStatSample.bind(this)}
+              underlayColor={"rgb(200,200,200)"}
+            >
+              <Text style={{ textAlign: "center" }}>Save</Text>
+            </TouchableHighlight>
+            {this.state.errors["samples"] != null ? (
+              <Text style={styles.error}>{this.state.errors["samples"]}</Text>
+            ) : null}
+
+            <TouchableHighlight
+              style={styles.petButton}
+              onPress={this.deleteStatSample.bind(this)}
+              underlayColor={"rgb(200,200,200)"}
+            >
+              <Text style={{ textAlign: "center" }}>Delete</Text>
+            </TouchableHighlight>
+
+            {this.state.errors["delete"] != null ? (
+              <Text style={styles.error}>{this.state.errors["delete"]}</Text>
+            ) : null}
+          </ScrollView>
+        </View>
+
+        <View style={styles.bottomMenu}>
+          <TouchableHighlight onPress={null}>
+            <View style={styles.mainButtonContainer}>
+              <Image
+                source={require("../../assets/images/paw.png")}
+                style={styles.mainButton}
+              ></Image>
+            </View>
+          </TouchableHighlight>
+        </View>
+      </SafeAreaView>
+    );
   }
 }
 
@@ -627,10 +637,10 @@ const styles = StyleSheet.create({
     tintColor: "orange",
   },
   error: {
-      fontSize: 18,
-      textAlign: "center",
-      color: "red",
-      width: "80%",
-    },
+    fontSize: 18,
+    textAlign: "center",
+    color: "red",
+    width: "80%",
+  },
 });
 export default withNavigation(PetScreen);
