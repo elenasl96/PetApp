@@ -134,7 +134,9 @@ export default class MapScreen extends React.Component {
 
   hideCallouts() {
     this.state.markers.forEach((marker) => {
-      //marker.hideCallout();
+      if (marker && marker.hideCallout()) {
+        marker.hideCallout();
+      }
     });
   }
 
