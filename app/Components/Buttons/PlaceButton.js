@@ -22,9 +22,9 @@ class PlaceButton extends React.Component {
     this.setState({ mounted: true });
   }
 
-  showPlace(placesID, place) {
+  showPlace(placeID, place) {
+    place.id = placeID;
     this.props.navigation.navigate("Place", {
-      pid: placesID,
       place: place,
     });
   }

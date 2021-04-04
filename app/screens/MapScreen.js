@@ -69,7 +69,6 @@ export default class MapScreen extends React.Component {
       this.props.navigation.state.params.currentPlace
     ) {
       const currentPlace = this.props.navigation.state.params.currentPlace;
-      console.log("AAAAAAAAAAAAAAAAAAA");
       this.props.navigation.state.params = null;
       this.focusMapOn(currentPlace);
     }
@@ -192,46 +191,50 @@ export default class MapScreen extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.overlay}>
-          <View style={styles.mapSearch}>
-            <TextInput
-              placeholder="Search"
-              placeholderTextColor="#616161"
-              returnKeyType="next"
-              value={this.state.search}
-              onChangeText={(search) => this.setState({ search })}
-            />
+          <View style={styles.searchBox}>
+            <View style={styles.mapSearch}>
+              <TextInput
+                placeholder="Search"
+                placeholderTextColor="#616161"
+                returnKeyType="next"
+                value={this.state.search}
+                onChangeText={(search) => this.setState({ search })}
+              />
+            </View>
+            <TouchableHighlight
+              style={styles.mapButton}
+              onPress={this.searchPlace.bind(this)}
+              underlayColor={"rgb(200,200,200)"}
+            >
+              <Text style={{ textAlign: "center" }}>
+                <Feather name="search" size={18} color="black" />
+              </Text>
+            </TouchableHighlight>
           </View>
-          <TouchableHighlight
-            style={styles.mapButton}
-            onPress={this.searchPlace.bind(this)}
-            underlayColor={"rgb(200,200,200)"}
-          >
-            <Text style={{ textAlign: "center" }}>
-              <Feather name="search" size={18} color="black" />
-            </Text>
-          </TouchableHighlight>
 
-          <TouchableHighlight
-            style={styles.mapButton}
-            onPress={this.showVetMarkers.bind(this)}
-            underlayColor={"rgb(200,200,200)"}
-          >
-            <Text style={{ textAlign: "center" }}>Vet</Text>
-          </TouchableHighlight>
-          <TouchableHighlight
-            style={styles.mapButton}
-            onPress={this.showKennelMarkers.bind(this)}
-            underlayColor={"rgb(200,200,200)"}
-          >
-            <Text style={{ textAlign: "center" }}>Kennel</Text>
-          </TouchableHighlight>
-          <TouchableHighlight
-            style={styles.mapButton}
-            onPress={this.showAllMarkers.bind(this)}
-            underlayColor={"rgb(200,200,200)"}
-          >
-            <Text style={{ textAlign: "center" }}>All</Text>
-          </TouchableHighlight>
+          <View style={styles.mapTopButtons}>
+            <TouchableHighlight
+              style={styles.mapButton}
+              onPress={this.showVetMarkers.bind(this)}
+              underlayColor={"rgb(200,200,200)"}
+            >
+              <Text style={{ textAlign: "center" }}>Vet</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={styles.mapButton}
+              onPress={this.showKennelMarkers.bind(this)}
+              underlayColor={"rgb(200,200,200)"}
+            >
+              <Text style={{ textAlign: "center" }}>Kennel</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={styles.mapButton}
+              onPress={this.showAllMarkers.bind(this)}
+              underlayColor={"rgb(200,200,200)"}
+            >
+              <Text style={{ textAlign: "center" }}>All</Text>
+            </TouchableHighlight>
+          </View>
         </View>
         <View style={styles.bottomOverlay}>
           <TouchableHighlight
@@ -315,22 +318,30 @@ const styles = StyleSheet.create({
   placeName: {
     fontWeight: "bold",
   },
+  mapTopButtons: {
+    flex: 1,
+    flexDirection: "row",
+    marginTop: 8,
+  },
   mapButton: {
-    padding: 10,
-    borderRadius: 25,
+    padding: 8,
+    borderRadius: 30,
     backgroundColor: "rgba(255, 255, 255, 1)",
     overflow: "hidden",
     elevation: 2,
     marginHorizontal: 5,
   },
   mapSearch: {
-    width: "40%",
+    flex: 1,
     backgroundColor: "#FFF",
     borderRadius: 25,
-
     justifyContent: "center",
     paddingHorizontal: 20,
     elevation: 2,
+  },
+  searchBox: {
+    flex: 1,
+    flexDirection: "row",
   },
   markerImage: {
     height: 35,
@@ -338,12 +349,9 @@ const styles = StyleSheet.create({
   },
   overlay: {
     position: "absolute",
-    flex: 1,
     top: 10,
     right: 10,
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "center",
+    left: 10,
   },
   bottomOverlay: {
     position: "absolute",

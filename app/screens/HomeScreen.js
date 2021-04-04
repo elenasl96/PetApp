@@ -107,18 +107,6 @@ class HomeScreen extends React.Component {
       this.props.navigation.navigate("Pet");
     };
 
-    const showPlace = () => {
-      this.props.navigation.navigate("Pet");
-    };
-
-    const showKennel = () => {
-      this.props.navigation.navigate("Kennel");
-    };
-
-    const showVet = () => {
-      this.props.navigation.navigate("Vet");
-    };
-
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <NotificationsHandler></NotificationsHandler>
