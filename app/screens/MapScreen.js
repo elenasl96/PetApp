@@ -21,11 +21,10 @@ import utils from "../shared/utilities";
 export default class MapScreen extends React.Component {
   state = {
     mounted: false,
+    map: null,
     places: [],
     markers: [],
     visibleMarkers: [],
-    pids: [],
-    map: null,
     region: {
       latitude: 45.464664,
       longitude: 9.18854,
@@ -44,10 +43,13 @@ export default class MapScreen extends React.Component {
 
   componentDidMount() {
     this.setState({ mounted: true });
+    if (this.props.navigation.state.params == null) {
+      this.setMapOnCurrentPosition();
+    }
     db.getPlaces().then((placesIds) => {
       let promises = placesIds.map((placeId) => {
         return db.getPlace(placeId).then((place) => {
-          this.state.pids.push(placeId);
+          place.id = placeId;
           return place;
         });
       });
@@ -56,14 +58,19 @@ export default class MapScreen extends React.Component {
         console.log(places);
         this.setState({ places: places });
         this.showAllMarkers();
-        this.setMapOnCurrentPosition();
       });
     });
   }
 
   componentDidUpdate() {
-    if (this.props.navigation.state.params && !this.state.placeFocused) {
+    if (
+      this.state.places.length > 0 &&
+      this.props.navigation.state.params &&
+      this.props.navigation.state.params.currentPlace
+    ) {
       const currentPlace = this.props.navigation.state.params.currentPlace;
+      console.log("AAAAAAAAAAAAAAAAAAA");
+      this.props.navigation.state.params = null;
       this.focusMapOn(currentPlace);
     }
   }
@@ -85,7 +92,7 @@ export default class MapScreen extends React.Component {
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
       };
-      this.state.map.animateToRegion(regionUpdate, 1);
+      this.state.map.animateToRegion(regionUpdate, 1000);
     } else {
       throw new Error("Location permission not granted");
     }
@@ -128,7 +135,7 @@ export default class MapScreen extends React.Component {
 
   hideCallouts() {
     this.state.markers.forEach((marker) => {
-      marker.hideCallout();
+      //marker.hideCallout();
     });
   }
 
@@ -137,33 +144,26 @@ export default class MapScreen extends React.Component {
   }
 
   onRegionChange(region) {
-    this.setState({ region });
+    this.setState({ region, placeFocused: false });
   }
 
-  showPlace(place, index) {
-    if (place.getType() == "kennel") {
-      this.props.navigation.navigate("Kennel", {
-        place: place,
-        pid: this.state.pids[index],
-      });
-    } else {
-      this.props.navigation.navigate("Vet", {
-        place: place,
-        pid: this.state.pids[index],
-      });
-    }
+  showPlace(place) {
+    console.log(place);
+    this.props.navigation.navigate("Place", {
+      place: place,
+    });
   }
 
   focusMapOn(place) {
-    let regionUpdate = {
+    let region = {
       latitude: place.region.latitude,
       longitude: place.region.longitude,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
+      latitudeDelta: 0.01,
+      longitudeDelta: 0.005,
     };
-    console.log(this.state.map);
+
     if (this.state.map) {
-      this.state.map.animateToRegion(regionUpdate, 1);
+      this.state.map.animateToRegion(region, 1000);
       this.setState({ placeFocused: true });
     }
   }

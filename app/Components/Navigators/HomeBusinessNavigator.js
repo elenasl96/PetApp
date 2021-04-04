@@ -1,7 +1,6 @@
 import { createStackNavigator } from "react-navigation-stack";
 import PetScreen from "../../screens/petPage";
-import KennelScreen from "../../screens/kennelPage";
-import VetScreen from "../../screens/vetPage";
+import VetScreen from "../../screens/placePage";
 import React from "react";
 import NavBar from "../../screens/NavBar";
 import AddPlaceScreen from "../../screens/BusinessUser/AddPlace";
@@ -56,16 +55,7 @@ const HomeBusinessNavigator = createStackNavigator(
       }),
     },
 
-    Kennel: {
-      screen: KennelScreen,
-      path: "kennelProfile/:kennel",
-      // Optional: Override the `navigationOptions` for the screen
-      navigationOptions: ({ navigation }) => ({
-        title: "-name- profile",
-      }),
-    },
-
-    Vet: {
+    Place: {
       screen: VetScreen,
       path: "vetProfile/:vet",
       // Optional: Override the `navigationOptions` for the screen

@@ -23,17 +23,10 @@ class PlaceButton extends React.Component {
   }
 
   showPlace(placesID, place) {
-    if (place.isKennel() && this.state.mounted) {
-      this.props.navigation.navigate("Kennel", {
-        pid: placesID,
-        place: place,
-      });
-    } else {
-      this.props.navigation.navigate("Vet", {
-        pid: placesID,
-        place: place,
-      });
-    }
+    this.props.navigation.navigate("Place", {
+      pid: placesID,
+      place: place,
+    });
   }
 
   componentDidUpdate() {

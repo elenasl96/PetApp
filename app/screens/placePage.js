@@ -25,14 +25,27 @@ class VetScreen extends React.Component {
   state = { news: null, mounted: false };
 
   componentDidMount() {
-    const pid = this.props.navigation.state.params.pid;
+    const place = this.props.navigation.state.params.place;
     this.setState({ mounted: true });
-    db.getUser(this.context.uid);
-    db.getAllNews(pid).then((news) => {
+    db.getAllNews(place.id).then((news) => {
       if (this.state.mounted) {
         this.setState({ news: news });
       }
     });
+    if (place.getType() === "kennel" || place.getType() === "Kennel") {
+      db.getAdoptableAnimals(place.id).then((adoptableAnimals) => {
+        let promises = adoptableAnimals.map((animalID) => {
+          return db.getAdoptableAnimals(place.id, animalID).then((animal) => {
+            return animal;
+          });
+        });
+        Promise.all(promises).then((animals) => {
+          console.log("ANIMALS TO ADOPT");
+          console.log(animals);
+          this.setState({ animalsToAdopt: animals });
+        });
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -47,7 +60,7 @@ class VetScreen extends React.Component {
 
   render() {
     const place = this.props.navigation.state.params.place;
-    const pid = this.props.navigation.state.params.pid;
+    const pid = place.id;
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <View>

@@ -1,8 +1,7 @@
 import { createStackNavigator } from "react-navigation-stack";
 import HomeScreen from "../../screens/HomeScreen";
 import PetScreen from "../../screens/petPage";
-import KennelScreen from "../../screens/kennelPage";
-import VetScreen from "../../screens/vetPage";
+import VetScreen from "../../screens/placePage";
 import React from "react";
 import NavBar from "../../screens/NavBar";
 
@@ -32,15 +31,6 @@ const MapNavigator = createStackNavigator(
       }),
     },
 
-    Kennel: {
-      screen: KennelScreen,
-      path: "kennelProfile/:kennel",
-      // Optional: Override the `navigationOptions` for the screen
-      navigationOptions: ({ navigation }) => ({
-        title: "-name- profile",
-      }),
-    },
-
     AnimalsToAdopt: {
       screen: AnimalsToAdoptScreen,
       path: "kennelProfile/:kennel",
@@ -50,7 +40,7 @@ const MapNavigator = createStackNavigator(
       }),
     },
 
-    Vet: {
+    Place: {
       screen: VetScreen,
       path: "vetProfile/:vet",
       // Optional: Override the `navigationOptions` for the screen
