@@ -7,7 +7,7 @@ import {
   View,
 } from "react-native";
 import firebase from "firebase";
-import db from "../../firebase/DatabaseManager.js";
+import dbUserAnimal from "../../firebase/Database/Functions/dbUserAnimal";
 import { AuthContext } from "../AuthContext";
 //import Animal from "../firebase/Animal.js";
 
@@ -28,15 +28,15 @@ class PetButton extends React.Component {
     var petButtons = [];
 
     pets.map((petID) => {
-      db.getUserAnimal(this.props.uid, petID).then((animal) => {
+      dbUserAnimal.getUserAnimal(this.props.uid, petID).then((animal) => {
         //console.log("Adding animal: " + animal.name);
-        db.getAnimalStatSamples(this.props.uid, petID, "weight").then(
+        dbUserAnimal.getAnimalStatSamples(this.props.uid, petID, "weight").then(
           (WIDs) => {
             // WID weight sample id
-            db.getAnimalStatSamples(this.props.uid, petID, "height").then(
+            dbUserAnimal.getAnimalStatSamples(this.props.uid, petID, "height").then(
               (HIDs) => {
                 // HID height sample id
-                db.getAnimalDiseases(this.props.uid, petID).then((DIDs) => {
+                dbUserAnimal.getAnimalDiseases(this.props.uid, petID).then((DIDs) => {
                   //DID disease id
                   petButtons.push(
                     <TouchableHighlight

@@ -2,7 +2,8 @@ import React from "react";
 import { View, StyleSheet, ActivityIndicator } from "react-native";
 import firebase from "firebase";
 import { AuthContext } from "../Components/AuthContext";
-import db from "../firebase/DatabaseManager";
+import dbUserAnimal from "../firebase/Database/Functions/dbUserAnimal";
+import dbUser from "../firebase/Database/Functions/dbUser";
 class LoadingScreen extends React.Component {
   static contextType = AuthContext;
   state = {
@@ -14,7 +15,7 @@ class LoadingScreen extends React.Component {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.context.saveUserUID(user.uid);
-        db.getUser(user.uid).then((user) => {
+        dbUser.getUser(user.uid).then((user) => {
           this.context.saveUser(user);
           if (user.getType() == "user") {
             if (this.state.mounted) {

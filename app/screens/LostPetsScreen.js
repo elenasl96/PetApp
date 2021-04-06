@@ -12,7 +12,7 @@ import {
 import { SafeAreaView } from "react-navigation";
 import firebase from "firebase";
 import { AuthContext } from "../Components/AuthContext";
-import db from "../firebase/DatabaseManager";
+import dbLostPet from "../firebase/Database/Functions/dbLostPet";
 import PetLostButton from "../Components/Buttons/PetLostButton";
 import StarButton from "../Components/Buttons/StarButton";
 import mainStyle from "../styles/mainStyle";
@@ -30,7 +30,7 @@ export default class LostPetsScreen extends React.Component {
 
   componentDidUpdate() {
     if (this.state.lostPets == null) {
-      db.getLostPetNotifications().then((lostPetsIDs) => {
+      dbLostPet.getLostPetNotifications().then((lostPetsIDs) => {
         if (this.state.mounted) {
           console.log("lostpets");
           console.log(lostPetsIDs);

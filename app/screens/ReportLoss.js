@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
 } from "react-native";
-import db from "../firebase/DatabaseManager";
+import dbLostPet from "../firebase/Database/Functions/dbLostPet";
 import mainStyle from "../styles/mainStyle";
 import { AuthContext } from "../Components/AuthContext";
 
@@ -29,7 +29,7 @@ class ReportLossScreen extends React.Component {
     const pet = this.props.navigation.state.params.pet;
     console.log("pet");
     console.log(this.context.uid);
-    db.addLostPetNotify(
+    dbLostPet.addLostPetNotify(
       pet.getName(),
       pet.getPhoto(),
       pet.getSize(),

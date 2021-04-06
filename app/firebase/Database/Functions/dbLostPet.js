@@ -1,4 +1,4 @@
-import { firestore } from "../shared/firebaseconfig.js";
+import {firestore} from "../../firebaseconfig.js";
 import LostPetNotify from "../Objects/LostPetNotify.js";
 import LostPetSeen from "../Objects/LostPetSeen.js";
 

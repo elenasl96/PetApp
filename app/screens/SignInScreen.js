@@ -14,7 +14,7 @@ import {
 import { auth } from "../firebase/firebaseconfig.js";
 import "firebase/firestore";
 import * as Facebook from "expo-facebook";
-import db from "./../firebase/DatabaseManager.js";
+import dbUser from "../firebase/Database/Functions/dbUser";
 import mainStyle from "../styles/mainStyle";
 import { AuthContext } from "../Components/AuthContext";
 
@@ -58,7 +58,7 @@ class SignInScreen extends React.Component {
         .signInWithEmailAndPassword(this.state.email, this.state.password)
         .then((credential) => {
           auth().setPersistence(auth.Auth.Persistence.LOCAL);
-          db.getUser(credential.user.uid).then((userFromDb) => {
+          dbUser.getUser(credential.user.uid).then((userFromDb) => {
             if (this.state.mounted) {
               this.context.saveUser(userFromDb);
             }
@@ -98,7 +98,7 @@ class SignInScreen extends React.Component {
         //console.log("Facebook data:");
         //console.log(facebookProfileData);
         if (facebookProfileData.additionalUserInfo.isNewUser) {
-          db.addUser(
+          dbUser.addUser(
             auth().currentUser.uid,
             facebookProfileData.additionalUserInfo.profile.name,
             facebookProfileData.additionalUserInfo.profile.picture.data.url,
@@ -107,7 +107,7 @@ class SignInScreen extends React.Component {
           ).then("User Registered");
         }
 
-        db.getUser(user.uid).then((userFromDb) => {
+        dbUser.getUser(user.uid).then((userFromDb) => {
           this.context.saveUser(userFromDb);
         });
       }

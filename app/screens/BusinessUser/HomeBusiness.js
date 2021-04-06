@@ -11,7 +11,7 @@ import {
 import { SafeAreaView } from "react-navigation";
 import firebase from "firebase";
 import { AuthContext } from "../../Components/AuthContext";
-import db from "../../firebase/DatabaseManager";
+import dbPlace from "../../firebase/Database/Functions/dbPlace.js";
 import PlaceButton from "../../Components/Buttons/PlaceButton";
 
 export default class HomeBusiness extends React.Component {
@@ -25,7 +25,7 @@ export default class HomeBusiness extends React.Component {
     this.setState({ mounted: true });
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        db.getPlacesByUid(this.context.uid).then((places) => {
+        dbPlace.getPlacesByUid(this.context.uid).then((places) => {
           if (this.state.mounted) {
             this.setState({ places: places });
           }

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, Button, Image, StyleSheet } from "react-native";
 import firebase from "firebase";
-import { AuthContext } from "../Components/AuthContext.js";
+import { AuthContext } from "../AuthContext.js";
 import { Ionicons } from "@expo/vector-icons";
 
 class NavBar extends Component {

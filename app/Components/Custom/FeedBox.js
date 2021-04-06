@@ -7,9 +7,9 @@ import {
   View,
 } from "react-native";
 import firebase from "firebase";
-import db from "../firebase/DatabaseManager.js";
-import { AuthContext } from "../Components/AuthContext";
-import mainStyle from "../styles/mainStyle.js";
+import dbFeed from "../../firebase/Database/Functions/dbFeed";
+import { AuthContext } from "../AuthContext";
+import mainStyle from "../../styles/mainStyle.js";
 import { LinearGradient } from "expo-linear-gradient";
 //import Animal from "../firebase/Animal.js";
 
@@ -24,7 +24,7 @@ class FeedBox extends React.Component {
     const feeds = this.props.feeds;
 
     let promises = feeds.map((feedID, index) => {
-      return db.getUserFeed(this.props.uid, feedID).then((feed) => {
+      return dbFeed.getUserFeed(this.props.uid, feedID).then((feed) => {
         return (
           <LinearGradient
             key={index}

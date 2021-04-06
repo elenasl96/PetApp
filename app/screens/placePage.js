@@ -12,8 +12,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 import firebase from "firebase";
-import db from "../firebase/DatabaseManager";
-import News from "../Components/News";
+import dbNews from "../firebase/Database/Functions/dbNews";
+import dbAdoptableAnimal from "../firebase/Database/Functions/dbAdoptableAnimal";
+import News from "../Components/Custom/News";
 import { AuthContext } from "../Components/AuthContext";
 import { AntDesign } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -27,15 +28,15 @@ class VetScreen extends React.Component {
   componentDidMount() {
     const place = this.props.navigation.state.params.place;
     this.setState({ mounted: true });
-    db.getAllNews(place.id).then((news) => {
+    dbNews.getAllNews(place.id).then((news) => {
       if (this.state.mounted) {
         this.setState({ news: news });
       }
     });
     if (place.getType() === "kennel" || place.getType() === "Kennel") {
-      db.getAdoptableAnimals(place.id).then((adoptableAnimals) => {
+      dbAdoptableAnimal.getAdoptableAnimals(place.id).then((adoptableAnimals) => {
         let promises = adoptableAnimals.map((animalID) => {
-          return db.getAdoptableAnimals(place.id, animalID).then((animal) => {
+          return dbAdoptableAnimal.getAdoptableAnimals(place.id, animalID).then((animal) => {
             return animal;
           });
         });

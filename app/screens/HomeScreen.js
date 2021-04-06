@@ -12,9 +12,11 @@ import { SafeAreaView } from "react-navigation";
 import firebase from "firebase";
 import { AuthContext } from "../Components/AuthContext";
 import PetButton from "../Components/Buttons/PetButton";
-import db from "../firebase/DatabaseManager";
+import dbUserAnimal from "../firebase/Database/Functions/dbUserAnimal";
+import dbFeed from "../firebase/Database/Functions/dbFeed";
+import dbUser from "../firebase/Database/Functions/dbUser";
 import PlaceButton from "../Components/Buttons/PlaceButton";
-import FeedBox from "../Components/FeedBox";
+import FeedBox from "../Components/Custom/FeedBox";
 import NotificationsHandler from "../Components/NotificationsHandler";
 import { AntDesign } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
@@ -33,7 +35,7 @@ class HomeScreen extends React.Component {
     //db.populateDb();  --- for populate the db
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        db.getUserAnimals(this.context.uid).then((pets) => {
+        dbUserAnimal.getUserAnimals(this.context.uid).then((pets) => {
           if (this.state.mounted) {
             this.setState({ pets: pets });
           }
@@ -42,17 +44,17 @@ class HomeScreen extends React.Component {
           var uid = this.context.uid;
           if (pets.length != 0) {
             pets.forEach((aid) => {
-              db.getUserAnimal(uid, aid).then((animal) => {
+              dbUserAnimal.getUserAnimal(uid, aid).then((animal) => {
                 animals.push(animal);
                 if (pets.length == animals.length) {
                   let promise = new Promise((resolve, reject) => {
-                    db.addRandomFeeds(animals, uid, info.getLastLogin(), 0);
+                    dbFeed.addRandomFeeds(animals, uid, info.getLastLogin(), 0);
                     setTimeout(() => {
                       resolve();
                     }, 1000);
                   });
                   promise.then(() => {
-                    db.getUserFeeds(uid).then((feeds) => {
+                    dbFeed.getUserFeeds(uid).then((feeds) => {
                       if (this.state.mounted) {
                         this.setState({ feeds: feeds });
                         this.setState({ mounted: true });
@@ -64,13 +66,13 @@ class HomeScreen extends React.Component {
             });
           } else {
             let promise = new Promise((resolve, reject) => {
-              db.addRandomFeeds(animals, uid, info.getLastLogin(), info.days);
+              dbFeed.addRandomFeeds(animals, uid, info.getLastLogin(), info.days);
               setTimeout(() => {
                 resolve();
               }, 1000);
             });
             promise.then(() => {
-              db.getUserFeeds(uid).then((feeds) => {
+              dbFeed.getUserFeeds(uid).then((feeds) => {
                 if (this.state.mounted) {
                   this.setState({ feeds: feeds });
                   this.setState({ mounted: true });
@@ -80,9 +82,9 @@ class HomeScreen extends React.Component {
           }
         });
         var places = [];
-        db.getSavedPlaces(this.context.uid).then((placeIds) => {
+        dbUser.getSavedPlaces(this.context.uid).then((placeIds) => {
           placeIds.forEach((placeId) => {
-            db.getSavedPlace(this.context.uid, placeId).then((savedPlace) => {
+            dbUser.getSavedPlace(this.context.uid, placeId).then((savedPlace) => {
               places.push(savedPlace);
               if (this.state.mounted) {
                 this.setState({ places: places });

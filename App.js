@@ -3,7 +3,7 @@ import { createAppContainer, createSwitchNavigator } from "react-navigation";
 
 import * as firebase from "firebase";
 import firebaseConfig from "./app/firebase/firebaseconfig.js";
-import db from "./app/firebase/DatabaseManager.js";
+//import db from "./app/firebase/DatabaseManager.js";
 
 import AuthNavigator from "./app/Components/Navigators/AuthNavigator";
 import SignIn from "./app/screens/SignInScreen";

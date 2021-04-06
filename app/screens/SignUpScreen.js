@@ -16,7 +16,7 @@ import { auth } from "../firebase/firebaseconfig.js";
 import * as Facebook from "expo-facebook";
 
 import mainStyle from "../styles/mainStyle";
-import db from "./../firebase/DatabaseManager.js";
+import dbUser from "../firebase/Database/Functions/dbUser";
 import { AuthContext } from "../Components/AuthContext.js";
 import { Picker } from "@react-native-picker/picker";
 
@@ -59,7 +59,7 @@ class SignUpScreen extends React.Component {
             auth().setPersistence(auth.Auth.Persistence.LOCAL);
             let user = credential.user;
             //console.log(user);
-            db.addUser(
+            dbUser.addUser(
               user.uid,
               this.state.name,
               "",
@@ -113,7 +113,7 @@ class SignUpScreen extends React.Component {
             //console.log("Facebook data:");
             //console.log(facebookProfileData);
             if (facebookProfileData.additionalUserInfo.isNewUser) {
-              db.addUser(
+              dbUser.addUser(
                 auth().currentUser.uid,
                 facebookProfileData.additionalUserInfo.profile.name,
                 facebookProfileData.additionalUserInfo.profile.picture.data.url,
@@ -122,7 +122,7 @@ class SignUpScreen extends React.Component {
               ).then("User Registered");
             }
 
-            db.getUser(user.uid).then((userFromDb) => {
+            dbUser.getUser(user.uid).then((userFromDb) => {
               this.context.saveUser(userFromDb);
             });
           }

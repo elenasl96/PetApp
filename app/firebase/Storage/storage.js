@@ -1,4 +1,4 @@
-import { storage } from "../shared/firebaseconfig.js";
+import { storage as firebaseStorage } from "../firebaseconfig.js";
 
 //----------------Photo storage------------------------------------------------------------------------------
 
@@ -8,7 +8,7 @@ const storage = {
     console.log("ToStorage");
     //var urlToStore;
     //Reference to firebase storage
-    storageRef = storage.ref();
+    storageRef = firebaseStorage.ref();
 
     // Create the file metadata
     var metadata = {
@@ -25,7 +25,7 @@ const storage = {
       .child("images/" + filename)
       .put(file, metadata)
       .then(() => {
-        return db.fromStorage(filename).then((url) => {
+        return storage.fromStorage(filename).then((url) => {
           urlToStore = url;
           return urlToStore;
         });
@@ -34,7 +34,7 @@ const storage = {
   },
 
   fromStorage: function (filename) {
-    storageRef = storage.ref();
+    storageRef = firebaseStorage.ref();
     var imageRef = storageRef.child("images/" + filename);
     return imageRef
       .getDownloadURL()

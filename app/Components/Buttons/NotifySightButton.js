@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-import db from "../../firebase/DatabaseManager";
+import dbNotification from "../../firebase/Database/Functions/dbNotification";
 import { AuthContext } from "../AuthContext";
 
 Notifications.setNotificationHandler({
@@ -40,7 +40,7 @@ export default class NotifySightButton extends React.Component {
 
 async function sendPushNotificationToUser(uid) {
   console.log(uid);
-  db.getUserToken(uid).then((expoPushToken) => {
+  dbNotification.getUserToken(uid).then((expoPushToken) => {
     sendPushNotification(expoPushToken);
   });
 }

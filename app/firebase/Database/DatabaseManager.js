@@ -1106,21 +1106,6 @@ const db = {
     });
   },
 
-  getAgeString: function (age) {
-    var string;
-    if (age < 0) {
-      console.log("Age must be a positive integer");
-      string = "error";
-    }
-
-    if (age <= 6 && age >= 0) string = "Young";
-
-    if (age > 6 && age <= 12) string = "Medium";
-
-    if (age > 12) string = "Old";
-
-    return string;
-  },
 
   getUserAnimalsByType: function (uid, type) {
     const users = firestore.collection("Users");

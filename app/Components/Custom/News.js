@@ -6,8 +6,8 @@ import {
   TouchableHighlight,
   View,
 } from "react-native";
-import db from "../firebase/DatabaseManager";
-import { AuthContext } from "./AuthContext";
+import dbNews from "../../firebase/Database/Functions/dbNews";
+import { AuthContext } from "../AuthContext";
 
 class News extends React.Component {
   static contextType = AuthContext;
@@ -24,7 +24,7 @@ class News extends React.Component {
     var newsContainers = [];
 
     news.map((newsID) => {
-      db.getNews(pid, newsID).then((news) => {
+      dbNews.getNews(pid, newsID).then((news) => {
         newsContainers.unshift(
           <View key={newsID} style={styles.feedContainer}>
             <View style={styles.feed}>
