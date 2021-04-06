@@ -1,4 +1,4 @@
-import { firestore, storage } from "./firebaseconfig.js";
+import { firestore, storage } from "../shared/firebaseconfig.js";
 import User from "./User.js";
 import Animal from "./Animal.js";
 import AdoptableAnimal from "./AdoptableAnimal.js";
