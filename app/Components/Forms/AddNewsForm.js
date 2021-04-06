@@ -9,8 +9,8 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
 } from "react-native";
-import db from "../../firebase/DatabaseManager";
-import ImagePickerExample from "../../screens/camera";
+import dbNews from "../../firebase/Database/Functions/dbNews";
+import ImagePickerExample from "../Custom/camera";
 import { AuthContext } from "../AuthContext";
 
 
@@ -54,7 +54,7 @@ export default class AddNewsForm extends Component {
     if (this.handleValidation()){
     console.log("Valid");
     const pid = this.props.pid;
-    db.addNews(pid, this.state.title, this.state.text);
+    dbNews.addNews(pid, this.state.title, this.state.text);
     }
   }
 

@@ -15,12 +15,12 @@ import {
 } from "react-native";
 import firebase from "firebase";
 import mainStyle from "../styles/mainStyle";
-import db from "../firebase/DatabaseManager";
+import dbUserAnimal from "../firebase/Database/Functions/dbUserAnimal";
 import { AuthContext } from "../Components/AuthContext";
 import { withNavigation } from "react-navigation";
 import { Picker } from "@react-native-picker/picker";
 
-import Chart from "./PetChart.js";
+import Chart from "../Components/Custom/PetChart.js";
 import utils from "../shared/utilities";
 import constants from "../shared/constants";
 
@@ -46,7 +46,7 @@ class PetScreen extends React.Component {
 
     const WIDs = this.props.navigation.state.params.WIDs;
     WIDs.map((wid) => {
-      db.getAnimalStatSample(
+      dbUserAnimal.getAnimalStatSample(
         this.context.uid,
         this.props.navigation.state.params.petID,
         "weight",
@@ -60,7 +60,7 @@ class PetScreen extends React.Component {
 
     const HIDs = this.props.navigation.state.params.HIDs;
     HIDs.map((hid) => {
-      db.getAnimalStatSample(
+      dbUserAnimal.getAnimalStatSample(
         this.context.uid,
         this.props.navigation.state.params.petID,
         "height",
@@ -73,7 +73,7 @@ class PetScreen extends React.Component {
 
     const DIDs = this.props.navigation.state.params.DIDs;
     DIDs.map((did) => {
-      db.getAnimalDisease(
+      dbUserAnimal.getAnimalDisease(
         this.context.uid,
         this.props.navigation.state.params.petID,
         did
@@ -81,7 +81,7 @@ class PetScreen extends React.Component {
         if (this.state.diseaseShown == null) {
           this.setState({ diseaseShown: disease.name });
         }
-        db.getDiseaseDescription(disease.name).then((descriptions) => {
+        dbUserAnimal.getDiseaseDescription(disease.name).then((descriptions) => {
           this.state.diseases[disease.name] = descriptions[0];
           this.setState({ mounted: true });
         });
@@ -117,7 +117,7 @@ class PetScreen extends React.Component {
   }
 
   deletePet = () => {
-    db.deleteAnimal(this.context.uid, this.props.navigation.state.params.petID);
+    dbUserAnimal.deleteAnimal(this.context.uid, this.props.navigation.state.params.petID);
   };
 
   reportLoss = () => {
@@ -141,7 +141,7 @@ class PetScreen extends React.Component {
         this.state.dataHeight.push(Number(this.state.newdata));
         this.showHeight();
       }
-      db.addAnimalStatSample(
+      dbUserAnimal.addAnimalStatSample(
         this.context.uid,
         this.props.navigation.state.params.petID,
         this.state.newtype,
@@ -181,7 +181,7 @@ class PetScreen extends React.Component {
       errors["addDisease"] = "Disease already present!";
       console.log(errors["addDisease"]);
     } else {
-      db.addAnimalDisease(
+      dbUserAnimal.addAnimalDisease(
         this.context.uid,
         this.props.navigation.state.params.petID,
         disease
@@ -191,7 +191,7 @@ class PetScreen extends React.Component {
         this.setState({ diseaseShown: disease });
       }
 
-      db.getDiseaseDescription(disease).then((descriptions) => {
+      dbUserAnimal.getDiseaseDescription(disease).then((descriptions) => {
         this.state.diseases[disease] = descriptions[0];
         this.setState({ mounted: true });
       });
@@ -204,7 +204,7 @@ class PetScreen extends React.Component {
   deleteDisease = () => {
     var disease = this.state.diseaseShown;
     let errors = {};
-    db.deleteAnimalDiseaseByName(
+    dbUserAnimal.deleteAnimalDiseaseByName(
       this.context.uid,
       this.props.navigation.state.params.petID,
       disease
@@ -233,13 +233,13 @@ class PetScreen extends React.Component {
         this.state.dataWeight.pop();
         this.showWeight();
         // Update db
-        db.getAnimalStatSamples(
+        dbUserAnimal.getAnimalStatSamples(
           this.context.uid,
           this.props.navigation.state.params.petID,
           this.state.newtype
         ).then((SIDs) => {
           let lastid = SIDs[SIDs.length - 1];
-          db.deleteAnimalStatSample(
+          dbUserAnimal.deleteAnimalStatSample(
             this.context.uid,
             this.props.navigation.state.params.petID,
             this.state.newtype,
@@ -261,7 +261,7 @@ class PetScreen extends React.Component {
           this.state.newtype
         ).then((SIDs) => {
           let lastid = SIDs[SIDs.length - 1];
-          db.deleteAnimalStatSample(
+          dbUserAnimal.deleteAnimalStatSample(
             this.context.uid,
             this.props.navigation.state.params.petID,
             this.state.newtype,

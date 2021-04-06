@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import firebase from "firebase";
 import * as Facebook from "expo-facebook";
 import * as GoogleSignIn from "expo-google-sign-in";
-import db from "../firebase/DatabaseManager";
+//import dbUser from "../firebase/Database/Functions/dbUser";
 
 export const AuthContext = React.createContext();
 

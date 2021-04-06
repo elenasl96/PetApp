@@ -2,7 +2,8 @@ import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { Text, View, Button, Platform } from "react-native";
-import db from "../firebase/DatabaseManager";
+import dbNotification from "../firebase/Database/Functions/dbNotification";
+import dbUser from "../firebase/Database/Functions/dbUser";
 import { AuthContext } from "./AuthContext";
 
 Notifications.setNotificationHandler({
@@ -48,7 +49,7 @@ export default function NotificationsHandler() {
   return null;
 
   async function sendPushNotificationToUser(uid) {
-    db.getUserToken(uid).then((expoPushToken) => {
+    dbNotification.getUserToken(uid).then((expoPushToken) => {
       sendPushNotification(expoPushToken);
     });
   }
@@ -104,8 +105,8 @@ export default function NotificationsHandler() {
       });
     }
 
-    db.updateNotificationToken(context.uid, token).then(() => {
-      db.getUser(context.uid).then((user) => {
+    dbNotification.updateNotificationToken(context.uid, token).then(() => {
+      dbUser.getUser(context.uid).then((user) => {
         context.saveUser(user);
       });
     });

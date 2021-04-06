@@ -1,5 +1,5 @@
-import Animal from './Animal.js';
-export default class AdoptableAnimal extends Animal{
+import UserAnimal from './UserAnimal.js';
+export default class AdoptableAnimal extends UserAnimal{
 
    profile : string;
 

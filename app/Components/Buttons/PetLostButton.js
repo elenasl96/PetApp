@@ -6,7 +6,7 @@ import {
   TouchableHighlight,
   View,
 } from "react-native";
-import db from "../../firebase/DatabaseManager";
+import dbLostPet from "../../firebase/Database/Functions/dbLostPet";
 
 class PetLostButton extends React.Component {
   state = {
@@ -26,7 +26,7 @@ class PetLostButton extends React.Component {
       var lostPetsButtons = [];
 
       pets.map((petID) => {
-        db.getLostPetNotification(petID).then((animal) => {
+        dbLostPet.getLostPetNotification(petID).then((animal) => {
           lostPetsButtons.push(
             <View key={petID}>
               <TouchableHighlight

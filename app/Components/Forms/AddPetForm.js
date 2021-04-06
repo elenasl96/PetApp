@@ -12,9 +12,8 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
-import db from "../../firebase/DatabaseManager";
-//import Animal from "../../firebase/Animal.js";
-import ImagePickerExample from "../../screens/camera";
+import dbUserAnimal from "../../firebase/Database/Functions/dbUserAnimal";
+import ImagePickerExample from "../Custom/camera";
 import { AuthContext } from "../AuthContext";
 import { withNavigation } from "react-navigation";
 import { Picker } from "@react-native-picker/picker";
@@ -91,7 +90,7 @@ class AddPetForm extends Component {
   registerPet() {
     if (this.handleValidation()) {
       console.log("Registering pet...");
-      db.addUserAnimal(
+      dbUserAnimal.addUserAnimal(
         this.context.uid,
         this.state.name,
         this.state.age,

@@ -11,7 +11,7 @@ import {
 import { SafeAreaView } from "react-navigation";
 import firebase from "firebase";
 import { AuthContext } from "../Components/AuthContext";
-import db from "../firebase/DatabaseManager";
+import dbAdoptableAnimal from "../firebase/Database/Functions/dbAdoptableAnimal";
 import PetLostButton from "../Components/Buttons/PetLostButton";
 
 export default class AnimalsToAdoptScreen extends React.Component {
@@ -28,7 +28,7 @@ export default class AnimalsToAdoptScreen extends React.Component {
   componentDidUpdate() {
     if (this.state.pets == null) {
       const pid = this.props.navigation.state.params.pid;
-      db.getAdoptableAnimals(pid).then((petsIDs) => {
+      dbAdoptableAnimal.getAdoptableAnimals(pid).then((petsIDs) => {
         if (this.state.mounted) {
           console.log("pets");
           console.log(petsIDs);

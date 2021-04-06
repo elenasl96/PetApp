@@ -2,7 +2,7 @@ import { createStackNavigator } from "react-navigation-stack";
 import PetScreen from "../../screens/petPage";
 import VetScreen from "../../screens/placePage";
 import React from "react";
-import NavBar from "../../screens/NavBar";
+import NavBar from "../Custom/NavBar";
 import AddPlaceScreen from "../../screens/BusinessUser/AddPlace";
 import HomeBusiness from "../../screens/BusinessUser/HomeBusiness";
 import AddNewsScreen from "../../screens/BusinessUser/AddNews";

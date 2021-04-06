@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import * as Location from "expo-location";
 import { Marker, Callout, CustomCalloutView } from "react-native-maps";
-import db from "../firebase/DatabaseManager";
+import dbPlace from "../firebase/Database/Functions/dbPlace";
 import * as Permissions from "expo-permissions";
 import { Feather } from "@expo/vector-icons";
 import { TextInput } from "react-native-gesture-handler";
@@ -46,9 +46,9 @@ export default class MapScreen extends React.Component {
     if (this.props.navigation.state.params == null) {
       this.setMapOnCurrentPosition();
     }
-    db.getPlaces().then((placesIds) => {
+    dbPlace.getPlaces().then((placesIds) => {
       let promises = placesIds.map((placeId) => {
-        return db.getPlace(placeId).then((place) => {
+        return dbPlace.getPlace(placeId).then((place) => {
           place.id = placeId;
           return place;
         });

@@ -7,7 +7,7 @@ import {
   View,
   ImageBackground,
 } from "react-native";
-import db from "../../firebase/DatabaseManager";
+import dbPlace from "../../firebase/Database/Functions/dbPlace";
 import { AuthContext } from "../AuthContext";
 
 class PlaceButton extends React.Component {
@@ -35,7 +35,7 @@ class PlaceButton extends React.Component {
       var placeButtons = [];
 
       places.map((placesID) => {
-        db.getPlace(placesID).then((place) => {
+        dbPlace.getPlace(placesID).then((place) => {
           placeButtons.push(
             <View key={placesID}>
               <TouchableHighlight

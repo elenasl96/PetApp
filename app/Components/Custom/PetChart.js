@@ -1,13 +1,9 @@
-
 import * as React from 'react';
-
 import { Text, View, StyleSheet, Dimensions, ScrollView } from 'react-native';
-
 
 import {
   LineChart
 } from 'react-native-chart-kit';
-//import React Native chart Kit for different kind of Chart
 
 export default class Chart extends React.Component {
 
@@ -17,15 +13,10 @@ export default class Chart extends React.Component {
   }
 
   constructor(props){
-
     super(props);
-    //this.state.labels=this.props.labels;
-    //this.state.data = this.props.data;
   }
 
   ComponentDidMount()  {
-    //console.log("Data " + this.props.data );
-    //console.log("Labels " + this.props.labels);
   }
 
   render() {
@@ -34,21 +25,6 @@ export default class Chart extends React.Component {
         <View style={styles.container}>
           <View>
             <LineChart
-              /*
-              data={{
-                labels: ['January', 'February', 'March', 'April'],
-                datasets: [
-                  {
-                    data: [
-                      25,
-                      22,
-                      30,
-                      35
-                    ],
-                  },
-                ],
-              }}
-              */
               data = {{
                 labels : this.props.labels,
                 datasets : [{ data : this.props.data, }],

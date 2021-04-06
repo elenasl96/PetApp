@@ -9,8 +9,8 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
 } from "react-native";
-import db from "../../firebase/DatabaseManager";
-import ImagePickerExample from "../../screens/camera";
+import dbPlace from "../../firebase/Database/Functions/dbPlace";
+import ImagePickerExample from "../Custom/camera";
 import { AuthContext } from "../AuthContext";
 
 import mainStyle from "../../styles/mainStyle";
