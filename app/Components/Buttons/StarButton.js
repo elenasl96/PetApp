@@ -1,7 +1,7 @@
 import React from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
-import dbUser from "../../firebase/Database/Functions/dbUser";
+import dbPlace from "../../firebase/Database/Functions/dbPlace";
 import { AuthContext } from "../AuthContext";
 
 class StarButton extends React.Component {
@@ -15,9 +15,9 @@ class StarButton extends React.Component {
 
   constructor(props) {
     super(props);
-    dbUser.getSavedPlaces(this.props.uid).then((savedPlaces) => {
+    dbPlace.getSavedPlaces(this.props.uid).then((savedPlaces) => {
       savedPlaces.forEach((savedPlaceId) => {
-        dbUser.getSavedPlace(this.props.uid, savedPlaceId).then((place) => {
+        dbPlace.getSavedPlace(this.props.uid, savedPlaceId).then((place) => {
           if (this.props.pid == place) {
             this.setState({ id: savedPlaceId });
             this.setState({ favorite: true });
@@ -36,13 +36,13 @@ class StarButton extends React.Component {
   }
 
   addToFavorite() {
-    dbUser.addSavedPlace(this.props.uid, this.props.pid);
+    dbPlace.addSavedPlace(this.props.uid, this.props.pid);
     console.log("save place: " + this.props.pid);
     this.setState({ favorite: true });
   }
 
   deleteFromFavorite() {
-    dbUser.deleteSavedPlace(this.props.uid, this.state.id);
+    dbPlace.deleteSavedPlace(this.props.uid, this.state.id);
     this.setState({ favorite: false });
   }
 

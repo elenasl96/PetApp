@@ -14,7 +14,7 @@ import { AuthContext } from "../Components/AuthContext";
 import PetButton from "../Components/Buttons/PetButton";
 import dbUserAnimal from "../firebase/Database/Functions/dbUserAnimal";
 import dbFeed from "../firebase/Database/Functions/dbFeed";
-import dbUser from "../firebase/Database/Functions/dbUser";
+import dbPlace from "../firebase/Database/Functions/dbPlace";
 import PlaceButton from "../Components/Buttons/PlaceButton";
 import FeedBox from "../Components/Custom/FeedBox";
 import NotificationsHandler from "../Components/NotificationsHandler";
@@ -82,9 +82,9 @@ class HomeScreen extends React.Component {
           }
         });
         var places = [];
-        dbUser.getSavedPlaces(this.context.uid).then((placeIds) => {
+        dbPlace.getSavedPlaces(this.context.uid).then((placeIds) => {
           placeIds.forEach((placeId) => {
-            dbUser.getSavedPlace(this.context.uid, placeId).then((savedPlace) => {
+            dbPlace.getSavedPlace(this.context.uid, placeId).then((savedPlace) => {
               places.push(savedPlace);
               if (this.state.mounted) {
                 this.setState({ places: places });

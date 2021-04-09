@@ -3,6 +3,7 @@ import User from "../Objects/User.js";
 import dbNotification from "./dbNotification.js";
 import dbUserAnimal from "./dbUserAnimal.js";
 import dbFeed from "./dbFeed.js";
+import dbPlace from "./dbPlace.js";
 
 
 const dbUser = {
@@ -88,69 +89,6 @@ const dbUser = {
       }
     });
   },
-
-  addSavedPlace: function (uid, pid) {
-      const users = firestore.collection("Users");
-      users.doc(uid).collection("savedplaces").add({ pid: pid });
-    },
-
-    getSavedPlaces: function (uid) {
-      const users = firestore.collection("Users");
-      var savedplaces = [];
-      return users
-        .doc(uid)
-        .collection("savedplaces")
-        .get()
-        .then(function (querySnapshot) {
-          querySnapshot.forEach(function (doc) {
-            // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, " => ", doc.data());
-            savedplaces.push(doc.id);
-            //console.log(user);
-            return savedplaces;
-          });
-
-          return savedplaces;
-        })
-        .catch(function (error) {
-          console.log("Error getting documents: ", error);
-        });
-    },
-
-    getSavedPlace: function (uid, id) {
-      const users = firestore.collection("Users");
-      var savedplace;
-      return users
-        .doc(uid)
-        .collection("savedplaces")
-        .doc(id)
-        .get()
-        .then(function (doc) {
-          // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
-          savedplace = doc.data().pid;
-          //console.log(user);
-          return savedplace;
-        })
-        .catch(function (error) {
-          console.log("Error getting documents: ", error);
-        });
-    },
-
-    deleteSavedPlace: function (uid, id) {
-      const users = firestore.collection("Users");
-      users
-        .doc(uid)
-        .collection("savedplaces")
-        .doc(id)
-        .delete()
-        .then(function () {
-          console.log("Document successfully deleted!");
-        })
-        .catch(function (error) {
-          console.error("Error removing document: ", error);
-        });
-    },
 
 };
 
