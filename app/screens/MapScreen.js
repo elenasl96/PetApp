@@ -81,17 +81,22 @@ export default class MapScreen extends React.Component {
   async setMapOnCurrentPosition() {
     const { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status === "granted") {
-      let location = await Location.getCurrentPositionAsync({
+      Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.Lowest,
-      });
-      this.setState({ currentPosition: location });
-      let regionUpdate = {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-      };
-      this.state.map.animateToRegion(regionUpdate, 1000);
+      })
+        .then((location) => {
+          this.setState({ currentPosition: location });
+          let regionUpdate = {
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          };
+          this.state.map.animateToRegion(regionUpdate, 1000);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } else {
       throw new Error("Location permission not granted");
     }
@@ -113,7 +118,6 @@ export default class MapScreen extends React.Component {
     let vetMarkers = this.state.places.filter(
       (marker) => marker.type === "Vet" || marker.type === "vet"
     );
-    console.log("MARKERS:" + vetMarkers.length);
     this.setState({ visibleMarkers: vetMarkers });
   }
 
@@ -126,10 +130,10 @@ export default class MapScreen extends React.Component {
   }
 
   showAllMarkers() {
-    console.log("MARKERS:" + this.state.markers.length);
     this.hideCallouts();
-    this.removeMarkers();
-    this.setState({ visibleMarkers: this.state.places });
+    let allMarkers = this.state.places;
+    //this.removeMarkers();
+    this.setState({ visibleMarkers: allMarkers });
   }
 
   hideCallouts() {

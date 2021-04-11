@@ -23,29 +23,29 @@ import { withNavigation } from "react-navigation";
 
 class VetScreen extends React.Component {
   static contextType = AuthContext;
-  state = { news: null, mounted: false };
+  state = { mounted: false };
 
   componentDidMount() {
     const place = this.props.navigation.state.params.place;
     this.setState({ mounted: true });
-    dbNews.getAllNews(place.id).then((news) => {
-      if (this.state.mounted) {
-        this.setState({ news: news });
-      }
-    });
+
     if (place.getType() === "kennel" || place.getType() === "Kennel") {
-      dbAdoptableAnimal.getAdoptableAnimals(place.id).then((adoptableAnimals) => {
-        let promises = adoptableAnimals.map((animalID) => {
-          return dbAdoptableAnimal.getAdoptableAnimals(place.id, animalID).then((animal) => {
-            return animal;
+      dbAdoptableAnimal
+        .getAdoptableAnimals(place.id)
+        .then((adoptableAnimals) => {
+          let promises = adoptableAnimals.map((animalID) => {
+            return dbAdoptableAnimal
+              .getAdoptableAnimals(place.id, animalID)
+              .then((animal) => {
+                return animal;
+              });
+          });
+          Promise.all(promises).then((animals) => {
+            console.log("ANIMALS TO ADOPT");
+            console.log(animals);
+            this.setState({ animalsToAdopt: animals });
           });
         });
-        Promise.all(promises).then((animals) => {
-          console.log("ANIMALS TO ADOPT");
-          console.log(animals);
-          this.setState({ animalsToAdopt: animals });
-        });
-      });
     }
   }
 
@@ -57,6 +57,15 @@ class VetScreen extends React.Component {
     this.props.navigation.push("Map", {
       currentPlace: this.props.navigation.state.params.place,
     });
+  };
+
+  isKennel = (place) => {
+    return place.getType() === "kennel" || place.getType() === "Kennel";
+  };
+
+  addAnimalToAdopt = () => {
+    console.log("Add animal to adopt");
+    //TODO
   };
 
   render() {
@@ -115,6 +124,15 @@ class VetScreen extends React.Component {
                 >
                   <Text style={styles.buttonText}> + News </Text>
                 </TouchableOpacity>
+                {this.isKennel(place) ? (
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => this.addAnimalToAdopt()}
+                  >
+                    <Text style={styles.buttonText}> + Animals </Text>
+                  </TouchableOpacity>
+                ) : null}
+
                 <StarButton uid={this.context.uid} pid={pid} />
               </LinearGradient>
             </View>
@@ -133,9 +151,7 @@ class VetScreen extends React.Component {
             showsVerticalScrollIndicator={false}
             style={{ paddingTop: 10 }}
           >
-            {this.state.news ? (
-              <News pid={pid} news={this.state.news}></News>
-            ) : null}
+            <News placeId={pid}></News>
           </ScrollView>
         </View>
       </SafeAreaView>
