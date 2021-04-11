@@ -46,46 +46,54 @@ class PetScreen extends React.Component {
 
     const WIDs = this.props.navigation.state.params.WIDs;
     WIDs.map((wid) => {
-      dbUserAnimal.getAnimalStatSample(
-        this.context.uid,
-        this.props.navigation.state.params.petID,
-        "weight",
-        wid
-      ).then((sample) => {
-        this.state.dataWeight.push(sample.value);
-        this.state.data.push(sample.value);
-        this.setState({ mounted: true });
-      });
+      dbUserAnimal
+        .getAnimalStatSample(
+          this.context.uid,
+          this.props.navigation.state.params.petID,
+          "weight",
+          wid
+        )
+        .then((sample) => {
+          this.state.dataWeight.push(sample.value);
+          this.state.data.push(sample.value);
+          this.setState({ mounted: true });
+        });
     });
 
     const HIDs = this.props.navigation.state.params.HIDs;
     HIDs.map((hid) => {
-      dbUserAnimal.getAnimalStatSample(
-        this.context.uid,
-        this.props.navigation.state.params.petID,
-        "height",
-        hid
-      ).then((sample) => {
-        this.state.dataHeight.push(sample.value);
-        this.setState({ mounted: true });
-      });
+      dbUserAnimal
+        .getAnimalStatSample(
+          this.context.uid,
+          this.props.navigation.state.params.petID,
+          "height",
+          hid
+        )
+        .then((sample) => {
+          this.state.dataHeight.push(sample.value);
+          this.setState({ mounted: true });
+        });
     });
 
     const DIDs = this.props.navigation.state.params.DIDs;
     DIDs.map((did) => {
-      dbUserAnimal.getAnimalDisease(
-        this.context.uid,
-        this.props.navigation.state.params.petID,
-        did
-      ).then((disease) => {
-        if (this.state.diseaseShown == null) {
-          this.setState({ diseaseShown: disease.name });
-        }
-        dbUserAnimal.getDiseaseDescription(disease.name).then((descriptions) => {
-          this.state.diseases[disease.name] = descriptions[0];
-          this.setState({ mounted: true });
+      dbUserAnimal
+        .getAnimalDisease(
+          this.context.uid,
+          this.props.navigation.state.params.petID,
+          did
+        )
+        .then((disease) => {
+          if (this.state.diseaseShown == null) {
+            this.setState({ diseaseShown: disease.name });
+          }
+          dbUserAnimal
+            .getDiseaseDescription(disease.name)
+            .then((descriptions) => {
+              this.state.diseases[disease.name] = descriptions[0];
+              this.setState({ mounted: true });
+            });
         });
-      });
     });
 
     const pet = this.props.navigation.state.params.pet;
@@ -117,7 +125,10 @@ class PetScreen extends React.Component {
   }
 
   deletePet = () => {
-    dbUserAnimal.deleteAnimal(this.context.uid, this.props.navigation.state.params.petID);
+    dbUserAnimal.deleteAnimal(
+      this.context.uid,
+      this.props.navigation.state.params.petID
+    );
   };
 
   reportLoss = () => {
@@ -233,19 +244,21 @@ class PetScreen extends React.Component {
         this.state.dataWeight.pop();
         this.showWeight();
         // Update db
-        dbUserAnimal.getAnimalStatSamples(
-          this.context.uid,
-          this.props.navigation.state.params.petID,
-          this.state.newtype
-        ).then((SIDs) => {
-          let lastid = SIDs[SIDs.length - 1];
-          dbUserAnimal.deleteAnimalStatSample(
+        dbUserAnimal
+          .getAnimalStatSamples(
             this.context.uid,
             this.props.navigation.state.params.petID,
-            this.state.newtype,
-            lastid
-          );
-        });
+            this.state.newtype
+          )
+          .then((SIDs) => {
+            let lastid = SIDs[SIDs.length - 1];
+            dbUserAnimal.deleteAnimalStatSample(
+              this.context.uid,
+              this.props.navigation.state.params.petID,
+              this.state.newtype,
+              lastid
+            );
+          });
       }
     } else {
       if (this.state.dataHeight.length == 0) {
@@ -316,7 +329,7 @@ class PetScreen extends React.Component {
             <View style={styles.petContainer}>
               <View style={styles.pet}>
                 <ImageBackground
-                  source={require("../../assets/images/Gioia.jpg")}
+                  source={{ uri: pet.photo }}
                   style={styles.petImage}
                   imageStyle={{ borderRadius: 50 }}
                 >
