@@ -316,7 +316,7 @@ class PetScreen extends React.Component {
             <View style={styles.petContainer}>
               <View style={styles.pet}>
                 <ImageBackground
-                  source={require("../../assets/images/Gioia.jpg")}
+                  source= {{ uri: pet.photo }}
                   style={styles.petImage}
                   imageStyle={{ borderRadius: 50 }}
                 >

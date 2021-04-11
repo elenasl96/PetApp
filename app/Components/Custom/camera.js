@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Button, Image, View, Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
-import storage from "../../firebase/Storage/storage";
 import * as Permissions from "expo-permissions";
 import * as MediaLibrary from 'expo-media-library';
 
@@ -27,7 +26,7 @@ export default function ImagePickerExample({ setPhoto }) {
 
     if (!result.cancelled) {
       setImage(result.uri);
-      let filename = upload(result.uri);
+      //let filename = upload(result.uri);
       console.log("photourl:" + filename);
     }
     }
@@ -51,23 +50,24 @@ export default function ImagePickerExample({ setPhoto }) {
 
     if (!result.cancelled) {
       setImage(result.uri);
+      console.log(result.uri);
       console.log("Open camera");
-
-      let filename = upload(result.uri);
+      setPhoto(result.uri);
+      //let filename = upload(result.uri);
     }
   }
   };
-
+  /*
   const upload = async (uri) => {
     const response = await fetch(uri);
     const file = await response.blob();
     console.log("File");
-    storage.toStorage("uid", file).then((url) => {
+    storage.toStorage("uid", file, "images").then((url) => {
       console.log("tostore: " + url);
       setPhoto(url);
     });
   };
-
+  */
   return (
     <View
       style={{

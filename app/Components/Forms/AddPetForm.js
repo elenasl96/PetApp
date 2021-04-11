@@ -13,6 +13,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import dbUserAnimal from "../../firebase/Database/Functions/dbUserAnimal";
+import storageManager from "../../firebase/Storage/storage";
 import ImagePickerExample from "../Custom/camera";
 import { AuthContext } from "../AuthContext";
 import { withNavigation } from "react-navigation";
@@ -100,8 +101,15 @@ class AddPetForm extends Component {
         this.state.photo,
         this.state.typeSelected
       );
+      this.upload(this.state.photo);
     }
   }
+
+  upload = async (uri) => {
+      const response = await fetch(uri);
+      const file = await response.blob();
+      storageManager.toStorage(this.context.uid,file,"pets");
+  };
 
   setPhoto = (photo) => {
     this.setState({ photo: photo });
@@ -116,6 +124,7 @@ class AddPetForm extends Component {
   }
 
   render() {
+
     let types = constants.TYPES_PETS.map((s, i) => {
       return <Picker.Item key={i} value={s} label={s} />;
     });

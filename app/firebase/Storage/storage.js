@@ -1,14 +1,22 @@
-import { storage as firebaseStorage } from "../firebaseconfig.js";
+import { storage } from "../firebaseconfig.js";
 
 //----------------Photo storage------------------------------------------------------------------------------
 
-const storage = {
+const storageManager = {
+  /*
+  upload = async (uid,uri,section) => {
+      const response = await fetch(uri);
+      const file = await response.blob();
+      console.log("File");
+      this.toStorage(uid, file,section);
+  }; */
 
-  toStorage: function (uid, file) {
+  toStorage: function (uid,file,section ) {
+
     console.log("ToStorage");
     //var urlToStore;
     //Reference to firebase storage
-    storageRef = firebaseStorage.ref();
+    var storageRef = storage.ref();
 
     // Create the file metadata
     var metadata = {
@@ -22,10 +30,10 @@ const storage = {
     var urlToStore;
     // Upload file and metadata
     return storageRef
-      .child("images/" + filename)
+      .child(section + "/" + filename)
       .put(file, metadata)
       .then(() => {
-        return storage.fromStorage(filename).then((url) => {
+        return storageManager.fromStorage(section,filename).then((url) => {
           urlToStore = url;
           return urlToStore;
         });
@@ -33,9 +41,9 @@ const storage = {
     //filename must be saved for future accesses;
   },
 
-  fromStorage: function (filename) {
-    storageRef = firebaseStorage.ref();
-    var imageRef = storageRef.child("images/" + filename);
+  fromStorage: function (section,filename) {
+    var storageRef = storage.ref();
+    var imageRef = storageRef.child(section + "/" + filename);
     return imageRef
       .getDownloadURL()
       .then(function (url) {
@@ -58,4 +66,4 @@ const storage = {
 
 };
 
-export default storage;
+export default storageManager;
