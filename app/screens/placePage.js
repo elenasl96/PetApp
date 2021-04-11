@@ -59,6 +59,15 @@ class VetScreen extends React.Component {
     });
   };
 
+  isKennel = (place) => {
+    return place.getType() === "kennel" || place.getType() === "Kennel";
+  };
+
+  addAnimalToAdopt = () => {
+    console.log("Add animal to adopt");
+    //TODO
+  };
+
   render() {
     const place = this.props.navigation.state.params.place;
     const pid = place.id;
@@ -115,6 +124,15 @@ class VetScreen extends React.Component {
                 >
                   <Text style={styles.buttonText}> + News </Text>
                 </TouchableOpacity>
+                {this.isKennel(place) ? (
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => this.addAnimalToAdopt()}
+                  >
+                    <Text style={styles.buttonText}> + Animals </Text>
+                  </TouchableOpacity>
+                ) : null}
+
                 <StarButton uid={this.context.uid} pid={pid} />
               </LinearGradient>
             </View>
