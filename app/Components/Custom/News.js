@@ -30,8 +30,20 @@ class News extends React.Component {
 
   componentDidMount() {
     this.setState({ mounted: true });
-    let thisNews = this.props.news;
-    this.setState({ news: thisNews });
+    const placeId = this.props.placeId;
+    dbNews.getAllNews(placeId).then((newsIds) => {
+      let newsPromises = newsIds.map((newsID) => {
+        return dbNews.getNews(placeId, newsID).then((news) => {
+          news.pid = placeId;
+          news.id = newsID;
+          return news;
+        });
+      });
+      console.log(newsPromises);
+      Promise.all(newsPromises).then((news) => {
+        this.setState({ news: news });
+      });
+    });
   }
 
   componentWillUnmount() {
@@ -39,8 +51,9 @@ class News extends React.Component {
   }
 
   render() {
-    if (this.state.news) {
+    if (this.state.news && this.state.news.length > 0) {
       console.log("HAVE NEWS");
+      console.log(this.state.news);
       return this.state.news.map((news, index) => (
         <View key={index} style={styles.feedContainer}>
           <View style={styles.feed}>

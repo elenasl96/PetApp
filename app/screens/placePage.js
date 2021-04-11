@@ -23,28 +23,12 @@ import { withNavigation } from "react-navigation";
 
 class VetScreen extends React.Component {
   static contextType = AuthContext;
-  state = { news: null, mounted: false };
+  state = { mounted: false };
 
   componentDidMount() {
     const place = this.props.navigation.state.params.place;
-    const pid = place.id;
     this.setState({ mounted: true });
 
-    dbNews.getAllNews(place.id).then((newsIds) => {
-      let newsPromises = newsIds.map((newsID) => {
-        return dbNews.getNews(place.id, newsID).then((news) => {
-          news.pid = pid;
-          news.id = newsID;
-          return news;
-        });
-      });
-      console.log(newsPromises);
-      Promise.all(newsPromises).then((news) => {
-        if (this.state.mounted) {
-          this.setState({ news: news });
-        }
-      });
-    });
     if (place.getType() === "kennel" || place.getType() === "Kennel") {
       dbAdoptableAnimal
         .getAdoptableAnimals(place.id)
@@ -149,8 +133,7 @@ class VetScreen extends React.Component {
             showsVerticalScrollIndicator={false}
             style={{ paddingTop: 10 }}
           >
-            {this.state.news ? <News news={this.state.news}></News> : null}
-            {/*this.state.news ? <News news={this.state.news}></News> : null*/}
+            <News placeId={pid}></News>
           </ScrollView>
         </View>
       </SafeAreaView>
