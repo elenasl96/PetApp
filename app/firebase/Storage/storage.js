@@ -35,6 +35,7 @@ const storageManager = {
       .then(() => {
         return storageManager.fromStorage(section,filename).then((url) => {
           urlToStore = url;
+          //console.log("url:" + urlToStore);
           return urlToStore;
         });
       });

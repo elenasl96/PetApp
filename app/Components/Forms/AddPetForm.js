@@ -28,6 +28,7 @@ class AddPetForm extends Component {
     name: "",
     age: "",
     photo: null,
+    url: null,
     typeSelected: "Dog",
     prevTypeSelected: "Dog",
     breedSelected: "None",
@@ -88,27 +89,49 @@ class AddPetForm extends Component {
     return formIsValid;
   }
 
-  registerPet() {
+  registerPet = async () =>{
     if (this.handleValidation()) {
       console.log("Registering pet...");
-      dbUserAnimal.addUserAnimal(
-        this.context.uid,
-        this.state.name,
-        this.state.age,
-        this.state.breedSelected,
-        this.state.sizeSelected,
-        this.state.colorSelected,
-        this.state.photo,
-        this.state.typeSelected
-      );
-      this.upload(this.state.photo);
+      /*
+      this.upload(this.state.photo).then((url) => {
+          //console.log("url: " + this.state.url);
+          dbUserAnimal.addUserAnimal(
+                  this.context.uid,
+                  this.state.name,
+                  this.state.age,
+                  this.state.breedSelected,
+                  this.state.sizeSelected,
+                  this.state.colorSelected,
+                  this.state.url,
+                  this.state.typeSelected
+                );
+      });*/
+      const response = await fetch(this.state.photo);
+      const file = await response.blob();
+      storageManager.toStorage(this.context.uid,file,"pets").then((url) => {
+             console.log("url: " + url);
+             //this.state.url = url;
+             dbUserAnimal.addUserAnimal(
+                               this.context.uid,
+                               this.state.name,
+                               this.state.age,
+                               this.state.breedSelected,
+                               this.state.sizeSelected,
+                               this.state.colorSelected,
+                               url,
+                               this.state.typeSelected
+                             );
+     });
     }
-  }
+  };
 
   upload = async (uri) => {
       const response = await fetch(uri);
       const file = await response.blob();
-      storageManager.toStorage(this.context.uid,file,"pets");
+      storageManager.toStorage(this.context.uid,file,"pets").then((url) => {
+           console.log("url: " + url);
+           this.state.url = url;
+      });
   };
 
   setPhoto = (photo) => {

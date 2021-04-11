@@ -2,11 +2,13 @@ import {firestore} from "../../firebaseconfig.js";
 import UserAnimal from "../Objects/UserAnimal.js";
 
 const dbUserAnimal = {
+
 addUserAnimal: function (uid, name, age, breed, size, color, photo, type) {
     const users = firestore.collection("Users");
     const animals = users.doc(uid).collection("Animals");
     let animal = new UserAnimal(name, age, breed, size, color, photo, type);
     console.log(type);
+    console.log(animal);
     animals.add(animal.toFirestore());
   },
   /* how to call get from outside
