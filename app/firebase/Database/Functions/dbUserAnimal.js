@@ -111,6 +111,30 @@ addUserAnimal: function (uid, name, age, breed, size, color, photo, type) {
         console.log("Error getting documents: ", error);
       });
   },
+
+  getAnimalStats: function (uid, aid) {
+      const users = firestore.collection("Users");
+      const animals = users.doc(uid).collection("Animals");
+      var stats = [];
+      return animals
+        .doc(aid)
+        .collection("Stats")
+        .get()
+        .then(function (querySnapshot) {
+          querySnapshot.forEach(function (doc) {
+            // doc.data() is never undefined for query doc snapshots
+            //console.log(doc.id, " => ", doc.data());
+            stats.push(doc.id);
+            //console.log(user);
+            return stats;
+          });
+          return stats;
+        })
+        .catch(function (error) {
+          console.log("Error getting documents: ", error);
+        });
+    },
+
   /*
   getAnimalStats: function (uid, aid) {
     const users = firestore.collection("Users");
@@ -394,7 +418,9 @@ addUserAnimal: function (uid, name, age, breed, size, color, photo, type) {
         // diseases are optional so must be checked
         diseases.forEach((id) => dbUserAnimal.deleteAnimalDisease(uid, aid, id));
       }
+
       dbUserAnimal.getAnimalStats(uid, aid).then(function (stats) {
+
         if (stats.length != 0) {
           stats.forEach(function (id) {
             dbUserAnimal.getAnimalStatSamples(uid, aid, id).then(function (samples) {
