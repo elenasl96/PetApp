@@ -7,6 +7,8 @@ import {
   Image,
   TouchableHighlight,
   ScrollView,
+  Modal,
+  Pressable,
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import firebase from "firebase";
@@ -20,6 +22,7 @@ import FeedBox from "../Components/Custom/FeedBox";
 import NotificationsHandler from "../Components/NotificationsHandler";
 import { AntDesign } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
+import AddPetForm from "../Components/Forms/AddPetForm";
 
 class HomeScreen extends React.Component {
   state = {
@@ -27,6 +30,7 @@ class HomeScreen extends React.Component {
     places: [],
     feeds: [],
     mounted: false,
+    showPetForm: false,
   };
   static contextType = AuthContext;
 
@@ -66,7 +70,12 @@ class HomeScreen extends React.Component {
             });
           } else {
             let promise = new Promise((resolve, reject) => {
-              dbFeed.addRandomFeeds(animals, uid, info.getLastLogin(), info.days);
+              dbFeed.addRandomFeeds(
+                animals,
+                uid,
+                info.getLastLogin(),
+                info.days
+              );
               setTimeout(() => {
                 resolve();
               }, 1000);
@@ -84,12 +93,14 @@ class HomeScreen extends React.Component {
         var places = [];
         dbPlace.getSavedPlaces(this.context.uid).then((placeIds) => {
           placeIds.forEach((placeId) => {
-            dbPlace.getSavedPlace(this.context.uid, placeId).then((savedPlace) => {
-              places.push(savedPlace);
-              if (this.state.mounted) {
-                this.setState({ places: places });
-              }
-            });
+            dbPlace
+              .getSavedPlace(this.context.uid, placeId)
+              .then((savedPlace) => {
+                places.push(savedPlace);
+                if (this.state.mounted) {
+                  this.setState({ places: places });
+                }
+              });
           });
         });
       }
@@ -100,17 +111,26 @@ class HomeScreen extends React.Component {
     this.setState({ mounted: false });
   }
 
+  addPet = () => {
+    console.log("tt");
+    if (this.state.mounted) {
+      this.setState({ showPetForm: true });
+    }
+  };
+
+  showPet = () => {
+    this.props.navigation.navigate("Pet");
+  };
+
   render() {
-    const addPet = () => {
-      this.props.navigation.navigate("AddPet");
-    };
-
-    const showPet = () => {
-      this.props.navigation.navigate("Pet");
-    };
-
     return (
       <SafeAreaView style={{ flex: 1 }}>
+        <AddPetForm
+          visible={this.state.showPetForm}
+          close={() => {
+            this.setState({ showPetForm: false });
+          }}
+        ></AddPetForm>
         <NotificationsHandler></NotificationsHandler>
         <View style={styles.mainContent}>
           <ScrollView showsVerticalScrollIndicator={false}>
@@ -146,7 +166,7 @@ class HomeScreen extends React.Component {
                   )}
 
                   <TouchableHighlight
-                    onPress={addPet}
+                    onPress={this.addPet}
                     style={styles.addPetButton}
                   >
                     <AntDesign name="plus" size={50} style={styles.plus} />

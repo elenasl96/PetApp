@@ -11,6 +11,8 @@ import {
   ActivityIndicator,
   Keyboard,
   TouchableWithoutFeedback,
+  Modal,
+  Pressable,
 } from "react-native";
 import dbUserAnimal from "../../firebase/Database/Functions/dbUserAnimal";
 import storageManager from "../../firebase/Storage/storage";
@@ -21,6 +23,7 @@ import { Picker } from "@react-native-picker/picker";
 import constants from "../../shared/constants";
 
 import mainStyle from "../../styles/mainStyle";
+import { ScrollView } from "react-native-gesture-handler";
 
 class AddPetForm extends Component {
   static contextType = AuthContext;
@@ -35,7 +38,14 @@ class AddPetForm extends Component {
     colorSelected: "White",
     sizeSelected: "Small",
     errors: {}, // dict
+    visible: false,
+    mounted: false,
   };
+
+  componentDidMount() {
+    this.setState({ mounted: true });
+    this.setState({ visible: this.props.visible });
+  }
 
   handleValidation() {
     let errors = {};
@@ -62,34 +72,33 @@ class AddPetForm extends Component {
 
     //Age
 
-    if(this.state.age == ""){
+    if (this.state.age == "") {
       formIsValid = false;
       errors["age"] = "Age cannot be empty";
-    }
-    else {
-    if (isNaN(this.state.age)) {
-      formIsValid = false;
-      errors["age"] = "Age must be a number";
     } else {
-      if (
-        this.state.age > 20 ||
-        this.state.age < 0 ||
-        !Number.isInteger(Number(this.state.age))
-      ) {
-        console.log(this.state.age > 20);
-        console.log(this.state.age < 0);
-        console.log(!Number.isInteger(this.state.age));
+      if (isNaN(this.state.age)) {
         formIsValid = false;
-        errors["age"] = "Age is an integer between 0 and 20 ";
+        errors["age"] = "Age must be a number";
+      } else {
+        if (
+          this.state.age > 20 ||
+          this.state.age < 0 ||
+          !Number.isInteger(Number(this.state.age))
+        ) {
+          console.log(this.state.age > 20);
+          console.log(this.state.age < 0);
+          console.log(!Number.isInteger(this.state.age));
+          formIsValid = false;
+          errors["age"] = "Age is an integer between 0 and 20 ";
+        }
       }
     }
-   }
     //console.log(errors);
     this.setState({ errors: errors });
     return formIsValid;
   }
 
-  registerPet = async () =>{
+  registerPet = async () => {
     if (this.handleValidation()) {
       console.log("Registering pet...");
       /*
@@ -108,30 +117,30 @@ class AddPetForm extends Component {
       });*/
       const response = await fetch(this.state.photo);
       const file = await response.blob();
-      storageManager.toStorage(this.context.uid,file,"pets").then((url) => {
-             console.log("url: " + url);
-             //this.state.url = url;
-             dbUserAnimal.addUserAnimal(
-                               this.context.uid,
-                               this.state.name,
-                               this.state.age,
-                               this.state.breedSelected,
-                               this.state.sizeSelected,
-                               this.state.colorSelected,
-                               url,
-                               this.state.typeSelected
-                             );
-     });
+      storageManager.toStorage(this.context.uid, file, "pets").then((url) => {
+        console.log("url: " + url);
+        //this.state.url = url;
+        dbUserAnimal.addUserAnimal(
+          this.context.uid,
+          this.state.name,
+          this.state.age,
+          this.state.breedSelected,
+          this.state.sizeSelected,
+          this.state.colorSelected,
+          url,
+          this.state.typeSelected
+        );
+      });
     }
   };
 
   upload = async (uri) => {
-      const response = await fetch(uri);
-      const file = await response.blob();
-      storageManager.toStorage(this.context.uid,file,"pets").then((url) => {
-           console.log("url: " + url);
-           this.state.url = url;
-      });
+    const response = await fetch(uri);
+    const file = await response.blob();
+    storageManager.toStorage(this.context.uid, file, "pets").then((url) => {
+      console.log("url: " + url);
+      this.state.url = url;
+    });
   };
 
   setPhoto = (photo) => {
@@ -146,8 +155,11 @@ class AddPetForm extends Component {
     }
   }
 
-  render() {
+  componentWillUnmount() {
+    this.setState({ mounted: false });
+  }
 
+  render() {
     let types = constants.TYPES_PETS.map((s, i) => {
       return <Picker.Item key={i} value={s} label={s} />;
     });
@@ -169,106 +181,116 @@ class AddPetForm extends Component {
     });
 
     return (
-      <SafeAreaView
-        style={{
-          flex: 1,
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={this.props.visible}
+        onRequestClose={() => {
+          this.props.close();
         }}
       >
-        <KeyboardAvoidingView
-          style={mainStyle.container}
-          behavior={Platform.OS == "ios" ? "padding" : "height"}
-          keyboardVerticalOffset={Platform.OS == "ios" ? 0 : 20}
-          enabled={Platform.OS === "ios" ? true : false}
-        ></KeyboardAvoidingView>
-        <Text style={styles.title}>Add new Pet</Text>
-        <View style={mainStyle.form}>
-          <TextInput
-            style={mainStyle.inputText}
-            placeholder="Name"
-            placeholderTextColor="#616161"
-            returnKeyType="next"
-            textContentType="name"
-            value={this.state.name}
-            onChangeText={(name) => this.setState({ name })}
-          />
-        </View>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <Text style={styles.title}>+ Pet </Text>
+              <View style={mainStyle.form}>
+                <TextInput
+                  style={mainStyle.inputText}
+                  placeholder="Name"
+                  placeholderTextColor="#616161"
+                  returnKeyType="next"
+                  textContentType="name"
+                  value={this.state.name}
+                  onChangeText={(name) => this.setState({ name })}
+                />
+              </View>
+              {this.state.errors["name"] != null ? (
+                <Text style={styles.error}>{this.state.errors["name"]}</Text>
+              ) : null}
 
-        {this.state.errors["name"] != null ? (
-          <Text style={styles.error}>{this.state.errors["name"]}</Text>
-        ) : null}
+              <View style={mainStyle.form}>
+                <TextInput
+                  style={mainStyle.inputText}
+                  placeholder="Age"
+                  placeholderTextColor="#616161"
+                  returnKeyType="next"
+                  value={this.state.age}
+                  onChangeText={(age) => this.setState({ age })}
+                />
+              </View>
 
-        <View style={mainStyle.form}>
-          <TextInput
-            style={mainStyle.inputText}
-            placeholder="Age"
-            placeholderTextColor="#616161"
-            returnKeyType="next"
-            value={this.state.age}
-            onChangeText={(age) => this.setState({ age })}
-          />
-        </View>
+              {this.state.errors["age"] != null ? (
+                <Text style={styles.error}>{this.state.errors["age"]}</Text>
+              ) : null}
 
-        {this.state.errors["age"] != null ? (
-          <Text style={styles.error}>{this.state.errors["age"]}</Text>
-        ) : null}
+              <View style={mainStyle.form}>
+                <Picker
+                  selectedValue={this.state.typeSelected}
+                  style={{ height: 50, width: "100%" }}
+                  onValueChange={(type) =>
+                    this.setState({ typeSelected: type })
+                  }
+                >
+                  {types}
+                </Picker>
+              </View>
+              <View style={mainStyle.form}>
+                <Picker
+                  selectedValue={this.state.breedSelected}
+                  style={{ height: 50, width: "100%" }}
+                  onValueChange={(breed) =>
+                    this.setState({ breedSelected: breed })
+                  }
+                >
+                  {this.state.typeSelected == "Dog" ? breedsDog : breedsCat}
+                </Picker>
+              </View>
 
-        <View style={mainStyle.form}>
-          <Picker
-            selectedValue={this.state.typeSelected}
-            style={{ height: 50, width: "100%" }}
-            onValueChange={(type) => this.setState({ typeSelected: type })}
-          >
-            {types}
-          </Picker>
-        </View>
-        <View style={mainStyle.form}>
-          <Picker
-            selectedValue={this.state.breedSelected}
-            style={{ height: 50, width: "100%" }}
-            onValueChange={(breed) => this.setState({ breedSelected: breed })}
-          >
-            {this.state.typeSelected == "Dog" ? breedsDog : breedsCat}
-          </Picker>
-        </View>
+              <View style={mainStyle.form}>
+                <Picker
+                  selectedValue={this.state.colorSelected}
+                  style={{ height: 50, width: "100%" }}
+                  onValueChange={(color) =>
+                    this.setState({ colorSelected: color })
+                  }
+                >
+                  {colors}
+                </Picker>
+              </View>
 
-        <View style={mainStyle.form}>
-          <Picker
-            selectedValue={this.state.colorSelected}
-            style={{ height: 50, width: "100%" }}
-            onValueChange={(color) => this.setState({ colorSelected: color })}
-          >
-            {colors}
-          </Picker>
-        </View>
+              <View style={mainStyle.form}>
+                <Picker
+                  selectedValue={this.state.sizeSelected}
+                  style={{ height: 50, width: "100%" }}
+                  onValueChange={(size) =>
+                    this.setState({ sizeSelected: size })
+                  }
+                >
+                  {sizes}
+                </Picker>
+              </View>
+              <ImagePickerExample setPhoto={this.setPhoto}></ImagePickerExample>
+              {this.state.errors["photo"] != null ? (
+                <Text style={styles.error}>{this.state.errors["photo"]}</Text>
+              ) : null}
 
-        <View style={mainStyle.form}>
-          <Picker
-            selectedValue={this.state.sizeSelected}
-            style={{ height: 50, width: "100%" }}
-            onValueChange={(size) => this.setState({ sizeSelected: size })}
-          >
-            {sizes}
-          </Picker>
-        </View>
-        <ImagePickerExample setPhoto={this.setPhoto}></ImagePickerExample>
-        {this.state.errors["photo"] != null ? (
-          <Text style={styles.error}>{this.state.errors["photo"]}</Text>
-        ) : null}
-
-        <TouchableOpacity
-          style={{
-            width: "50%",
-            marginTop: 10,
-            marginBottom: 40,
-            alignSelf: "center",
-          }}
-          onPress={this.registerPet.bind(this)}
-        >
-          <View style={styles.button}>
-            <Text style={styles.buttonText}>Register Pet</Text>
+              <TouchableOpacity
+                style={{
+                  width: "50%",
+                  marginTop: 10,
+                  marginBottom: 40,
+                  alignSelf: "center",
+                }}
+                onPress={this.registerPet.bind(this)}
+              >
+                <View style={styles.button}>
+                  <Text style={styles.buttonText}>Register Pet</Text>
+                </View>
+              </TouchableOpacity>
+            </ScrollView>
           </View>
-        </TouchableOpacity>
-      </SafeAreaView>
+        </View>
+      </Modal>
     );
   }
 }
@@ -287,7 +309,7 @@ const styles = StyleSheet.create({
     marginTop: 25.5,
   },
   inputView: {
-    width: "80%",
+    width: "100%",
     backgroundColor: "#465881",
     borderRadius: 25,
     height: 50,
@@ -327,6 +349,28 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "red",
     width: "80%",
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    paddingVertical: 10,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    width: "90%",
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });
 
