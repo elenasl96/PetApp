@@ -16,9 +16,12 @@ import {
 import firebase from "firebase";
 import mainStyle from "../styles/mainStyle";
 import dbUserAnimal from "../firebase/Database/Functions/dbUserAnimal";
+import storageManager from "../firebase/Storage/storage";
 import { AuthContext } from "../Components/AuthContext";
 import { withNavigation } from "react-navigation";
 import { Picker } from "@react-native-picker/picker";
+import ImagePickerExample from "../Components/Custom/camera";
+
 
 import Chart from "../Components/Custom/PetChart.js";
 import utils from "../shared/utilities";
@@ -36,6 +39,8 @@ class PetScreen extends React.Component {
     newtype: null,
     mounted: true,
     deletesample: "",
+    photoUpload:null,
+    photo: null,
     errors: {}, // dict
   };
 
@@ -103,6 +108,9 @@ class PetScreen extends React.Component {
     } else {
       this.setState({ diseaseSelected: constants.DISEASES_CAT[0] });
     }
+
+    this.setState({photo:pet.photo});
+
   }
 
   handleValidation() {
@@ -125,10 +133,51 @@ class PetScreen extends React.Component {
   }
 
   deletePet = () => {
+
+    console.log("url: " + this.state.photo);
+    storageManager.deleteFile(this.state.photo);
     dbUserAnimal.deleteAnimal(
       this.context.uid,
       this.props.navigation.state.params.petID
     );
+
+  };
+
+  setPhoto = (photo) => {
+
+      let errors = {};
+      this.setState({ photoUpload: photo });
+      this.setState({errors:errors});//clean errors
+
+  };
+
+  updatePhoto = async () => {
+
+     let errors = {};
+     const petID = this.props.navigation.state.params.petID;
+     const uid = this.context.uid;
+     const photoUpload = this.state.photoUpload;
+     const photo = this.state.photo;
+
+     if (photoUpload != null){
+             console.log("Url deleted: " + photo)
+             storageManager.deleteFile(photo);  // deletes old photo from storage
+             const response = await fetch(photoUpload);
+             const file = await response.blob();
+
+             storageManager.toStorage(uid,file,"pets").then((url) => {  // add new photo in storage
+                               dbUserAnimal.updatePetPhoto(uid,petID,url);  // update ref in db
+                               console.log("New url: " + url);
+                               this.setState({photo:url}); // update local photo
+             });
+
+     }
+     else{
+       errors["photo"] = "You must load a photo";
+     }
+
+     this.setState({ errors: errors });
+
   };
 
   reportLoss = () => {
@@ -329,7 +378,7 @@ class PetScreen extends React.Component {
             <View style={styles.petContainer}>
               <View style={styles.pet}>
                 <ImageBackground
-                  source= {{ uri: pet.photo }}
+                  source= {{ uri: this.state.photo }}
                   style={styles.petImage}
                   imageStyle={{ borderRadius: 50 }}
                 >
@@ -348,6 +397,8 @@ class PetScreen extends React.Component {
                   </Text>
                 </ImageBackground>
               </View>
+
+
               <View style={styles.buttons}>
                 <TouchableOpacity
                   style={styles.button}
@@ -363,6 +414,22 @@ class PetScreen extends React.Component {
                 </TouchableOpacity>
               </View>
             </View>
+
+             <ImagePickerExample setPhoto={this.setPhoto}></ImagePickerExample>
+
+                          {this.state.errors["photo"] != null ? (
+                                                  <Text style={styles.error}>{this.state.errors["photo"]}</Text>
+                                        ) : null}
+
+                          <TouchableHighlight
+                                        style={styles.petButton}
+                                        onPress={this.updatePhoto.bind(this)}
+                                        underlayColor={"rgb(200,200,200)"}
+                          >
+                          <View style>
+                               <Text>Update photo</Text>
+                          </View>
+                          </TouchableHighlight>
 
             <ScrollView
               horizontal={true}

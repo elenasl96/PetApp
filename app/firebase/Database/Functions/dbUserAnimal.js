@@ -471,6 +471,15 @@ addUserAnimal: function (uid, name, age, breed, size, color, photo, type) {
                console.log("Error getting documents: ", error);
              });
          },
+
+     updatePetPhoto: function(uid,aid,url){
+             firestore
+                     .collection("Users")
+                     .doc(uid)
+                     .collection("Animals")
+                     .doc(aid)
+                     .update({ photo: url });
+     },
 };
 
 export default dbUserAnimal;

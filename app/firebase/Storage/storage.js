@@ -1,5 +1,5 @@
 import { storage } from "../firebaseconfig.js";
-
+import dbUserAnimal from "../Database/Functions/dbUserAnimal";
 //----------------Photo storage------------------------------------------------------------------------------
 
 const storageManager = {
@@ -43,6 +43,7 @@ const storageManager = {
   },
 
   fromStorage: function (section,filename) {
+    console.log("FromStorage");
     var storageRef = storage.ref();
     var imageRef = storageRef.child(section + "/" + filename);
     return imageRef
@@ -64,6 +65,21 @@ const storageManager = {
         console.log("error");
       });
   },
+
+   deleteFile: function(url) {
+      // [START storage_delete_file]
+      // Create a reference to the file to delete
+      var storageRef = storage.refFromURL(url);
+
+      // Delete the file
+      storageRef.delete().then(() => {
+        console.log("File deleted successfully");
+      }).catch((error) => {
+        console.log("Uh-oh, an error occurred!");
+      });
+      // [END storage_delete_file]
+    },
+
 
 };
 
