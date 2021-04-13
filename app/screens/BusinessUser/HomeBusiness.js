@@ -13,11 +13,13 @@ import firebase from "firebase";
 import { AuthContext } from "../../Components/AuthContext";
 import dbPlace from "../../firebase/Database/Functions/dbPlace.js";
 import PlaceButton from "../../Components/Buttons/PlaceButton";
+import AddPlaceForm from "../../Components/Forms/AddPlaceForm";
 
 export default class HomeBusiness extends React.Component {
   state = {
     places: [],
     mounted: false,
+    showPlaceForm: false,
   };
   static contextType = AuthContext;
 
@@ -38,17 +40,26 @@ export default class HomeBusiness extends React.Component {
     this.setState({ mounted: false });
   }
 
-  render() {
-    const addPlace = () => {
-      this.props.navigation.navigate("AddPlace");
-    };
+  addPlace = () => {
+    console.log("tt");
+    if (this.state.mounted) {
+      this.setState({ showPlaceForm: true });
+    }
+  };
 
+  render() {
     const showPlace = () => {
       this.props.navigation.navigate("Pet");
     };
 
     return (
       <SafeAreaView style={{ flex: 1 }}>
+        <AddPlaceForm
+          visible={this.state.showPlaceForm}
+          close={() => {
+            this.setState({ showPlaceForm: false });
+          }}
+        ></AddPlaceForm>
         <View style={styles.mainContent}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.myPlacesContainer}>
@@ -59,7 +70,7 @@ export default class HomeBusiness extends React.Component {
                   showsHorizontalScrollIndicator={false}
                 >
                   <TouchableHighlight
-                    onPress={addPlace}
+                    onPress={this.addPlace}
                     style={styles.placeButton}
                   >
                     <Image

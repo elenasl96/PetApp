@@ -2,7 +2,6 @@ import { createStackNavigator } from "react-navigation-stack";
 import PetScreen from "../../screens/petPage";
 import React from "react";
 import NavBar from "../Custom/NavBar";
-import AddPetScreen from "../../screens/AddPet";
 import LostPetsScreen from "../../screens/LostPetsScreen";
 import LostPetNotifyScreen from "../../screens/LostPetNotifyScreen";
 import LostPetsSeenScreen from "../../screens/LostPetsSeenScreen";
@@ -39,14 +38,6 @@ const LostPetsNavigator = createStackNavigator(
       // Optional: Override the `navigationOptions` for the screen
       navigationOptions: ({ navigation }) => ({
         title: "-name- profile",
-      }),
-    },
-
-    AddPet: {
-      screen: AddPetScreen,
-      // Optional: Override the `navigationOptions` for the screen
-      navigationOptions: ({ navigation }) => ({
-        title: "Add new pet",
       }),
     },
   },

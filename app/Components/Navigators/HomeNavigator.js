@@ -4,7 +4,6 @@ import PetScreen from "../../screens/petPage";
 import VetScreen from "../../screens/placePage";
 import React from "react";
 import NavBar from "../Custom/NavBar";
-import AddPetScreen from "../../screens/AddPet";
 import HomeBusiness from "../../screens/BusinessUser/HomeBusiness";
 import ReportLossScreen from "../../screens/ReportLoss";
 import AnimalsToAdoptScreen from "../../screens/AnimalsToAdopt";
@@ -41,14 +40,6 @@ const HomeNavigator = createStackNavigator(
       // Optional: Override the `navigationOptions` for the screen
       navigationOptions: ({ navigation }) => ({
         title: "-name- profile",
-      }),
-    },
-
-    AddPet: {
-      screen: AddPetScreen,
-      // Optional: Override the `navigationOptions` for the screen
-      navigationOptions: ({ navigation }) => ({
-        title: "Add new pet",
       }),
     },
 

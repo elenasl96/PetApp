@@ -130,6 +130,7 @@ class AddPetForm extends Component {
           url,
           this.state.typeSelected
         );
+        this.props.close();
       });
     }
   };
