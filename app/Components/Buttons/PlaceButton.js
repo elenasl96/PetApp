@@ -36,6 +36,7 @@ class PlaceButton extends React.Component {
 
       places.map((placesID) => {
         dbPlace.getPlace(placesID).then((place) => {
+          console.log("Place: " + place);
           placeButtons.push(
             <View key={placesID}>
               <TouchableHighlight
@@ -43,7 +44,7 @@ class PlaceButton extends React.Component {
                 style={styles.place}
               >
                 <ImageBackground
-                  source={require("../../../assets/images/vet.jpg")}
+                  source={{ uri: place.photo}}
                   style={styles.placeImage}
                   imageStyle={{ borderRadius: 20 }}
                 >
@@ -59,7 +60,7 @@ class PlaceButton extends React.Component {
                         },
                       ]}
                     >
-                      OOOP
+                      {place.name}
                     </Text>
                   </View>
                 </ImageBackground>

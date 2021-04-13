@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import dbPlace from "../../firebase/Database/Functions/dbPlace";
+import storageManager from "../../firebase/Storage/storage";
 import ImagePickerExample from "../Custom/camera";
 import { AuthContext } from "../AuthContext";
 
@@ -75,21 +76,26 @@ export default class AddPlaceForm extends Component {
       setErrorMsg("Permission to access location was denied");
       return;
     }
+    const response = await fetch(this.state.photo);
+    const file = await response.blob();
     Location.geocodeAsync(this.state.address).then((coordinates) => {
       console.log("latitude");
       console.log(coordinates[0].latitude);
-      db.addPlace(
-        this.state.name,
-        this.state.type,
-        this.state.description,
-        this.state.photo,
-        this.context.uid,
-        this.state.address,
-        coordinates[0].latitude,
-        coordinates[0].longitude,
-        "latitudeDelta",
-        "longitudeDelta"
-      );
+
+            storageManager.toStorage(this.context.uid, file, "places").then((url) => {
+            dbPlace.addPlace(
+                this.state.name,
+                this.state.type,
+                this.state.description,
+                url,
+                this.context.uid,
+                this.state.address,
+                coordinates[0].latitude,
+                coordinates[0].longitude,
+                "latitudeDelta",
+                "longitudeDelta"
+            );
+    });
     });
    }
   }

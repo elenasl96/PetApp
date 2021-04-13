@@ -1,7 +1,7 @@
 
 const constants = {
 
-   TYPES_PLACES : ["Veterinary","Kennel","Other"],
+   TYPES_PLACES : ["Kennel","Other"],
    BREEDS_DOG: ["None", "Labrador", "Golden Retriever"],
    BREEDS_CAT: ["None","Bombay"],
    COLORS_PETS: ["White","Black"],

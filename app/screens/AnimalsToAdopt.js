@@ -57,10 +57,10 @@ export default class AnimalsToAdoptScreen extends React.Component {
                   justifyContent: "center",
                 }}
               >
-                <PetLostButton
+                <PetButton
                   navigation={this.props.navigation}
                   pets={this.state.pets}
-                ></PetLostButton>
+                ></PetButton>
               </View>
             </View>
           </ScrollView>

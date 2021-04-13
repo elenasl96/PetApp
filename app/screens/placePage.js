@@ -29,7 +29,7 @@ class VetScreen extends React.Component {
     const place = this.props.navigation.state.params.place;
     this.setState({ mounted: true });
 
-    if (place.getType() === "kennel" || place.getType() === "Kennel") {
+    if (place.getType() === "Kennel") {
       dbAdoptableAnimal
         .getAdoptableAnimals(place.id)
         .then((adoptableAnimals) => {
@@ -41,8 +41,6 @@ class VetScreen extends React.Component {
               });
           });
           Promise.all(promises).then((animals) => {
-            console.log("ANIMALS TO ADOPT");
-            console.log(animals);
             this.setState({ animalsToAdopt: animals });
           });
         });
@@ -75,7 +73,7 @@ class VetScreen extends React.Component {
       <SafeAreaView style={{ flex: 1 }}>
         <View>
           <ImageBackground
-            source={require("../../assets/images/vet.jpg")}
+            source={{uri: place.photo}}
             style={styles.vetImage}
           >
             <View
