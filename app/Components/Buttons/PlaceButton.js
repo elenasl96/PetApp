@@ -44,7 +44,7 @@ class PlaceButton extends React.Component {
                 style={styles.place}
               >
                 <ImageBackground
-                  source={{ uri: place.photo}}
+                  source={{ uri: place.getPhoto() }}
                   style={styles.placeImage}
                   imageStyle={{ borderRadius: 20 }}
                 >

@@ -47,7 +47,16 @@ export default class Place {
   }
 
   getPhoto() {
-    return this.photo;
+    console.log(this.photo);
+    if (this.photo && this.photo !== "") {
+      return this.photo;
+    } else {
+      if (this.type === "Vet") {
+        return "https://firebasestorage.googleapis.com/v0/b/petapp-64e34.appspot.com/o/default%2Fvet.jpg?alt=media&token=b8650bba-e7b9-47b7-9d8c-252b8d92b84b";
+      } else {
+        return "https://firebasestorage.googleapis.com/v0/b/petapp-64e34.appspot.com/o/default%2Fkennel.jpg?alt=media&token=697f1b8e-5e07-45d3-8588-7154ccf83395";
+      }
+    }
   }
 
   getUid() {
