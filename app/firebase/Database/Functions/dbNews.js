@@ -6,7 +6,7 @@ const dbNews = {
   addNews: function (pid, title, text) {
     const places = firestore.collection("Places");
     let news = new News(title, text, utils.timestampAccurate());
-    places.doc(pid).collection("News").add(news.toFirestore());
+    return places.doc(pid).collection("News").add(news.toFirestore());
   },
 
   getAllNews: function (pid) {

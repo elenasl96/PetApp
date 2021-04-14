@@ -50,7 +50,9 @@ export default class AddNewsForm extends Component {
     if (this.handleValidation()) {
       console.log("Valid");
       const pid = this.props.pid;
-      dbNews.addNews(pid, this.state.title, this.state.text);
+      dbNews.addNews(pid, this.state.title, this.state.text).then(() => {
+        this.props.close();
+      });
     }
   }
 

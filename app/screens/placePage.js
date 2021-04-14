@@ -79,6 +79,7 @@ class VetScreen extends React.Component {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <AddNewsForm
+          pid={pid}
           visible={this.state.showNewsForm}
           close={() => {
             this.setState({ showNewsForm: false });
