@@ -13,7 +13,7 @@ export default StyleSheet.create({
     marginBottom: 40,
   },
   form: {
-    width: "100%",
+    width: 300,
     marginTop: 15,
     backgroundColor: "#43AA8B",
     borderRadius: 25,

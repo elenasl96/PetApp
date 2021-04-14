@@ -5,14 +5,13 @@ import {
   View,
   Text,
   TextInput,
-  SafeAreaView,
+  ScrollView,
   TouchableOpacity,
-  KeyboardAvoidingView,
+  Modal,
 } from "react-native";
 import dbNews from "../../firebase/Database/Functions/dbNews";
 import ImagePickerExample from "../Custom/camera";
 import { AuthContext } from "../AuthContext";
-
 
 import mainStyle from "../../styles/mainStyle";
 
@@ -25,99 +24,99 @@ export default class AddNewsForm extends Component {
   };
 
   handleValidation() {
+    let errors = {};
+    errors["title"] = null;
+    errors["text"] = null;
+    let formIsValid = true;
 
-      let errors = {};
-      errors["title"] = null;
-      errors["text"] = null;
-      let formIsValid = true;
+    //title
+    if (this.state.title == "") {
+      formIsValid = false;
+      errors["title"] = "Title cannot be empty";
+    }
 
-      //title
-      if (this.state.title == "") {
-        formIsValid = false;
-        errors["title"] = "Title cannot be empty";
-      }
+    //text
+    if (this.state.text == "") {
+      formIsValid = false;
+      errors["text"] = "Text cannot be empty";
+    }
 
-      //text
-      if (this.state.text == "") {
-              formIsValid = false;
-              errors["text"] = "Text cannot be empty";
-
-      }
-
-      this.setState({ errors: errors });
-      return formIsValid;
-
-     }
+    this.setState({ errors: errors });
+    return formIsValid;
+  }
 
   addNews() {
     console.log("AddNews");
-    if (this.handleValidation()){
-    console.log("Valid");
-    const pid = this.props.pid;
-    dbNews.addNews(pid, this.state.title, this.state.text);
+    if (this.handleValidation()) {
+      console.log("Valid");
+      const pid = this.props.pid;
+      dbNews.addNews(pid, this.state.title, this.state.text);
     }
   }
 
   render() {
     return (
-      <SafeAreaView
-        style={{
-          flex: 1,
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={this.props.visible}
+        onRequestClose={() => {
+          this.props.close();
         }}
       >
-        <KeyboardAvoidingView
-          style={mainStyle.container}
-          behavior={Platform.OS == "ios" ? "padding" : "height"}
-          keyboardVerticalOffset={Platform.OS == "ios" ? 0 : 20}
-          enabled={Platform.OS === "ios" ? true : false}
-        ></KeyboardAvoidingView>
-        <Text style={styles.title}>Write news</Text>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <Text style={styles.title}>Write news</Text>
 
-        <View style={mainStyle.form}>
-          <TextInput
-            style={mainStyle.inputText}
-            placeholder="Title"
-            placeholderTextColor="#616161"
-            returnKeyType="next"
-            value={this.state.title}
-            onChangeText={(title) => this.setState({ title })}
-          />
-        </View>
+              <View style={mainStyle.form}>
+                <TextInput
+                  style={mainStyle.inputText}
+                  placeholder="Title"
+                  placeholderTextColor="#616161"
+                  returnKeyType="next"
+                  value={this.state.title}
+                  onChangeText={(title) => this.setState({ title })}
+                />
+              </View>
 
-        {this.state.errors["title"] != null ? (
-                  <Text style={styles.error}>{this.state.errors["title"]}</Text>
-                ) : null}
+              {this.state.errors["title"] != null ? (
+                <Text style={styles.error}>{this.state.errors["title"]}</Text>
+              ) : null}
 
-        <View style={mainStyle.form}>
-          <TextInput
-            style={mainStyle.inputText}
-            placeholder="News"
-            placeholderTextColor="#616161"
-            returnKeyType="next"
-            multiline
-            value={this.state.text}
-            onChangeText={(text) => this.setState({ text })}
-          />
-        </View>
+              <View style={mainStyle.form}>
+                <TextInput
+                  style={mainStyle.inputText}
+                  placeholder="News"
+                  placeholderTextColor="#616161"
+                  returnKeyType="next"
+                  multiline
+                  value={this.state.text}
+                  onChangeText={(text) => this.setState({ text })}
+                />
+              </View>
 
-        {this.state.errors["text"] != null ? (
-                          <Text style={styles.error}>{this.state.errors["text"]}</Text>
-                        ) : null}
+              {this.state.errors["text"] != null ? (
+                <Text style={styles.error}>{this.state.errors["text"]}</Text>
+              ) : null}
 
-        <TouchableOpacity
-          style={{
-            width: "50%",
-            marginTop: 10,
-            marginBottom: 40,
-            alignSelf: "center",
-          }}
-          onPress={this.addNews.bind(this)}
-        >
-          <View style={styles.button}>
-            <Text style={styles.buttonText}>Publish news</Text>
+              <TouchableOpacity
+                style={{
+                  width: "50%",
+                  marginTop: 10,
+                  marginBottom: 40,
+                  alignSelf: "center",
+                }}
+                onPress={this.addNews.bind(this)}
+              >
+                <View style={styles.button}>
+                  <Text style={styles.buttonText}>Publish news</Text>
+                </View>
+              </TouchableOpacity>
+            </ScrollView>
           </View>
-        </TouchableOpacity>
-      </SafeAreaView>
+        </View>
+      </Modal>
     );
   }
 }
@@ -133,17 +132,9 @@ const styles = StyleSheet.create({
     borderColor: "#707070",
     borderBottomWidth: 1,
     paddingBottom: 1.5,
-    marginTop: 25.5,
+    marginTop: 20.5,
   },
-  inputView: {
-    width: "80%",
-    backgroundColor: "#465881",
-    borderRadius: 25,
-    height: 50,
-    marginBottom: 20,
-    justifyContent: "center",
-    padding: 20,
-  },
+
   title: {
     marginTop: 15,
     fontSize: 30,
@@ -176,5 +167,27 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "red",
     width: "80%",
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 0,
+    backgroundColor: "white",
+    borderRadius: 20,
+    paddingVertical: 10,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    width: "90%",
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });

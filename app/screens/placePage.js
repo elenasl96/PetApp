@@ -20,10 +20,11 @@ import { AntDesign } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import StarButton from "../Components/Buttons/StarButton";
 import { withNavigation } from "react-navigation";
+import AddNewsForm from "../Components/Forms/AddNewsForm";
 
 class VetScreen extends React.Component {
   static contextType = AuthContext;
-  state = { mounted: false };
+  state = { mounted: false, showNewsForm: false };
 
   componentDidMount() {
     const place = this.props.navigation.state.params.place;
@@ -57,6 +58,12 @@ class VetScreen extends React.Component {
     });
   };
 
+  addNews = () => {
+    if (this.state.mounted) {
+      this.setState({ showNewsForm: true });
+    }
+  };
+
   isKennel = (place) => {
     return place.getType() === "kennel" || place.getType() === "Kennel";
   };
@@ -71,9 +78,15 @@ class VetScreen extends React.Component {
     const pid = place.id;
     return (
       <SafeAreaView style={{ flex: 1 }}>
+        <AddNewsForm
+          visible={this.state.showNewsForm}
+          close={() => {
+            this.setState({ showNewsForm: false });
+          }}
+        ></AddNewsForm>
         <View>
           <ImageBackground
-            source={{uri: place.photo}}
+            source={{ uri: place.photo }}
             style={styles.vetImage}
           >
             <View
@@ -114,11 +127,7 @@ class VetScreen extends React.Component {
 
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() =>
-                    this.props.navigation.navigate("AddNews", {
-                      pid: pid,
-                    })
-                  }
+                  onPress={() => this.addNews()}
                 >
                   <Text style={styles.buttonText}> + News </Text>
                 </TouchableOpacity>
