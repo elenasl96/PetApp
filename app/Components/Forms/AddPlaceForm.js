@@ -83,18 +83,22 @@ export default class AddPlaceForm extends Component {
         storageManager
           .toStorage(this.context.uid, file, "places")
           .then((url) => {
-            dbPlace.addPlace(
-              this.state.name,
-              this.state.type,
-              this.state.description,
-              url,
-              this.context.uid,
-              this.state.address,
-              coordinates[0].latitude,
-              coordinates[0].longitude,
-              "latitudeDelta",
-              "longitudeDelta"
-            );
+            dbPlace
+              .addPlace(
+                this.state.name,
+                this.state.type,
+                this.state.description,
+                url,
+                this.context.uid,
+                this.state.address,
+                coordinates[0].latitude,
+                coordinates[0].longitude,
+                "latitudeDelta",
+                "longitudeDelta"
+              )
+              .then(() => {
+                this.props.close();
+              });
           });
       });
     }

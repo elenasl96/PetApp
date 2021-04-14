@@ -120,17 +120,18 @@ class AddPetForm extends Component {
       storageManager.toStorage(this.context.uid, file, "pets").then((url) => {
         console.log("url: " + url);
         //this.state.url = url;
-        dbUserAnimal.addUserAnimal(
-          this.context.uid,
-          this.state.name,
-          this.state.age,
-          this.state.breedSelected,
-          this.state.sizeSelected,
-          this.state.colorSelected,
-          url,
-          this.state.typeSelected
-        );
-        this.props.close();
+        dbUserAnimal
+          .addUserAnimal(
+            this.context.uid,
+            this.state.name,
+            this.state.age,
+            this.state.breedSelected,
+            this.state.sizeSelected,
+            this.state.colorSelected,
+            url,
+            this.state.typeSelected
+          )
+          .then(() => this.props.close());
       });
     }
   };

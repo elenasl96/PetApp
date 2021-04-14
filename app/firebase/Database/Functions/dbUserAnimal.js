@@ -1,15 +1,14 @@
-import {firestore} from "../../firebaseconfig.js";
+import { firestore } from "../../firebaseconfig.js";
 import UserAnimal from "../Objects/UserAnimal.js";
 
 const dbUserAnimal = {
-
-addUserAnimal: function (uid, name, age, breed, size, color, photo, type) {
+  addUserAnimal: function (uid, name, age, breed, size, color, photo, type) {
     const users = firestore.collection("Users");
     const animals = users.doc(uid).collection("Animals");
     let animal = new UserAnimal(name, age, breed, size, color, photo, type);
     console.log(type);
     console.log(animal);
-    animals.add(animal.toFirestore());
+    return animals.add(animal.toFirestore());
   },
   /* how to call get from outside
   db.UserAnimals('axr4183').then(function(animals){
@@ -115,27 +114,27 @@ addUserAnimal: function (uid, name, age, breed, size, color, photo, type) {
   },
 
   getAnimalStats: function (uid, aid) {
-      const users = firestore.collection("Users");
-      const animals = users.doc(uid).collection("Animals");
-      var stats = [];
-      return animals
-        .doc(aid)
-        .collection("Stats")
-        .get()
-        .then(function (querySnapshot) {
-          querySnapshot.forEach(function (doc) {
-            // doc.data() is never undefined for query doc snapshots
-            //console.log(doc.id, " => ", doc.data());
-            stats.push(doc.id);
-            //console.log(user);
-            return stats;
-          });
+    const users = firestore.collection("Users");
+    const animals = users.doc(uid).collection("Animals");
+    var stats = [];
+    return animals
+      .doc(aid)
+      .collection("Stats")
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          // doc.data() is never undefined for query doc snapshots
+          //console.log(doc.id, " => ", doc.data());
+          stats.push(doc.id);
+          //console.log(user);
           return stats;
-        })
-        .catch(function (error) {
-          console.log("Error getting documents: ", error);
         });
-    },
+        return stats;
+      })
+      .catch(function (error) {
+        console.log("Error getting documents: ", error);
+      });
+  },
 
   /*
   getAnimalStats: function (uid, aid) {
@@ -418,20 +417,23 @@ addUserAnimal: function (uid, name, age, breed, size, color, photo, type) {
     this.getAnimalDiseases(uid, aid).then(function (diseases) {
       if (diseases.length != 0) {
         // diseases are optional so must be checked
-        diseases.forEach((id) => dbUserAnimal.deleteAnimalDisease(uid, aid, id));
+        diseases.forEach((id) =>
+          dbUserAnimal.deleteAnimalDisease(uid, aid, id)
+        );
       }
 
       dbUserAnimal.getAnimalStats(uid, aid).then(function (stats) {
-
         if (stats.length != 0) {
           stats.forEach(function (id) {
-            dbUserAnimal.getAnimalStatSamples(uid, aid, id).then(function (samples) {
-              if (samples.length != 0) {
-                samples.forEach((sampleid) =>
-                  dbUserAnimal.deleteAnimalStatSample(uid, aid, id, sampleid)
-                );
-              }
-            });
+            dbUserAnimal
+              .getAnimalStatSamples(uid, aid, id)
+              .then(function (samples) {
+                if (samples.length != 0) {
+                  samples.forEach((sampleid) =>
+                    dbUserAnimal.deleteAnimalStatSample(uid, aid, id, sampleid)
+                  );
+                }
+              });
             dbUserAnimal.deleteAnimalStat(uid, aid, id);
           });
         }
@@ -451,35 +453,35 @@ addUserAnimal: function (uid, name, age, breed, size, color, photo, type) {
   },
 
   // get disease descriptions
-         getDiseaseDescription(name) {
-           //console.log("Description of disease " + name);
-           var ref = firestore.collection("DiseaseDescriptions");
-           var descriptions = [];
-           return ref
-             .where("name", "==", name)
-             .get()
-             .then(function (querySnapshot) {
-               querySnapshot.forEach(function (doc) {
-                 // doc.data() is never undefined for query doc snapshots
-                 descriptions.push(doc.data().description);
-                 //console.log(user);
-                 return descriptions;
-               });
-               return descriptions;
-             })
-             .catch(function (error) {
-               console.log("Error getting documents: ", error);
-             });
-         },
+  getDiseaseDescription(name) {
+    //console.log("Description of disease " + name);
+    var ref = firestore.collection("DiseaseDescriptions");
+    var descriptions = [];
+    return ref
+      .where("name", "==", name)
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          // doc.data() is never undefined for query doc snapshots
+          descriptions.push(doc.data().description);
+          //console.log(user);
+          return descriptions;
+        });
+        return descriptions;
+      })
+      .catch(function (error) {
+        console.log("Error getting documents: ", error);
+      });
+  },
 
-     updatePetPhoto: function(uid,aid,url){
-             firestore
-                     .collection("Users")
-                     .doc(uid)
-                     .collection("Animals")
-                     .doc(aid)
-                     .update({ photo: url });
-     },
+  updatePetPhoto: function (uid, aid, url) {
+    firestore
+      .collection("Users")
+      .doc(uid)
+      .collection("Animals")
+      .doc(aid)
+      .update({ photo: url });
+  },
 };
 
 export default dbUserAnimal;

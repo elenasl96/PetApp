@@ -35,6 +35,7 @@ class HomeScreen extends React.Component {
   static contextType = AuthContext;
 
   componentDidMount() {
+    console.log("REMOUNTED");
     this.setState({ mounted: true });
     //db.populateDb();  --- for populate the db
     firebase.auth().onAuthStateChanged((user) => {
@@ -129,6 +130,7 @@ class HomeScreen extends React.Component {
           visible={this.state.showPetForm}
           close={() => {
             this.setState({ showPetForm: false });
+            console.log(this.state.pets);
           }}
         ></AddPetForm>
         <NotificationsHandler></NotificationsHandler>
