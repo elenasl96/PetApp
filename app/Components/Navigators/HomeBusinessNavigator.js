@@ -4,7 +4,7 @@ import VetScreen from "../../screens/placePage";
 import React from "react";
 import NavBar from "../Custom/NavBar";
 import HomeBusiness from "../../screens/BusinessUser/HomeBusiness";
-import AnimalsToAdoptScreen from "../../screens/AnimalsToAdopt";
+//import AnimalsToAdoptScreen from "../../screens/AnimalsToAdopt";
 
 const HomeBusinessNavigator = createStackNavigator(
   {
@@ -29,6 +29,7 @@ const HomeBusinessNavigator = createStackNavigator(
       }),
     },
 
+/*
     AnimalsToAdopt: {
       screen: AnimalsToAdoptScreen,
       path: "kennelProfile/:kennel",
@@ -36,7 +37,7 @@ const HomeBusinessNavigator = createStackNavigator(
       navigationOptions: ({ navigation }) => ({
         title: "Animals to adopt",
       }),
-    },
+    },*/
 
     Place: {
       screen: VetScreen,
