@@ -43,7 +43,7 @@ const dbLostPet = {
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
           // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
+          //console.log(doc.id, " => ", doc.data());
           notifications.push(doc.id);
           //console.log(feed);
           return notifications;
@@ -63,7 +63,7 @@ const dbLostPet = {
       .get()
       .then(function (doc) {
         // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data());
+        //console.log(doc.id, " => ", doc.data());
         let data = doc.data();
         notification = new LostPetNotify(
           data.name,
@@ -136,7 +136,7 @@ const dbLostPet = {
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
           // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
+          //console.log(doc.id, " => ", doc.data());
           notifications.push(doc.id);
           //console.log(feed);
           return notifications;
@@ -156,7 +156,7 @@ const dbLostPet = {
       .get()
       .then(function (doc) {
         // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data());
+        //console.log(doc.id, " => ", doc.data());
         let data = doc.data();
         notification = new LostPetSeen(
           data.photo,

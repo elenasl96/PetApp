@@ -40,10 +40,10 @@ const dbPlace = {
       .get()
       .then(function (doc) {
         // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data());
+        //console.log(doc.id, " => ", doc.data());
         let data = doc.data();
-        console.log("region");
-        console.log(data.region);
+        //console.log("region");
+        //console.log(data.region);
         place = new Place(
           data.name,
           data.type,
@@ -72,7 +72,7 @@ const dbPlace = {
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
           // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
+          //console.log(doc.id, " => ", doc.data());
           places.push(doc.id);
           //console.log(user);
           return places;
@@ -94,7 +94,7 @@ const dbPlace = {
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
           // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
+          //console.log(doc.id, " => ", doc.data());
           places.push(doc.id);
           //console.log(user);
           return places;
@@ -121,7 +121,7 @@ const dbPlace = {
             dbAdoptableAnimal.deleteAdoptableAnimal(pid, aid);
           });
         }
-        console.log("deletePlace");
+        //console.log("deletePlace");
         places
           .doc(pid)
           .delete()
@@ -152,7 +152,7 @@ const dbPlace = {
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
           // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
+          //console.log(doc.id, " => ", doc.data());
           savedplaces.push(doc.id);
           //console.log(user);
           return savedplaces;
@@ -175,7 +175,7 @@ const dbPlace = {
       .get()
       .then(function (doc) {
         // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data());
+        //console.log(doc.id, " => ", doc.data());
         savedplace = doc.data().pid;
         //console.log(user);
         return savedplace;

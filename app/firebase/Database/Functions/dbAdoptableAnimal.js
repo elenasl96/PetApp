@@ -13,7 +13,7 @@ const dbAdoptableAnimal = {
        type,
        profile
      ) {
-       console.log("addAdoptableAnimal");
+       //console.log("addAdoptableAnimal");
        const places = firestore.collection("Places");
        let animal = new AdoptableAnimal(
          name,
@@ -25,11 +25,12 @@ const dbAdoptableAnimal = {
          type,
          profile
        );
-       console.log(animal);
+       //console.log(animal);
        places.doc(pid).collection("Animals").add(animal.toFirestore());
      },
 
      getAdoptableAnimal: function (pid, aid) {
+      console.log("get adoptable with aid:" + aid + " and pid: " + pid);
        const animals = firestore
          .collection("Places")
          .doc(pid)
@@ -70,7 +71,7 @@ const dbAdoptableAnimal = {
          .then(function (querySnapshot) {
            querySnapshot.forEach(function (doc) {
              // doc.data() is never undefined for query doc snapshots
-             console.log(doc.id, " => ", doc.data());
+             //console.log(doc.id, " => ", doc.data());
              let data = doc.data();
              animals.push(doc.id);
              //console.log(user);
@@ -103,7 +104,7 @@ const dbAdoptableAnimal = {
          .then(function (querySnapshot) {
            querySnapshot.forEach(function (doc) {
              // doc.data() is never undefined for query doc snapshots
-             console.log(doc.id, " => ", doc.data());
+             //console.log(doc.id, " => ", doc.data());
              diseases.push(doc.id);
              //console.log(user);
              return diseases;

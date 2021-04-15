@@ -23,7 +23,7 @@ const dbUser = {
       .get()
       .then(function (doc) {
         // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data());
+        //console.log(doc.id, " => ", doc.data());
         let data = doc.data();
 
         user = new User(

@@ -9,6 +9,7 @@ import {
 import firebase from "firebase";
 import dbUserAnimal from "../../firebase/Database/Functions/dbUserAnimal";
 import { AuthContext } from "../AuthContext";
+import dbAdoptableAnimal from "../../firebase/Database/Functions/dbAdoptableAnimal";
 //import Animal from "../firebase/Animal.js";
 
 class PetButton extends React.Component {
@@ -25,7 +26,10 @@ class PetButton extends React.Component {
     //console.log(this.state.pet);
     const navigation = this.props.navigation;
     const pets = this.props.pets;
+    const type = this.props.type;
     var petButtons = [];
+
+    if (type != "adoptable"){
 
     pets.map((petID) => {
       dbUserAnimal.getUserAnimal(this.props.uid, petID).then((animal) => {
@@ -69,6 +73,51 @@ class PetButton extends React.Component {
         );
       });
     });
+   }
+   else{
+    console.log("adoptable pets!");
+    const place = this.props.place;
+    console.log("place: " + place);
+    console.log( "pets:" + pets);
+    pets.map((petID) => {
+    dbAdoptableAnimal.getAdoptableAnimal(place, petID).then((animal) => {
+       console.log("Adding animal: " + animal.name);
+      });
+    });
+    /*
+    pets.map((petID) => {
+          dbAdoptableAnimal.getAdoptableAnimal(place, petID).then((animal) => {
+            console.log("Adding animal: " + animal.name);
+
+                    //dbAdoptableAnimal.getAdoptableAnimalDiseases(place,petID).then((DIDs) => {
+                      //DID disease id
+                      petButtons.push(
+                        <TouchableHighlight
+                          style={styles.pet}
+                          value={petID}
+                          key={petID}
+                          onPress={() =>
+                            navigation.push("Pet", {
+                              pet: animal,
+                              petID: petID,
+                              //DIDs: DIDs,
+                            })
+                          }
+                        >
+                          <Image
+                            source={{ uri: animal.photo }}
+                            style={styles.petImage}
+                          ></Image>
+                        </TouchableHighlight>
+                      );
+                      if (this.state.mounted) {
+                        this.setState({ pet: petButtons });
+                      }
+                    });
+                  //});
+          });
+          */
+          }
   }
   /*
   useEffect(() => {

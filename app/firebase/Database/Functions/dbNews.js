@@ -10,7 +10,7 @@ const dbNews = {
   },
 
   getAllNews: function (pid) {
-    console.log("getAllNews");
+    //console.log("getAllNews");
     const places = firestore.collection("Places");
     var news = [];
     return places
@@ -20,7 +20,7 @@ const dbNews = {
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
           // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
+          //console.log(doc.id, " => ", doc.data());
           //let data = doc.data();
           //let feed = new Feed(data.title,data.text);
           news.push(doc.id);
@@ -37,7 +37,7 @@ const dbNews = {
   },
 
   deleteNews: function (pid, newsid) {
-    console.log("delete news");
+    //console.log("delete news");
     const places = firestore.collection("Places");
     return places
       .doc(pid)
@@ -62,7 +62,7 @@ const dbNews = {
       .get()
       .then(function (doc) {
         // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data());
+        //console.log(doc.id, " => ", doc.data());
         let data = doc.data();
         news = new News(data.title, data.text, data.timestamp);
         return news;

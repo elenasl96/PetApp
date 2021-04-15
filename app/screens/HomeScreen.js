@@ -35,7 +35,7 @@ class HomeScreen extends React.Component {
   static contextType = AuthContext;
 
   componentDidMount() {
-    console.log("REMOUNTED");
+    //console.log("REMOUNTED");
     this.setState({ mounted: true });
     //db.populateDb();  --- for populate the db
     firebase.auth().onAuthStateChanged((user) => {
@@ -113,7 +113,7 @@ class HomeScreen extends React.Component {
   }
 
   addPet = () => {
-    console.log("tt");
+    //console.log("tt");
     if (this.state.mounted) {
       this.setState({ showPetForm: true });
     }
@@ -162,6 +162,7 @@ class HomeScreen extends React.Component {
                       pets={this.state.pets}
                       //pets = {this.context.pets}
                       navigation={this.props.navigation}
+                      type = "useranimal"
                     ></PetButton>
                   ) : (
                     <Text style={styles.largeText}>Your pets</Text>

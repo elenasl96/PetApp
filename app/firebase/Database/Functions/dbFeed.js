@@ -129,7 +129,7 @@ getFeedsByFilter(pet, filter, value, id) {
       .doc(fid)
       .delete()
       .then(function () {
-        console.log("Document successfully deleted!");
+        //console.log("Document successfully deleted!");
       })
       .catch(function (error) {
         console.error("Error removing document: ", error);
@@ -203,7 +203,7 @@ getFeedsByFilter(pet, filter, value, id) {
         var types = [];
         animals.forEach(function (animal) {
           if (!types.includes(animal.type)) {
-            console.log("Type pet: " + animal.type);
+            //console.log("Type pet: " + animal.type);
             types.push(animal.type);
           }
         });
@@ -268,7 +268,7 @@ getFeedsByFilter(pet, filter, value, id) {
         //console.log(feeds);
         feeds.forEach(function (feed) {
           dbFeed.addUserFeed(uid, feed.title, feed.text, feed.type);
-          console.log("Feed loaded successfully!!: " + feed.title);
+          //console.log("Feed loaded successfully!!: " + feed.title);
         });
         return feeds;
       });
@@ -300,7 +300,7 @@ getFeedsByFilter(pet, filter, value, id) {
         //console.log(feeds);
         feeds.forEach(function (feed) {
           dbFeed.addUserFeed(uid, feed.title, feed.text, feed.type);
-          console.log("Feed loaded successfully!!: " + feed.title);
+          //console.log("Feed loaded successfully!!: " + feed.title);
         });
       });
     });
@@ -330,7 +330,7 @@ getFeedsByFilter(pet, filter, value, id) {
         //console.log(feeds);
         feeds.forEach(function (feed) {
           dbFeed.addUserFeed(uid, feed.title, feed.text, feed.type);
-          console.log("Feed loaded successfully!!: " + feed.title);
+          //console.log("Feed loaded successfully!!: " + feed.title);
         });
       });
     });
@@ -345,7 +345,7 @@ getFeedsByFilter(pet, filter, value, id) {
         var feed = feeds[ind];
         feeds.splice(ind, 1);
         dbFeed.addUserFeed(uid, feed.title, feed.text, feed.type);
-        console.log("Feed loaded successfully!!: " + feed.title);
+        //console.log("Feed loaded successfully!!: " + feed.title);
       }
     });
   },

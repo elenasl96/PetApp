@@ -6,8 +6,8 @@ const dbUserAnimal = {
     const users = firestore.collection("Users");
     const animals = users.doc(uid).collection("Animals");
     let animal = new UserAnimal(name, age, breed, size, color, photo, type);
-    console.log(type);
-    console.log(animal);
+    //console.log(type);
+    //console.log(animal);
     return animals.add(animal.toFirestore());
   },
   /* how to call get from outside

@@ -18,7 +18,7 @@ const dbNotification = {
         .then(function (querySnapshot) {
           querySnapshot.forEach(function (doc) {
             // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, " => ", doc.data());
+            //console.log(doc.id, " => ", doc.data());
             notifications.push(doc.id);
             //console.log(feed);
             return notifications;
@@ -40,7 +40,7 @@ const dbNotification = {
         .get()
         .then(function (doc) {
           // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
+          //console.log(doc.id, " => ", doc.data());
           let data = doc.data();
           notification = new Notification(
             data.title,
@@ -77,7 +77,7 @@ const dbNotification = {
           .then(function (doc) {
             // doc.data() is never undefined for query doc snapshots
             let token = doc.data().notificationtoken;
-            console.log(doc.id, " => ", doc.data());
+            //console.log(doc.id, " => ", doc.data());
             return token;
           })
           .catch(function (error) {

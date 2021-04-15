@@ -21,10 +21,12 @@ import { LinearGradient } from "expo-linear-gradient";
 import StarButton from "../Components/Buttons/StarButton";
 import { withNavigation } from "react-navigation";
 import AddNewsForm from "../Components/Forms/AddNewsForm";
+import PetButton from "../Components/Buttons/PetButton";
 
 class VetScreen extends React.Component {
   static contextType = AuthContext;
-  state = { mounted: false, showNewsForm: false };
+  state = { mounted: false,
+            showNewsForm: false };
 
   componentDidMount() {
     const place = this.props.navigation.state.params.place;
@@ -34,6 +36,7 @@ class VetScreen extends React.Component {
       dbAdoptableAnimal
         .getAdoptableAnimals(place.id)
         .then((adoptableAnimals) => {
+          if (adoptableAnimals.length!=0){
           let promises = adoptableAnimals.map((animalID) => {
             return dbAdoptableAnimal
               .getAdoptableAnimals(place.id, animalID)
@@ -43,8 +46,10 @@ class VetScreen extends React.Component {
           });
           Promise.all(promises).then((animals) => {
             this.setState({ animalsToAdopt: animals });
+            console.log("Adoptable animals: " + this.state.animalsToAdopt );
           });
-        });
+        }
+      });
     }
   }
 
@@ -65,7 +70,7 @@ class VetScreen extends React.Component {
   };
 
   isKennel = (place) => {
-    return place.getType() === "kennel" || place.getType() === "Kennel";
+    return place.getType() === "Kennel";
   };
 
   addAnimalToAdopt = () => {
@@ -162,6 +167,25 @@ class VetScreen extends React.Component {
             <News placeId={pid}></News>
           </ScrollView>
         </View>
+        {this.state.animalsToAdopt != null ? (
+                <View
+                                style={{
+                                  flex: 1,
+                                  flexDirection: "row",
+                                  flexWrap: "wrap",
+                                  justifyContent: "center",
+                                }}
+                              >
+                                <PetButton
+                                  navigation={this.props.navigation}
+                                  pets={this.state.animalsToAdopt}
+                                  type = "adoptable"
+                                  place = {this.props.navigation.state.params.place.id}
+                                ></PetButton>
+                              </View>
+                ) : null}
+
+
       </SafeAreaView>
     );
   }
