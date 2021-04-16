@@ -44,6 +44,7 @@ class AdoptablePetScreen extends React.Component {
   componentDidMount() {
 
     const DIDs = this.props.navigation.state.params.DIDs;
+    console.log("DIDs " + DIDs);
     DIDs.map((did) => {
       dbAdoptableAnimal
         .getAdoptableAnimalDisease(
@@ -53,9 +54,10 @@ class AdoptablePetScreen extends React.Component {
         )
         .then((disease) => {
           if (this.state.diseaseShown == null) {
-            this.setState({ diseaseShown: disease.name });
+            console.log( "Disease name in screen: " + disease);
+            this.setState({ diseaseShown: disease });
           }
-          dbAdoptableAnimalAnimal
+          dbAdoptableAnimal
             .getDiseaseDescription(disease.name)
             .then((descriptions) => {
               this.state.diseases[disease.name] = descriptions[0];
@@ -118,7 +120,7 @@ class AdoptablePetScreen extends React.Component {
 
      let errors = {};
      const petID = this.props.navigation.state.params.petID;
-     const uid = this.context.uid;
+     const pid = this.props.navigation.state.params.place;
      const photoUpload = this.state.photoUpload;
      const photo = this.state.photo;
 
@@ -128,8 +130,8 @@ class AdoptablePetScreen extends React.Component {
              const response = await fetch(photoUpload);
              const file = await response.blob();
 
-             storageManager.toStorage(uid,file,"pets").then((url) => {  // add new photo in storage
-                               dbAdoptableAnimal.updatePetPhoto(uid,petID,url);  // update ref in db
+             storageManager.toStorage(uid,file,"adoptablepets").then((url) => {  // add new photo in storage
+                               dbAdoptableAnimal.updatePetPhoto(pid,petID,url);  // update ref in db
                                console.log("New url: " + url);
                                this.setState({photo:url}); // update local photo
              });
@@ -152,8 +154,8 @@ class AdoptablePetScreen extends React.Component {
       errors["addDisease"] = "Disease already present!";
       console.log(errors["addDisease"]);
     } else {
-      dbUserAnimal.addAnimalDisease(
-        this.context.uid,
+      dbUserAnimal.addAdoptableAnimalDisease(
+        this.props.navigation.state.params.place,
         this.props.navigation.state.params.petID,
         disease
       );
@@ -162,7 +164,7 @@ class AdoptablePetScreen extends React.Component {
         this.setState({ diseaseShown: disease });
       }
 
-      dbUserAnimal.getDiseaseDescription(disease).then((descriptions) => {
+      dbAdoptableAnimal.getDiseaseDescription(disease).then((descriptions) => {
         this.state.diseases[disease] = descriptions[0];
         this.setState({ mounted: true });
       });
@@ -175,8 +177,8 @@ class AdoptablePetScreen extends React.Component {
   deleteDisease = () => {
     var disease = this.state.diseaseShown;
     let errors = {};
-    dbUserAnimal.deleteAnimalDiseaseByName(
-      this.context.uid,
+    dbAdoptableAnimal.deleteAnimalDiseaseByName(
+      this.props.navigation.state.params.place,
       this.props.navigation.state.params.petID,
       disease
     );

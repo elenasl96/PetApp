@@ -75,11 +75,7 @@ class PetButton extends React.Component {
     });
    }
    else{
-    console.log("adoptable pets!");
     const place = this.props.place;
-    console.log("place: " + place);
-    console.log( "pets:" + pets);
-
 
     pets.map((petID) => {
           dbAdoptableAnimal.getAdoptableAnimal(place, petID.toString()).then((animal) => {
@@ -95,9 +91,9 @@ class PetButton extends React.Component {
                           onPress={() =>
                             navigation.push("AdoptablePet", {
                               pet: animal,
-                              petID: petID,
+                              petID: petID.toString(),
                               DIDs: DIDs,
-                              isAdoptable: true
+                              place: place
                             })
                           }
                         >
