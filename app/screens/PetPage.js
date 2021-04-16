@@ -25,6 +25,7 @@ import ImagePickerExample from "../Components/Custom/camera";
 import Chart from "../Components/Custom/PetChart.js";
 import utils from "../shared/utilities";
 import constants from "../shared/constants";
+import ReportLossForm from "../Components/Forms/ReportLossForm";
 
 class PetScreen extends React.Component {
   state = {
@@ -32,9 +33,10 @@ class PetScreen extends React.Component {
     diseaseShown: null,
     diseaseSelected: null,
     mounted: true,
-    photoUpload:null,
+    photoUpload: null,
     photo: null,
     errors: {}, // dict
+    showReportLossForm: false,
   };
 
   static contextType = AuthContext;
@@ -69,64 +71,53 @@ class PetScreen extends React.Component {
       this.setState({ diseaseSelected: constants.DISEASES_CAT[0] });
     }
 
-    this.setState({photo:pet.photo});
-
+    this.setState({ photo: pet.photo });
   }
 
   deletePet = () => {
-
     console.log("url: " + this.state.photo);
     storageManager.deleteFile(this.state.photo);
     dbUserAnimal.deleteAnimal(
       this.context.uid,
       this.props.navigation.state.params.petID
     );
-
   };
 
   setPhoto = (photo) => {
-
-      let errors = {};
-      this.setState({ photoUpload: photo });
-      this.setState({errors:errors});//clean errors
-
+    let errors = {};
+    this.setState({ photoUpload: photo });
+    this.setState({ errors: errors }); //clean errors
   };
 
   updatePhoto = async () => {
+    let errors = {};
+    const petID = this.props.navigation.state.params.petID;
+    const uid = this.context.uid;
+    const photoUpload = this.state.photoUpload;
+    const photo = this.state.photo;
 
-     let errors = {};
-     const petID = this.props.navigation.state.params.petID;
-     const uid = this.context.uid;
-     const photoUpload = this.state.photoUpload;
-     const photo = this.state.photo;
+    if (photoUpload != null) {
+      console.log("Url deleted: " + photo);
+      storageManager.deleteFile(photo); // deletes old photo from storage
+      const response = await fetch(photoUpload);
+      const file = await response.blob();
 
-     if (photoUpload != null){
-             console.log("Url deleted: " + photo)
-             storageManager.deleteFile(photo);  // deletes old photo from storage
-             const response = await fetch(photoUpload);
-             const file = await response.blob();
+      storageManager.toStorage(uid, file, "pets").then((url) => {
+        // add new photo in storage
+        dbUserAnimal.updatePetPhoto(uid, petID, url); // update ref in db
+        console.log("New url: " + url);
+        this.setState({ photo: url }); // update local photo
+      });
+    } else {
+      errors["photo"] = "You must load a photo";
+    }
 
-             storageManager.toStorage(uid,file,"pets").then((url) => {  // add new photo in storage
-                               dbUserAnimal.updatePetPhoto(uid,petID,url);  // update ref in db
-                               console.log("New url: " + url);
-                               this.setState({photo:url}); // update local photo
-             });
-
-     }
-     else{
-       errors["photo"] = "You must load a photo";
-     }
-
-     this.setState({ errors: errors });
-
+    this.setState({ errors: errors });
   };
 
   reportLoss = () => {
-    this.props.navigation.navigate("ReportLoss", {
-      pet: this.props.navigation.state.params.pet,
-    });
+    this.setState({ showReportLossForm: true });
   };
-
 
   addDisease = () => {
     var disease = this.state.diseaseSelected;
@@ -177,7 +168,6 @@ class PetScreen extends React.Component {
     }
   };
 
-
   render() {
     const pet = this.props.navigation.state.params.pet;
     const WIDs = this.props.navigation.state.params.WIDs;
@@ -216,12 +206,19 @@ class PetScreen extends React.Component {
 
     return (
       <SafeAreaView style={{ flex: 1 }}>
+        <ReportLossForm
+          pet={pet}
+          visible={this.state.showReportLossForm}
+          close={() => {
+            this.setState({ showReportLossForm: false });
+          }}
+        ></ReportLossForm>
         <View style={styles.mainContent}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.petContainer}>
               <View style={styles.pet}>
                 <ImageBackground
-                  source= {{ uri: this.state.photo }}
+                  source={{ uri: this.state.photo }}
                   style={styles.petImage}
                   imageStyle={{ borderRadius: 50 }}
                 >
@@ -241,7 +238,6 @@ class PetScreen extends React.Component {
                 </ImageBackground>
               </View>
 
-
               <View style={styles.buttons}>
                 <TouchableOpacity
                   style={styles.button}
@@ -258,21 +254,21 @@ class PetScreen extends React.Component {
               </View>
             </View>
 
-             <ImagePickerExample setPhoto={this.setPhoto}></ImagePickerExample>
+            <ImagePickerExample setPhoto={this.setPhoto}></ImagePickerExample>
 
-                          {this.state.errors["photo"] != null ? (
-                                                  <Text style={styles.error}>{this.state.errors["photo"]}</Text>
-                                        ) : null}
+            {this.state.errors["photo"] != null ? (
+              <Text style={styles.error}>{this.state.errors["photo"]}</Text>
+            ) : null}
 
-                          <TouchableHighlight
-                                        style={styles.petButton}
-                                        onPress={this.updatePhoto.bind(this)}
-                                        underlayColor={"rgb(200,200,200)"}
-                          >
-                          <View style>
-                               <Text>Update photo</Text>
-                          </View>
-                          </TouchableHighlight>
+            <TouchableHighlight
+              style={styles.petButton}
+              onPress={this.updatePhoto.bind(this)}
+              underlayColor={"rgb(200,200,200)"}
+            >
+              <View style>
+                <Text>Update photo</Text>
+              </View>
+            </TouchableHighlight>
 
             <ScrollView
               horizontal={true}
@@ -298,10 +294,7 @@ class PetScreen extends React.Component {
                   <Text>{pet.color}</Text>
                 </View>
               </TouchableHighlight>
-
-
             </ScrollView>
-
 
             <TouchableHighlight>
               <View style={styles.info}>
@@ -362,10 +355,9 @@ class PetScreen extends React.Component {
               </TouchableHighlight>
             ) : null}
 
-           <Chart WIDs={WIDs} HIDs={HIDs} petID={petID} pet={pet}></Chart>
-
-    </ScrollView>
-   </View>
+            <Chart WIDs={WIDs} HIDs={HIDs} petID={petID} pet={pet}></Chart>
+          </ScrollView>
+        </View>
 
         <View style={styles.bottomMenu}>
           <TouchableHighlight onPress={null}>

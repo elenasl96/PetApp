@@ -7,8 +7,6 @@ import {
   Image,
   TouchableHighlight,
   ScrollView,
-  Modal,
-  Pressable,
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import firebase from "firebase";
@@ -162,7 +160,7 @@ class HomeScreen extends React.Component {
                       pets={this.state.pets}
                       //pets = {this.context.pets}
                       navigation={this.props.navigation}
-                      type = "useranimal"
+                      type="useranimal"
                     ></PetButton>
                   ) : (
                     <Text style={styles.largeText}>Your pets</Text>

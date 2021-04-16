@@ -1,10 +1,10 @@
-import {firestore} from "../../firebaseconfig.js";
+import { firestore } from "../../firebaseconfig.js";
 import LostPetNotify from "../Objects/LostPetNotify.js";
 import LostPetSeen from "../Objects/LostPetSeen.js";
-
+import utils from "../../../shared/utilities.js";
 
 const dbLostPet = {
-//-----------------------------Lost Pets Notify ------------------------------
+  //-----------------------------Lost Pets Notify ------------------------------
 
   addLostPetNotify: function (
     name,
@@ -32,7 +32,7 @@ const dbLostPet = {
       email,
       phone
     );
-    lostPets.add(notification.toFirestore());
+    return lostPets.add(notification.toFirestore());
   },
 
   getLostPetNotifications: function () {
