@@ -22,7 +22,6 @@ import { withNavigation } from "react-navigation";
 import { Picker } from "@react-native-picker/picker";
 import ImagePickerExample from "../Components/Custom/camera";
 
-
 import Chart from "../Components/Custom/PetChart.js";
 import utils from "../shared/utilities";
 import constants from "../shared/constants";
@@ -34,7 +33,7 @@ class AdoptablePetScreen extends React.Component {
     diseaseSelected: null,
     newtype: null,
     mounted: true,
-    photoUpload:null,
+    photoUpload: null,
     photo: null,
     errors: {}, // dict
   };
@@ -42,19 +41,19 @@ class AdoptablePetScreen extends React.Component {
   static contextType = AuthContext;
 
   componentDidMount() {
-
     const DIDs = this.props.navigation.state.params.DIDs;
-    console.log("DIDs " + DIDs);
-    DIDs.map((did) => {
+    const pid = this.props.navigation.state.params.place;
+    console.log(DIDs);
+    DIDs.forEach((did) => {
       dbAdoptableAnimal
         .getAdoptableAnimalDisease(
-          this.context.uid,
+          pid,
           this.props.navigation.state.params.petID,
           did
         )
         .then((disease) => {
           if (this.state.diseaseShown == null) {
-            console.log( "Disease name in screen: " + disease);
+            console.log("Disease name in screen: " + disease);
             this.setState({ diseaseShown: disease });
           }
           dbAdoptableAnimal
@@ -74,10 +73,9 @@ class AdoptablePetScreen extends React.Component {
       this.setState({ diseaseSelected: constants.DISEASES_CAT[0] });
     }
 
-    this.setState({photo:pet.photo});
-
+    this.setState({ photo: pet.photo });
   }
-/*
+  /*
   handleValidation() {
     let formIsValid = true;
     let errors = {};
@@ -98,51 +96,44 @@ class AdoptablePetScreen extends React.Component {
   }
 */
   deletePet = () => {
-
     console.log("url: " + this.state.photo);
     storageManager.deleteFile(this.state.photo);
     dbAdoptableAnimal.deleteAdoptableAnimal(
       this.context.uid,
       this.props.navigation.state.params.petID
     );
-
   };
 
   setPhoto = (photo) => {
-
-      let errors = {};
-      this.setState({ photoUpload: photo });
-      this.setState({errors:errors});//clean errors
-
+    let errors = {};
+    this.setState({ photoUpload: photo });
+    this.setState({ errors: errors }); //clean errors
   };
 
   updatePhoto = async () => {
+    let errors = {};
+    const petID = this.props.navigation.state.params.petID;
+    const pid = this.props.navigation.state.params.place;
+    const photoUpload = this.state.photoUpload;
+    const photo = this.state.photo;
 
-     let errors = {};
-     const petID = this.props.navigation.state.params.petID;
-     const pid = this.props.navigation.state.params.place;
-     const photoUpload = this.state.photoUpload;
-     const photo = this.state.photo;
+    if (photoUpload != null) {
+      console.log("Url deleted: " + photo);
+      storageManager.deleteFile(photo); // deletes old photo from storage
+      const response = await fetch(photoUpload);
+      const file = await response.blob();
 
-     if (photoUpload != null){
-             console.log("Url deleted: " + photo)
-             storageManager.deleteFile(photo);  // deletes old photo from storage
-             const response = await fetch(photoUpload);
-             const file = await response.blob();
+      storageManager.toStorage(uid, file, "adoptablepets").then((url) => {
+        // add new photo in storage
+        dbAdoptableAnimal.updatePetPhoto(pid, petID, url); // update ref in db
+        console.log("New url: " + url);
+        this.setState({ photo: url }); // update local photo
+      });
+    } else {
+      errors["photo"] = "You must load a photo";
+    }
 
-             storageManager.toStorage(uid,file,"adoptablepets").then((url) => {  // add new photo in storage
-                               dbAdoptableAnimal.updatePetPhoto(pid,petID,url);  // update ref in db
-                               console.log("New url: " + url);
-                               this.setState({photo:url}); // update local photo
-             });
-
-     }
-     else{
-       errors["photo"] = "You must load a photo";
-     }
-
-     this.setState({ errors: errors });
-
+    this.setState({ errors: errors });
   };
 
   addDisease = () => {
@@ -233,7 +224,7 @@ class AdoptablePetScreen extends React.Component {
             <View style={styles.petContainer}>
               <View style={styles.pet}>
                 <ImageBackground
-                  source= {{ uri: this.state.photo }}
+                  source={{ uri: this.state.photo }}
                   style={styles.petImage}
                   imageStyle={{ borderRadius: 50 }}
                 >
@@ -253,7 +244,6 @@ class AdoptablePetScreen extends React.Component {
                 </ImageBackground>
               </View>
 
-
               <View style={styles.buttons}>
                 <TouchableOpacity
                   style={styles.button}
@@ -264,21 +254,21 @@ class AdoptablePetScreen extends React.Component {
               </View>
             </View>
 
-             <ImagePickerExample setPhoto={this.setPhoto}></ImagePickerExample>
+            <ImagePickerExample setPhoto={this.setPhoto}></ImagePickerExample>
 
-                          {this.state.errors["photo"] != null ? (
-                                                  <Text style={styles.error}>{this.state.errors["photo"]}</Text>
-                                        ) : null}
+            {this.state.errors["photo"] != null ? (
+              <Text style={styles.error}>{this.state.errors["photo"]}</Text>
+            ) : null}
 
-                          <TouchableHighlight
-                                        style={styles.petButton}
-                                        onPress={this.updatePhoto.bind(this)}
-                                        underlayColor={"rgb(200,200,200)"}
-                          >
-                          <View style>
-                               <Text>Update photo</Text>
-                          </View>
-                          </TouchableHighlight>
+            <TouchableHighlight
+              style={styles.petButton}
+              onPress={this.updatePhoto.bind(this)}
+              underlayColor={"rgb(200,200,200)"}
+            >
+              <View style>
+                <Text>Update photo</Text>
+              </View>
+            </TouchableHighlight>
 
             <ScrollView
               horizontal={true}
@@ -304,17 +294,14 @@ class AdoptablePetScreen extends React.Component {
                   <Text>{pet.color}</Text>
                 </View>
               </TouchableHighlight>
-
-
             </ScrollView>
 
             <TouchableHighlight>
-                            <View style={styles.info}>
-                              <Text>Profile</Text>
-                              <Text>{pet.profile}</Text>
-                            </View>
+              <View style={styles.info}>
+                <Text>Profile</Text>
+                <Text>{pet.profile}</Text>
+              </View>
             </TouchableHighlight>
-
 
             <TouchableHighlight>
               <View style={styles.info}>
@@ -374,9 +361,8 @@ class AdoptablePetScreen extends React.Component {
                 <Text style={{ textAlign: "center" }}>delete</Text>
               </TouchableHighlight>
             ) : null}
-
-    </ScrollView>
-   </View>
+          </ScrollView>
+        </View>
 
         <View style={styles.bottomMenu}>
           <TouchableHighlight onPress={null}>
