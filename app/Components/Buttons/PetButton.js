@@ -26,10 +26,10 @@ class PetButton extends React.Component {
     //console.log(this.state.pet);
     const navigation = this.props.navigation;
     const pets = this.props.pets;
-    const type = this.props.type;
+    const isAdoptable = this.props.isAdoptable;
     var petButtons = [];
 
-    if (type != "adoptable"){
+    if (!isAdoptable){
 
     pets.map((petID) => {
       dbUserAnimal.getUserAnimal(this.props.uid, petID).then((animal) => {
@@ -79,17 +79,13 @@ class PetButton extends React.Component {
     const place = this.props.place;
     console.log("place: " + place);
     console.log( "pets:" + pets);
+
+
     pets.map((petID) => {
-    dbAdoptableAnimal.getAdoptableAnimal(place, petID).then((animal) => {
-       console.log("Adding animal: " + animal.name);
-      });
-    });
-    /*
-    pets.map((petID) => {
-          dbAdoptableAnimal.getAdoptableAnimal(place, petID).then((animal) => {
+          dbAdoptableAnimal.getAdoptableAnimal(place, petID.toString()).then((animal) => {
             console.log("Adding animal: " + animal.name);
 
-                    //dbAdoptableAnimal.getAdoptableAnimalDiseases(place,petID).then((DIDs) => {
+                    dbAdoptableAnimal.getAdoptableAnimalDiseases(place,petID.toString()).then((DIDs) => {
                       //DID disease id
                       petButtons.push(
                         <TouchableHighlight
@@ -97,10 +93,11 @@ class PetButton extends React.Component {
                           value={petID}
                           key={petID}
                           onPress={() =>
-                            navigation.push("Pet", {
+                            navigation.push("AdoptablePet", {
                               pet: animal,
                               petID: petID,
-                              //DIDs: DIDs,
+                              DIDs: DIDs,
+                              isAdoptable: true
                             })
                           }
                         >
@@ -114,9 +111,9 @@ class PetButton extends React.Component {
                         this.setState({ pet: petButtons });
                       }
                     });
-                  //});
-          });
-          */
+                  });
+              });
+
           }
   }
   /*

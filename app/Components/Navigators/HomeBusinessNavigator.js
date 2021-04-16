@@ -1,9 +1,10 @@
 import { createStackNavigator } from "react-navigation-stack";
-import PetScreen from "../../screens/petPage";
-import VetScreen from "../../screens/placePage";
+import PetScreen from "../../screens/PetPage";
+import VetScreen from "../../screens/PlacePage";
 import React from "react";
 import NavBar from "../Custom/NavBar";
 import HomeBusiness from "../../screens/BusinessUser/HomeBusiness";
+import AdoptablePetScreen from "../../screens/AdoptablePetPage";
 //import AnimalsToAdoptScreen from "../../screens/AnimalsToAdopt";
 
 const HomeBusinessNavigator = createStackNavigator(
@@ -28,6 +29,15 @@ const HomeBusinessNavigator = createStackNavigator(
         title: "-name- profile",
       }),
     },
+
+    AdoptablePet: {
+              screen: AdoptablePetScreen,
+              path: "adoptablePetProfile/:pet",
+              // Optional: Override the `navigationOptions` for the screen
+              navigationOptions: ({ navigation }) => ({
+                title: "-name- profile",
+              }),
+            },
 
 /*
     AnimalsToAdopt: {

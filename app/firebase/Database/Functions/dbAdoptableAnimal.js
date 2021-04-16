@@ -30,11 +30,9 @@ const dbAdoptableAnimal = {
      },
 
      getAdoptableAnimal: function (pid, aid) {
-      console.log("get adoptable with aid:" + aid + " and pid: " + pid);
-       const animals = firestore
-         .collection("Places")
-         .doc(pid)
-         .collection("Animals");
+
+      const animals = firestore.collection("Places").doc(pid).collection("Animals");
+
        var animal;
        return animals
          .doc(aid)

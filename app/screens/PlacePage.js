@@ -179,7 +179,7 @@ class VetScreen extends React.Component {
                                 <PetButton
                                   navigation={this.props.navigation}
                                   pets={this.state.animalsToAdopt}
-                                  type = "adoptable"
+                                  isAdoptable = {true}
                                   place = {this.props.navigation.state.params.place.id}
                                 ></PetButton>
                               </View>

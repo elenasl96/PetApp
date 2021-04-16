@@ -1,5 +1,5 @@
 import { createStackNavigator } from "react-navigation-stack";
-import PetScreen from "../../screens/petPage";
+import PetScreen from "../../screens/PetPage";
 import React from "react";
 import NavBar from "../Custom/NavBar";
 import LostPetsScreen from "../../screens/LostPetsScreen";
