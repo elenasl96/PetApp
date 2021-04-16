@@ -22,23 +22,16 @@ import { withNavigation } from "react-navigation";
 import { Picker } from "@react-native-picker/picker";
 import ImagePickerExample from "../Components/Custom/camera";
 
-
 import Chart from "../Components/Custom/PetChart.js";
 import utils from "../shared/utilities";
 import constants from "../shared/constants";
 
 class PetScreen extends React.Component {
   state = {
-    dataWeight: [],
-    dataHeight: [],
-    data: [],
-    newdata: "",
     diseases: {},
     diseaseShown: null,
     diseaseSelected: null,
-    newtype: null,
     mounted: true,
-    deletesample: "",
     photoUpload:null,
     photo: null,
     errors: {}, // dict
@@ -47,40 +40,6 @@ class PetScreen extends React.Component {
   static contextType = AuthContext;
 
   componentDidMount() {
-
-    this.setState({ newtype: "weight" });
-
-    const WIDs = this.props.navigation.state.params.WIDs;
-    WIDs.map((wid) => {
-      dbUserAnimal
-        .getAnimalStatSample(
-          this.context.uid,
-          this.props.navigation.state.params.petID,
-          "weight",
-          wid
-        )
-        .then((sample) => {
-          this.state.dataWeight.push(sample.value);
-          this.state.data.push(sample.value);
-          this.setState({ mounted: true });
-        });
-    });
-
-    const HIDs = this.props.navigation.state.params.HIDs;
-    HIDs.map((hid) => {
-      dbUserAnimal
-        .getAnimalStatSample(
-          this.context.uid,
-          this.props.navigation.state.params.petID,
-          "height",
-          hid
-        )
-        .then((sample) => {
-          this.state.dataHeight.push(sample.value);
-          this.setState({ mounted: true });
-        });
-    });
-
     const DIDs = this.props.navigation.state.params.DIDs;
     DIDs.map((did) => {
       dbUserAnimal
@@ -112,25 +71,6 @@ class PetScreen extends React.Component {
 
     this.setState({photo:pet.photo});
 
-  }
-
-  handleValidation() {
-    let formIsValid = true;
-    let errors = {};
-    errors["samples"] = null;
-
-    if (this.state.newdata == "") {
-      formIsValid = false;
-      errors["samples"] = "Sample cannot be empty";
-    } else {
-      if (isNaN(this.state.newdata)) {
-        formIsValid = false;
-        errors["samples"] = "Sample must be a number";
-      }
-    }
-    //console.log(errors);
-    this.setState({ errors: errors });
-    return formIsValid;
   }
 
   deletePet = () => {
@@ -187,51 +127,6 @@ class PetScreen extends React.Component {
     });
   };
 
-  addPetStatSample = () => {
-    if (this.handleValidation()) {
-      //console.log("Valid sample");
-      let errors = {};
-      errors["samples"] = null;
-
-      if (this.state.newtype == "weight") {
-        this.state.dataWeight.push(Number(this.state.newdata));
-        this.showWeight();
-      }
-
-      if (this.state.newtype == "height") {
-        this.state.dataHeight.push(Number(this.state.newdata));
-        this.showHeight();
-      }
-      dbUserAnimal.addAnimalStatSample(
-        this.context.uid,
-        this.props.navigation.state.params.petID,
-        this.state.newtype,
-        Number(this.state.newdata)
-      );
-      console.log(
-        "Added new sample with value: " +
-          this.state.newdata +
-          " and label: " +
-          utils.timestamp()
-      );
-
-      this.setState({ errors: errors });
-    }
-  };
-
-  showWeight = () => {
-    this.state.data = this.state.dataWeight;
-    let errors = {};
-    this.setState({ errors: errors }); // clean errors
-    this.setState({ newtype: "weight" });
-  };
-
-  showHeight = () => {
-    this.state.data = this.state.dataHeight;
-    let errors = {};
-    this.setState({ errors: errors }); // clean errors
-    this.setState({ newtype: "height" });
-  };
 
   addDisease = () => {
     var disease = this.state.diseaseSelected;
@@ -282,67 +177,14 @@ class PetScreen extends React.Component {
     }
   };
 
-  deleteStatSample = () => {
-    let errors = {};
-    errors["delete"] = null;
-
-    if (this.state.newtype == "weight") {
-      if (this.state.dataWeight.length == 0) {
-        errors["delete"] = "No samples for weight";
-      } else {
-        // Update component
-        this.state.dataWeight.pop();
-        this.showWeight();
-        // Update db
-        dbUserAnimal
-          .getAnimalStatSamples(
-            this.context.uid,
-            this.props.navigation.state.params.petID,
-            this.state.newtype
-          )
-          .then((SIDs) => {
-            let lastid = SIDs[SIDs.length - 1];
-            dbUserAnimal.deleteAnimalStatSample(
-              this.context.uid,
-              this.props.navigation.state.params.petID,
-              this.state.newtype,
-              lastid
-            );
-          });
-      }
-    } else {
-      if (this.state.dataHeight.length == 0) {
-        errors["delete"] = "No samples for height";
-      } else {
-        // Update component
-        this.state.dataHeight.pop();
-        this.showHeight();
-        // Update db
-        db.getAnimalStatSamples(
-          this.context.uid,
-          this.props.navigation.state.params.petID,
-          this.state.newtype
-        ).then((SIDs) => {
-          let lastid = SIDs[SIDs.length - 1];
-          dbUserAnimal.deleteAnimalStatSample(
-            this.context.uid,
-            this.props.navigation.state.params.petID,
-            this.state.newtype,
-            lastid
-          );
-        });
-      }
-    }
-
-    this.setState({ errors: errors });
-    //db.deleteAnimalStatSample(this.context.uid,this.props.navigation.state.params.petID,this.state.newtype,id);
-  };
 
   render() {
     const pet = this.props.navigation.state.params.pet;
-    const data = this.state.data;
+    const WIDs = this.props.navigation.state.params.WIDs;
+    const HIDs = this.props.navigation.state.params.HIDs;
+    const petID = this.props.navigation.state.params.petID;
+
     const descriptionShown = this.state.diseases[this.state.diseaseShown];
-    const labels = [];
     const temp = Object.keys(this.state.diseases);
     let diseases = temp.map((s) => {
       //console.log("s: "+ s);
@@ -520,63 +362,7 @@ class PetScreen extends React.Component {
               </TouchableHighlight>
             ) : null}
 
-
-            <TouchableHighlight
-              style={styles.petButton}
-              onPress={this.showWeight.bind(this)}
-              underlayColor={"rgb(200,200,200)"}
-            >
-              <Text style={{ textAlign: "center" }}>weight</Text>
-            </TouchableHighlight>
-
-            <TouchableHighlight
-              style={styles.petButton}
-              onPress={this.showHeight.bind(this)}
-              underlayColor={"rgb(200,200,200)"}
-            >
-              <Text style={{ textAlign: "center" }}>height</Text>
-            </TouchableHighlight>
-
-            {this.state.data.length != 0 ? (
-              <Chart labels={labels} data={data} />
-            ) : null}
-
-            <Text style={styles.title}>Add new sample</Text>
-            <View style={mainStyle.form}>
-              <TextInput
-                style={mainStyle.inputText}
-                placeholder="Value"
-                placeholderTextColor="#616161"
-                returnKeyType="next"
-                textContentType="name"
-                value={this.state.newdata}
-                onChangeText={(newdata) => this.setState({ newdata })}
-              />
-            </View>
-
-            <TouchableHighlight
-              style={styles.petButton}
-              onPress={this.addPetStatSample.bind(this)}
-              underlayColor={"rgb(200,200,200)"}
-            >
-              <Text style={{ textAlign: "center" }}>Save</Text>
-            </TouchableHighlight>
-            {this.state.errors["samples"] != null ? (
-              <Text style={styles.error}>{this.state.errors["samples"]}</Text>
-            ) : null}
-
-            <TouchableHighlight
-              style={styles.petButton}
-              onPress={this.deleteStatSample.bind(this)}
-              underlayColor={"rgb(200,200,200)"}
-            >
-              <Text style={{ textAlign: "center" }}>Delete</Text>
-            </TouchableHighlight>
-
-            {this.state.errors["delete"] != null ? (
-              <Text style={styles.error}>{this.state.errors["delete"]}</Text>
-            ) : null}
-
+           <Chart WIDs={WIDs} HIDs={HIDs} petID={petID} pet={pet}></Chart>
 
     </ScrollView>
    </View>

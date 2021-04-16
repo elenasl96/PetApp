@@ -34,6 +34,10 @@ const dbUserAnimal = {
   */
 
   addAnimalStatSample: function (uid, aid, stat, value) {
+    console.log("uid: " + uid);
+    console.log("aid: " + aid);
+    console.log("stat: " + stat);
+    console.log("value: " + value);
     const users = firestore.collection("Users");
     const animals = users.doc(uid).collection("Animals");
     animals
