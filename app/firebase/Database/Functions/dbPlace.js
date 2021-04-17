@@ -185,6 +185,7 @@ const dbPlace = {
       });
   },
 
+
   deleteSavedPlace: function (uid, id) {
     const users = firestore.collection("Users");
     users
@@ -199,5 +200,12 @@ const dbPlace = {
         console.error("Error removing document: ", error);
       });
   },
+
+  updatePlacePhoto: function (pid,url) {
+      firestore
+        .collection("Places")
+        .doc(pid)
+        .update({ photo: url });
+    },
 };
 export default dbPlace;

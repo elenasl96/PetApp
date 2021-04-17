@@ -90,6 +90,13 @@ const dbUser = {
     });
   },
 
+  updateUserPhoto: function (uid,url) {
+      firestore
+        .collection("Users")
+        .doc(uid)
+        .update({ photo: url });
+  },
+
 };
 
 export default dbUser;

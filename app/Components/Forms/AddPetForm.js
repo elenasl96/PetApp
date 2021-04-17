@@ -16,7 +16,7 @@ import {
 } from "react-native";
 import dbUserAnimal from "../../firebase/Database/Functions/dbUserAnimal";
 import storageManager from "../../firebase/Storage/storage";
-import ImagePickerExample from "../Custom/camera";
+import PhotoBox from "../Custom/PhotoBox";
 import { AuthContext } from "../AuthContext";
 import { withNavigation } from "react-navigation";
 import { Picker } from "@react-native-picker/picker";
@@ -50,7 +50,6 @@ class AddPetForm extends Component {
   handleValidation() {
     let errors = {};
     errors["name"] = null;
-    errors["photo"] = null;
     errors["age"] = null;
     let formIsValid = true;
     //Name
@@ -63,13 +62,6 @@ class AddPetForm extends Component {
         errors["name"] = "Only letters in name";
       }
     }
-
-    //Photo
-    if (this.state.photo == null) {
-      formIsValid = false;
-      errors["photo"] = "You must load a photo";
-    }
-
     //Age
 
     if (this.state.age == "") {
@@ -135,19 +127,18 @@ class AddPetForm extends Component {
       });
     }
   };
-
-  upload = async (uri) => {
+/*
+  upload = async (uri) => {  // not used
     const response = await fetch(uri);
     const file = await response.blob();
     storageManager.toStorage(this.context.uid, file, "pets").then((url) => {
       console.log("url: " + url);
       this.state.url = url;
     });
-  };
+  }; */
 
-  setPhoto = (photo) => {
+  setPhoto = (photo) => {  // OK
     this.setState({ photo: photo });
-    console.log("photo: " + this.state.photo);
   };
 
   componentDidUpdate() {
@@ -271,10 +262,8 @@ class AddPetForm extends Component {
                   {sizes}
                 </Picker>
               </View>
-              <ImagePickerExample setPhoto={this.setPhoto}></ImagePickerExample>
-              {this.state.errors["photo"] != null ? (
-                <Text style={styles.error}>{this.state.errors["photo"]}</Text>
-              ) : null}
+
+              <PhotoBox setPhoto = {this.setPhoto} isUpdate = {false} ></PhotoBox>
 
               <TouchableOpacity
                 style={{

@@ -20,7 +20,7 @@ import storageManager from "../firebase/Storage/storage";
 import { AuthContext } from "../Components/AuthContext";
 import { withNavigation } from "react-navigation";
 import { Picker } from "@react-native-picker/picker";
-import ImagePickerExample from "../Components/Custom/camera";
+import PhotoBox from "../Components/Custom/PhotoBox";
 
 import Chart from "../Components/Custom/PetChart.js";
 import utils from "../shared/utilities";
@@ -254,7 +254,7 @@ class AdoptablePetScreen extends React.Component {
               </View>
             </View>
 
-            <ImagePickerExample setPhoto={this.setPhoto}></ImagePickerExample>
+            <PhotoBox setPhoto={this.setPhoto}></PhotoBox>
 
             {this.state.errors["photo"] != null ? (
               <Text style={styles.error}>{this.state.errors["photo"]}</Text>

@@ -249,7 +249,7 @@ const dbAdoptableAnimal = {
       });
   },
 
-  updatePetPhoto: function (pid, aid, url) {
+  updateAdoptablePetPhoto: function (pid, aid, url) {
     firestore
       .collection("Places")
       .doc(uid)

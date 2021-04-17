@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import dbPlace from "../../firebase/Database/Functions/dbPlace";
 import storageManager from "../../firebase/Storage/storage";
-import ImagePickerExample from "../Custom/camera";
+import PhotoBox from "../Custom/PhotoBox";
 import { AuthContext } from "../AuthContext";
 
 import mainStyle from "../../styles/mainStyle";
@@ -51,11 +51,6 @@ export default class AddPlaceForm extends Component {
       errors["description"] = "Description cannot be empty";
     }
 
-    //Photo
-    if (this.state.photo == null) {
-      formIsValid = false;
-      errors["photo"] = "You must load a photo";
-    }
 
     // Address
     if (this.state.address == "") {
@@ -182,13 +177,7 @@ export default class AddPlaceForm extends Component {
                 <Text style={styles.error}>{this.state.errors["address"]}</Text>
               ) : null}
 
-              <ImagePickerExample
-                photo={this.state.photo}
-                setPhoto={(photo) => this.setState({ photo })}
-              ></ImagePickerExample>
-              {this.state.errors["photo"] != null ? (
-                <Text style={styles.error}>{this.state.errors["photo"]}</Text>
-              ) : null}
+              <PhotoBox setPhoto = {this.setPhoto} isUpdate = {false} ></PhotoBox>
 
               <TouchableOpacity
                 style={{

@@ -10,7 +10,6 @@ import {
   Modal,
 } from "react-native";
 import dbNews from "../../firebase/Database/Functions/dbNews";
-import ImagePickerExample from "../Custom/camera";
 import { AuthContext } from "../AuthContext";
 
 import mainStyle from "../../styles/mainStyle";

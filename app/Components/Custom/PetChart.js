@@ -36,7 +36,9 @@ class Chart extends React.Component {
 
   this.setState({ newtype: "weight" });
 
-      const WIDs = this.props.WIDs;
+      const petID = this.props.petID;
+
+      dbUserAnimal.getAnimalStatSamples(this.context.uid, petID, "weight").then((WIDs) => {
       WIDs.map((wid) => {
         dbUserAnimal
           .getAnimalStatSample(
@@ -51,8 +53,9 @@ class Chart extends React.Component {
             this.setState({ mounted: true });
           });
       });
+     });
 
-      const HIDs = this.props.HIDs;
+    dbUserAnimal.getAnimalStatSamples(this.context.uid, petID, "height").then((HIDs) => {
       HIDs.map((hid) => {
         dbUserAnimal
           .getAnimalStatSample(
@@ -66,6 +69,8 @@ class Chart extends React.Component {
             this.setState({ mounted: true });
           });
       });
+   });
+
   }
 
   handleValidation() {
@@ -88,7 +93,6 @@ class Chart extends React.Component {
     }
 
     addPetStatSample = () => {
-        console.log("STAT: " + this.state.newtype);
         if (this.handleValidation()) {
           //console.log("Valid sample");
           let errors = {};
