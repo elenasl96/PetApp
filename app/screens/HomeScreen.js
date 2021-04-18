@@ -21,6 +21,7 @@ import NotificationsHandler from "../Components/NotificationsHandler";
 import { AntDesign } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import AddPetForm from "../Components/Forms/AddPetForm";
+import dbAdoptableAnimal from "../firebase/Database/Functions/dbAdoptableAnimal";
 
 class HomeScreen extends React.Component {
   state = {
@@ -110,15 +111,33 @@ class HomeScreen extends React.Component {
     this.setState({ mounted: false });
   }
 
-  addPet = () => {
-    //console.log("tt");
+  showPetForm = () => {
     if (this.state.mounted) {
       this.setState({ showPetForm: true });
     }
   };
 
+  addPet = (petID) => {
+    this.state.pets.push(petID);
+    console.log(this.state.pets);
+    this.setState({ pets: this.state.pets });
+  };
+
+  deletePet = (petID) => {
+    dbUserAnimal.deleteAnimal(this.context.uid, petID);
+    let petsUpdated = this.state.pets;
+    let index = petsUpdated.indexOf(petID);
+    if (index != -1) {
+      petsUpdated.splice(index, 1);
+    }
+    console.log(petsUpdated);
+    this.setState({ pets: petsUpdated });
+  };
+
   showPet = () => {
-    this.props.navigation.navigate("Pet");
+    this.props.navigation.navigate("Pet", {
+      deletePet: this.deletePet(),
+    });
   };
 
   render() {
@@ -128,8 +147,8 @@ class HomeScreen extends React.Component {
           visible={this.state.showPetForm}
           close={() => {
             this.setState({ showPetForm: false });
-            console.log(this.state.pets);
           }}
+          addPet={this.addPet}
         ></AddPetForm>
         <NotificationsHandler></NotificationsHandler>
         <View style={styles.mainContent}>
@@ -160,6 +179,7 @@ class HomeScreen extends React.Component {
                       pets={this.state.pets}
                       //pets = {this.context.pets}
                       navigation={this.props.navigation}
+                      deleteAnimal={this.deletePet}
                       type="useranimal"
                     ></PetButton>
                   ) : (
@@ -167,7 +187,7 @@ class HomeScreen extends React.Component {
                   )}
 
                   <TouchableHighlight
-                    onPress={this.addPet}
+                    onPress={this.showPetForm}
                     style={styles.addPetButton}
                   >
                     <AntDesign name="plus" size={50} style={styles.plus} />

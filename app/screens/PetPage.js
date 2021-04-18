@@ -29,7 +29,6 @@ import ReportLossForm from "../Components/Forms/ReportLossForm";
 //--------------------------
 
 class PetScreen extends React.Component {
-
   state = {
     mounted: true,
     photo: null,
@@ -40,19 +39,16 @@ class PetScreen extends React.Component {
   static contextType = AuthContext;
 
   componentDidMount() {
-
     const pet = this.props.navigation.state.params.pet;
     this.setState({ photo: pet.photo });
-
   }
 
   deletePet = () => {
-
-    const isAdoptable = this.props.navigation.state.params.isAdoptable;
-    const petID =  this.props.navigation.state.params.petID;
-
+    const petID = this.props.navigation.state.params.petID;
     storageManager.deleteFile(this.state.photo);
-    if(isAdoptable){
+    this.props.navigation.state.params.deleteAnimal(petID);
+    this.props.navigation.goBack();
+    /*if(isAdoptable){
       const pid = this.props.navigation.state.params.pid;
       dbAdoptableAnimal.deleteAnimal(
             pid,
@@ -65,7 +61,7 @@ class PetScreen extends React.Component {
           petID
         );
     }
-
+  */
   };
 
   reportLoss = () => {
@@ -73,12 +69,11 @@ class PetScreen extends React.Component {
   };
 
   setPhoto = (photo) => {
-        console.log("setPhoto petpage");
-        this.setState({ photo: photo });
+    console.log("setPhoto petpage");
+    this.setState({ photo: photo });
   };
 
   render() {
-
     const pet = this.props.navigation.state.params.pet;
     const petID = this.props.navigation.state.params.petID;
     const type = pet.type;
@@ -87,14 +82,12 @@ class PetScreen extends React.Component {
     var section = "";
     var pid = null;
 
-    if(isAdoptable) {
-       section = "kennelpets";
-       pid = this.props.navigation.state.params.pid;
+    if (isAdoptable) {
+      section = "kennelpets";
+      pid = this.props.navigation.state.params.pid;
+    } else {
+      section = "pets";
     }
-    else{
-       section = "pets";
-    }
-
 
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -146,7 +139,13 @@ class PetScreen extends React.Component {
               </View>
             </View>
 
-            <PhotoBox petID={petID} section={section} setPhoto = {this.setPhoto} isUpdate = {true} photo = {photo}></PhotoBox>
+            <PhotoBox
+              petID={petID}
+              section={section}
+              setPhoto={this.setPhoto}
+              isUpdate={true}
+              photo={photo}
+            ></PhotoBox>
 
             <ScrollView
               horizontal={true}
@@ -174,18 +173,25 @@ class PetScreen extends React.Component {
               </TouchableHighlight>
             </ScrollView>
 
-            <DiseasePanel petID = {petID} type = {type} isAdoptable = {isAdoptable} pid ={pid}> </DiseasePanel>
+            <DiseasePanel
+              petID={petID}
+              type={type}
+              isAdoptable={isAdoptable}
+              pid={pid}
+            >
+              {" "}
+            </DiseasePanel>
 
-         {isAdoptable ? (
-            <Chart petID={petID} ></Chart> ) :
-            (
-            <TouchableHighlight>
-                            <View style={styles.info}>
-                              <Text>Profile</Text>
-                              <Text>{pet.profile}</Text>
-                            </View>
-                          </TouchableHighlight> ) }
-
+            {isAdoptable ? (
+              <Chart petID={petID}></Chart>
+            ) : (
+              <TouchableHighlight>
+                <View style={styles.info}>
+                  <Text>Profile</Text>
+                  <Text>{pet.profile}</Text>
+                </View>
+              </TouchableHighlight>
+            )}
           </ScrollView>
         </View>
 

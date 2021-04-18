@@ -123,11 +123,14 @@ class AddPetForm extends Component {
             url,
             this.state.typeSelected
           )
-          .then(() => this.props.close());
+          .then((doc) => {
+            this.props.addPet(doc.id);
+            this.props.close();
+          });
       });
     }
   };
-/*
+  /*
   upload = async (uri) => {  // not used
     const response = await fetch(uri);
     const file = await response.blob();
@@ -137,7 +140,8 @@ class AddPetForm extends Component {
     });
   }; */
 
-  setPhoto = (photo) => {  // OK
+  setPhoto = (photo) => {
+    // OK
     this.setState({ photo: photo });
   };
 
@@ -263,7 +267,7 @@ class AddPetForm extends Component {
                 </Picker>
               </View>
 
-              <PhotoBox setPhoto = {this.setPhoto} isUpdate = {false} ></PhotoBox>
+              <PhotoBox setPhoto={this.setPhoto} isUpdate={false}></PhotoBox>
 
               <TouchableOpacity
                 style={{
