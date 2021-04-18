@@ -46,7 +46,6 @@ class VetScreen extends React.Component {
           });
           Promise.all(promises).then((animals) => {
             this.setState({ animalsToAdopt: animals });
-            console.log("Adoptable animals: " + this.state.animalsToAdopt );
           });
         }
       });
@@ -180,7 +179,7 @@ class VetScreen extends React.Component {
                                   navigation={this.props.navigation}
                                   pets={this.state.animalsToAdopt}
                                   isAdoptable = {true}
-                                  place = {this.props.navigation.state.params.place.id}
+                                  pid = {this.props.navigation.state.params.place.id}
                                 ></PetButton>
                               </View>
                 ) : null}
@@ -250,7 +249,6 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     paddingHorizontal: 25,
     color: "black",
-
     //backgroundColor: "rgba(255,255,255,0.6)",
   },
   vetImage: {

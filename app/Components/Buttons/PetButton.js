@@ -10,20 +10,17 @@ import firebase from "firebase";
 import dbUserAnimal from "../../firebase/Database/Functions/dbUserAnimal";
 import { AuthContext } from "../AuthContext";
 import dbAdoptableAnimal from "../../firebase/Database/Functions/dbAdoptableAnimal";
-//import Animal from "../firebase/Animal.js";
 
 class PetButton extends React.Component {
   state = {
     pet: null,
     mounted: true,
-    //prevState: [],
   };
 
   // static contextType = AuthContext;
 
   componentDidMount() {
     this.setState({ mounted: true });
-    //console.log(this.state.pet);
     const navigation = this.props.navigation;
     const pets = this.props.pets;
     const isAdoptable = this.props.isAdoptable;
@@ -33,15 +30,6 @@ class PetButton extends React.Component {
 
     pets.map((petID) => {
       dbUserAnimal.getUserAnimal(this.props.uid, petID).then((animal) => {
-        //console.log("Adding animal: " + animal.name);
-        dbUserAnimal.getAnimalStatSamples(this.props.uid, petID, "weight").then(
-          (WIDs) => {
-            // WID weight sample id
-            dbUserAnimal.getAnimalStatSamples(this.props.uid, petID, "height").then(
-              (HIDs) => {
-                // HID height sample id
-                dbUserAnimal.getAnimalDiseases(this.props.uid, petID).then((DIDs) => {
-                  //DID disease id
                   petButtons.push(
                     <TouchableHighlight
                       style={styles.pet}
@@ -51,9 +39,6 @@ class PetButton extends React.Component {
                         navigation.push("Pet", {
                           pet: animal,
                           petID: petID,
-                          WIDs: WIDs,
-                          HIDs: HIDs,
-                          DIDs: DIDs,
                         })
                       }
                     >
@@ -69,31 +54,22 @@ class PetButton extends React.Component {
                 });
               }
             );
-          }
-        );
-      });
-    });
-   }
+     }
    else{
-    const place = this.props.place;
+    const pid = this.props.pid;
 
     pets.map((petID) => {
-          dbAdoptableAnimal.getAdoptableAnimal(place, petID.toString()).then((animal) => {
-            console.log("Adding animal: " + animal.name);
-
-                    dbAdoptableAnimal.getAdoptableAnimalDiseases(place,petID.toString()).then((DIDs) => {
-                      //DID disease id
+          dbAdoptableAnimal.getAdoptableAnimal(pid, petID.toString()).then((animal) => {
                       petButtons.push(
                         <TouchableHighlight
                           style={styles.pet}
                           value={petID}
                           key={petID}
                           onPress={() =>
-                            navigation.push("AdoptablePet", {
+                            navigation.push("Pet", {
                               pet: animal,
                               petID: petID.toString(),
-                              DIDs: DIDs,
-                              place: place
+                              pid: pid
                             })
                           }
                         >
@@ -108,16 +84,8 @@ class PetButton extends React.Component {
                       }
                     });
                   });
-              });
-
-          }
+     }
   }
-  /*
-  useEffect(() => {
-    console.log("Context change detected!");
-    changePetButtons(this.context.pets);
-  }, [this.context.pets]);
-  */
 
   componentWillUnmount() {
     this.setState({ mounted: false });

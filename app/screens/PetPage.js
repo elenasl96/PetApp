@@ -13,26 +13,24 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
-import firebase from "firebase";
+
 import mainStyle from "../styles/mainStyle";
 import dbUserAnimal from "../firebase/Database/Functions/dbUserAnimal";
+import dbAdoptableAnimal from "../firebase/Database/Functions/dbAdoptableAnimal";
 import storageManager from "../firebase/Storage/storage";
 import { AuthContext } from "../Components/AuthContext";
 import { withNavigation } from "react-navigation";
-import { Picker } from "@react-native-picker/picker";
-import PhotoBox from "../Components/Custom/PhotoBox";
 
+//--- custom components -------
+import PhotoBox from "../Components/Custom/PhotoBox";
+import DiseasePanel from "../Components/Custom/DiseasePanel";
 import Chart from "../Components/Custom/PetChart.js";
-import utils from "../shared/utilities";
-import constants from "../shared/constants";
 import ReportLossForm from "../Components/Forms/ReportLossForm";
+//--------------------------
 
 class PetScreen extends React.Component {
 
   state = {
-    diseases: {},
-    diseaseShown: null,
-    diseaseSelected: null,
     mounted: true,
     photo: null,
     showReportLossForm: false,
@@ -42,99 +40,36 @@ class PetScreen extends React.Component {
   static contextType = AuthContext;
 
   componentDidMount() {
-    console.log("pet page");
-    const DIDs = this.props.navigation.state.params.DIDs;
-    DIDs.map((did) => {
-      dbUserAnimal
-        .getAnimalDisease(
-          this.context.uid,
-          this.props.navigation.state.params.petID,
-          did
-        )
-        .then((disease) => {
-          if (this.state.diseaseShown == null) {
-            this.setState({ diseaseShown: disease.name });
-          }
-          dbUserAnimal
-            .getDiseaseDescription(disease.name)
-            .then((descriptions) => {
-              this.state.diseases[disease.name] = descriptions[0];
-              this.setState({ mounted: true });
-            });
-        });
-    });
 
     const pet = this.props.navigation.state.params.pet;
-
-    if (pet.type == "Dog") {
-      this.setState({ diseaseSelected: constants.DISEASES_DOG[0] });
-    } else {
-      this.setState({ diseaseSelected: constants.DISEASES_CAT[0] });
-    }
-
     this.setState({ photo: pet.photo });
+
   }
 
   deletePet = () => {
-    console.log("url: " + this.state.photo);
+
+    const isAdoptable = this.props.navigation.state.params.isAdoptable;
+    const petID =  this.props.navigation.state.params.petID;
+
     storageManager.deleteFile(this.state.photo);
-    dbUserAnimal.deleteAnimal(
-      this.context.uid,
-      this.props.navigation.state.params.petID
-    );
+    if(isAdoptable){
+      const pid = this.props.navigation.state.params.pid;
+      dbAdoptableAnimal.deleteAnimal(
+            pid,
+            petID
+      );
+    }
+    else{
+        dbUserAnimal.deleteAdoptableAnimal(
+          this.context.uid,
+          petID
+        );
+    }
+
   };
 
   reportLoss = () => {
     this.setState({ showReportLossForm: true });
-  };
-
-  addDisease = () => {
-    var disease = this.state.diseaseSelected;
-    var diseases = Object.keys(this.state.diseases);
-    let errors = {};
-
-    if (diseases.includes(disease)) {
-      errors["addDisease"] = "Disease already present!";
-      console.log(errors["addDisease"]);
-    } else {
-      dbUserAnimal.addAnimalDisease(
-        this.context.uid,
-        this.props.navigation.state.params.petID,
-        disease
-      );
-
-      if (this.state.diseaseShown == null) {
-        this.setState({ diseaseShown: disease });
-      }
-
-      dbUserAnimal.getDiseaseDescription(disease).then((descriptions) => {
-        this.state.diseases[disease] = descriptions[0];
-        this.setState({ mounted: true });
-      });
-    }
-
-    this.setState({ errors: errors });
-    this.setState({ mounted: true });
-  };
-
-  deleteDisease = () => {
-    var disease = this.state.diseaseShown;
-    let errors = {};
-    dbUserAnimal.deleteAnimalDiseaseByName(
-      this.context.uid,
-      this.props.navigation.state.params.petID,
-      disease
-    );
-    delete this.state.diseases[disease];
-    this.setState({ errors: errors }); // clean errors
-    var diseases = Object.keys(this.state.diseases);
-    if (diseases.length != 0) {
-      this.setState({ diseaseShown: diseases[0] });
-      this.setState({ descriptionShown: this.state.diseases[diseases[0]] });
-    } else {
-      this.setState({ diseaseShown: null });
-      this.setState({ descriptionShown: null });
-    }
   };
 
   setPhoto = (photo) => {
@@ -146,39 +81,20 @@ class PetScreen extends React.Component {
 
     const pet = this.props.navigation.state.params.pet;
     const petID = this.props.navigation.state.params.petID;
+    const type = pet.type;
     const photo = this.state.photo;
+    const isAdoptable = this.props.navigation.state.params.isAdoptable;
+    var section = "";
+    var pid = null;
 
-    const descriptionShown = this.state.diseases[this.state.diseaseShown];
-    const temp = Object.keys(this.state.diseases);
-    let diseases = temp.map((s) => {
-      //console.log("s: "+ s);
-      return (
-        <TouchableHighlight
-          style={styles.info}
-          value={s}
-          key={s}
-          onPress={() => this.setState({ diseaseShown: s })}
-        >
-          <View style={styles.info}>
-            <Text>{s}</Text>
-          </View>
-        </TouchableHighlight>
-      );
-    });
-
-    var diseasesSelectable = [];
-
-    if (pet.type == "Dog") {
-      diseasesSelectable = constants.DISEASES_DOG.map((s, i) => {
-        return <Picker.Item key={i} value={s} label={s} />;
-      });
-    } else {
-      diseasesSelectable = constants.DISEASES_CAT.map((s, i) => {
-        return <Picker.Item key={i} value={s} label={s} />;
-      });
+    if(isAdoptable) {
+       section = "kennelpets";
+       pid = this.props.navigation.state.params.pid;
+    }
+    else{
+       section = "pets";
     }
 
-   // <PhotoBox setPhoto={this.setPhoto} isUpdate = {true} petID = {petID} photo = {photo} ></PhotoBox>
 
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -230,7 +146,7 @@ class PetScreen extends React.Component {
               </View>
             </View>
 
-            <PhotoBox petID={petID} type={"pets"} setPhoto = {this.setPhoto} isUpdate = {true} photo = {photo}></PhotoBox>
+            <PhotoBox petID={petID} section={section} setPhoto = {this.setPhoto} isUpdate = {true} photo = {photo}></PhotoBox>
 
             <ScrollView
               horizontal={true}
@@ -258,66 +174,17 @@ class PetScreen extends React.Component {
               </TouchableHighlight>
             </ScrollView>
 
+            <DiseasePanel petID = {petID} type = {type} isAdoptable = {isAdoptable} pid ={pid}> </DiseasePanel>
+
+         {isAdoptable ? (
+            <Chart petID={petID} ></Chart> ) :
+            (
             <TouchableHighlight>
-              <View style={styles.info}>
-                <Text>Diseases</Text>
-              </View>
-            </TouchableHighlight>
-
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-            >
-              {diseases}
-            </ScrollView>
-
-            {temp.length != 0 ? (
-              <View style={styles.info}>
-                <Text>{descriptionShown}</Text>
-              </View>
-            ) : null}
-
-            <View style={styles.info}>
-              <Text>AddDiseases</Text>
-            </View>
-
-            <View style={mainStyle.form}>
-              <Picker
-                selectedValue={this.state.diseaseSelected}
-                style={{ height: 50, width: "100%" }}
-                onValueChange={(disease) =>
-                  this.setState({ diseaseSelected: disease })
-                }
-              >
-                {diseasesSelectable}
-              </Picker>
-            </View>
-
-            <TouchableHighlight
-              style={styles.petButton}
-              onPress={this.addDisease.bind(this)}
-              underlayColor={"rgb(200,200,200)"}
-            >
-              <Text style={{ textAlign: "center" }}>add</Text>
-            </TouchableHighlight>
-
-            {this.state.errors["addDisease"] != null ? (
-              <Text style={styles.error}>
-                {this.state.errors["addDisease"]}
-              </Text>
-            ) : null}
-
-            {temp.length != 0 ? (
-              <TouchableHighlight
-                style={styles.petButton}
-                onPress={this.deleteDisease.bind(this)}
-                underlayColor={"rgb(200,200,200)"}
-              >
-                <Text style={{ textAlign: "center" }}>delete</Text>
-              </TouchableHighlight>
-            ) : null}
-
-            <Chart petID={petID} ></Chart>
+                            <View style={styles.info}>
+                              <Text>Profile</Text>
+                              <Text>{pet.profile}</Text>
+                            </View>
+                          </TouchableHighlight> ) }
 
           </ScrollView>
         </View>

@@ -204,6 +204,29 @@ const dbAdoptableAnimal = {
     });
   },
 
+  getAdoptableAnimalDiseaseByName: function (pid, aid, name) {
+      const animals = firestore
+        .collection("Places")
+        .doc(uid)
+        .collection("Animals");
+      var diseases = [];
+      return animals
+        .doc(aid)
+        .collection("Diseases")
+        .where("name", "==", name)
+        .get()
+        .then(function (querySnapshot) {
+          querySnapshot.forEach(function (doc) {
+            diseases.push(doc.id);
+            return diseases;
+          });
+          return diseases;
+        })
+        .catch(function (error) {
+          console.log("Error getting documents: ", error);
+        });
+    },
+
   deleteAnimalDiseaseByName: function (pid, aid, name) {
     dbAdoptableAnimal
       .getAdoptableAnimalDiseaseByName(pid, aid, name)
@@ -248,6 +271,27 @@ const dbAdoptableAnimal = {
         console.log("Error getting documents: ", error);
       });
   },
+
+  deleteAdoptableAnimalDiseaseByName: function (pid, aid, name) {
+      dbAdoptableAnimal.getAdoptableAnimalDiseaseByName(pid, aid, name).then((ids) => {
+        var id = ids[0];
+        const animals = firestore
+          .collection("Places")
+          .doc(uid)
+          .collection("Animals");
+        animals
+          .doc(aid)
+          .collection("Diseases")
+          .doc(id)
+          .delete()
+          .then(function () {
+            console.log("Document successfully deleted!");
+          })
+          .catch(function (error) {
+            console.error("Error removing document: ", error);
+          });
+      });
+    },
 
   updateAdoptablePetPhoto: function (pid, aid, url) {
     firestore

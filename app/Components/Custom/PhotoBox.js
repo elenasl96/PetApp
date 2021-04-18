@@ -24,7 +24,7 @@ import dbAdoptableAnimal from "../../firebase/Database/Functions/dbAdoptableAnim
 
 class PhotoBox extends React.Component {
 
-// props: ids , type , initial photo (if any) , boolean to show (or not) update button
+// props: ids , section , initial photo (if any) , boolean to show (or not) update button
 
 // form includes this component asking to show ( or not to show) update button, initial photo and ids are passed just for the update.
 
@@ -133,45 +133,44 @@ class PhotoBox extends React.Component {
   */
 
   upload = async (uri) => {     // logic to differentiate the storages
-    const type = this.props.type;
-    if (type == "pets"){
+    const section = this.props.section;
+    if (section == "pets"){
       const petID = this.props.petID;
       const uid = this.context.uid;
       const response = await fetch(uri);
       const file = await response.blob();
-      storageManager.toStorage(uid, file,type).then((url) => {
-         console.log("url: " + url);
+      storageManager.toStorage(uid, file,section).then((url) => {
          dbUserAnimal.updatePetPhoto(uid, petID, url); // update ref in db
          this.setState({ photo: url });
       });
     }
 
-    if (type == "places"){
+    if (section == "places"){
         const pid = this.props.pid;
         const response = await fetch(uri);
         const file = await response.blob();
-        storageManager.toStorage(uid, file,type).then((url) => {
+        storageManager.toStorage(uid, file,section).then((url) => {
            dbPlaces.updatePlacePhoto(pid,url); // update ref in db
            this.setState({ photo: url });
         });
     }
 
-    if (type == "kennelpets"){
+    if (section == "kennelpets"){
             const pid = this.props.pid;
             const petID = this.props.petID;
             const response = await fetch(uri);
             const file = await response.blob();
-            storageManager.toStorage(uid, file,type).then((url) => {
+            storageManager.toStorage(uid, file,section).then((url) => {
                dbAdoptableAnimal.updateAdoptablePetPhoto(pid,petID,url); // update ref in db
                this.setState({ photo: url });
             });
     }
 
-    if (type == "user"){
+    if (section == "user"){
                 const uid = this.context.uid;
                 const response = await fetch(uri);
                 const file = await response.blob();
-                storageManager.toStorage(uid, file,type).then((url) => {
+                storageManager.toStorage(uid, file,section).then((url) => {
                    dbUser.updateUserPhoto(pid,url); // update ref in db
                    this.setState({ photo: url });
                 });
