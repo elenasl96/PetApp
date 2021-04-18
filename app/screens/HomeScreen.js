@@ -120,7 +120,9 @@ class HomeScreen extends React.Component {
   addPet = (petID) => {
     this.state.pets.push(petID);
     console.log(this.state.pets);
-    this.setState({ pets: this.state.pets });
+    if (this.state.mounted) {
+      this.setState({ pets: this.state.pets });
+    }
   };
 
   deletePet = (petID) => {
@@ -131,7 +133,9 @@ class HomeScreen extends React.Component {
       petsUpdated.splice(index, 1);
     }
     console.log(petsUpdated);
-    this.setState({ pets: petsUpdated });
+    if (this.state.mounted) {
+      this.setState({ pets: petsUpdated });
+    }
   };
 
   showPet = () => {

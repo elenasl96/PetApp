@@ -14,7 +14,7 @@ import {
 import "firebase/firestore";
 import { auth } from "../firebase/firebaseconfig.js";
 import * as Facebook from "expo-facebook";
-
+import PhotoBox from "../Components/Custom/PhotoBox";
 import mainStyle from "../styles/mainStyle";
 import dbUser from "../firebase/Database/Functions/dbUser";
 import { AuthContext } from "../Components/AuthContext.js";
@@ -28,6 +28,7 @@ class SignUpScreen extends React.Component {
     password: null,
     address: null,
     type: null,
+    photo: null,
     errorMessage: null,
     loading: false,
     mounted: true,
@@ -42,6 +43,12 @@ class SignUpScreen extends React.Component {
     }
   }
 
+  setPhoto = (photo) => {
+    if (this.state.mounted) {
+      this.setState({ photo: photo });
+    }
+  };
+
   async signUpWithEmail() {
     if (this.state.emailSignup) {
       console.log(this.state);
@@ -51,21 +58,27 @@ class SignUpScreen extends React.Component {
         this.state.password &&
         this.state.address &&
         this.state.type &&
-        this.state.type !== ""
+        this.state.type !== "" &&
+        this.state.photo
       ) {
         await auth()
           .createUserWithEmailAndPassword(this.state.email, this.state.password)
           .then((credential) => {
-            auth().setPersistence(auth.Auth.Persistence.LOCAL);
             let user = credential.user;
             //console.log(user);
-            dbUser.addUser(
-              user.uid,
-              this.state.name,
-              "",
-              this.state.type,
-              this.state.address
-            );
+            dbUser
+              .addUser(
+                user.uid,
+                this.state.name,
+                this.state.photo,
+                this.state.type,
+                this.state.address
+              )
+              .then(() => {
+                //auth().setPersistence(auth.Auth.Persistence.LOCAL);
+                //this.props.navigation.navigate("App");
+                console.log("AAA");
+              });
           })
           .catch((error) => {
             let errorCode = error.code;
@@ -113,13 +126,16 @@ class SignUpScreen extends React.Component {
             //console.log("Facebook data:");
             //console.log(facebookProfileData);
             if (facebookProfileData.additionalUserInfo.isNewUser) {
-              dbUser.addUser(
-                auth().currentUser.uid,
-                facebookProfileData.additionalUserInfo.profile.name,
-                facebookProfileData.additionalUserInfo.profile.picture.data.url,
-                this.state.type,
-                this.state.address
-              ).then("User Registered");
+              dbUser
+                .addUser(
+                  auth().currentUser.uid,
+                  facebookProfileData.additionalUserInfo.profile.name,
+                  facebookProfileData.additionalUserInfo.profile.picture.data
+                    .url,
+                  this.state.type,
+                  this.state.address
+                )
+                .then("User Registered");
             }
 
             dbUser.getUser(user.uid).then((userFromDb) => {
@@ -211,6 +227,10 @@ class SignUpScreen extends React.Component {
                   onChangeText={(password) => this.setState({ password })}
                 />
               </View>
+            ) : null}
+
+            {this.state.emailSignup ? (
+              <PhotoBox setPhoto={this.setPhoto} isUpdate={false}></PhotoBox>
             ) : null}
 
             {this.state.emailSignup ||

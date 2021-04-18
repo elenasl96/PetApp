@@ -1,18 +1,18 @@
-import {firestore} from "../../firebaseconfig.js";
+import { firestore } from "../../firebaseconfig.js";
 import User from "../Objects/User.js";
 import dbNotification from "./dbNotification.js";
 import dbUserAnimal from "./dbUserAnimal.js";
 import dbFeed from "./dbFeed.js";
+import utils from "../../../shared/utilities";
 import dbPlace from "./dbPlace.js";
 
-
 const dbUser = {
-
   // user info
   addUser: function (uid, name, photo, type, address) {
     const users = firestore.collection("Users");
     let user = new User(name, photo, type, address, 0, utils.timestamp(), "");
-    users.doc(uid).set(user.toFirestore());
+    console.log(user);
+    return users.doc(uid).set(user.toFirestore());
   },
 
   getUser: function (uid) {
@@ -48,7 +48,9 @@ const dbUser = {
 
     this.getUserNotifications(uid).then(function (notifications) {
       if (notifications.length != 0) {
-        notifications.forEach((id) => dbNotification.deleteUserNotification(uid, id));
+        notifications.forEach((id) =>
+          dbNotification.deleteUserNotification(uid, id)
+        );
       }
 
       if (type == "business") {
@@ -90,13 +92,9 @@ const dbUser = {
     });
   },
 
-  updateUserPhoto: function (uid,url) {
-      firestore
-        .collection("Users")
-        .doc(uid)
-        .update({ photo: url });
+  updateUserPhoto: function (uid, url) {
+    firestore.collection("Users").doc(uid).update({ photo: url });
   },
-
 };
 
 export default dbUser;
