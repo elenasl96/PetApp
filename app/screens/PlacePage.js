@@ -11,43 +11,33 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
-import firebase from "firebase";
-import dbNews from "../firebase/Database/Functions/dbNews";
 import dbAdoptableAnimal from "../firebase/Database/Functions/dbAdoptableAnimal";
 import News from "../Components/Custom/News";
 import { AuthContext } from "../Components/AuthContext";
-import { AntDesign } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import StarButton from "../Components/Buttons/StarButton";
 import { withNavigation } from "react-navigation";
 import AddNewsForm from "../Components/Forms/AddNewsForm";
+import AddPetForm from "../Components/Forms/AddPetForm";
 import PetButton from "../Components/Buttons/PetButton";
 
 class VetScreen extends React.Component {
   static contextType = AuthContext;
-  state = { mounted: false,
-            showNewsForm: false };
+  state = {
+    mounted: false,
+    showNewsForm: false,
+    showPetForm: false,
+    animalsToAdopt: [],
+  };
 
   componentDidMount() {
     const place = this.props.navigation.state.params.place;
     this.setState({ mounted: true });
 
     if (place.getType() === "Kennel") {
-      dbAdoptableAnimal
-        .getAdoptableAnimals(place.id)
-        .then((adoptableAnimals) => {
-          if (adoptableAnimals.length!=0){
-          let promises = adoptableAnimals.map((animalID) => {
-            return dbAdoptableAnimal
-              .getAdoptableAnimals(place.id, animalID)
-              .then((animal) => {
-                return animal;
-              });
-          });
-          Promise.all(promises).then((animals) => {
-            this.setState({ animalsToAdopt: animals });
-          });
-        }
+      console.log("mount kennel");
+      dbAdoptableAnimal.getAdoptableAnimals(place.id).then((animals) => {
+        this.setState({ animalsToAdopt: animals });
       });
     }
   }
@@ -72,28 +62,35 @@ class VetScreen extends React.Component {
     return place.getType() === "Kennel";
   };
 
-  addAnimalToAdopt = () => {
+  addAnimalToAdopt = (petID) => {
     console.log("Add animal to adopt");
-    //TODO
+    this.state.animalsToAdopt.push(petID);
+    console.log(this.state.animalsToAdopt);
+    if (this.state.mounted) {
+      this.setState({ animalsToAdopt: this.state.animalsToAdopt });
+    }
   };
 
   deletePet = (petID) => {
-      const pid = this.props.navigation.state.params.place.id;
-      dbAdoptableAnimal.deleteAdoptableAnimal(pid, petID);
-      let petsUpdated = this.state.animalsToAdopt;
-      let index = petsUpdated.indexOf(petID);
-      if (index != -1) {
-        petsUpdated.splice(index, 1);
-      }
-      console.log(petsUpdated);
-      if (this.state.mounted) {
-        this.setState({ animalsToAdopt: petsUpdated });
-      }
+    console.log("Delete adoptable pet");
+    console.log(this.state.animalsToAdopt);
+    const pid = this.props.navigation.state.params.place.id;
+    dbAdoptableAnimal.deleteAdoptableAnimal(pid, petID);
+    let petsUpdated = this.state.animalsToAdopt;
+    let index = petsUpdated.indexOf(petID);
+    if (index != -1) {
+      petsUpdated.splice(index, 1);
+    }
+    console.log(petsUpdated);
+    if (this.state.mounted) {
+      this.setState({ animalsToAdopt: petsUpdated });
+    }
   };
 
   render() {
     const place = this.props.navigation.state.params.place;
     const pid = place.id;
+
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <AddNewsForm
@@ -103,6 +100,15 @@ class VetScreen extends React.Component {
             this.setState({ showNewsForm: false });
           }}
         ></AddNewsForm>
+        <AddPetForm
+          adoptable={true}
+          pid={pid}
+          visible={this.state.showPetForm}
+          close={() => {
+            this.setState({ showPetForm: false });
+          }}
+          addPet={this.addAnimalToAdopt}
+        ></AddPetForm>
         <View>
           <ImageBackground
             source={{ uri: place.photo }}
@@ -153,7 +159,7 @@ class VetScreen extends React.Component {
                 {this.isKennel(place) ? (
                   <TouchableOpacity
                     style={styles.button}
-                    onPress={() => this.addAnimalToAdopt()}
+                    onPress={() => this.setState({ showPetForm: true })}
                   >
                     <Text style={styles.buttonText}> + Animals </Text>
                   </TouchableOpacity>
@@ -180,26 +186,26 @@ class VetScreen extends React.Component {
             <News placeId={pid}></News>
           </ScrollView>
         </View>
-        {this.state.animalsToAdopt != null ? (
-                <View
-                                style={{
-                                  flex: 1,
-                                  flexDirection: "row",
-                                  flexWrap: "wrap",
-                                  justifyContent: "center",
-                                }}
-                              >
-                                <PetButton
-                                  navigation={this.props.navigation}
-                                  pets={this.state.animalsToAdopt}
-                                  isAdoptable = {true}
-                                  pid = {this.props.navigation.state.params.place.id}
-                                  deleteAnimal={this.deletePet}
-                                ></PetButton>
-                              </View>
-                ) : null}
-
-
+        {console.log("adoptable animals")}
+        {console.log(this.state.animalsToAdopt)}
+        {this.state.animalsToAdopt.length > 0 ? (
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              flexWrap: "wrap",
+              justifyContent: "center",
+            }}
+          >
+            <PetButton
+              navigation={this.props.navigation}
+              pets={this.state.animalsToAdopt}
+              isAdoptable={true}
+              pid={this.props.navigation.state.params.place.id}
+              deleteAnimal={this.deletePet}
+            ></PetButton>
+          </View>
+        ) : null}
       </SafeAreaView>
     );
   }

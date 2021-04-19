@@ -26,7 +26,7 @@ const dbAdoptableAnimal = {
       profile
     );
     //console.log(animal);
-    places.doc(pid).collection("Animals").add(animal.toFirestore());
+    return places.doc(pid).collection("Animals").add(animal.toFirestore());
   },
 
   getAdoptableAnimal: function (pid, aid) {
@@ -111,7 +111,7 @@ const dbAdoptableAnimal = {
   addAdoptableAnimalDisease: function (pid, aid, disease) {
     const places = firestore.collection("Places");
     const animals = places.doc(pid).collection("Animals");
-    animals.doc(aid).collection("Diseases").add({ name: disease });
+    return animals.doc(aid).collection("Diseases").add({ name: disease });
   },
 
   getAdoptableAnimalDiseases: function (pid, aid) {
@@ -168,7 +168,7 @@ const dbAdoptableAnimal = {
       .collection("Places")
       .doc(pid)
       .collection("Animals");
-    animals
+    return animals
       .doc(aid)
       .collection("Diseases")
       .doc(id)
@@ -205,27 +205,27 @@ const dbAdoptableAnimal = {
   },
 
   getAdoptableAnimalDiseaseByName: function (pid, aid, name) {
-      const animals = firestore
-        .collection("Places")
-        .doc(uid)
-        .collection("Animals");
-      var diseases = [];
-      return animals
-        .doc(aid)
-        .collection("Diseases")
-        .where("name", "==", name)
-        .get()
-        .then(function (querySnapshot) {
-          querySnapshot.forEach(function (doc) {
-            diseases.push(doc.id);
-            return diseases;
-          });
+    const animals = firestore
+      .collection("Places")
+      .doc(uid)
+      .collection("Animals");
+    var diseases = [];
+    return animals
+      .doc(aid)
+      .collection("Diseases")
+      .where("name", "==", name)
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          diseases.push(doc.id);
           return diseases;
-        })
-        .catch(function (error) {
-          console.log("Error getting documents: ", error);
         });
-    },
+        return diseases;
+      })
+      .catch(function (error) {
+        console.log("Error getting documents: ", error);
+      });
+  },
 
   deleteAnimalDiseaseByName: function (pid, aid, name) {
     dbAdoptableAnimal
@@ -236,7 +236,7 @@ const dbAdoptableAnimal = {
           .collection("Places")
           .doc(pid)
           .collection("Animals");
-        animals
+        return animals
           .doc(aid)
           .collection("Diseases")
           .doc(id)
@@ -273,13 +273,15 @@ const dbAdoptableAnimal = {
   },
 
   deleteAdoptableAnimalDiseaseByName: function (pid, aid, name) {
-      dbAdoptableAnimal.getAdoptableAnimalDiseaseByName(pid, aid, name).then((ids) => {
+    dbAdoptableAnimal
+      .getAdoptableAnimalDiseaseByName(pid, aid, name)
+      .then((ids) => {
         var id = ids[0];
         const animals = firestore
           .collection("Places")
           .doc(uid)
           .collection("Animals");
-        animals
+        return animals
           .doc(aid)
           .collection("Diseases")
           .doc(id)
@@ -291,7 +293,7 @@ const dbAdoptableAnimal = {
             console.error("Error removing document: ", error);
           });
       });
-    },
+  },
 
   updateAdoptablePetPhoto: function (pid, aid, url) {
     firestore

@@ -6,12 +6,7 @@ import {
   TextInput,
   SafeAreaView,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  ActivityIndicator,
-  Keyboard,
-  TouchableWithoutFeedback,
   Modal,
-  Pressable,
 } from "react-native";
 import dbUserAnimal from "../../firebase/Database/Functions/dbUserAnimal";
 import storageManager from "../../firebase/Storage/storage";
@@ -23,6 +18,7 @@ import constants from "../../shared/constants";
 
 import mainStyle from "../../styles/mainStyle";
 import { ScrollView } from "react-native-gesture-handler";
+import dbAdoptableAnimal from "../../firebase/Database/Functions/dbAdoptableAnimal";
 
 class AddPetForm extends React.Component {
   static contextType = AuthContext;
@@ -36,6 +32,7 @@ class AddPetForm extends React.Component {
     breedSelected: "None",
     colorSelected: "White",
     sizeSelected: "Small",
+    profile: null,
     errors: {}, // dict
     visible: false,
     mounted: false,
@@ -44,7 +41,7 @@ class AddPetForm extends React.Component {
   componentDidMount() {
     this.setState({ mounted: true });
     if (this.state.mounted) {
-    this.setState({ visible: this.props.visible });
+      this.setState({ visible: this.props.visible });
     }
   }
 
@@ -57,38 +54,38 @@ class AddPetForm extends React.Component {
     if (this.state.name == "") {
       formIsValid = false;
       errors["name"] = "Name cannot be empty";
-    } else {
-      if (!this.state.name.match(/^[a-zA-Z]+$/)) {
-        formIsValid = false;
-        errors["name"] = "Only letters in name";
-      }
+    } else if (!this.state.name.match(/^[a-zA-Z]+$/)) {
+      formIsValid = false;
+      errors["name"] = "Only letters in name";
     }
+
     //Age
 
     if (this.state.age == "") {
       formIsValid = false;
       errors["age"] = "Age cannot be empty";
-    } else {
-      if (isNaN(this.state.age)) {
-        formIsValid = false;
-        errors["age"] = "Age must be a number";
-      } else {
-        if (
-          this.state.age > 20 ||
-          this.state.age < 0 ||
-          !Number.isInteger(Number(this.state.age))
-        ) {
-          console.log(this.state.age > 20);
-          console.log(this.state.age < 0);
-          console.log(!Number.isInteger(this.state.age));
-          formIsValid = false;
-          errors["age"] = "Age is an integer between 0 and 20 ";
-        }
-      }
+    } else if (isNaN(this.state.age)) {
+      formIsValid = false;
+      errors["age"] = "Age must be a number";
+    } else if (
+      this.state.age > 20 ||
+      this.state.age < 0 ||
+      !Number.isInteger(Number(this.state.age))
+    ) {
+      console.log(this.state.age > 20);
+      console.log(this.state.age < 0);
+      console.log(!Number.isInteger(this.state.age));
+      formIsValid = false;
+      errors["age"] = "Age is an integer between 0 and 20 ";
     }
+
+    if (this.props.adoptable && !this.state.profile) {
+      errors["profile"] = "Profile cannot be empty";
+    }
+
     //console.log(errors);
     if (this.state.mounted) {
-    this.setState({ errors: errors });
+      this.setState({ errors: errors });
     }
     return formIsValid;
   }
@@ -115,21 +112,40 @@ class AddPetForm extends React.Component {
       storageManager.toStorage(this.context.uid, file, "pets").then((url) => {
         console.log("url: " + url);
         //this.state.url = url;
-        dbUserAnimal
-          .addUserAnimal(
-            this.context.uid,
-            this.state.name,
-            this.state.age,
-            this.state.breedSelected,
-            this.state.sizeSelected,
-            this.state.colorSelected,
-            url,
-            this.state.typeSelected
-          )
-          .then((doc) => {
-            this.props.addPet(doc.id);
-            this.props.close();
-          });
+        if (this.props.adoptable) {
+          dbAdoptableAnimal
+            .addAdoptableAnimal(
+              this.props.pid,
+              this.state.name,
+              this.state.age,
+              this.state.breedSelected,
+              this.state.sizeSelected,
+              this.state.colorSelected,
+              url,
+              this.state.typeSelected,
+              this.state.profile
+            )
+            .then((doc) => {
+              this.props.addPet(doc.id);
+              this.props.close();
+            });
+        } else {
+          dbUserAnimal
+            .addUserAnimal(
+              this.context.uid,
+              this.state.name,
+              this.state.age,
+              this.state.breedSelected,
+              this.state.sizeSelected,
+              this.state.colorSelected,
+              url,
+              this.state.typeSelected
+            )
+            .then((doc) => {
+              this.props.addPet(doc.id);
+              this.props.close();
+            });
+        }
       });
     }
   };
@@ -145,7 +161,7 @@ class AddPetForm extends React.Component {
 
   setPhoto = (photo) => {
     if (this.state.mounted) {
-    this.setState({ photo: photo });
+      this.setState({ photo: photo });
     }
   };
 
@@ -270,6 +286,22 @@ class AddPetForm extends React.Component {
                   {sizes}
                 </Picker>
               </View>
+
+              {this.props.adoptable ? (
+                <View style={mainStyle.form}>
+                  <TextInput
+                    style={mainStyle.inputText}
+                    placeholder="Profile"
+                    placeholderTextColor="#616161"
+                    returnKeyType="next"
+                    value={this.state.profile}
+                    onChangeText={(profile) => this.setState({ profile })}
+                  />
+                </View>
+              ) : null}
+              {this.state.errors["profile"] != null ? (
+                <Text style={styles.error}>{this.state.errors["profile"]}</Text>
+              ) : null}
 
               <PhotoBox setPhoto={this.setPhoto} isUpdate={false}></PhotoBox>
 
