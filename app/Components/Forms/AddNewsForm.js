@@ -47,7 +47,9 @@ export default class AddNewsForm extends React.Component {
       errors["text"] = "Text cannot be empty";
     }
 
+    if (this.state.mounted) {
     this.setState({ errors: errors });
+    }
     return formIsValid;
   }
 

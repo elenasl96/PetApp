@@ -43,7 +43,7 @@ class PhotoBox extends React.Component {
 
   componentDidMount(){
     this.setState({mounted:true});
-    if (this.props.isUpdate){
+    if (this.props.isUpdate && this.state.mounted){
     this.setState({photo: this.props.photo});  // photo passed from the container, our initial photo
     }
   }
@@ -65,11 +65,15 @@ class PhotoBox extends React.Component {
 
       if (!result.cancelled) {
               if (this.props.isUpdate){
+                  if (this.state.mounted) {
                   this.setPhotoUpdate(result.uri);
+                  }
               }
               else{
                   this.props.setPhoto(result.uri);
+                  if (this.state.mounted) {
                   this.setState({photoUpdate:result.uri});
+                  }
               }
       }
     }
@@ -95,11 +99,15 @@ class PhotoBox extends React.Component {
 
       if (!result.cancelled) {
         if (this.props.isUpdate){
+            if (this.state.mounted) {
             this.setPhotoUpdate(result.uri);
+            }
         }
         else{
             this.props.setPhoto(result.uri);
+            if (this.state.mounted) {
             this.setState({photoUpdate:result.uri});
+            }
         }
       }
     }
@@ -120,13 +128,18 @@ class PhotoBox extends React.Component {
       } else {
         errors["photo"] = "You must load a photo";
       }
+
+      if (this.state.mounted) {
       this.setState({ errors: errors });
+      }
   };
 
   setPhotoUpdate = (photo) => {
       let errors = {};
+      if (this.state.mounted) {
       this.setState({ photoUpdate: photo });
       this.setState({ errors: errors }); //clean errors
+      }
   };
 
   /*  function used to pass the photo to the container
@@ -146,7 +159,9 @@ class PhotoBox extends React.Component {
       const file = await response.blob();
       storageManager.toStorage(uid, file,section).then((url) => {
          dbUserAnimal.updatePetPhoto(uid, petID, url); // update ref in db
+         if (this.state.mounted) {
          this.setState({ photo: url });
+         }
       });
     }
 
@@ -156,7 +171,9 @@ class PhotoBox extends React.Component {
         const file = await response.blob();
         storageManager.toStorage(uid, file,section).then((url) => {
            dbPlaces.updatePlacePhoto(pid,url); // update ref in db
+           if (this.state.mounted) {
            this.setState({ photo: url });
+           }
         });
     }
 
@@ -167,7 +184,9 @@ class PhotoBox extends React.Component {
             const file = await response.blob();
             storageManager.toStorage(uid, file,section).then((url) => {
                dbAdoptableAnimal.updateAdoptablePetPhoto(pid,petID,url); // update ref in db
+               if (this.state.mounted) {
                this.setState({ photo: url });
+               }
             });
     }
 
@@ -177,7 +196,9 @@ class PhotoBox extends React.Component {
                 const file = await response.blob();
                 storageManager.toStorage(uid, file,section).then((url) => {
                    dbUser.updateUserPhoto(pid,url); // update ref in db
+                   if (this.state.mounted) {
                    this.setState({ photo: url });
+                   }
                 });
     }
 

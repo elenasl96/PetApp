@@ -43,7 +43,9 @@ class AddPetForm extends React.Component {
 
   componentDidMount() {
     this.setState({ mounted: true });
+    if (this.state.mounted) {
     this.setState({ visible: this.props.visible });
+    }
   }
 
   handleValidation() {
@@ -85,7 +87,9 @@ class AddPetForm extends React.Component {
       }
     }
     //console.log(errors);
+    if (this.state.mounted) {
     this.setState({ errors: errors });
+    }
     return formIsValid;
   }
 
@@ -140,8 +144,9 @@ class AddPetForm extends React.Component {
   }; */
 
   setPhoto = (photo) => {
-    // OK
+    if (this.state.mounted) {
     this.setState({ photo: photo });
+    }
   };
 
   componentDidUpdate() {

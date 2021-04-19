@@ -86,7 +86,6 @@ class SignUpScreen extends React.Component {
               .then(() => {
                 //auth().setPersistence(auth.Auth.Persistence.LOCAL);
                 //this.props.navigation.navigate("App");
-                console.log("AAA");
               });
           })
           .catch((error) => {

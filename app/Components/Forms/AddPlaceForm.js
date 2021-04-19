@@ -66,7 +66,9 @@ export default class AddPlaceForm extends React.Component {
       errors["address"] = "Address cannot be empty";
     }
 
+    if (this.state.mounted) {
     this.setState({ errors: errors });
+    }
     return formIsValid;
   }
 

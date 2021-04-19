@@ -49,9 +49,11 @@ class Chart extends React.Component {
             wid
           )
           .then((sample) => {
+            if(this.state.mounted){
             this.state.dataWeight.push(sample.value);
             this.state.data.push(sample.value);
             this.setState({ mounted: true });
+            }
           });
       });
      });
@@ -66,8 +68,10 @@ class Chart extends React.Component {
             hid
           )
           .then((sample) => {
+            if (this.state.mounted) {
             this.state.dataHeight.push(sample.value);
             this.setState({ mounted: true });
+            }
           });
       });
    });
@@ -93,7 +97,9 @@ class Chart extends React.Component {
         }
       }
       //console.log(errors);
+      if (this.state.mounted) {
       this.setState({ errors: errors });
+      }
       return formIsValid;
     }
 
@@ -103,12 +109,12 @@ class Chart extends React.Component {
           let errors = {};
           errors["samples"] = null;
 
-          if (this.state.newtype == "weight") {
+          if (this.state.newtype == "weight" && this.state.mounted) {
             this.state.dataWeight.push(Number(this.state.newdata));
             this.showWeight();
           }
 
-          if (this.state.newtype == "height") {
+          if (this.state.newtype == "height" && this.state.mounted) {
             this.state.dataHeight.push(Number(this.state.newdata));
             this.showHeight();
           }
@@ -125,22 +131,28 @@ class Chart extends React.Component {
               utils.timestamp()
           );
 
+          if (this.state.mounted) {
           this.setState({ errors: errors });
+          }
         }
       };
 
       showWeight = () => {
         this.state.data = this.state.dataWeight;
         let errors = {};
+         if (this.state.mounted) {
         this.setState({ errors: errors }); // clean errors
         this.setState({ newtype: "weight" });
+        }
       };
 
       showHeight = () => {
         this.state.data = this.state.dataHeight;
         let errors = {};
+        if (this.state.mounted) {
         this.setState({ errors: errors }); // clean errors
         this.setState({ newtype: "height" });
+        }
       };
 
       deleteStatSample = () => {
@@ -195,7 +207,9 @@ class Chart extends React.Component {
             }
           }
 
+          if (this.state.mounted) {
           this.setState({ errors: errors });
+          }
           //db.deleteAnimalStatSample(this.context.uid,this.props.navigation.state.params.petID,this.state.newtype,id);
         };
 

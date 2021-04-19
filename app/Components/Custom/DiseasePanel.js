@@ -51,7 +51,7 @@ class DiseasePanel extends React.Component {   // props petID , type
                did
              )
              .then((disease) => {
-               if (this.state.diseaseShown == null) {
+               if (this.state.diseaseShown == null && this.state.mounted) {
                  this.setState({ diseaseShown: disease.name });
                }
                dbUserAnimal
@@ -78,7 +78,7 @@ class DiseasePanel extends React.Component {   // props petID , type
                       did
                     )
                     .then((disease) => {
-                      if (this.state.diseaseShown == null) {
+                      if (this.state.diseaseShown == null && this.state.mounted) {
                         this.setState({ diseaseShown: disease.name });
                       }
                       dbAdoptableAnimal
@@ -96,11 +96,13 @@ class DiseasePanel extends React.Component {   // props petID , type
 
       const type = this.props.type;
 
-         if (type == "Dog") {
+       if(this.state.mounted){
+         if (type == "Dog" ){
            this.setState({ diseaseSelected: constants.DISEASES_DOG[0] });
          } else {
            this.setState({ diseaseSelected: constants.DISEASES_CAT[0] });
          }
+      }
    }
 
     componentWillUnmount() {
@@ -132,7 +134,7 @@ class DiseasePanel extends React.Component {   // props petID , type
           );
         }
 
-         if (this.state.diseaseShown == null) {
+         if (this.state.diseaseShown == null && this.state.mounted) {
            this.setState({ diseaseShown: disease });
          }
          if (!this.props.isAdoptable){
@@ -149,8 +151,11 @@ class DiseasePanel extends React.Component {   // props petID , type
          }
        }
 
+       if(this.state.mounted){
        this.setState({ errors: errors });
        this.setState({ mounted: true });
+       }
+
      };
 
      deleteDisease = () => {
@@ -174,6 +179,7 @@ class DiseasePanel extends React.Component {   // props petID , type
 
 
          delete this.state.diseases[disease];
+         if (this.state.mounted){
          this.setState({ errors: errors }); // clean errors
          var diseases = Object.keys(this.state.diseases);
          if (diseases.length != 0) {
@@ -182,6 +188,7 @@ class DiseasePanel extends React.Component {   // props petID , type
          } else {
            this.setState({ diseaseShown: null });
            this.setState({ descriptionShown: null });
+         }
          }
        };
 

@@ -41,8 +41,9 @@ class PetScreen extends React.Component {
   componentDidMount() {
     this.setState({mounted:true});
     const pet = this.props.navigation.state.params.pet;
-    console.log("isAdoptable in pet page: " + this.props.navigation.state.params.isAdoptable);
+    if (this.state.mounted) {
     this.setState({ photo: pet.photo });
+    }
 
   }
 
@@ -68,12 +69,15 @@ class PetScreen extends React.Component {
   };
 
   reportLoss = () => {
+    if (this.state.mounted) {
     this.setState({ showReportLossForm: true });
+    }
   };
 
   setPhoto = (photo) => {
-    console.log("setPhoto petpage");
+    if (this.state.mounted) {
     this.setState({ photo: photo });
+    }
   };
 
 
