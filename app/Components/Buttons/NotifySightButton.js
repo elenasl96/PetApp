@@ -23,6 +23,15 @@ Notifications.setNotificationHandler({
 export default class NotifySightButton extends React.Component {
   static contextType = AuthContext;
 
+   componentDidMount(){
+      this.setState({mounted:true});
+    }
+
+    componentWillUnmount(){
+      this.setState({mounted:false});
+    }
+
+
   render() {
     const userID = this.props.userID;
     return (

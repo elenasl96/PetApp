@@ -37,6 +37,15 @@ class SignUpScreen extends React.Component {
     googleSignup: false,
   };
 
+   componentDidMount(){
+      this.setState({mounted:true});
+    }
+
+    componentWillUnmount(){
+      this.setState({mounted:false});
+    }
+
+
   onLoginFailure(errorMessage) {
     if (this.state.mounted) {
       this.setState({ errorMessage: errorMessage, loading: false });

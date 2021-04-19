@@ -1,5 +1,4 @@
 import React from "react";
-import { Component } from "react";
 import {
   StyleSheet,
   View,
@@ -25,7 +24,7 @@ import constants from "../../shared/constants";
 import mainStyle from "../../styles/mainStyle";
 import { ScrollView } from "react-native-gesture-handler";
 
-class AddPetForm extends Component {
+class AddPetForm extends React.Component {
   static contextType = AuthContext;
   state = {
     name: "",

@@ -39,8 +39,11 @@ class PetScreen extends React.Component {
   static contextType = AuthContext;
 
   componentDidMount() {
+    this.setState({mounted:true});
     const pet = this.props.navigation.state.params.pet;
+    console.log("isAdoptable in pet page: " + this.props.navigation.state.params.isAdoptable);
     this.setState({ photo: pet.photo });
+
   }
 
   deletePet = () => {
@@ -73,12 +76,19 @@ class PetScreen extends React.Component {
     this.setState({ photo: photo });
   };
 
+
+    componentWillUnmount(){
+      this.setState({mounted:false});
+    }
+
+
   render() {
     const pet = this.props.navigation.state.params.pet;
     const petID = this.props.navigation.state.params.petID;
     const type = pet.type;
     const photo = this.state.photo;
     const isAdoptable = this.props.navigation.state.params.isAdoptable;
+
     var section = "";
     var pid = null;
 

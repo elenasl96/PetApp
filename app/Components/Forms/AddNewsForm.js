@@ -1,5 +1,4 @@
 import React from "react";
-import { Component } from "react";
 import {
   StyleSheet,
   View,
@@ -14,13 +13,21 @@ import { AuthContext } from "../AuthContext";
 
 import mainStyle from "../../styles/mainStyle";
 
-export default class AddNewsForm extends Component {
+export default class AddNewsForm extends React.Component {
   static contextType = AuthContext;
   state = {
     title: "",
     text: "",
     errors: {}, // dict
   };
+
+  componentDidMount(){
+    this.setState({mounted:true});
+  }
+
+  componentWillUnmount(){
+    this.setState({mounted:false});
+  }
 
   handleValidation() {
     let errors = {};

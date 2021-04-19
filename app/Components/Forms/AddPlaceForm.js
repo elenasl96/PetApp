@@ -1,5 +1,4 @@
 import React from "react";
-import { Component } from "react";
 import {
   StyleSheet,
   View,
@@ -21,7 +20,7 @@ import * as Location from "expo-location";
 import { Picker } from "@react-native-picker/picker";
 import constants from "../../shared/constants";
 
-export default class AddPlaceForm extends Component {
+export default class AddPlaceForm extends React.Component {
   static contextType = AuthContext;
   state = {
     name: "",
@@ -31,6 +30,15 @@ export default class AddPlaceForm extends Component {
     address: "",
     errors: {}, //dict
   };
+
+   componentDidMount(){
+      this.setState({mounted:true});
+    }
+
+    componentWillUnmount(){
+      this.setState({mounted:false});
+    }
+
 
   handleValidation() {
     let errors = {};

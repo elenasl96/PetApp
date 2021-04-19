@@ -55,7 +55,7 @@ class PetButton extends React.Component {
       });
     } else {
       const pid = this.props.pid;
-
+      console.log("isAdoptable: " + isAdoptable);
       pets.map((petID) => {
         dbAdoptableAnimal
           .getAdoptableAnimal(pid, petID.toString())
@@ -70,6 +70,7 @@ class PetButton extends React.Component {
                     pet: animal,
                     petID: petID.toString(),
                     pid: pid,
+                    isAdoptable: isAdoptable,
                   })
                 }
               >

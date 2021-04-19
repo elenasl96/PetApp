@@ -35,6 +35,7 @@ class Chart extends React.Component {
   componentDidMount()  {
 
   this.setState({ newtype: "weight" });
+  this.setState({mounted: true});
 
       const petID = this.props.petID;
 
@@ -72,6 +73,10 @@ class Chart extends React.Component {
    });
 
   }
+
+   componentWillUnmount() {
+      this.setState({ mounted: false });
+    }
 
   handleValidation() {
       let formIsValid = true;

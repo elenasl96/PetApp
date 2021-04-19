@@ -21,6 +21,15 @@ class LostPetNotifyScreen extends React.Component {
 
   state = { mount: false };
 
+   componentDidMount(){
+      this.setState({mounted:true});
+    }
+
+    componentWillUnmount(){
+      this.setState({mounted:false});
+    }
+
+
   replyToLoss = () => {
     this.props.navigation.navigate("ReportLoss", {
       pet: this.props.navigation.state.params.pet,

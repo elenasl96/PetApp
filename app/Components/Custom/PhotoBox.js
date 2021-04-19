@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   Button,
   Image,
@@ -42,6 +42,7 @@ class PhotoBox extends React.Component {
   static contextType = AuthContext;
 
   componentDidMount(){
+    this.setState({mounted:true});
     if (this.props.isUpdate){
     this.setState({photo: this.props.photo});  // photo passed from the container, our initial photo
     }
@@ -73,6 +74,10 @@ class PhotoBox extends React.Component {
       }
     }
   };
+
+   componentWillUnmount() {
+      this.setState({ mounted: false });
+    }
 
   // method to open the camera
   openCamera = async () => {

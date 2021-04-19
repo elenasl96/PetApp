@@ -36,6 +36,7 @@ class DiseasePanel extends React.Component {   // props petID , type
 
      componentDidMount() {
 
+     this.setState({ mounted: true });
      const isAdoptable = this.props.isAdoptable;
      const petID = this.props.petID;
 
@@ -99,6 +100,10 @@ class DiseasePanel extends React.Component {   // props petID , type
            this.setState({ diseaseSelected: constants.DISEASES_CAT[0] });
          }
    }
+
+    componentWillUnmount() {
+       this.setState({ mounted: false });
+     }
 
    addDisease = () => {
        var disease = this.state.diseaseSelected;
