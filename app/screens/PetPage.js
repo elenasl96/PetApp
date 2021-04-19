@@ -182,7 +182,7 @@ class PetScreen extends React.Component {
               {" "}
             </DiseasePanel>
 
-            {isAdoptable ? (
+            {!isAdoptable ? (
               <Chart petID={petID}></Chart>
             ) : (
               <TouchableHighlight>

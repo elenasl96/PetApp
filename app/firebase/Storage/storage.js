@@ -12,8 +12,6 @@ const storageManager = {
   }; */
 
   toStorage: function (uid,file,section ) {
-
-    console.log("ToStorage");
     //var urlToStore;
     //Reference to firebase storage
     var storageRef = storage.ref();
