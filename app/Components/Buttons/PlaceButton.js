@@ -46,22 +46,9 @@ class PlaceButton extends React.Component {
                 <ImageBackground
                   source={{ uri: place.getPhoto() }}
                   style={styles.placeImage}
-                  imageStyle={{ borderRadius: 20 }}
                 >
                   <View style={styles.overlay}>
-                    <Text
-                      style={[
-                        styles.title,
-                        {
-                          color: "white",
-                          textShadowColor: "black",
-                          textShadowRadius: 2,
-                          alignSelf: "center",
-                        },
-                      ]}
-                    >
-                      {place.name}
-                    </Text>
+                    <Text style={styles.title}>{place.name}</Text>
                   </View>
                 </ImageBackground>
               </TouchableHighlight>
@@ -97,17 +84,22 @@ const styles = StyleSheet.create({
     width: "100%",
     elevation: 2,
     marginVertical: 7,
-    borderRadius: 20,
   },
-
+  title: {
+    marginVertical: 55,
+    color: "white",
+    textShadowColor: "black",
+    textShadowRadius: 3,
+    alignSelf: "center",
+    fontSize: 20,
+  },
   placeImage: {
     width: "100%",
     height: 150,
-    borderRadius: 20,
     resizeMode: "cover",
   },
   overlay: {
-    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    backgroundColor: "rgba(150, 150, 150, 0.3)",
     width: "100%",
     height: "100%",
   },

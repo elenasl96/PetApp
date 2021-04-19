@@ -201,7 +201,7 @@ class HomeScreen extends React.Component {
             </View>
 
             <View style={styles.myPlaceContainer}>
-              <Text style={styles.largeText}>Your Places</Text>
+              <Text style={styles.largeText}>Your Favourite Places</Text>
               {/*} <View style={styles.myPlaces}>
                 <ScrollView
                   horizontal={true}
