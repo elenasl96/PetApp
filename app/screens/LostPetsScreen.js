@@ -10,22 +10,39 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
-import firebase from "firebase";
 import { AuthContext } from "../Components/AuthContext";
 import dbLostPet from "../firebase/Database/Functions/dbLostPet";
 import PetLostButton from "../Components/Buttons/PetLostButton";
-import StarButton from "../Components/Buttons/StarButton";
+import PetLostSeenButton from "../Components/Buttons/PetLostSeenButton";
 import mainStyle from "../styles/mainStyle";
 
 export default class LostPetsScreen extends React.Component {
   state = {
-    lostPets: null,
+    lostPets: [],
+    showLostPets: true,
+    lostPetsSeen: [],
+    showLostPetsSeen: false,
     mounted: false,
   };
   static contextType = AuthContext;
 
   componentDidMount() {
     this.setState({ mounted: true });
+    dbLostPet.getLostPetNotifications().then((lostPetsIDs) => {
+      if (this.state.mounted) {
+        console.log("lostpets");
+        console.log(lostPetsIDs);
+        this.setState({ lostPets: lostPetsIDs });
+      }
+    });
+
+    dbLostPet.getLostPetsSeen().then((lostPetsSeenIDs) => {
+      if (this.state.mounted) {
+        console.log("lostpetsSeen");
+        console.log(lostPetsSeenIDs);
+        this.setState({ lostPetsSeen: lostPetsSeenIDs });
+      }
+    });
   }
 
   componentDidUpdate() {
@@ -53,11 +70,27 @@ export default class LostPetsScreen extends React.Component {
               <View style={styles.buttons}>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() => this.props.navigation.navigate("LostPetsSeen")}
+                  onPress={() => {
+                    this.setState({
+                      showLostPets: false,
+                      showLostPetsSeen: true,
+                    });
+                  }}
                 >
                   <Text style={styles.buttonText}>
                     Go to pets sights &gt; S
                   </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => {
+                    this.setState({
+                      showLostPets: true,
+                      showLostPetsSeen: false,
+                    });
+                  }}
+                >
+                  <Text style={styles.buttonText}>Go to lost pets &gt; S</Text>
                 </TouchableOpacity>
               </View>
 
@@ -69,10 +102,20 @@ export default class LostPetsScreen extends React.Component {
                   justifyContent: "center",
                 }}
               >
-                <PetLostButton
-                  navigation={this.props.navigation}
-                  pets={this.state.lostPets}
-                ></PetLostButton>
+                {this.state.lostPets.length > 0 && this.state.showLostPets ? (
+                  <PetLostButton
+                    navigation={this.props.navigation}
+                    pets={this.state.lostPets}
+                  ></PetLostButton>
+                ) : null}
+
+                {this.state.lostPetsSeen.length > 0 &&
+                this.state.showLostPetsSeen ? (
+                  <PetLostSeenButton
+                    navigation={this.props.navigation}
+                    pets={this.state.lostPetsSeen}
+                  ></PetLostSeenButton>
+                ) : null}
               </View>
             </View>
           </ScrollView>
