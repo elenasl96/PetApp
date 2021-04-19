@@ -66,12 +66,13 @@ class DiseasePanel extends React.Component {   // props petID , type
 
      }
      else{
-       const pid = this.props.navigation.state.params.pid;
-
+       const pid = this.props.pid;
        dbAdoptableAnimal.getAdoptableAnimalDiseases(pid,petID).then((DIDs) => {
+            console.log("DIDs: " + DIDs);
+            if(DIDs.length != 0){
                 DIDs.map((did) => {
-                  dbUserAnimal
-                    .getAnimalDisease(
+                  dbAdoptableAnimal
+                    .getAdoptableAnimalDisease(
                       pid,
                       petID,
                       did
@@ -88,7 +89,8 @@ class DiseasePanel extends React.Component {   // props petID , type
                         });
                     });
                 });
-              });
+             }
+      });
 
      }
 

@@ -77,6 +77,20 @@ class VetScreen extends React.Component {
     //TODO
   };
 
+  deletePet = (petID) => {
+      const pid = this.props.navigation.state.params.place.id;
+      dbAdoptableAnimal.deleteAdoptableAnimal(pid, petID);
+      let petsUpdated = this.state.animalsToAdopt;
+      let index = petsUpdated.indexOf(petID);
+      if (index != -1) {
+        petsUpdated.splice(index, 1);
+      }
+      console.log(petsUpdated);
+      if (this.state.mounted) {
+        this.setState({ animalsToAdopt: petsUpdated });
+      }
+  };
+
   render() {
     const place = this.props.navigation.state.params.place;
     const pid = place.id;
@@ -180,6 +194,7 @@ class VetScreen extends React.Component {
                                   pets={this.state.animalsToAdopt}
                                   isAdoptable = {true}
                                   pid = {this.props.navigation.state.params.place.id}
+                                  deleteAnimal={this.deletePet}
                                 ></PetButton>
                               </View>
                 ) : null}

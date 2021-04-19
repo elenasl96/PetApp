@@ -39,6 +39,7 @@ class PetButton extends React.Component {
                   pet: animal,
                   petID: petID,
                   deleteAnimal: this.props.deleteAnimal,
+                  isAdoptable: isAdoptable,
                 })
               }
             >
@@ -71,6 +72,7 @@ class PetButton extends React.Component {
                     petID: petID.toString(),
                     pid: pid,
                     isAdoptable: isAdoptable,
+                    deleteAnimal: this.props.deleteAnimal,
                   })
                 }
               >
