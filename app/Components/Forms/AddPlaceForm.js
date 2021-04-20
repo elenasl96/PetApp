@@ -72,6 +72,12 @@ export default class AddPlaceForm extends React.Component {
     return formIsValid;
   }
 
+  setPhoto = (photo) => {
+      if (this.state.mounted) {
+      this.setState({ photo: photo });
+      }
+  };
+
   async registerPlace() {
     if (this.handleValidation()) {
       let { status } = await Location.requestPermissionsAsync();
@@ -94,7 +100,6 @@ export default class AddPlaceForm extends React.Component {
                 this.state.type,
                 this.state.description,
                 url,
-                this.context.uid,
                 this.state.address,
                 coordinates[0].latitude,
                 coordinates[0].longitude,

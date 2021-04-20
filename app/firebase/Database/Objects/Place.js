@@ -3,7 +3,6 @@ export default class Place {
   type: string;
   description: string;
   photo: string;
-  uid: string;
   address: string;
   region: Object;
 
@@ -12,7 +11,6 @@ export default class Place {
     type,
     description,
     photo,
-    uid,
     address,
     latitude,
     longitude,
@@ -23,7 +21,6 @@ export default class Place {
     this.type = type;
     this.description = description;
     this.photo = photo;
-    this.uid = uid;
     this.address = address;
     this.region = {
       latitude: latitude,
@@ -59,10 +56,6 @@ export default class Place {
     }
   }
 
-  getUid() {
-    return this.uid;
-  }
-
   getAddress() {
     return this.address;
   }
@@ -85,7 +78,6 @@ export default class Place {
       type: this.type,
       description: this.description,
       photo: this.photo,
-      uid: this.uid,
       address: this.address,
       region: this.region,
     };
