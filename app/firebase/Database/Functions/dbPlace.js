@@ -275,5 +275,25 @@ const dbPlace = {
             console.error("Error removing document: ", error);
           });
       },
+
+   isMyPlace: function(uid,pid1){
+      console.log("is my place");
+      var match = false;
+      return this.getMyPlaces(uid).then((ids) => {
+          ids.map((id) => {
+                this.getMyPlace(uid,id).then((pid2) => {
+                    if(pid1 == pid2 && !match){
+                        match = true;
+                    }
+                    return match;
+                });
+           return match;
+          });
+          console.log("is a match? " + match);
+          return match;
+   });
+
+   },
+
 };
 export default dbPlace;

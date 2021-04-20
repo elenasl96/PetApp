@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import dbAdoptableAnimal from "../firebase/Database/Functions/dbAdoptableAnimal";
+import dbPlace from "../firebase/Database/Functions/dbPlace";
 import News from "../Components/Custom/News";
 import { AuthContext } from "../Components/AuthContext";
 import { LinearGradient } from "expo-linear-gradient";
@@ -33,6 +34,10 @@ class VetScreen extends React.Component {
   componentDidMount() {
     const place = this.props.navigation.state.params.place;
     this.setState({ mounted: true });
+
+    dbPlace.isMyPlace(this.context.uid,place.id).then((match) =>{
+      console.log("is my place? " + match);
+    });
 
     if (place.getType() === "Kennel") {
       console.log("mount kennel");
