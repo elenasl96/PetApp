@@ -29,15 +29,18 @@ class VetScreen extends React.Component {
     showNewsForm: false,
     showPetForm: false,
     animalsToAdopt: [],
+    isEditable: false,
   };
 
   componentDidMount() {
     const place = this.props.navigation.state.params.place;
     this.setState({ mounted: true });
-
+    console.log("places: " + this.context.places);
+    /*
     dbPlace.isMyPlace(this.context.uid,place.id).then((match) =>{
       console.log("is my place? " + match);
     });
+    */
 
     if (place.getType() === "Kennel") {
       console.log("mount kennel");
@@ -45,6 +48,12 @@ class VetScreen extends React.Component {
         this.setState({ animalsToAdopt: animals });
       });
     }
+
+    if(this.context.user.type=="business" && this.context.places.includes(place.id)){
+       console.log("It is editable!");
+       this.setState({isEditable:true});
+    }
+
   }
 
   componentWillUnmount() {

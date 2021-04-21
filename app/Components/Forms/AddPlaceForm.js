@@ -106,7 +106,8 @@ export default class AddPlaceForm extends React.Component {
                 "latitudeDelta",
                 "longitudeDelta"
               )
-              .then(() => {
+              .then((id) => {
+                this.context.savePlace(id);
                 this.props.close();
               });
           });

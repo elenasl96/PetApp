@@ -29,10 +29,14 @@ const dbPlace = {
       longitudeDelta
     );
 
+    var id;
+
     return places.add(place.toFirestore())
     .then(function(docRef) {
         console.log("Document written with ID: ", docRef.id);
         dbPlace.addUserPlace(docRef.id);
+        id = docRef.id;
+        return id;
     })
     .catch(function(error) {
         console.error("Error adding document: ", error);
@@ -230,7 +234,7 @@ const dbPlace = {
           querySnapshot.forEach(function (doc) {
             // doc.data() is never undefined for query doc snapshots
             //console.log(doc.id, " => ", doc.data());
-            myplaces.push(doc.id);
+            myplaces.push(doc.data().pid);
             //console.log(user);
             return myplaces;
           });

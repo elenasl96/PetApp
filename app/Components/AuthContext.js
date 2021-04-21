@@ -11,20 +11,55 @@ class AuthContextProvider extends Component {
     user: null,
     loading: false,
     uid: "",
+    places: [],
     //lastlogin:"",
     //   pets: [],
   };
 
+  componentDidMount() {
+      this.setState({ mounted: true });
+    }
+
+    componentWillUnmount() {
+      this.setState({ mounted: false });
+    }
+
   saveUserUID = (uid) => {
+    if(this.state.mounted){
     this.setState({ uid: uid });
-    console.log("this state uid:" + this.state.uid);
+    }
+    //console.log("this state uid:" + this.state.uid);
   };
 
   saveUser = (user) => {
+    if(this.state.mounted){
     this.setState({ user: user });
-    console.log("this user");
-    console.log(this.state.user);
+    }
+    //console.log("this user");
+    //console.log(this.state.user);
   };
+
+  savePlace = (place) => {
+    if(this.state.mounted){
+    this.state.places.push(place);
+    this.setState({mounted:true});
+    }
+    console.log("Saved place: " + place);
+  };
+
+  deletePlace = (place) =>{
+
+    const index = this.state.places.indexOf(place);
+    if(this.state.mounted){
+    if (index > -1) {
+      this.state.places.splice(index, 1);
+    }
+    this.setState({mounted:true});
+    }
+
+  };
+
+
 
   /*
   saveLastLogin = (lastlogin) => {
@@ -75,7 +110,8 @@ class AuthContextProvider extends Component {
           signInWithGoogle: this.signInWithGoogle,
           saveUserUID: this.saveUserUID,
           saveUser: this.saveUser,
-          //savePet: this.savePet,
+          savePlace: this.savePlace,
+          deletePlace: this.deletePlace,
         }}
       >
         {this.props.children}
