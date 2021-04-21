@@ -206,23 +206,27 @@ class DiseasePanel extends React.Component {
 
     return (
       <>
-        <TouchableHighlight>
-          <View style={styles.info}>
-            <Text>Diseases</Text>
-          </View>
-        </TouchableHighlight>
+        {temp.length != 0 ? (
+          <Text style={{ marginHorizontal: 15, marginVertical: 10 }}>
+            Diseases
+          </Text>
+        ) : (
+          <Text style={{ marginHorizontal: 15, marginVertical: 10 }}>
+            Your pet is in good health!
+          </Text>
+        )}
 
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           {diseases}
         </ScrollView>
 
         {temp.length != 0 ? (
-          <View style={styles.info}>
-            <Text>{descriptionShown}</Text>
-          </View>
+          <Text style={styles.text}>{descriptionShown}</Text>
         ) : null}
 
-        <Text style={{ marginHorizontal: 15 }}>AddDiseases</Text>
+        <Text style={{ marginHorizontal: 15, marginBottom: 10 }}>
+          Add diseases
+        </Text>
 
         <View
           style={{
@@ -233,7 +237,7 @@ class DiseasePanel extends React.Component {
             paddingHorizontal: 15,
           }}
         >
-          <View style={mainStyle.form}>
+          <View style={styles.form}>
             <Picker
               selectedValue={this.state.diseaseSelected}
               style={{ height: 50, width: "100%" }}
@@ -246,11 +250,11 @@ class DiseasePanel extends React.Component {
           </View>
 
           <TouchableHighlight
-            style={styles.petButton}
+            style={styles.button}
             onPress={this.addDisease.bind(this)}
             underlayColor={"rgb(200,200,200)"}
           >
-            <Text style={{ textAlign: "center" }}>add</Text>
+            <Text style={{ textAlign: "center" }}>Add</Text>
           </TouchableHighlight>
         </View>
 
@@ -260,11 +264,11 @@ class DiseasePanel extends React.Component {
 
         {temp.length != 0 ? (
           <TouchableHighlight
-            style={styles.petButton}
+            style={styles.button}
             onPress={this.deleteDisease.bind(this)}
             underlayColor={"rgb(200,200,200)"}
           >
-            <Text style={{ textAlign: "center" }}>delete</Text>
+            <Text style={{ textAlign: "center" }}>Delete disease selected</Text>
           </TouchableHighlight>
         ) : null}
       </>
@@ -280,6 +284,9 @@ const styles = StyleSheet.create({
   mainContent: {
     flex: 1,
   },
+  text: {
+    margin: 15,
+  },
   topBar: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -294,63 +301,35 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     paddingBottom: 10,
   },
-  petButton: {
-    padding: 10,
-    borderRadius: 25,
-    backgroundColor: "rgba(255, 255, 255, 1)",
-    overflow: "hidden",
-    elevation: 2,
-    marginHorizontal: 5,
-    width: 70,
-    height: 30,
-    alignSelf: "center",
-  },
   button: {
     backgroundColor: "#F9844A",
-    minWidth: 100,
+    minWidth: 50,
     height: 44,
     borderRadius: 22,
     paddingHorizontal: 12,
     paddingVertical: 5,
-    marginBottom: 5,
-    marginLeft: 10,
+    marginVertical: 5,
+    marginHorizontal: 15,
     alignContent: "center",
     justifyContent: "center",
   },
   buttonText: {
     alignSelf: "center",
   },
-  mainTitle: {
-    fontSize: 25,
-    fontWeight: "bold",
-  },
-  petContainer: {
+  form: {
+    borderRadius: 30,
     flex: 1,
-    flexDirection: "row",
-    paddingTop: 20,
-    paddingBottom: 20,
-  },
-  pet: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
-    backgroundColor: "white",
-    marginLeft: 10,
-  },
-  petImage: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "flex-end",
-    width: 150,
-    height: 150,
-    borderRadius: 75,
-    resizeMode: "cover",
-    padding: 10,
+    backgroundColor: "#43AA8B",
+    borderRadius: 25,
+    height: 50,
+    justifyContent: "center",
+    alignSelf: "center",
+    paddingLeft: 30,
   },
   info: {
     flex: 1,
     flexDirection: "column",
-
+    backgroundColor: "powderblue",
     borderRadius: 20,
     marginLeft: 7,
     marginRight: 5,
@@ -364,28 +343,7 @@ const styles = StyleSheet.create({
   descriptionContainer: {
     padding: 10,
   },
-  myPlaces: {
-    flexWrap: "nowrap",
-    flexDirection: "row",
-    paddingTop: 10,
-    paddingBottom: 10,
-    backgroundColor: "white",
-  },
-  place: {
-    marginLeft: 15,
-    width: 300,
-    height: 150,
-    borderRadius: 35,
-    backgroundColor: "lightgreen",
-  },
-  bottomMenu: {
-    position: "absolute",
-    bottom: 0,
-    left: 100,
-    right: 100,
-    height: 70,
-    alignItems: "center",
-  },
+
   mainButtonContainer: {
     width: 60,
     height: 60,

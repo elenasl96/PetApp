@@ -289,11 +289,12 @@ class Chart extends React.Component {
             flex: 1,
             flexDirection: "row",
             justifyContent: "center",
+            padding: 15,
           }}
         >
-          <View style={mainStyle.form}>
+          <View style={styles.form}>
             <TextInput
-              style={mainStyle.inputText}
+              style={styles.input}
               placeholder="Value"
               placeholderTextColor="#616161"
               returnKeyType="next"
@@ -316,13 +317,15 @@ class Chart extends React.Component {
           <Text style={styles.error}>{this.state.errors["samples"]}</Text>
         ) : null}
 
-        <TouchableHighlight
-          style={styles.button}
-          onPress={this.deleteStatSample.bind(this)}
-          underlayColor={"rgb(200,200,200)"}
-        >
-          <Text style={{ textAlign: "center" }}>Delete</Text>
-        </TouchableHighlight>
+        {data.length != 0 ? (
+          <TouchableHighlight
+            style={styles.button}
+            onPress={this.deleteStatSample.bind(this)}
+            underlayColor={"rgb(200,200,200)"}
+          >
+            <Text style={{ textAlign: "center" }}>Delete last statistic</Text>
+          </TouchableHighlight>
+        ) : null}
 
         {this.state.errors["delete"] != null ? (
           <Text style={styles.error}>{this.state.errors["delete"]}</Text>
@@ -361,50 +364,32 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "#F9844A",
-    minWidth: 100,
+    minWidth: 50,
     height: 44,
     borderRadius: 22,
     paddingHorizontal: 12,
     paddingVertical: 5,
-    marginBottom: 5,
-    marginLeft: 10,
+    marginVertical: 5,
+    marginHorizontal: 15,
     alignContent: "center",
     justifyContent: "center",
   },
   buttonText: {
     alignSelf: "center",
   },
-  petContainer: {
+  form: {
+    borderRadius: 30,
     flex: 1,
-    flexDirection: "row",
-    paddingTop: 20,
-    paddingBottom: 20,
+    backgroundColor: "#43AA8B",
+    borderRadius: 25,
+    height: 50,
+    justifyContent: "center",
+    alignSelf: "center",
+    paddingLeft: 30,
   },
-  pet: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
-    backgroundColor: "white",
-    marginLeft: 10,
-  },
-  petImage: {
+  input: {
     flex: 1,
     flexDirection: "column",
-    justifyContent: "flex-end",
-    width: 150,
-    height: 150,
-    borderRadius: 75,
-    resizeMode: "cover",
-    padding: 10,
-  },
-  info: {
-    flex: 1,
-    flexDirection: "column",
-    backgroundColor: "#F9C74F",
-    borderRadius: 20,
-    marginLeft: 7,
-    marginRight: 5,
-    padding: 10,
   },
 
   descriptionContainer: {
