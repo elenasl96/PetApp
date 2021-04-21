@@ -68,30 +68,36 @@ export default class LostPetsScreen extends React.Component {
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.myPlacesContainer}>
               <View style={styles.buttons}>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => {
-                    this.setState({
-                      showLostPets: false,
-                      showLostPetsSeen: true,
-                    });
-                  }}
-                >
-                  <Text style={styles.buttonText}>
-                    Go to pets sights &gt; S
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => {
-                    this.setState({
-                      showLostPets: true,
-                      showLostPetsSeen: false,
-                    });
-                  }}
-                >
-                  <Text style={styles.buttonText}>Go to lost pets &gt; S</Text>
-                </TouchableOpacity>
+                {this.state.showLostPets ? (
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => {
+                      this.setState({
+                        showLostPets: false,
+                        showLostPetsSeen: true,
+                      });
+                    }}
+                  >
+                    <Text style={styles.buttonText}>
+                      Go to pets sights &gt; S
+                    </Text>
+                  </TouchableOpacity>
+                ) : null}
+                {this.state.showLostPetsSeen ? (
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => {
+                      this.setState({
+                        showLostPets: true,
+                        showLostPetsSeen: false,
+                      });
+                    }}
+                  >
+                    <Text style={styles.buttonText}>
+                      Go to lost pets &gt; S
+                    </Text>
+                  </TouchableOpacity>
+                ) : null}
               </View>
 
               <View
@@ -143,7 +149,7 @@ const styles = StyleSheet.create({
   buttons: {
     paddingTop: 5,
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "center",
     alignItems: "center",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,

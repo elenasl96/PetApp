@@ -39,12 +39,11 @@ class PetScreen extends React.Component {
   static contextType = AuthContext;
 
   componentDidMount() {
-    this.setState({mounted:true});
+    this.setState({ mounted: true });
     const pet = this.props.navigation.state.params.pet;
     if (this.state.mounted) {
-    this.setState({ photo: pet.photo });
+      this.setState({ photo: pet.photo });
     }
-
   }
 
   deletePet = () => {
@@ -52,39 +51,23 @@ class PetScreen extends React.Component {
     storageManager.deleteFile(this.state.photo);
     this.props.navigation.state.params.deleteAnimal(petID);
     this.props.navigation.goBack();
-    /*if(isAdoptable){
-      const pid = this.props.navigation.state.params.pid;
-      dbAdoptableAnimal.deleteAnimal(
-            pid,
-            petID
-      );
-    }
-    else{
-        dbUserAnimal.deleteAdoptableAnimal(
-          this.context.uid,
-          petID
-        );
-    }
-  */
   };
 
   reportLoss = () => {
     if (this.state.mounted) {
-    this.setState({ showReportLossForm: true });
+      this.setState({ showReportLossForm: true });
     }
   };
 
   setPhoto = (photo) => {
     if (this.state.mounted) {
-    this.setState({ photo: photo });
+      this.setState({ photo: photo });
     }
   };
 
-
-    componentWillUnmount(){
-      this.setState({mounted:false});
-    }
-
+  componentWillUnmount() {
+    this.setState({ mounted: false });
+  }
 
   render() {
     const pet = this.props.navigation.state.params.pet;
@@ -207,17 +190,6 @@ class PetScreen extends React.Component {
               </TouchableHighlight>
             )}
           </ScrollView>
-        </View>
-
-        <View style={styles.bottomMenu}>
-          <TouchableHighlight onPress={null}>
-            <View style={styles.mainButtonContainer}>
-              <Image
-                source={require("../../assets/images/paw.png")}
-                style={styles.mainButton}
-              ></Image>
-            </View>
-          </TouchableHighlight>
         </View>
       </SafeAreaView>
     );

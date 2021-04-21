@@ -39,15 +39,13 @@ class PetLostButton extends React.Component {
                   marginBottom: 10,
                   borderRadius: 35,
                   padding: 10,
-                  shadowColor: "#000",
+                  shadowColor: "#EEE",
                   shadowOffset: {
                     width: 0,
                     height: 1,
                   },
                   shadowOpacity: 0.18,
                   shadowRadius: 1.0,
-
-                  elevation: 1,
                 }}
                 value={petID}
                 onPress={() =>
@@ -58,14 +56,17 @@ class PetLostButton extends React.Component {
                 }
               >
                 <View>
-                  <Image
-                    source={require("../../../assets/images/Gioia.jpg")}
-                    style={styles.petImage}
-                  ></Image>
-                  <View style={{ padding: 5 }}>
-                    <Text>{animal.getName()}</Text>
-                    <Text>{animal.getPlace()}</Text>
-                    <Text>{animal.getTimestamp()}</Text>
+                  <View style={styles.imageContainer}>
+                    <Image
+                      source={require("../../../assets/images/Gioia.jpg")}
+                      style={styles.petImage}
+                    ></Image>
+                  </View>
+
+                  <View style={styles.textContainer}>
+                    <Text style={styles.text}>{animal.getName()}</Text>
+                    <Text style={styles.text}>{animal.getPlace()}</Text>
+                    <Text style={styles.text}>{animal.getTimestamp()}</Text>
                   </View>
                 </View>
               </TouchableHighlight>
@@ -99,11 +100,21 @@ const styles = StyleSheet.create({
     borderRadius: 75,
     backgroundColor: "orange",
   },
+  imageContainer: {
+    borderRadius: 120,
+    elevation: 3,
+  },
   petImage: {
     width: "100%",
     height: 150,
-    borderRadius: 25,
+    borderRadius: 120,
     resizeMode: "cover",
+  },
+  textContainer: {
+    padding: 5,
+  },
+  text: {
+    textAlign: "center",
   },
 });
 export default PetLostButton;
