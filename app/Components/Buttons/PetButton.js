@@ -24,6 +24,14 @@ class PetButton extends React.Component {
     const navigation = this.props.navigation;
     const pets = this.props.pets;
     const isAdoptable = this.props.isAdoptable;
+
+    var isEditable = true;  // the logic is : if it's not adoptable it's for sure editable
+
+    if (isAdoptable) {
+         isEditable = this.props.isEditable;
+    }
+
+
     var petButtons = [];
 
     if (!isAdoptable) {
@@ -40,6 +48,7 @@ class PetButton extends React.Component {
                   petID: petID,
                   deleteAnimal: this.props.deleteAnimal,
                   isAdoptable: isAdoptable,
+                  isEditable: isEditable,
                 })
               }
             >
@@ -72,6 +81,7 @@ class PetButton extends React.Component {
                     petID: petID.toString(),
                     pid: pid,
                     isAdoptable: isAdoptable,
+                    isEditable: isEditable,
                     deleteAnimal: this.props.deleteAnimal,
                   })
                 }

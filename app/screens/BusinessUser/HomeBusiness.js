@@ -27,17 +27,7 @@ export default class HomeBusiness extends React.Component {
     this.setState({ mounted: true });
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        dbPlace.getMyPlaces(this.context.uid).then((ids) => {
-          console.log(ids);
-          ids.map((id) => {
-          dbPlace.getMyPlace(this.context.uid,id).then((pid) => {
-            if (this.state.mounted) {
-                         this.state.places.push(pid);
-                         this.setState({ mounted: true });
-            }
-          });
-          });
-        });
+        console.log("places:" + this.context.places);
       }
     });
   }
@@ -86,7 +76,7 @@ export default class HomeBusiness extends React.Component {
                   </TouchableHighlight>
                   <PlaceButton
                     uid={this.context.uid}
-                    places={this.state.places}
+                    places={this.context.places}
                     navigation={this.props.navigation}
                   ></PlaceButton>
                 </ScrollView>

@@ -75,6 +75,8 @@ class PetScreen extends React.Component {
     const type = pet.type;
     const photo = this.state.photo;
     const isAdoptable = this.props.navigation.state.params.isAdoptable;
+    const isEditable = this.props.navigation.state.params.isEditable;
+    console.log("The pet page is editable?" + isEditable);
 
     var section = "";
     var pid = null;
@@ -120,22 +122,31 @@ class PetScreen extends React.Component {
                 </ImageBackground>
               </View>
 
-              <View style={styles.buttons}>
+               <View style={styles.buttons}>
+
+    {isEditable ? (
                 <TouchableOpacity
                   style={styles.button}
                   onPress={this.deletePet}
                 >
+
                   <Text style={styles.buttonText}>Delete pet</Text>
                 </TouchableOpacity>
+     )  : null }
+
+       {!isAdoptable  ? (
                 <TouchableOpacity
                   style={styles.button}
                   onPress={this.reportLoss}
                 >
                   <Text style={styles.buttonText}>Report loss</Text>
                 </TouchableOpacity>
+        ) : null}
+
               </View>
             </View>
 
+       { isEditable   ? (   // if user pet isEditable is set to true by default
             <PhotoBox
               petID={petID}
               section={section}
@@ -143,6 +154,7 @@ class PetScreen extends React.Component {
               isUpdate={true}
               photo={photo}
             ></PhotoBox>
+       ) : null }
 
             <ScrollView
               horizontal={true}
@@ -174,6 +186,7 @@ class PetScreen extends React.Component {
               petID={petID}
               type={type}
               isAdoptable={isAdoptable}
+              isEditable = {isEditable}
               pid={pid}
             >
               {" "}

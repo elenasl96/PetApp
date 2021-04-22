@@ -93,15 +93,11 @@
          var places = [];
          dbPlace.getSavedPlaces(this.context.uid).then((placeIds) => {
            placeIds.forEach((placeId) => {
-             dbPlace
-               .getSavedPlace(this.context.uid, placeId)
-               .then((savedPlace) => {
-                 places.push(savedPlace);
+                 places.push(placeId);
                  if (this.state.mounted) {
                    this.setState({ places: places });
                  }
                });
-           });
          });
 
          // MY PLACES

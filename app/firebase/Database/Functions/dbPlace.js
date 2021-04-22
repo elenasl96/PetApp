@@ -31,7 +31,8 @@ const dbPlace = {
 
     var id;
 
-    return places.add(place.toFirestore())
+    return places.add(place.toFirestore());
+    /*
     .then(function(docRef) {
         console.log("Document written with ID: ", docRef.id);
         dbPlace.addUserPlace(docRef.id);
@@ -40,7 +41,7 @@ const dbPlace = {
     })
     .catch(function(error) {
         console.error("Error adding document: ", error);
-    });
+    });*/
   },
 
   getPlace: function (pid) {
@@ -163,32 +164,12 @@ const dbPlace = {
         querySnapshot.forEach(function (doc) {
           // doc.data() is never undefined for query doc snapshots
           //console.log(doc.id, " => ", doc.data());
-          savedplaces.push(doc.id);
+          savedplaces.push(doc.data().pid);
           //console.log(user);
           return savedplaces;
         });
 
         return savedplaces;
-      })
-      .catch(function (error) {
-        console.log("Error getting documents: ", error);
-      });
-  },
-
-  getSavedPlace: function (uid, id) {
-    const users = firestore.collection("Users");
-    var savedplace;
-    return users
-      .doc(uid)
-      .collection("savedplaces")
-      .doc(id)
-      .get()
-      .then(function (doc) {
-        // doc.data() is never undefined for query doc snapshots
-        //console.log(doc.id, " => ", doc.data());
-        savedplace = doc.data().pid;
-        //console.log(user);
-        return savedplace;
       })
       .catch(function (error) {
         console.log("Error getting documents: ", error);
@@ -279,25 +260,6 @@ const dbPlace = {
             console.error("Error removing document: ", error);
           });
       },
-
-   isMyPlace: function(uid,pid1){
-      console.log("is my place");
-      var match = false;
-      return this.getMyPlaces(uid).then((ids) => {
-          ids.map((id) => {
-                this.getMyPlace(uid,id).then((pid2) => {
-                    if(pid1 == pid2 && !match){
-                        match = true;
-                    }
-                    return match;
-                });
-           return match;
-          });
-          console.log("is a match? " + match);
-          return match;
-   });
-
-   },
 
 };
 export default dbPlace;

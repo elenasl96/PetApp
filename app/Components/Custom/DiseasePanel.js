@@ -176,6 +176,9 @@ class DiseasePanel extends React.Component {
   render() {
     const descriptionShown = this.state.diseases[this.state.diseaseShown];
     const temp = Object.keys(this.state.diseases);
+    const isAdoptable = this.props.isAdoptable;
+    const isEditable = this.props.isEditable;
+
     let diseases = temp.map((s) => {
       //console.log("s: "+ s);
       return (
@@ -212,7 +215,7 @@ class DiseasePanel extends React.Component {
           </Text>
         ) : (
           <Text style={{ marginHorizontal: 15, marginVertical: 10 }}>
-            Your pet is in good health!
+            The pet is in good health!
           </Text>
         )}
 
@@ -223,6 +226,10 @@ class DiseasePanel extends React.Component {
         {temp.length != 0 ? (
           <Text style={styles.text}>{descriptionShown}</Text>
         ) : null}
+
+     { isEditable ? (
+
+       <>
 
         <Text style={{ marginHorizontal: 15, marginBottom: 10 }}>
           Add diseases
@@ -237,6 +244,8 @@ class DiseasePanel extends React.Component {
             paddingHorizontal: 15,
           }}
         >
+
+
           <View style={styles.form}>
             <Picker
               selectedValue={this.state.diseaseSelected}
@@ -256,7 +265,11 @@ class DiseasePanel extends React.Component {
           >
             <Text style={{ textAlign: "center" }}>Add</Text>
           </TouchableHighlight>
+
         </View>
+        </>
+
+        ): null }
 
         {this.state.errors["addDisease"] != null ? (
           <Text style={styles.error}>{this.state.errors["addDisease"]}</Text>

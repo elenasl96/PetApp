@@ -104,6 +104,7 @@ class VetScreen extends React.Component {
   render() {
     const place = this.props.navigation.state.params.place;
     const pid = place.id;
+    const isEditable = this.state.isEditable;
 
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -164,6 +165,8 @@ class VetScreen extends React.Component {
                   <Text style={styles.buttonText}>Open in map </Text>
                 </TouchableOpacity>
 
+           {isEditable ?  (
+             <>
                 <TouchableOpacity
                   style={styles.button}
                   onPress={() => this.addNews()}
@@ -179,7 +182,13 @@ class VetScreen extends React.Component {
                   </TouchableOpacity>
                 ) : null}
 
+                </>
+            ):null}
+
+            {!isEditable ? (
                 <StarButton uid={this.context.uid} pid={pid} />
+            )  : null }
+
               </LinearGradient>
             </View>
           </ImageBackground>
@@ -215,6 +224,7 @@ class VetScreen extends React.Component {
               navigation={this.props.navigation}
               pets={this.state.animalsToAdopt}
               isAdoptable={true}
+              isEditable = {isEditable}
               pid={this.props.navigation.state.params.place.id}
               deleteAnimal={this.deletePet}
             ></PetButton>
