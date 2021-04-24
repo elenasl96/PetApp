@@ -121,7 +121,10 @@ const dbPlace = {
   deletePlace: function (pid) {
     const places = firestore.collection("Places");
 
-    this.getAllNews(pid).then(function (news) {
+    console.log("pid to be delete: " + pid);
+
+
+    dbNews.getAllNews(pid).then(function (news) {
       if (news.length != 0) {
         news.forEach((newsid) => dbNews.deleteNews(pid, newsid));
       }
@@ -144,6 +147,7 @@ const dbPlace = {
           });
       });
     });
+
   },
 
   // saved place
@@ -247,19 +251,13 @@ const dbPlace = {
     },
 
     deleteMyPlace: function (uid, id) {
-        const users = firestore.collection("Users");
-        users
-          .doc(uid)
-          .collection("MyPlaces")
-          .doc(id)
-          .delete()
-          .then(function () {
-            console.log("Document successfully deleted!");
-          })
-          .catch(function (error) {
-            console.error("Error removing document: ", error);
-          });
-      },
+      query = firestore.collection("MyPlaces").where('pid','==',id);
+      query.get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          doc.ref.delete();
+        });
+      });
+    },
 
 };
 export default dbPlace;

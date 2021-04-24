@@ -21,6 +21,7 @@ import { withNavigation } from "react-navigation";
 import AddNewsForm from "../Components/Forms/AddNewsForm";
 import AddPetForm from "../Components/Forms/AddPetForm";
 import PetButton from "../Components/Buttons/PetButton";
+import storageManager from "../firebase/Storage/storage";
 
 class VetScreen extends React.Component {
   static contextType = AuthContext;
@@ -83,6 +84,14 @@ class VetScreen extends React.Component {
     if (this.state.mounted) {
       this.setState({ animalsToAdopt: this.state.animalsToAdopt });
     }
+  };
+
+  deletePlaceHere = () => { //OK
+      const placeID = this.props.navigation.state.params.place.id;
+      const photo = this.props.navigation.state.params.place.photo;
+      storageManager.deleteFile(photo);
+      this.props.navigation.state.params.deletePlace(placeID);
+      this.props.navigation.goBack();
   };
 
   deletePet = (petID) => {
@@ -228,8 +237,20 @@ class VetScreen extends React.Component {
               pid={this.props.navigation.state.params.place.id}
               deleteAnimal={this.deletePet}
             ></PetButton>
+
+
           </View>
         ) : null}
+
+        {isEditable ? (
+                                    <TouchableOpacity
+                                      style={styles.button}
+                                      onPress={this.deletePlaceHere}
+                                    >
+
+                                      <Text style={styles.buttonText}>Delete place</Text>
+                                    </TouchableOpacity>
+                         )  : null }
       </SafeAreaView>
     );
   }

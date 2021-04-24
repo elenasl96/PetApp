@@ -26,6 +26,7 @@ class PlaceButton extends React.Component {
     place.id = placeID;
     this.props.navigation.navigate("Place", {
       place: place,
+      deletePlace: this.props.deletePlace,
     });
   }
 

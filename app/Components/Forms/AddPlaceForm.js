@@ -108,6 +108,7 @@ export default class AddPlaceForm extends React.Component {
               )
               .then((doc) => {
                 this.context.savePlace(doc.id);
+                dbPlace.addUserPlace(this.context.uid,doc.id);
                 this.props.close();
               });
           });

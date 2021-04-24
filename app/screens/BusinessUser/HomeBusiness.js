@@ -26,8 +26,9 @@ export default class HomeBusiness extends React.Component {
   componentDidMount() {
     this.setState({ mounted: true });
     firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        console.log("places:" + this.context.places);
+      if (user && this.state.mounted) {
+        this.setState({places:this.context.places});
+        //console.log("places:" + this.context.places);
       }
     });
   }
@@ -43,10 +44,37 @@ export default class HomeBusiness extends React.Component {
     }
   };
 
+  deletePlace = (pid) => {
+       console.log("HOME BUSINESS DELETE");
+       console.log ( "pid: " + pid);
+
+       dbPlace.deletePlace(pid);  // delete place from db
+       dbPlace.deleteMyPlace(this.context.uid,pid) // delete MyPlace from db
+
+       if (this.state.mounted) {
+         this.context.deletePlace(pid); //update context of my places
+         //this.setState({update:true});
+       }
+
+
+       let placesUpdated = this.state.places;
+        let index = placesUpdated.indexOf(pid);
+        if (index != -1) {
+          placesUpdated.splice(index, 1);
+        }
+        console.log("PLACES UPDATED: " + placesUpdated);
+        if (this.state.mounted) {
+          this.setState({ places: placesUpdated });
+        }
+
+     };
+
   render() {
     const showPlace = () => {
       this.props.navigation.navigate("Pet");
     };
+
+    const places = this.state.places;
 
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -76,8 +104,9 @@ export default class HomeBusiness extends React.Component {
                   </TouchableHighlight>
                   <PlaceButton
                     uid={this.context.uid}
-                    places={this.context.places}
+                    places={places}
                     navigation={this.props.navigation}
+                    deletePlace={this.deletePlace}
                   ></PlaceButton>
                 </ScrollView>
               </View>
