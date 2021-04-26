@@ -21,16 +21,16 @@ class PetButton extends React.Component {
 
   componentDidMount() {
     this.setState({ mounted: true });
+    console.log("Pet mounted");
     const navigation = this.props.navigation;
     const pets = this.props.pets;
     const isAdoptable = this.props.isAdoptable;
 
-    var isEditable = true;  // the logic is : if it's not adoptable it's for sure editable
+    var isEditable = true; // the logic is : if it's not adoptable it's for sure editable
 
     if (isAdoptable) {
-         isEditable = this.props.isEditable;
+      isEditable = this.props.isEditable;
     }
-
 
     var petButtons = [];
 

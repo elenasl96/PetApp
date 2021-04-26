@@ -37,14 +37,13 @@ class SignUpScreen extends React.Component {
     googleSignup: false,
   };
 
-   componentDidMount(){
-      this.setState({mounted:true});
-    }
+  componentDidMount() {
+    this.setState({ mounted: true });
+  }
 
-    componentWillUnmount(){
-      this.setState({mounted:false});
-    }
-
+  componentWillUnmount() {
+    this.setState({ mounted: false });
+  }
 
   onLoginFailure(errorMessage) {
     if (this.state.mounted) {
@@ -270,7 +269,7 @@ class SignUpScreen extends React.Component {
                 >
                   <Picker.Item label="Select user type" value="" />
                   <Picker.Item label="Basic user" value="user" />
-                  <Picker.Item label="Business user" value="businessUser" />
+                  <Picker.Item label="Business user" value="business" />
                 </Picker>
               </View>
             ) : null}

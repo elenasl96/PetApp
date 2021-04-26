@@ -7,6 +7,7 @@ import {
   Image,
   TouchableHighlight,
   ScrollView,
+  TouchableHighlightComponent,
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import firebase from "firebase";
@@ -26,19 +27,17 @@ export default class HomeBusiness extends React.Component {
 
   componentDidMount() {
     this.setState({ mounted: true });
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user && this.state.mounted) {
-        this.setState({places:this.context.places});
-        //console.log("places:" + this.context.places);
-      }
-    });
+    console.log("places is homebusiness");
+    this.setState({ places: this.context.places });
+    console.log(this.context.places);
   }
 
-  componentDidUpdate(prevProps,prevState){
-    if(!this.state.showPlaceForm && prevState.showPlaceForm){
-       console.log("COMPONENT DID UPDATE HOME BUSINESS");
-       console.log("context places length: " + this.context.places.length);
-       this.setState({places:this.context.places});
+  componentDidUpdate(prevProps, prevState) {
+    if (!this.state.showPlaceForm && prevState.showPlaceForm) {
+      console.log("COMPONENT DID UPDATE HOME BUSINESS");
+      console.log("context places length: " + this.context.places.length);
+      console.log(this.context.places);
+      this.setState({ places: this.context.places });
     }
   }
 
@@ -54,37 +53,29 @@ export default class HomeBusiness extends React.Component {
   };
 
   deletePlace = (pid) => {
-       console.log("HOME BUSINESS DELETE");
-       console.log ( "pid: " + pid);
+    console.log("HOME BUSINESS DELETE");
+    console.log("pid: " + pid);
 
-       dbPlace.deletePlace(pid);  // delete place from db
-       dbPlace.deleteMyPlace(this.context.uid,pid) // delete MyPlace from db
+    dbPlace.deletePlace(pid); // delete place from db
+    dbPlace.deleteMyPlace(this.context.uid, pid); // delete MyPlace from db
 
-       if (this.state.mounted) {
-         this.context.deletePlace(pid); //update context of my places
-         //this.setState({update:true});
-       }
-
-
-       let placesUpdated = this.state.places;
-        let index = placesUpdated.indexOf(pid);
-        if (index != -1) {
-          placesUpdated.splice(index, 1);
-        }
-        console.log("PLACES UPDATED: " + placesUpdated);
-        if (this.state.mounted) {
-          this.setState({ places: placesUpdated });
-        }
-
-
-     };
+    let index = this.context.places.indexOf(pid);
+    if (index != -1) {
+      this.context.places.splice(index, 1);
+    }
+    this.context.savePlaces(this.context.places); //update context of my places
+    console.log("places after delete");
+    console.log(this.context.places);
+    if (this.state.mounted) {
+      this.setState({ places: this.context.places });
+    }
+  };
 
   render() {
     const showPlace = () => {
       this.props.navigation.navigate("Pet");
     };
 
-    console.log("RENDER" + this.state.places.length);
     const places = this.state.places;
 
     return (
@@ -92,7 +83,7 @@ export default class HomeBusiness extends React.Component {
         <AddPlaceForm
           visible={this.state.showPlaceForm}
           close={() => {
-            this.setState({ showPlaceForm: false,update:true });
+            this.setState({ showPlaceForm: false, update: true });
           }}
         ></AddPlaceForm>
         <View style={styles.mainContent}>

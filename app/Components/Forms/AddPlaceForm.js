@@ -31,14 +31,13 @@ export default class AddPlaceForm extends React.Component {
     errors: {}, //dict
   };
 
-   componentDidMount(){
-      this.setState({mounted:true});
-    }
+  componentDidMount() {
+    this.setState({ mounted: true });
+  }
 
-    componentWillUnmount(){
-      this.setState({mounted:false});
-    }
-
+  componentWillUnmount() {
+    this.setState({ mounted: false });
+  }
 
   handleValidation() {
     let errors = {};
@@ -59,7 +58,6 @@ export default class AddPlaceForm extends React.Component {
       errors["description"] = "Description cannot be empty";
     }
 
-
     // Address
     if (this.state.address == "") {
       formIsValid = false;
@@ -67,15 +65,15 @@ export default class AddPlaceForm extends React.Component {
     }
 
     if (this.state.mounted) {
-    this.setState({ errors: errors });
+      this.setState({ errors: errors });
     }
     return formIsValid;
   }
 
   setPhoto = (photo) => {
-      if (this.state.mounted) {
+    if (this.state.mounted) {
       this.setState({ photo: photo });
-      }
+    }
   };
 
   async registerPlace() {
@@ -107,8 +105,9 @@ export default class AddPlaceForm extends React.Component {
                 "longitudeDelta"
               )
               .then((doc) => {
-                this.context.savePlace(doc.id);
-                dbPlace.addUserPlace(this.context.uid,doc.id);
+                this.context.places.push(doc.id);
+                this.context.savePlaces(this.context.places);
+                dbPlace.addUserPlace(this.context.uid, doc.id);
                 this.props.close();
               });
           });
@@ -194,7 +193,7 @@ export default class AddPlaceForm extends React.Component {
                 <Text style={styles.error}>{this.state.errors["address"]}</Text>
               ) : null}
 
-              <PhotoBox setPhoto = {this.setPhoto} isUpdate = {false} ></PhotoBox>
+              <PhotoBox setPhoto={this.setPhoto} isUpdate={false}></PhotoBox>
 
               <TouchableOpacity
                 style={{

@@ -21,47 +21,50 @@ class PlaceButton extends React.Component {
   componentDidMount() {
     this.setState({ mounted: true });
     console.log("COMPONENT DID MOUNT PLACEBUTTON");
+    console.log(this.props.places);
+    this.getMyPlaces(this.props.places);
   }
 
-  showPlace(placeID, place) {
-    place.id = placeID;
+  getMyPlaces(places) {
+    let promises = places.map((placeID) => {
+      return dbPlace.getMyPlace(this.context.uid, placeID).then((place) => {
+        place.id = placeID;
+        return place;
+      });
+    });
+    Promise.all(promises).then((places) => {
+      console.log("places in component did mount");
+      console.log(places);
+      this.setState({ places: places });
+    });
+  }
+
+  showPlace(place) {
     this.props.navigation.navigate("Place", {
       place: place,
       deletePlace: this.props.deletePlace,
     });
   }
 
-  componentDidUpdate(prevProps,prevState) {
-    if ((this.state.places == null || prevProps.places.length != this.props.places.length) && this.state.mounted) {
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.places == null) {
       console.log("COMPONENTDIDUPDATE  PLACE BUTTON");
-      console.log("places placebutton length: " + this.props.places.length);
+      console.log("places placebutton: " + this.props.places);
       const places = this.props.places;
-      var placeButtons = [];
 
-      places.map((placesID) => {
-        dbPlace.getPlace(placesID).then((place) => {
-          console.log("Place: " + place);
-          placeButtons.push(
-            <View key={placesID}>
-              <TouchableHighlight
-                onPress={() => this.showPlace(placesID, place)}
-                style={styles.place}
-              >
-                <ImageBackground
-                  source={{ uri: place.getPhoto() }}
-                  style={styles.placeImage}
-                >
-                  <View style={styles.overlay}>
-                    <Text style={styles.title}>{place.name}</Text>
-                  </View>
-                </ImageBackground>
-              </TouchableHighlight>
-            </View>
-          );
-          if (this.state.mounted) {
-            this.setState({ places: placeButtons });
-          }
+      let promises = places.map((placeID) => {
+        return dbPlace.getPlace(placeID).then((place) => {
+          place.id = placeID;
+          return place;
         });
+      });
+
+      Promise.all(promises).then((places) => {
+        console.log("PLACES in place button");
+        console.log(places);
+        if (this.state.mounted) {
+          this.setState({ places: places });
+        }
       });
     }
   }
@@ -72,7 +75,23 @@ class PlaceButton extends React.Component {
 
   render() {
     if (this.state.places != null) {
-      return this.state.places;
+      return this.state.places.map((place, index) => (
+        <View key={index}>
+          <TouchableHighlight
+            onPress={() => this.showPlace(place)}
+            style={styles.place}
+          >
+            <ImageBackground
+              source={{ uri: place.getPhoto() }}
+              style={styles.placeImage}
+            >
+              <View style={styles.overlay}>
+                <Text style={styles.title}>{place.name}</Text>
+              </View>
+            </ImageBackground>
+          </TouchableHighlight>
+        </View>
+      ));
     } else {
       return (
         <Text style={{ textAlign: "center" }}>
