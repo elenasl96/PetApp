@@ -20,6 +20,7 @@ export default class HomeBusiness extends React.Component {
     places: [],
     mounted: false,
     showPlaceForm: false,
+    update: false,
   };
   static contextType = AuthContext;
 
@@ -31,6 +32,14 @@ export default class HomeBusiness extends React.Component {
         //console.log("places:" + this.context.places);
       }
     });
+  }
+
+  componentDidUpdate(prevProps,prevState){
+    if(!this.state.showPlaceForm && prevState.showPlaceForm){
+       console.log("COMPONENT DID UPDATE HOME BUSINESS");
+       console.log("context places length: " + this.context.places.length);
+       this.setState({places:this.context.places});
+    }
   }
 
   componentWillUnmount() {
@@ -67,6 +76,7 @@ export default class HomeBusiness extends React.Component {
           this.setState({ places: placesUpdated });
         }
 
+
      };
 
   render() {
@@ -74,6 +84,7 @@ export default class HomeBusiness extends React.Component {
       this.props.navigation.navigate("Pet");
     };
 
+    console.log("RENDER" + this.state.places.length);
     const places = this.state.places;
 
     return (
@@ -81,7 +92,7 @@ export default class HomeBusiness extends React.Component {
         <AddPlaceForm
           visible={this.state.showPlaceForm}
           close={() => {
-            this.setState({ showPlaceForm: false });
+            this.setState({ showPlaceForm: false,update:true });
           }}
         ></AddPlaceForm>
         <View style={styles.mainContent}>

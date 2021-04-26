@@ -20,6 +20,7 @@ class PlaceButton extends React.Component {
 
   componentDidMount() {
     this.setState({ mounted: true });
+    console.log("COMPONENT DID MOUNT PLACEBUTTON");
   }
 
   showPlace(placeID, place) {
@@ -30,8 +31,10 @@ class PlaceButton extends React.Component {
     });
   }
 
-  componentDidUpdate() {
-    if (this.state.places == null && this.state.mounted) {
+  componentDidUpdate(prevProps,prevState) {
+    if ((this.state.places == null || prevProps.places.length != this.props.places.length) && this.state.mounted) {
+      console.log("COMPONENTDIDUPDATE  PLACE BUTTON");
+      console.log("places placebutton length: " + this.props.places.length);
       const places = this.props.places;
       var placeButtons = [];
 

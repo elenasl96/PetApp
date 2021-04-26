@@ -251,7 +251,7 @@ const dbPlace = {
     },
 
     deleteMyPlace: function (uid, id) {
-      query = firestore.collection("MyPlaces").where('pid','==',id);
+      query = firestore.collection("Users").doc(uid).collection("MyPlaces").where('pid','==',id);
       query.get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
           doc.ref.delete();
