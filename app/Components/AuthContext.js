@@ -12,7 +12,7 @@ class AuthContextProvider extends Component {
     loading: false,
     uid: "",
     places: null,
-    savedPlaces: null,
+    savedPlaces: [],
     //lastlogin:"",
     //   pets: [],
   };

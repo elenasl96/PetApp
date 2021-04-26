@@ -114,6 +114,16 @@ class HomeScreen extends React.Component {
     });
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    console.log("UPDATE");
+    console.log(prevState.places);
+    console.log(this.context.savedPlaces);
+    if (this.state.places != this.context.savedPlaces) {
+      console.log("HOMEUPDATE");
+      this.setState({ places: this.context.savedPlaces });
+    }
+  }
+
   componentWillUnmount() {
     this.setState({ mounted: false });
   }

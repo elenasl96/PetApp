@@ -35,16 +35,24 @@ class StarButton extends React.Component {
     this.setState({ mounted: false });
   }
 
-  addToFavorite() {
+  addToFavorite = () => {
     dbPlace.addSavedPlace(this.props.uid, this.props.pid);
     console.log("save place: " + this.props.pid);
     this.setState({ favorite: true });
-  }
+    this.context.savedPlaces.push(this.props.pid);
+    this.context.saveFavouritePlaces(this.context.savedPlaces);
+    console.log(this.context.savedPlaces);
+  };
 
-  deleteFromFavorite() {
+  deleteFromFavorite = () => {
     dbPlace.deleteSavedPlace(this.props.uid, this.state.id);
+    let index = this.context.savedPlaces.indexOf(this.state.id);
+    if (index != -1) {
+      this.context.savedPlaces.splice(index, 1);
+    }
+    this.context.saveFavouritePlaces(this.context.savedPlaces);
     this.setState({ favorite: false });
-  }
+  };
 
   render() {
     if (this.state.favorite) {
