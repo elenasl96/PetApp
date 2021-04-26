@@ -151,6 +151,22 @@ class HomeScreen extends React.Component {
     });
   };
 
+  deletePlace = (pid) => {
+    dbPlace.deletePlace(pid); // delete place from db
+    dbPlace.deleteSavedPlace(this.context.uid, pid); // delete MyPlace from db
+
+    let index = this.context.places.indexOf(pid);
+    if (index != -1) {
+      this.context.places.splice(index, 1);
+    }
+    this.context.savePlaces(this.context.places); //update context of my places
+    console.log("places after delete");
+    console.log(this.context.places);
+    if (this.state.mounted) {
+      this.setState({ places: this.context.places });
+    }
+  };
+
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -209,18 +225,14 @@ class HomeScreen extends React.Component {
 
             <View style={styles.myPlaceContainer}>
               <Text style={styles.largeText}>Your Favourite Places</Text>
-              {/*} <View style={styles.myPlaces}>
-                 <ScrollView
-                   horizontal={true}
-                   showsHorizontalScrollIndicator={false}
-                   > */}
-              <PlaceButton
-                uid={this.context.uid}
-                places={this.state.places}
-                navigation={this.props.navigation}
-              ></PlaceButton>
-              {/*    </ScrollView>
-               </View> */}
+              {this.state.places.length > 0 ? (
+                <PlaceButton
+                  uid={this.context.uid}
+                  places={this.state.places}
+                  navigation={this.props.navigation}
+                  deletePlace={this.deletePlace}
+                ></PlaceButton>
+              ) : null}
             </View>
           </ScrollView>
         </View>

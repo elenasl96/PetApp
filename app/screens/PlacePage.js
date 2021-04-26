@@ -50,11 +50,13 @@ class VetScreen extends React.Component {
       });
     }
 
-    if(this.context.user.type=="business" && this.context.places.includes(place.id)){
-       console.log("It is editable!");
-       this.setState({isEditable:true});
+    if (
+      this.context.user.type == "business" &&
+      this.context.places.includes(place.id)
+    ) {
+      console.log("It is editable!");
+      this.setState({ isEditable: true });
     }
-
   }
 
   componentWillUnmount() {
@@ -86,12 +88,13 @@ class VetScreen extends React.Component {
     }
   };
 
-  deletePlaceHere = () => { //OK
-      const placeID = this.props.navigation.state.params.place.id;
-      const photo = this.props.navigation.state.params.place.photo;
-      storageManager.deleteFile(photo);
-      this.props.navigation.state.params.deletePlace(placeID);
-      this.props.navigation.goBack();
+  deletePlaceHere = () => {
+    //OK
+    const placeID = this.props.navigation.state.params.place.id;
+    const photo = this.props.navigation.state.params.place.photo;
+    storageManager.deleteFile(photo);
+    this.props.navigation.state.params.deletePlace(placeID);
+    this.props.navigation.goBack();
   };
 
   deletePet = (petID) => {
@@ -174,30 +177,28 @@ class VetScreen extends React.Component {
                   <Text style={styles.buttonText}>Open in map </Text>
                 </TouchableOpacity>
 
-           {isEditable ?  (
-             <>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => this.addNews()}
-                >
-                  <Text style={styles.buttonText}> + News </Text>
-                </TouchableOpacity>
-                {this.isKennel(place) ? (
-                  <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => this.setState({ showPetForm: true })}
-                  >
-                    <Text style={styles.buttonText}> + Animals </Text>
-                  </TouchableOpacity>
+                {isEditable ? (
+                  <>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => this.addNews()}
+                    >
+                      <Text style={styles.buttonText}> + News </Text>
+                    </TouchableOpacity>
+                    {this.isKennel(place) ? (
+                      <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => this.setState({ showPetForm: true })}
+                      >
+                        <Text style={styles.buttonText}> + Animals </Text>
+                      </TouchableOpacity>
+                    ) : null}
+                  </>
                 ) : null}
 
-                </>
-            ):null}
-
-            {!isEditable ? (
-                <StarButton uid={this.context.uid} pid={pid} />
-            )  : null }
-
+                {!isEditable ? (
+                  <StarButton uid={this.context.uid} pid={pid} />
+                ) : null}
               </LinearGradient>
             </View>
           </ImageBackground>
@@ -233,24 +234,21 @@ class VetScreen extends React.Component {
               navigation={this.props.navigation}
               pets={this.state.animalsToAdopt}
               isAdoptable={true}
-              isEditable = {isEditable}
+              isEditable={isEditable}
               pid={this.props.navigation.state.params.place.id}
               deleteAnimal={this.deletePet}
             ></PetButton>
-
-
           </View>
         ) : null}
 
         {isEditable ? (
-                                    <TouchableOpacity
-                                      style={styles.button}
-                                      onPress={this.deletePlaceHere}
-                                    >
-
-                                      <Text style={styles.buttonText}>Delete place</Text>
-                                    </TouchableOpacity>
-                         )  : null }
+          <TouchableOpacity
+            style={styles.button}
+            onPress={this.deletePlaceHere}
+          >
+            <Text style={styles.buttonText}>Delete place</Text>
+          </TouchableOpacity>
+        ) : null}
       </SafeAreaView>
     );
   }

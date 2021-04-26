@@ -12,6 +12,7 @@ class AuthContextProvider extends Component {
     loading: false,
     uid: "",
     places: null,
+    savedPlaces: null,
     //lastlogin:"",
     //   pets: [],
   };
@@ -45,13 +46,9 @@ class AuthContextProvider extends Component {
     }
   };
 
-  deletePlace = (place) => {
-    const index = this.state.places.indexOf(place);
+  saveFavouritePlaces = (places) => {
     if (this.state.mounted) {
-      if (index > -1) {
-        this.state.places.splice(index, 1);
-      }
-      this.setState({ mounted: true });
+      this.setState({ savedPlaces: places });
     }
   };
 
@@ -105,7 +102,7 @@ class AuthContextProvider extends Component {
           saveUserUID: this.saveUserUID,
           saveUser: this.saveUser,
           savePlaces: this.savePlaces,
-          deletePlace: this.deletePlace,
+          saveFavouritePlaces: this.saveFavouritePlaces,
         }}
       >
         {this.props.children}

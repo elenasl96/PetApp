@@ -15,14 +15,14 @@ class StarButton extends React.Component {
 
   constructor(props) {
     super(props);
+    console.log("STAR");
+    console.log(this.props.pid);
     dbPlace.getSavedPlaces(this.props.uid).then((savedPlaces) => {
       savedPlaces.forEach((savedPlaceId) => {
-        dbPlace.getSavedPlace(this.props.uid, savedPlaceId).then((place) => {
-          if (this.props.pid == place) {
-            this.setState({ id: savedPlaceId });
-            this.setState({ favorite: true });
-          }
-        });
+        if (this.props.pid == savedPlaceId) {
+          this.setState({ id: savedPlaceId });
+          this.setState({ favorite: true });
+        }
       });
     });
   }
