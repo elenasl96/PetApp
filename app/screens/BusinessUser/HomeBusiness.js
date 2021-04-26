@@ -27,19 +27,19 @@ export default class HomeBusiness extends React.Component {
 
   componentDidMount() {
     this.setState({ mounted: true });
-    console.log("places is homebusiness");
+    console.log("places in homebusiness");
     this.setState({ places: this.context.places });
     console.log(this.context.places);
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  /*  componentDidUpdate(prevProps, prevState) {
     if (!this.state.showPlaceForm && prevState.showPlaceForm) {
       console.log("COMPONENT DID UPDATE HOME BUSINESS");
       console.log("context places length: " + this.context.places.length);
       console.log(this.context.places);
       this.setState({ places: this.context.places });
     }
-  }
+  }*/
 
   componentWillUnmount() {
     this.setState({ mounted: false });
@@ -76,8 +76,6 @@ export default class HomeBusiness extends React.Component {
       this.props.navigation.navigate("Pet");
     };
 
-    const places = this.state.places;
-
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <AddPlaceForm
@@ -104,12 +102,15 @@ export default class HomeBusiness extends React.Component {
                       style={styles.addButton}
                     ></Image>
                   </TouchableHighlight>
-                  <PlaceButton
-                    uid={this.context.uid}
-                    places={places}
-                    navigation={this.props.navigation}
-                    deletePlace={this.deletePlace}
-                  ></PlaceButton>
+
+                  {this.state.places.length > 0 ? (
+                    <PlaceButton
+                      uid={this.context.uid}
+                      places={this.state.places}
+                      navigation={this.props.navigation}
+                      deletePlace={this.deletePlace}
+                    ></PlaceButton>
+                  ) : null}
                 </ScrollView>
               </View>
             </View>

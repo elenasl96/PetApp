@@ -21,21 +21,23 @@ class PlaceButton extends React.Component {
   componentDidMount() {
     this.setState({ mounted: true });
     console.log("COMPONENT DID MOUNT PLACEBUTTON");
-    console.log(this.props.places);
     this.getMyPlaces(this.props.places);
   }
 
   getMyPlaces(places) {
     let promises = places.map((placeID) => {
-      return dbPlace.getMyPlace(this.context.uid, placeID).then((place) => {
+      return dbPlace.getPlace(placeID).then((place) => {
         place.id = placeID;
         return place;
       });
     });
+
     Promise.all(promises).then((places) => {
-      console.log("places in component did mount");
+      console.log("PLACES in place button");
       console.log(places);
-      this.setState({ places: places });
+      if (this.state.mounted) {
+        this.setState({ places: places });
+      }
     });
   }
 
@@ -44,29 +46,6 @@ class PlaceButton extends React.Component {
       place: place,
       deletePlace: this.props.deletePlace,
     });
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.places == null) {
-      console.log("COMPONENTDIDUPDATE  PLACE BUTTON");
-      console.log("places placebutton: " + this.props.places);
-      const places = this.props.places;
-
-      let promises = places.map((placeID) => {
-        return dbPlace.getPlace(placeID).then((place) => {
-          place.id = placeID;
-          return place;
-        });
-      });
-
-      Promise.all(promises).then((places) => {
-        console.log("PLACES in place button");
-        console.log(places);
-        if (this.state.mounted) {
-          this.setState({ places: places });
-        }
-      });
-    }
   }
 
   componentWillUnmount() {
