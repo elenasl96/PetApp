@@ -15,6 +15,7 @@ import dbLostPet from "../firebase/Database/Functions/dbLostPet";
 import PetLostButton from "../Components/Buttons/PetLostButton";
 import PetLostSeenButton from "../Components/Buttons/PetLostSeenButton";
 import mainStyle from "../styles/mainStyle";
+import { Feather } from "@expo/vector-icons";
 
 export default class LostPetsScreen extends React.Component {
   state = {
@@ -65,6 +66,17 @@ export default class LostPetsScreen extends React.Component {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.mainContent}>
+          <View style={styles.bottomOverlay}>
+            <TouchableHighlight
+              style={styles.mapButton}
+              onPress={null}
+              underlayColor={"rgb(200,200,200)"}
+            >
+              <Text style={{ textAlign: "center" }}>
+                <Feather name="plus" size={24} color="black" />
+              </Text>
+            </TouchableHighlight>
+          </View>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.myPlacesContainer}>
               <View style={styles.buttons}>
@@ -244,5 +256,20 @@ const styles = StyleSheet.create({
     height: 50,
     resizeMode: "cover",
     tintColor: "orange",
+  },
+  bottomOverlay: {
+    position: "absolute",
+    bottom: 20,
+    right: 10,
+    flex: 1,
+    flexDirection: "row",
+  },
+  mapButton: {
+    padding: 8,
+    borderRadius: 30,
+    backgroundColor: "rgba(255, 255, 255, 1)",
+    overflow: "hidden",
+    elevation: 2,
+    marginHorizontal: 5,
   },
 });
