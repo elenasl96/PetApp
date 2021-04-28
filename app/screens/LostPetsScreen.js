@@ -76,7 +76,9 @@ export default class LostPetsScreen extends React.Component {
         <ReportLossForm
           pet={null}
           visible={this.state.showReportLossForm}
-          close={this.reportLoss}
+          close={() => {
+            this.setState({ showReportLossForm: false });
+          }}
         ></ReportLossForm>
         <View style={styles.mainContent}>
           <View style={styles.bottomOverlay}>
