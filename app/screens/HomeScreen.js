@@ -106,8 +106,8 @@ class HomeScreen extends React.Component {
             if (this.state.mounted) {
               this.context.savePlaces(PIDs);
             }
-            console.log("My places");
-            console.log(this.context.places);
+            //console.log("My places");
+            //console.log(this.context.places);
           });
         }
       }
@@ -115,11 +115,11 @@ class HomeScreen extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log("UPDATE");
-    console.log(prevState.places);
-    console.log(this.context.savedPlaces);
+    //console.log("UPDATE");
+    //console.log(prevState.places);
+    //console.log(this.context.savedPlaces);
     if (this.state.places != this.context.savedPlaces) {
-      console.log("HOMEUPDATE");
+      //console.log("HOMEUPDATE");
       this.setState({ places: this.context.savedPlaces });
     }
   }
@@ -136,7 +136,7 @@ class HomeScreen extends React.Component {
 
   addPet = (petID) => {
     this.state.pets.push(petID);
-    console.log(this.state.pets);
+    //console.log(this.state.pets);
     if (this.state.mounted) {
       this.setState({ pets: this.state.pets });
     }
@@ -149,7 +149,7 @@ class HomeScreen extends React.Component {
     if (index != -1) {
       petsUpdated.splice(index, 1);
     }
-    console.log(petsUpdated);
+    //console.log(petsUpdated);
     if (this.state.mounted) {
       this.setState({ pets: petsUpdated });
     }
@@ -170,8 +170,8 @@ class HomeScreen extends React.Component {
       this.context.places.splice(index, 1);
     }
     this.context.savePlaces(this.context.places); //update context of my places
-    console.log("places after delete");
-    console.log(this.context.places);
+    //console.log("places after delete");
+    //console.log(this.context.places);
     if (this.state.mounted) {
       this.setState({ places: this.context.places });
     }

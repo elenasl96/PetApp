@@ -27,9 +27,9 @@ export default class HomeBusiness extends React.Component {
 
   componentDidMount() {
     this.setState({ mounted: true });
-    console.log("places in homebusiness");
+    //console.log("places in homebusiness");
     this.setState({ places: this.context.places });
-    console.log(this.context.places);
+    //console.log(this.context.places);
   }
 
   /*  componentDidUpdate(prevProps, prevState) {
@@ -46,15 +46,15 @@ export default class HomeBusiness extends React.Component {
   }
 
   addPlace = () => {
-    console.log("tt");
+    //console.log("tt");
     if (this.state.mounted) {
       this.setState({ showPlaceForm: true });
     }
   };
 
   deletePlace = (pid) => {
-    console.log("HOME BUSINESS DELETE");
-    console.log("pid: " + pid);
+    //console.log("HOME BUSINESS DELETE");
+    //console.log("pid: " + pid);
 
     dbPlace.deletePlace(pid); // delete place from db
     dbPlace.deleteMyPlace(this.context.uid, pid); // delete MyPlace from db
@@ -64,8 +64,8 @@ export default class HomeBusiness extends React.Component {
       this.context.places.splice(index, 1);
     }
     this.context.savePlaces(this.context.places); //update context of my places
-    console.log("places after delete");
-    console.log(this.context.places);
+    //console.log("places after delete");
+    //console.log(this.context.places);
     if (this.state.mounted) {
       this.setState({ places: this.context.places });
     }

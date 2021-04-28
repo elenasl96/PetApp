@@ -22,6 +22,7 @@ import AddNewsForm from "../Components/Forms/AddNewsForm";
 import AddPetForm from "../Components/Forms/AddPetForm";
 import PetButton from "../Components/Buttons/PetButton";
 import storageManager from "../firebase/Storage/storage";
+import PhotoBox from "../Components/Custom/PhotoBox";
 
 class VetScreen extends React.Component {
   static contextType = AuthContext;
@@ -31,12 +32,14 @@ class VetScreen extends React.Component {
     showPetForm: false,
     animalsToAdopt: [],
     isEditable: false,
+    photo: null,
   };
 
   componentDidMount() {
     const place = this.props.navigation.state.params.place;
     this.setState({ mounted: true });
-    console.log("places: " + this.context.places);
+    console.log("Place page mounted");
+    //console.log("places: " + this.context.places);
     /*
     dbPlace.isMyPlace(this.context.uid,place.id).then((match) =>{
       console.log("is my place? " + match);
@@ -44,7 +47,7 @@ class VetScreen extends React.Component {
     */
 
     if (place.getType() === "Kennel") {
-      console.log("mount kennel");
+      //console.log("mount kennel");
       dbAdoptableAnimal.getAdoptableAnimals(place.id).then((animals) => {
         this.setState({ animalsToAdopt: animals });
       });
@@ -54,9 +57,15 @@ class VetScreen extends React.Component {
       this.context.user.type == "business" &&
       this.context.places.includes(place.id)
     ) {
-      console.log("It is editable!");
+      //console.log("It is editable!");
       this.setState({ isEditable: true });
     }
+
+    const photo = place.photo;
+
+    this.setState({ photo: photo});
+
+
   }
 
   componentWillUnmount() {
@@ -80,9 +89,9 @@ class VetScreen extends React.Component {
   };
 
   addAnimalToAdopt = (petID) => {
-    console.log("Add animal to adopt");
+    //console.log("Add animal to adopt");
     this.state.animalsToAdopt.push(petID);
-    console.log(this.state.animalsToAdopt);
+    //console.log(this.state.animalsToAdopt);
     if (this.state.mounted) {
       this.setState({ animalsToAdopt: this.state.animalsToAdopt });
     }
@@ -98,8 +107,8 @@ class VetScreen extends React.Component {
   };
 
   deletePet = (petID) => {
-    console.log("Delete adoptable pet");
-    console.log(this.state.animalsToAdopt);
+    //console.log("Delete adoptable pet");
+    //console.log(this.state.animalsToAdopt);
     const pid = this.props.navigation.state.params.place.id;
     dbAdoptableAnimal.deleteAdoptableAnimal(pid, petID);
     let petsUpdated = this.state.animalsToAdopt;
@@ -107,16 +116,29 @@ class VetScreen extends React.Component {
     if (index != -1) {
       petsUpdated.splice(index, 1);
     }
-    console.log(petsUpdated);
+    //console.log(petsUpdated);
     if (this.state.mounted) {
       this.setState({ animalsToAdopt: petsUpdated });
     }
   };
 
+  setPhoto = (photo) => {
+     console.log("SET PHOTO");
+      this.setState({ photo: photo });
+  };
+
+
+
+
   render() {
     const place = this.props.navigation.state.params.place;
     const pid = place.id;
     const isEditable = this.state.isEditable;
+    const photo = this.state.photo;
+
+    console.log("isEditable? "  + isEditable);
+    console.log("isKennel?" + this.isKennel(place));
+    console.log("photo place: " + photo);
 
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -138,7 +160,7 @@ class VetScreen extends React.Component {
         ></AddPetForm>
         <View>
           <ImageBackground
-            source={{ uri: place.photo }}
+            source={{ uri: photo }}
             style={styles.vetImage}
           >
             <View
@@ -170,6 +192,8 @@ class VetScreen extends React.Component {
                   "rgba(255,255,255,1)",
                 ]}
               >
+
+
                 <TouchableOpacity
                   style={styles.button}
                   onPress={this.openInMap.bind(this)}
@@ -211,25 +235,41 @@ class VetScreen extends React.Component {
           </Text>
         </View>
 
-        <View style={styles.mainContent}>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
+        <ScrollView showsVerticalScrollIndicator={false}>
+
+
+          <ScrollView horizontal={true}
+           showsHorizontalScrollIndicator={false}
             style={{ paddingTop: 10 }}
           >
             <News placeId={pid}></News>
           </ScrollView>
-        </View>
+
+
+
+         { isEditable   ? (
+
+                                                  <PhotoBox
+                                                    pid={pid}
+                                                    section={"places"}
+                                                    setPhoto={this.setPhoto}
+                                                    isUpdate={true}
+                                                    photo={photo}
+                                                  ></PhotoBox>
+
+                                      ) : null }
+
         {console.log("adoptable animals")}
         {console.log(this.state.animalsToAdopt)}
         {this.state.animalsToAdopt.length > 0 ? (
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              flexWrap: "wrap",
-              justifyContent: "center",
-            }}
-          >
+
+        <View style={styles.mainContent}>
+
+          <ScrollView
+           horizontal={true}
+          showsHorizontalScrollIndicator={false}
+                        >
+          <Text style = {styles.title}>Adoptable pets</Text>
             <PetButton
               navigation={this.props.navigation}
               pets={this.state.animalsToAdopt}
@@ -238,7 +278,10 @@ class VetScreen extends React.Component {
               pid={this.props.navigation.state.params.place.id}
               deleteAnimal={this.deletePet}
             ></PetButton>
-          </View>
+           </ScrollView>
+
+        </View>
+
         ) : null}
 
         {isEditable ? (
@@ -249,6 +292,9 @@ class VetScreen extends React.Component {
             <Text style={styles.buttonText}>Delete place</Text>
           </TouchableOpacity>
         ) : null}
+
+    </ScrollView>
+
       </SafeAreaView>
     );
   }

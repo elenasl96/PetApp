@@ -15,8 +15,8 @@ class StarButton extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log("STAR");
-    console.log(this.props.pid);
+    //console.log("STAR");
+    //console.log(this.props.pid);
     dbPlace.getSavedPlaces(this.props.uid).then((savedPlaces) => {
       savedPlaces.forEach((savedPlaceId) => {
         if (this.props.pid == savedPlaceId) {
@@ -37,11 +37,11 @@ class StarButton extends React.Component {
 
   addToFavorite = () => {
     dbPlace.addSavedPlace(this.props.uid, this.props.pid);
-    console.log("save place: " + this.props.pid);
+    //console.log("save place: " + this.props.pid);
     this.setState({ favorite: true });
     this.context.savedPlaces.push(this.props.pid);
     this.context.saveFavouritePlaces(this.context.savedPlaces);
-    console.log(this.context.savedPlaces);
+    //console.log(this.context.savedPlaces);
   };
 
   deleteFromFavorite = () => {

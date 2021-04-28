@@ -21,7 +21,7 @@ class PetButton extends React.Component {
 
   componentDidMount() {
     this.setState({ mounted: true });
-    console.log("Pet mounted");
+    //console.log("Pet mounted");
     const navigation = this.props.navigation;
     const pets = this.props.pets;
     const isAdoptable = this.props.isAdoptable;
@@ -65,7 +65,7 @@ class PetButton extends React.Component {
       });
     } else {
       const pid = this.props.pid;
-      console.log("isAdoptable: " + isAdoptable);
+      //console.log("isAdoptable: " + isAdoptable);
       pets.map((petID) => {
         dbAdoptableAnimal
           .getAdoptableAnimal(pid, petID.toString())

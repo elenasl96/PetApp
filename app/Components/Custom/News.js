@@ -20,10 +20,10 @@ class News extends React.Component {
   };
 
   deleteNews = (pid, newsId) => {
-    console.log(pid, newsId);
+    //console.log(pid, newsId);
     dbNews.deleteNews(pid, newsId).then(() => {
       let updatedNews = this.state.news.filter((news) => news.id !== newsId);
-      console.log(updatedNews);
+      //console.log(updatedNews);
       this.setState({ news: updatedNews });
     });
   };
@@ -39,7 +39,7 @@ class News extends React.Component {
           return news;
         });
       });
-      console.log(newsPromises);
+      //console.log(newsPromises);
       Promise.all(newsPromises).then((news) => {
         this.setState({ news: news });
       });
@@ -52,8 +52,8 @@ class News extends React.Component {
 
   render() {
     if (this.state.news && this.state.news.length > 0) {
-      console.log("HAVE NEWS");
-      console.log(this.state.news);
+      //console.log("HAVE NEWS");
+      //console.log(this.state.news);
       return this.state.news.map((news, index) => (
         <View key={index} style={styles.feedContainer}>
           <View style={styles.feed}>

@@ -20,7 +20,6 @@ class PlaceButton extends React.Component {
 
   componentDidMount() {
     this.setState({ mounted: true });
-    console.log("COMPONENT DID MOUNT PLACEBUTTON");
     this.getMyPlaces(this.props.places);
   }
 
@@ -33,8 +32,6 @@ class PlaceButton extends React.Component {
     });
 
     Promise.all(promises).then((places) => {
-      console.log("PLACES in place button");
-      console.log(places);
       if (this.state.mounted) {
         this.setState({ places: places });
       }

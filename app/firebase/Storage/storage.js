@@ -41,7 +41,7 @@ const storageManager = {
   },
 
   fromStorage: function (section,filename) {
-    console.log("FromStorage");
+    //console.log("FromStorage");
     var storageRef = storage.ref();
     var imageRef = storageRef.child(section + "/" + filename);
     return imageRef
@@ -56,7 +56,7 @@ const storageManager = {
         xhr.open("GET", url);
         xhr.send();
 
-        console.log("url " + url);
+        //console.log("url " + url);
         return url;
       })
       .catch(function (error) {

@@ -36,6 +36,7 @@ class PhotoBox extends React.Component {
   state = {
     //photo: null,   // photo container
     photoUpdate: null, // local photo ( the one potentially used to update)
+    mounted:false,
     errors: {},
   };
 
@@ -43,7 +44,8 @@ class PhotoBox extends React.Component {
 
   componentDidMount(){
     this.setState({mounted:true});
-    if (this.props.isUpdate && this.state.mounted){
+    if (this.props.isUpdate){
+    //console.log("IN DID MOUNT");
     this.setState({photo: this.props.photo});  // photo passed from the container, our initial photo
     }
   }
@@ -118,10 +120,6 @@ class PhotoBox extends React.Component {
       let errors = {};
       const photoUpdate = this.state.photoUpdate;
       const photo = this.state.photo;
-
-      console.log("photo update " + photoUpdate);
-
-
       if (photoUpdate != null) {
         storageManager.deleteFile(photo); // deletes old photo from storage
         this.upload(photoUpdate);
@@ -152,9 +150,9 @@ class PhotoBox extends React.Component {
 
   upload = async (uri) => {     // logic to differentiate the storages
     const section = this.props.section;
+    const uid = this.context.uid;
     if (section == "pets"){
       const petID = this.props.petID;
-      const uid = this.context.uid;
       const response = await fetch(uri);
       const file = await response.blob();
       storageManager.toStorage(uid, file,section).then((url) => {
@@ -162,18 +160,21 @@ class PhotoBox extends React.Component {
          if (this.state.mounted) {
          this.setState({ photo: url });
          }
+         this.props.setPhoto(url);
       });
     }
 
     if (section == "places"){
+
         const pid = this.props.pid;
         const response = await fetch(uri);
         const file = await response.blob();
         storageManager.toStorage(uid, file,section).then((url) => {
-           dbPlaces.updatePlacePhoto(pid,url); // update ref in db
+           dbPlace.updatePlacePhoto(pid,url); // update ref in db
            if (this.state.mounted) {
            this.setState({ photo: url });
            }
+           this.props.setPhoto(url);
         });
     }
 
@@ -187,6 +188,7 @@ class PhotoBox extends React.Component {
                if (this.state.mounted) {
                this.setState({ photo: url });
                }
+               this.props.setPhoto(url);
             });
     }
 
@@ -199,10 +201,12 @@ class PhotoBox extends React.Component {
                    if (this.state.mounted) {
                    this.setState({ photo: url });
                    }
+                   this.props.setPhoto(url);
                 });
     }
 
-    this.props.setPhoto(uri); // update container photo
+
+    //this.props.setPhoto(uri); // update container photo
 
   };
 
