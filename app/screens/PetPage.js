@@ -33,6 +33,7 @@ class PetScreen extends React.Component {
     mounted: true,
     photo: null,
     showReportLossForm: false,
+    showPhotoBox: false,
     errors: {},
   };
 
@@ -122,39 +123,53 @@ class PetScreen extends React.Component {
                 </ImageBackground>
               </View>
 
-               <View style={styles.buttons}>
+              <View style={styles.buttons}>
+                {isEditable ? (
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={this.deletePet}
+                  >
+                    <Text style={styles.buttonText}>Delete pet</Text>
+                  </TouchableOpacity>
+                ) : null}
 
-    {isEditable ? (
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={this.deletePet}
-                >
+                {!isAdoptable ? (
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => {
+                      this.setState({ showReportLossForm: true });
+                    }}
+                  >
+                    <Text style={styles.buttonText}>Report loss</Text>
+                  </TouchableOpacity>
+                ) : null}
 
-                  <Text style={styles.buttonText}>Delete pet</Text>
-                </TouchableOpacity>
-     )  : null }
-
-       {!isAdoptable  ? (
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={this.reportLoss}
-                >
-                  <Text style={styles.buttonText}>Report loss</Text>
-                </TouchableOpacity>
-        ) : null}
-
+                {!isAdoptable ? (
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => {
+                      this.setState({ showPhotoBox: true });
+                    }}
+                  >
+                    <Text style={styles.buttonText}>Update photo</Text>
+                  </TouchableOpacity>
+                ) : null}
               </View>
             </View>
 
-       { isEditable   ? (   // if user pet isEditable is set to true by default
-            <PhotoBox
-              petID={petID}
-              section={section}
-              setPhoto={this.setPhoto}
-              isUpdate={true}
-              photo={photo}
-            ></PhotoBox>
-       ) : null }
+            {isEditable ? ( // if user pet isEditable is set to true by default
+              <PhotoBox
+                petID={petID}
+                section={section}
+                setPhoto={this.setPhoto}
+                isUpdate={true}
+                photo={photo}
+                visible={this.state.showPhotoBox}
+                close={() => {
+                  this.setState({ showPhotoBox: false });
+                }}
+              ></PhotoBox>
+            ) : null}
 
             <ScrollView
               horizontal={true}
@@ -186,7 +201,7 @@ class PetScreen extends React.Component {
               petID={petID}
               type={type}
               isAdoptable={isAdoptable}
-              isEditable = {isEditable}
+              isEditable={isEditable}
               pid={pid}
             >
               {" "}
