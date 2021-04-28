@@ -9,6 +9,7 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
+  Modal,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
@@ -37,6 +38,7 @@ class PhotoBox extends React.Component {
     //photo: null,   // photo container
     photoUpdate: null, // local photo ( the one potentially used to update)
     mounted:false,
+    visible:false,
     errors: {},
   };
 
@@ -46,7 +48,10 @@ class PhotoBox extends React.Component {
     this.setState({mounted:true});
     if (this.props.isUpdate){
     //console.log("IN DID MOUNT");
-    this.setState({photo: this.props.photo});  // photo passed from the container, our initial photo
+       this.setState({photo: this.props.photo,visible:this.props.visible});  // photo passed from the container, our initial photo
+    }
+    else{
+       this.setState({visible:true});
     }
   }
 
@@ -161,6 +166,7 @@ class PhotoBox extends React.Component {
          this.setState({ photo: url });
          }
          this.props.setPhoto(url);
+         this.props.close();
       });
     }
 
@@ -175,6 +181,7 @@ class PhotoBox extends React.Component {
            this.setState({ photo: url });
            }
            this.props.setPhoto(url);
+           this.props.close();
         });
     }
 
@@ -189,6 +196,7 @@ class PhotoBox extends React.Component {
                this.setState({ photo: url });
                }
                this.props.setPhoto(url);
+               this.props.close();
             });
     }
 
@@ -202,6 +210,7 @@ class PhotoBox extends React.Component {
                    this.setState({ photo: url });
                    }
                    this.props.setPhoto(url);
+                   this.props.close();
                 });
     }
 
@@ -215,20 +224,27 @@ class PhotoBox extends React.Component {
    const photoUpdate = this.state.photoUpdate;
    const photo = this.state.photo;
 
-  return (
+  if(this.props.isUpdate){
+  return (   // Mode update
 
-    <View
-      style={{
-        flex: 1,
-        flexDirection: "row",
-        marginTop: 20,
-        justifyContent: "center",
-      }}
-    >
+    <Modal
+            animationType="slide"
+            transparent={true}
+            visible={this.props.visible}
+            onRequestClose={() => {
+              this.props.close();
+            }}
+          >
+    <View style={styles.centeredView}>
+     <View style={styles.modalView}>
+
+     <ScrollView
+                      horizontal={true}
+                      showsHorizontalScrollIndicator={false}
+          >
       <View
         style={{ flex: 1, flexDirection: "column", justifyContent: "center" }}
       >
-
 
         <TouchableOpacity onPress={this.pickImage.bind(this)}>
           <View style={styles.button}>
@@ -244,10 +260,13 @@ class PhotoBox extends React.Component {
         </TouchableOpacity>
 
       </View>
+     </ScrollView>
+
      <ScrollView
                  horizontal={false}
                  showsHorizontalScrollIndicator={false}
      >
+
     {photoUpdate != null ? (
       <View>
      <Image source={{ uri:photoUpdate }} style={styles.image} />
@@ -257,17 +276,17 @@ class PhotoBox extends React.Component {
      </View>)
      }
 
-  {this.props.isUpdate  ? (
+
    <TouchableHighlight
-                    style={styles.petButton}
-                    onPress={this.updatePhoto.bind(this)}
-                    underlayColor={"rgb(200,200,200)"}
-                  >
-                    <View style>
-                      <Text>Update photo</Text>
-                    </View>
+    style={styles.petButton}
+    onPress={this.updatePhoto.bind(this)}
+    underlayColor={"rgb(200,200,200)"}
+  >
+    <View style>
+      <Text>Update photo</Text>
+    </View>
    </TouchableHighlight>
-  ) : null}
+
 
   {this.state.errors["photo"] != null ? (
                         <Text style={styles.error}>{this.state.errors["photo"]}</Text>
@@ -275,9 +294,76 @@ class PhotoBox extends React.Component {
   </ScrollView>
 
     </View>
+    </View>
+    </Modal>
   );
-  }
 
+  }
+  else{    // Mode form
+     return(
+        <View
+
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            marginTop: 20,
+            justifyContent: "center",
+          }}
+        >
+          <View
+            style={{ flex: 1, flexDirection: "column", justifyContent: "center" }}
+          >
+
+
+            <TouchableOpacity onPress={this.pickImage.bind(this)}>
+              <View style={styles.button}>
+                <Text> Pick image from gallery </Text>
+              </View>
+            </TouchableOpacity>
+
+
+            <TouchableOpacity onPress={this.openCamera.bind(this)}>
+              <View style={styles.button}>
+                <Text>Open the camera </Text>
+              </View>
+            </TouchableOpacity>
+
+          </View>
+         <ScrollView
+                     horizontal={false}
+                     showsHorizontalScrollIndicator={false}
+         >
+
+        {photoUpdate != null ? (
+          <View>
+         <Image source={{ uri:photoUpdate }} style={styles.image} />
+          </View>
+        ) :
+        (<View style={styles.image} >
+         </View>)
+         }
+
+      {this.props.isUpdate  ? (
+       <TouchableHighlight
+                        style={styles.petButton}
+                        onPress={this.updatePhoto.bind(this)}
+                        underlayColor={"rgb(200,200,200)"}
+                      >
+                        <View style>
+                          <Text>Update photo</Text>
+                        </View>
+       </TouchableHighlight>
+      ) : null}
+
+      {this.state.errors["photo"] != null ? (
+                            <Text style={styles.error}>{this.state.errors["photo"]}</Text>
+                          ) : null}
+      </ScrollView>
+
+        </View>
+      );
+  }
+  }
 
 }
 
@@ -297,6 +383,28 @@ const styles = StyleSheet.create({
   mainContent: {
     flex: 1,
   },
+  centeredView: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      marginTop: 22,
+    },
+    modalView: {
+      margin: 0,
+      backgroundColor: "white",
+      borderRadius: 20,
+      paddingVertical: 10,
+      alignItems: "center",
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      width: "90%",
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
+    },
   topBar: {
     flexDirection: "row",
     justifyContent: "space-between",

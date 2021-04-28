@@ -30,6 +30,7 @@ class VetScreen extends React.Component {
     mounted: false,
     showNewsForm: false,
     showPetForm: false,
+    showPhotoBox: false,
     animalsToAdopt: [],
     isEditable: false,
     photo: null,
@@ -128,20 +129,16 @@ class VetScreen extends React.Component {
   };
 
 
-
-
   render() {
     const place = this.props.navigation.state.params.place;
     const pid = place.id;
     const isEditable = this.state.isEditable;
     const photo = this.state.photo;
 
-    console.log("isEditable? "  + isEditable);
-    console.log("isKennel?" + this.isKennel(place));
-    console.log("photo place: " + photo);
-
     return (
       <SafeAreaView style={{ flex: 1 }}>
+
+
         <AddNewsForm
           pid={pid}
           visible={this.state.showNewsForm}
@@ -158,6 +155,19 @@ class VetScreen extends React.Component {
           }}
           addPet={this.addAnimalToAdopt}
         ></AddPetForm>
+
+          <PhotoBox
+            pid={pid}
+            section={"places"}
+            setPhoto={this.setPhoto}
+            isUpdate={true}
+            photo={photo}
+            visible={this.state.showPhotoBox}
+            close={() => {
+                this.setState({ showPhotoBox: false });
+            }}
+          ></PhotoBox>
+
         <View>
           <ImageBackground
             source={{ uri: photo }}
@@ -223,6 +233,16 @@ class VetScreen extends React.Component {
                 {!isEditable ? (
                   <StarButton uid={this.context.uid} pid={pid} />
                 ) : null}
+
+                {isEditable? (
+                  <TouchableOpacity
+                          style={styles.button}
+                          onPress={() => this.setState({ showPhotoBox: true })}
+                        >
+                          <Text style={styles.buttonText}> UpdatePhoto </Text>
+                        </TouchableOpacity>
+                ) : null }
+
               </LinearGradient>
             </View>
           </ImageBackground>
@@ -244,20 +264,6 @@ class VetScreen extends React.Component {
           >
             <News placeId={pid}></News>
           </ScrollView>
-
-
-
-         { isEditable   ? (
-
-                                                  <PhotoBox
-                                                    pid={pid}
-                                                    section={"places"}
-                                                    setPhoto={this.setPhoto}
-                                                    isUpdate={true}
-                                                    photo={photo}
-                                                  ></PhotoBox>
-
-                                      ) : null }
 
         {console.log("adoptable animals")}
         {console.log(this.state.animalsToAdopt)}
