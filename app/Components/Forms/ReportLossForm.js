@@ -14,10 +14,16 @@ import { AuthContext } from "../AuthContext";
 import { withNavigation } from "react-navigation";
 import mainStyle from "../../styles/mainStyle";
 import { ScrollView } from "react-native-gesture-handler";
+import PhotoBox from "../Custom/PhotoBox";
 
 class ReportLossForm extends Component {
   static contextType = AuthContext;
   state = {
+    name: null,
+    photo: null,
+    size: null,
+    color: null,
+    breed: null,
     notes: null,
     place: null,
     email: null,
@@ -27,6 +33,16 @@ class ReportLossForm extends Component {
 
   componentDidMount() {
     this.setState({ mounted: true });
+    if (this.props.pet != null) {
+      pet = this.props.pet;
+      this.setState({
+        name: pet.getName(),
+        photo: pet.getPhoto(),
+        size: pet.getSize(),
+        color: pet.getColor(),
+        breed: pet.getBreed(),
+      });
+    }
   }
 
   handleValidation() {
@@ -90,11 +106,11 @@ class ReportLossForm extends Component {
     console.log(this.context.uid);
     dbLostPet
       .addLostPetNotify(
-        pet.getName(),
-        pet.getPhoto(),
-        pet.getSize(),
-        pet.getColor(),
-        pet.getBreed(),
+        this.state.name,
+        this.state.photo,
+        this.state.size,
+        this.state.color,
+        this.state.breed,
         this.state.notes,
         this.state.place,
         this.context.uid,
@@ -104,6 +120,12 @@ class ReportLossForm extends Component {
       .then(() => {
         this.props.close();
       });
+  };
+
+  setPhoto = (photo) => {
+    if (this.state.mounted) {
+      this.setState({ photo: photo });
+    }
   };
 
   render() {
@@ -120,6 +142,54 @@ class ReportLossForm extends Component {
           <View style={styles.modalView}>
             <ScrollView showsVerticalScrollIndicator={false}>
               <Text style={styles.title}>Report Loss</Text>
+              {this.props.pet == null ? (
+                <View style={mainStyle.form}>
+                  <TextInput
+                    style={mainStyle.inputText}
+                    placeholder="Name"
+                    placeholderTextColor="#616161"
+                    returnKeyType="next"
+                    value={this.state.name}
+                    onChangeText={(name) => this.setState({ name })}
+                  />
+                </View>
+              ) : null}
+              {this.props.pet == null ? (
+                <View style={mainStyle.form}>
+                  <TextInput
+                    style={mainStyle.inputText}
+                    placeholder="Size"
+                    placeholderTextColor="#616161"
+                    returnKeyType="next"
+                    value={this.state.size}
+                    onChangeText={(size) => this.setState({ size })}
+                  />
+                </View>
+              ) : null}
+              {this.props.pet == null ? (
+                <View style={mainStyle.form}>
+                  <TextInput
+                    style={mainStyle.inputText}
+                    placeholder="Color"
+                    placeholderTextColor="#616161"
+                    returnKeyType="next"
+                    value={this.state.color}
+                    onChangeText={(color) => this.setState({ color })}
+                  />
+                </View>
+              ) : null}
+              {this.props.pet == null ? (
+                <View style={mainStyle.form}>
+                  <TextInput
+                    style={mainStyle.inputText}
+                    placeholder="Breed"
+                    placeholderTextColor="#616161"
+                    returnKeyType="next"
+                    value={this.state.breed}
+                    onChangeText={(breed) => this.setState({ breed })}
+                  />
+                </View>
+              ) : null}
               <View style={mainStyle.form}>
                 <TextInput
                   style={mainStyle.inputText}
@@ -164,6 +234,10 @@ class ReportLossForm extends Component {
                   onChangeText={(telephone) => this.setState({ telephone })}
                 />
               </View>
+
+              {this.props.pet == null ? (
+                <PhotoBox setPhoto={this.setPhoto} isUpdate={false}></PhotoBox>
+              ) : null}
 
               <TouchableOpacity
                 style={{

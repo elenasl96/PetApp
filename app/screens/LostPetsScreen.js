@@ -14,6 +14,7 @@ import { AuthContext } from "../Components/AuthContext";
 import dbLostPet from "../firebase/Database/Functions/dbLostPet";
 import PetLostButton from "../Components/Buttons/PetLostButton";
 import PetLostSeenButton from "../Components/Buttons/PetLostSeenButton";
+import ReportLossForm from "../Components/Forms/ReportLossForm";
 import mainStyle from "../styles/mainStyle";
 import { Feather } from "@expo/vector-icons";
 
@@ -24,6 +25,7 @@ export default class LostPetsScreen extends React.Component {
     lostPetsSeen: [],
     showLostPetsSeen: false,
     mounted: false,
+    showReportLossForm: false,
   };
   static contextType = AuthContext;
 
@@ -62,14 +64,27 @@ export default class LostPetsScreen extends React.Component {
     this.setState({ mounted: false });
   }
 
+  reportLoss = () => {
+    if (this.state.mounted) {
+      this.setState({ showReportLossForm: true });
+    }
+  };
+
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
+        <ReportLossForm
+          pet={null}
+          visible={this.state.showReportLossForm}
+          close={this.reportLoss}
+        ></ReportLossForm>
         <View style={styles.mainContent}>
           <View style={styles.bottomOverlay}>
             <TouchableHighlight
               style={styles.mapButton}
-              onPress={null}
+              onPress={() => {
+                this.setState({ showReportLossForm: true });
+              }}
               underlayColor={"rgb(200,200,200)"}
             >
               <Text style={{ textAlign: "center" }}>
@@ -271,5 +286,6 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     elevation: 2,
     marginHorizontal: 5,
+    zIndex: 1,
   },
 });
