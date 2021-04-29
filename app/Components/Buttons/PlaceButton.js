@@ -20,23 +20,6 @@ class PlaceButton extends React.Component {
 
   componentDidMount() {
     this.setState({ mounted: true });
-    console.log("COMPONENT DID MOUNT PLACE BUTTON");
-    //this.getMyPlaces(this.props.places);
-  }
-
-  getMyPlaces(places) {
-    let promises = places.map((placeID) => {
-      return dbPlace.getPlace(placeID).then((place) => {
-        place.id = placeID;
-        return place;
-      });
-    });
-
-    Promise.all(promises).then((places) => {
-      if (this.state.mounted) {
-        this.setState({ places: places });
-      }
-    });
   }
 
   showPlace(place) {
@@ -51,8 +34,6 @@ class PlaceButton extends React.Component {
   }
 
   render() {
-
-    console.log("Places rendered place button: " + this.props.places);
 
     if (this.props.places != null) {
 
