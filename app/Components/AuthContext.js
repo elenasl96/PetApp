@@ -36,14 +36,33 @@ class AuthContextProvider extends Component {
     if (this.state.mounted) {
       this.setState({ user: user });
     }
-    //console.log("this user");
-    //console.log(this.state.user);
   };
 
   savePlaces = (places) => {
     if (this.state.mounted) {
       this.setState({ places: places });
     }
+  };
+
+  addPlace = (place) =>{
+      console.log("CONTEXT");
+      let places = this.state.places;
+      places.push(place);
+      this.savePlaces(places);
+  };
+
+  deletePlace = (place) =>{
+      console.log("CONTEXT");
+
+      let places = this.state.places;
+      console.log("context length: " + places);
+      let index = places.indexOf(place);
+      if (index != -1) {
+        places.splice(index, 1);
+      }
+
+      this.savePlaces(places);
+      console.log("context length: " + this.state.places.length);
   };
 
   saveFavouritePlaces = (places) => {
@@ -102,6 +121,8 @@ class AuthContextProvider extends Component {
           saveUserUID: this.saveUserUID,
           saveUser: this.saveUser,
           savePlaces: this.savePlaces,
+          addPlace: this.addPlace,
+          deletePlace: this.deletePlace,
           saveFavouritePlaces: this.saveFavouritePlaces,
         }}
       >

@@ -21,6 +21,7 @@ export default class HomeBusiness extends React.Component {
     places: [],
     mounted: false,
     showPlaceForm: false,
+    onDelete: false,
     update: false,
   };
   static contextType = AuthContext;
@@ -48,12 +49,11 @@ export default class HomeBusiness extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-    if (!this.state.showPlaceForm && prevState.showPlaceForm) {
-      console.log("COMPONENT DID UPDATE HOME BUSINESS");
-      //console.log("context places length: " + this.context.places.length);
-      //console.log(this.context.places);
-      //this.setState({ places: this.context.places });
+    if ((!this.state.showPlaceForm && prevState.showPlaceForm) || (this.state.onDelete) ) {
       this.getMyPlaces(this.context.places);
+      if(this.state.onDelete){
+        this.setState({onDelete:false});
+      }
     }
   }
 
@@ -62,39 +62,23 @@ export default class HomeBusiness extends React.Component {
   }
 
   addPlace = () => {
-    //console.log("tt");
     if (this.state.mounted) {
       this.setState({ showPlaceForm: true });
     }
   };
 
   deletePlace = (pid) => {
-    //console.log("HOME BUSINESS DELETE");
-    //console.log("pid: " + pid);
-
     dbPlace.deletePlace(pid); // delete place from db
     dbPlace.deleteMyPlace(this.context.uid, pid); // delete MyPlace from db
-
-    let index = this.context.places.indexOf(pid);
-    if (index != -1) {
-      this.context.places.splice(index, 1);
-    }
-    this.context.savePlaces(this.context.places); //update context of my places
-    //console.log("places after delete");
-    //console.log(this.context.places);
-    if (this.state.mounted) {
-      this.setState({ places: this.context.places });
-    }
-  };
+    this.context.deletePlace(pid); // delete place from context
+    this.setState({ onDelete: true });
+ };
 
   render() {
 
     const showPlace = () => {
       this.props.navigation.navigate("Pet");
     };
-
-    console.log("Places rendered home business: " + this.state.places);
-
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <AddPlaceForm
