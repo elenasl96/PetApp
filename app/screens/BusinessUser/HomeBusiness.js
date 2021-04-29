@@ -28,18 +28,34 @@ export default class HomeBusiness extends React.Component {
   componentDidMount() {
     this.setState({ mounted: true });
     //console.log("places in homebusiness");
-    this.setState({ places: this.context.places });
-    //console.log(this.context.places);
+    console.log("COMPONENT DID MOUNT HOME BUSINESS");
+    this.getMyPlaces(this.context.places);
   }
 
-  /*  componentDidUpdate(prevProps, prevState) {
+  getMyPlaces(places) {
+      let promises = places.map((placeID) => {
+        return dbPlace.getPlace(placeID).then((place) => {
+          place.id = placeID;
+          return place;
+        });
+      });
+
+      Promise.all(promises).then((places) => {
+        if (this.state.mounted) {
+          this.setState({ places: places });
+        }
+      });
+    }
+
+    componentDidUpdate(prevProps, prevState) {
     if (!this.state.showPlaceForm && prevState.showPlaceForm) {
       console.log("COMPONENT DID UPDATE HOME BUSINESS");
-      console.log("context places length: " + this.context.places.length);
-      console.log(this.context.places);
-      this.setState({ places: this.context.places });
+      //console.log("context places length: " + this.context.places.length);
+      //console.log(this.context.places);
+      //this.setState({ places: this.context.places });
+      this.getMyPlaces(this.context.places);
     }
-  }*/
+  }
 
   componentWillUnmount() {
     this.setState({ mounted: false });
@@ -72,9 +88,12 @@ export default class HomeBusiness extends React.Component {
   };
 
   render() {
+
     const showPlace = () => {
       this.props.navigation.navigate("Pet");
     };
+
+    console.log("Places rendered home business: " + this.state.places);
 
     return (
       <SafeAreaView style={{ flex: 1 }}>

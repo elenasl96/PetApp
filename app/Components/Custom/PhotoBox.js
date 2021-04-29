@@ -239,8 +239,8 @@ class PhotoBox extends React.Component {
      <View style={styles.modalView}>
 
      <ScrollView
-                      horizontal={true}
-                      showsHorizontalScrollIndicator={false}
+      horizontal={true}
+      showsHorizontalScrollIndicator={false}
           >
       <View
         style={{ flex: 1, flexDirection: "column", justifyContent: "center" }}

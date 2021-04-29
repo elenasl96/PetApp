@@ -20,7 +20,8 @@ class PlaceButton extends React.Component {
 
   componentDidMount() {
     this.setState({ mounted: true });
-    this.getMyPlaces(this.props.places);
+    console.log("COMPONENT DID MOUNT PLACE BUTTON");
+    //this.getMyPlaces(this.props.places);
   }
 
   getMyPlaces(places) {
@@ -50,15 +51,20 @@ class PlaceButton extends React.Component {
   }
 
   render() {
-    if (this.state.places != null) {
-      return this.state.places.map((place, index) => (
+
+    console.log("Places rendered place button: " + this.props.places);
+
+    if (this.props.places != null) {
+
+
+      return this.props.places.map((place, index) => (
         <View key={index}>
           <TouchableHighlight
             onPress={() => this.showPlace(place)}
             style={styles.place}
           >
             <ImageBackground
-              source={{ uri: place.getPhoto() }}
+              source={{ uri: place.photo }}
               style={styles.placeImage}
             >
               <View style={styles.overlay}>
