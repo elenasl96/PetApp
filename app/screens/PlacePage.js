@@ -39,21 +39,26 @@ class VetScreen extends React.Component {
   componentDidMount() {
     const place = this.props.navigation.state.params.place;
     this.setState({ mounted: true });
+    console.log("Place page mounted");
+    //console.log("places: " + this.context.places);
+    /*
+    dbPlace.isMyPlace(this.context.uid,place.id).then((match) =>{
+      console.log("is my place? " + match);
+    });
+    */
+
     if (place.getType() === "Kennel") {
+      //console.log("mount kennel");
       dbAdoptableAnimal.getAdoptableAnimals(place.id).then((animals) => {
         this.setState({ animalsToAdopt: animals });
       });
     }
 
-
-    let pids = this.context.places.map((place) => {
-          return place.id;
-    });
-
     if (
       this.context.user.type == "business" &&
-      pids.includes(place.id)
+      this.context.places.includes(place.id)
     ) {
+      //console.log("It is editable!");
       this.setState({ isEditable: true });
     }
 
@@ -130,7 +135,6 @@ class VetScreen extends React.Component {
     const isEditable = this.state.isEditable;
     const photo = this.state.photo;
 
-    console.log("IS EDITABLE?" + isEditable);
     return (
       <SafeAreaView style={{ flex: 1 }}>
 

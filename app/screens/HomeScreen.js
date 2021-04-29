@@ -103,12 +103,9 @@ class HomeScreen extends React.Component {
         // MY PLACES
         if (this.context.user.type == "business") {
           dbPlace.getMyPlaces(this.context.uid).then((PIDs) => {
-            this.getMyPlaces(PIDs);
-            /*if (this.state.mounted) {
+            if (this.state.mounted) {
               this.context.savePlaces(PIDs);
-            }*/
-
-
+            }
             //console.log("My places");
             //console.log(this.context.places);
           });
@@ -125,19 +122,6 @@ class HomeScreen extends React.Component {
       //console.log("HOMEUPDATE");
       this.setState({ places: this.context.savedPlaces });
     }
-  }
-
-  getMyPlaces(places) {
-        let promises = places.map((placeID) => {
-          return dbPlace.getPlace(placeID).then((place) => {
-            place.id = placeID;
-            return place;
-          });
-        });
-
-        Promise.all(promises).then((places) => {
-           this.context.savePlaces(places);
-        });
   }
 
   componentWillUnmount() {
