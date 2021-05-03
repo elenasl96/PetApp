@@ -90,7 +90,19 @@ export default class LostPetsScreen extends React.Component {
               underlayColor={"rgb(200,200,200)"}
             >
               <Text style={{ textAlign: "center" }}>
-                <Feather name="plus" size={24} color="black" />
+                <Feather name="alert-circle" size={24} color="black" /> Report
+                sight
+              </Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={styles.mapButton}
+              onPress={() => {
+                this.setState({ showReportLossForm: true });
+              }}
+              underlayColor={"rgb(200,200,200)"}
+            >
+              <Text style={{ textAlign: "center" }}>
+                <Feather name="search" size={24} color="black" /> Report Loss
               </Text>
             </TouchableHighlight>
           </View>

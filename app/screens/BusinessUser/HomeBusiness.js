@@ -34,25 +34,28 @@ export default class HomeBusiness extends React.Component {
   }
 
   getMyPlaces(places) {
-      let promises = places.map((placeID) => {
-        return dbPlace.getPlace(placeID).then((place) => {
-          place.id = placeID;
-          return place;
-        });
+    let promises = places.map((placeID) => {
+      return dbPlace.getPlace(placeID).then((place) => {
+        place.id = placeID;
+        return place;
       });
+    });
 
-      Promise.all(promises).then((places) => {
-        if (this.state.mounted) {
-          this.setState({ places: places });
-        }
-      });
-    }
+    Promise.all(promises).then((places) => {
+      if (this.state.mounted) {
+        this.setState({ places: places });
+      }
+    });
+  }
 
-    componentDidUpdate(prevProps, prevState) {
-    if ((!this.state.showPlaceForm && prevState.showPlaceForm) || (this.state.onDelete) ) {
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      (!this.state.showPlaceForm && prevState.showPlaceForm) ||
+      this.state.onDelete
+    ) {
       this.getMyPlaces(this.context.places);
-      if(this.state.onDelete){
-        this.setState({onDelete:false});
+      if (this.state.onDelete) {
+        this.setState({ onDelete: false });
       }
     }
   }
@@ -72,10 +75,9 @@ export default class HomeBusiness extends React.Component {
     dbPlace.deleteMyPlace(this.context.uid, pid); // delete MyPlace from db
     this.context.deletePlace(pid); // delete place from context
     this.setState({ onDelete: true });
- };
+  };
 
   render() {
-
     const showPlace = () => {
       this.props.navigation.navigate("Pet");
     };
