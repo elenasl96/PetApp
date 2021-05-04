@@ -28,6 +28,7 @@ export default class AddPlaceForm extends React.Component {
     description: "",
     photo: null,
     address: "",
+    city: "",
     errors: {}, //dict
   };
 
@@ -59,7 +60,7 @@ export default class AddPlaceForm extends React.Component {
     }
 
     // Address
-    if (this.state.address == "") {
+    if (this.state.address == "" || this.state.city == "") {
       formIsValid = false;
       errors["address"] = "Address cannot be empty";
     }
@@ -98,7 +99,7 @@ export default class AddPlaceForm extends React.Component {
                 this.state.type,
                 this.state.description,
                 url,
-                this.state.address,
+                this.state.address + ", " + this.state.city,
                 coordinates[0].latitude,
                 coordinates[0].longitude,
                 "latitudeDelta",
@@ -179,12 +180,24 @@ export default class AddPlaceForm extends React.Component {
               <View style={mainStyle.form}>
                 <TextInput
                   style={mainStyle.inputText}
-                  placeholder="Address"
+                  placeholder="Via, Street..."
                   placeholderTextColor="#616161"
                   returnKeyType="next"
                   textContentType="addressCity"
                   value={this.state.address}
                   onChangeText={(address) => this.setState({ address })}
+                />
+              </View>
+
+              <View style={mainStyle.form}>
+                <TextInput
+                  style={mainStyle.inputText}
+                  placeholder="City"
+                  placeholderTextColor="#616161"
+                  returnKeyType="next"
+                  textContentType="addressCity"
+                  value={this.state.city}
+                  onChangeText={(city) => this.setState({ city })}
                 />
               </View>
 
