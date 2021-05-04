@@ -122,6 +122,24 @@ class ReportLossForm extends Component {
       });
   };
 
+  reportSight = () => {
+    dbLostPet
+      .addLostPetSeen(
+        this.state.photo,
+        this.state.size,
+        this.state.color,
+        this.state.breed,
+        this.state.notes,
+        this.state.place,
+        this.context.uid,
+        this.state.email,
+        this.state.telephone
+      )
+      .then(() => {
+        this.props.close();
+      });
+  };
+
   setPhoto = (photo) => {
     if (this.state.mounted) {
       this.setState({ photo: photo });
@@ -141,8 +159,13 @@ class ReportLossForm extends Component {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <ScrollView showsVerticalScrollIndicator={false}>
-              <Text style={styles.title}>Report Loss</Text>
-              {this.props.pet == null ? (
+              {this.props.sight ? (
+                <Text style={styles.title}>Report Sight</Text>
+              ) : (
+                <Text style={styles.title}>Report loss</Text>
+              )}
+
+              {this.props.pet == null && !this.props.sight ? (
                 <View style={mainStyle.form}>
                   <TextInput
                     style={mainStyle.inputText}
@@ -239,19 +262,35 @@ class ReportLossForm extends Component {
                 <PhotoBox setPhoto={this.setPhoto} isUpdate={false}></PhotoBox>
               ) : null}
 
-              <TouchableOpacity
-                style={{
-                  width: "50%",
-                  marginTop: 10,
-                  marginBottom: 40,
-                  alignSelf: "center",
-                }}
-                onPress={this.reportLoss.bind(this)}
-              >
-                <View style={styles.button}>
-                  <Text style={styles.buttonText}>Report Loss</Text>
-                </View>
-              </TouchableOpacity>
+              {this.props.sight ? (
+                <TouchableOpacity
+                  style={{
+                    width: "50%",
+                    marginTop: 10,
+                    marginBottom: 40,
+                    alignSelf: "center",
+                  }}
+                  onPress={this.reportSight.bind(this)}
+                >
+                  <View style={styles.button}>
+                    <Text style={styles.buttonText}>Report sight</Text>
+                  </View>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={{
+                    width: "50%",
+                    marginTop: 10,
+                    marginBottom: 40,
+                    alignSelf: "center",
+                  }}
+                  onPress={this.reportLoss.bind(this)}
+                >
+                  <View style={styles.button}>
+                    <Text style={styles.buttonText}>Report Loss</Text>
+                  </View>
+                </TouchableOpacity>
+              )}
             </ScrollView>
           </View>
         </View>

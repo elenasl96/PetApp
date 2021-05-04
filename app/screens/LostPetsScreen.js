@@ -26,6 +26,7 @@ export default class LostPetsScreen extends React.Component {
     showLostPetsSeen: false,
     mounted: false,
     showReportLossForm: false,
+    showReportSightForm: false,
   };
   static contextType = AuthContext;
 
@@ -70,6 +71,12 @@ export default class LostPetsScreen extends React.Component {
     }
   };
 
+  reportSight = () => {
+    if (this.state.mounted) {
+      this.setState({ showReportSightForm: true });
+    }
+  };
+
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -80,12 +87,20 @@ export default class LostPetsScreen extends React.Component {
             this.setState({ showReportLossForm: false });
           }}
         ></ReportLossForm>
+        <ReportLossForm
+          pet={null}
+          sight={true}
+          visible={this.state.showReportSightForm}
+          close={() => {
+            this.setState({ showReportSightForm: false });
+          }}
+        ></ReportLossForm>
         <View style={styles.mainContent}>
           <View style={styles.bottomOverlay}>
             <TouchableHighlight
               style={styles.mapButton}
               onPress={() => {
-                this.setState({ showReportLossForm: true });
+                this.reportSight();
               }}
               underlayColor={"rgb(200,200,200)"}
             >
@@ -97,7 +112,7 @@ export default class LostPetsScreen extends React.Component {
             <TouchableHighlight
               style={styles.mapButton}
               onPress={() => {
-                this.setState({ showReportLossForm: true });
+                this.reportLoss();
               }}
               underlayColor={"rgb(200,200,200)"}
             >
