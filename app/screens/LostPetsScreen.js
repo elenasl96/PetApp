@@ -97,29 +97,34 @@ export default class LostPetsScreen extends React.Component {
         ></ReportLossForm>
         <View style={styles.mainContent}>
           <View style={styles.bottomOverlay}>
-            <TouchableHighlight
-              style={styles.mapButton}
-              onPress={() => {
-                this.reportSight();
-              }}
-              underlayColor={"rgb(200,200,200)"}
-            >
-              <Text style={{ textAlign: "center" }}>
-                <Feather name="alert-circle" size={24} color="black" /> Report
-                sight
-              </Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-              style={styles.mapButton}
-              onPress={() => {
-                this.reportLoss();
-              }}
-              underlayColor={"rgb(200,200,200)"}
-            >
-              <Text style={{ textAlign: "center" }}>
-                <Feather name="search" size={24} color="black" /> Report Loss
-              </Text>
-            </TouchableHighlight>
+            {this.state.showLostPetsSeen ? (
+              <TouchableHighlight
+                style={styles.mapButton}
+                onPress={() => {
+                  this.reportSight();
+                }}
+                underlayColor={"rgb(200,200,200)"}
+              >
+                <Text style={{ textAlign: "center" }}>
+                  <Feather name="alert-circle" size={24} color="black" /> Report
+                  sight
+                </Text>
+              </TouchableHighlight>
+            ) : null}
+
+            {this.state.showLostPets ? (
+              <TouchableHighlight
+                style={styles.mapButton}
+                onPress={() => {
+                  this.reportLoss();
+                }}
+                underlayColor={"rgb(200,200,200)"}
+              >
+                <Text style={{ textAlign: "center" }}>
+                  <Feather name="search" size={24} color="black" /> Report Loss
+                </Text>
+              </TouchableHighlight>
+            ) : null}
           </View>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.myPlacesContainer}>
