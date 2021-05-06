@@ -15,20 +15,23 @@ import { withNavigation } from "react-navigation";
 import mainStyle from "../../styles/mainStyle";
 import { ScrollView } from "react-native-gesture-handler";
 import PhotoBox from "../Custom/PhotoBox";
+import { Picker } from "@react-native-picker/picker";
+import constants from "../../shared/constants";
 
 class ReportLossForm extends Component {
   static contextType = AuthContext;
   state = {
-    name: null,
+    name: "",
     photo: null,
     size: null,
     color: null,
-    breed: null,
+    breed: "",
     notes: null,
     place: null,
     email: null,
     telephone: null,
     mounted: false,
+    errors: {},
   };
 
   componentDidMount() {
@@ -47,51 +50,22 @@ class ReportLossForm extends Component {
 
   handleValidation() {
     let errors = {};
-    errors["name"] = null;
-    errors["photo"] = null;
-    errors["age"] = null;
     let formIsValid = true;
-    //Name
-    if (this.state.name == "") {
+
+    if (!this.state.name.match(/^[a-zA-Z]+$/)) {
       formIsValid = false;
-      errors["name"] = "Name cannot be empty";
-    } else {
-      if (!this.state.name.match(/^[a-zA-Z]+$/)) {
-        formIsValid = false;
-        errors["name"] = "Only letters in name";
-      }
+      errors["name"] = "Only letters in name";
+    }
+    if (!this.state.breed.match(/^[a-zA-Z]+$/)) {
+      formIsValid = false;
+      errors["breed"] = "Only letters in breed";
     }
 
-    //Photo
-    if (this.state.photo == null) {
+    if (isNaN(this.state.number)) {
       formIsValid = false;
-      errors["photo"] = "You must load a photo";
+      errors["number"] = "Telephone must be a number";
     }
-
-    //Age
-
-    if (this.state.age == "") {
-      formIsValid = false;
-      errors["age"] = "Age cannot be empty";
-    } else {
-      if (isNaN(this.state.age)) {
-        formIsValid = false;
-        errors["age"] = "Age must be a number";
-      } else {
-        if (
-          this.state.age > 20 ||
-          this.state.age < 0 ||
-          !Number.isInteger(Number(this.state.age))
-        ) {
-          console.log(this.state.age > 20);
-          console.log(this.state.age < 0);
-          console.log(!Number.isInteger(this.state.age));
-          formIsValid = false;
-          errors["age"] = "Age is an integer between 0 and 20 ";
-        }
-      }
-    }
-    //console.log(errors);
+    console.log(errors);
     this.setState({ errors: errors });
     return formIsValid;
   }
@@ -104,40 +78,44 @@ class ReportLossForm extends Component {
     const pet = this.props.pet;
     console.log("pet");
     console.log(this.context.uid);
-    dbLostPet
-      .addLostPetNotify(
-        this.state.name,
-        this.state.photo,
-        this.state.size,
-        this.state.color,
-        this.state.breed,
-        this.state.notes,
-        this.state.place,
-        this.context.uid,
-        this.state.email,
-        this.state.telephone
-      )
-      .then(() => {
-        this.props.close();
-      });
+    if (this.handleValidation()) {
+      dbLostPet
+        .addLostPetNotify(
+          this.state.name,
+          this.state.photo,
+          this.state.size,
+          this.state.color,
+          this.state.breed,
+          this.state.notes,
+          this.state.place,
+          this.context.uid,
+          this.state.email,
+          this.state.telephone
+        )
+        .then(() => {
+          this.props.close();
+        });
+    }
   };
 
   reportSight = () => {
-    dbLostPet
-      .addLostPetSeen(
-        this.state.photo,
-        this.state.size,
-        this.state.color,
-        this.state.breed,
-        this.state.notes,
-        this.state.place,
-        this.context.uid,
-        this.state.email,
-        this.state.telephone
-      )
-      .then(() => {
-        this.props.close();
-      });
+    if (this.handleValidation()) {
+      dbLostPet
+        .addLostPetSeen(
+          this.state.photo,
+          this.state.size,
+          this.state.color,
+          this.state.breed,
+          this.state.notes,
+          this.state.place,
+          this.context.uid,
+          this.state.email,
+          this.state.telephone
+        )
+        .then(() => {
+          this.props.close();
+        });
+    }
   };
 
   setPhoto = (photo) => {
@@ -147,6 +125,25 @@ class ReportLossForm extends Component {
   };
 
   render() {
+    let types = constants.TYPES_PETS.map((s, i) => {
+      return <Picker.Item key={i} value={s} label={s} />;
+    });
+
+    let breedsDog = constants.BREEDS_DOG.map((s, i) => {
+      return <Picker.Item key={i} value={s} label={s} />;
+    });
+
+    let breedsCat = constants.BREEDS_CAT.map((s, i) => {
+      return <Picker.Item key={i} value={s} label={s} />;
+    });
+
+    let colors = constants.COLORS_PETS.map((s, i) => {
+      return <Picker.Item key={i} value={s} label={s} />;
+    });
+
+    let sizes = constants.SIZES_PETS.map((s, i) => {
+      return <Picker.Item key={i} value={s} label={s} />;
+    });
     return (
       <Modal
         animationType="slide"
@@ -177,28 +174,30 @@ class ReportLossForm extends Component {
                   />
                 </View>
               ) : null}
-              {this.props.pet == null ? (
-                <View style={mainStyle.form}>
-                  <TextInput
-                    style={mainStyle.inputText}
-                    placeholder="Size"
-                    placeholderTextColor="#616161"
-                    returnKeyType="next"
-                    value={this.state.size}
-                    onChangeText={(size) => this.setState({ size })}
-                  />
-                </View>
+              {this.state.errors["name"] != null ? (
+                <Text style={styles.error}>{this.state.errors["name"]}</Text>
               ) : null}
               {this.props.pet == null ? (
                 <View style={mainStyle.form}>
-                  <TextInput
-                    style={mainStyle.inputText}
-                    placeholder="Color"
-                    placeholderTextColor="#616161"
-                    returnKeyType="next"
-                    value={this.state.color}
-                    onChangeText={(color) => this.setState({ color })}
-                  />
+                  <Picker
+                    selectedValue={this.state.size}
+                    style={{ height: 50, width: "100%" }}
+                    onValueChange={(size) => this.setState({ size: size })}
+                  >
+                    {sizes}
+                  </Picker>
+                </View>
+              ) : null}
+
+              {this.props.pet == null ? (
+                <View style={mainStyle.form}>
+                  <Picker
+                    selectedValue={this.state.color}
+                    style={{ height: 50, width: "100%" }}
+                    onValueChange={(color) => this.setState({ color: color })}
+                  >
+                    {colors}
+                  </Picker>
                 </View>
               ) : null}
               {this.props.pet == null ? (
@@ -212,6 +211,9 @@ class ReportLossForm extends Component {
                     onChangeText={(breed) => this.setState({ breed })}
                   />
                 </View>
+              ) : null}
+              {this.state.errors["breed"] != null ? (
+                <Text style={styles.error}>{this.state.errors["breed"]}</Text>
               ) : null}
               <View style={mainStyle.form}>
                 <TextInput
@@ -257,6 +259,9 @@ class ReportLossForm extends Component {
                   onChangeText={(telephone) => this.setState({ telephone })}
                 />
               </View>
+              {this.state.errors["number"] != null ? (
+                <Text style={styles.error}>{this.state.errors["number"]}</Text>
+              ) : null}
 
               {this.props.pet == null ? (
                 <PhotoBox setPhoto={this.setPhoto} isUpdate={false}></PhotoBox>

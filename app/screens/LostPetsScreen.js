@@ -21,12 +21,12 @@ import { Feather } from "@expo/vector-icons";
 export default class LostPetsScreen extends React.Component {
   state = {
     lostPets: [],
-    showLostPets: true,
     lostPetsSeen: [],
+    showLostPets: true,
     showLostPetsSeen: false,
-    mounted: false,
     showReportLossForm: false,
     showReportSightForm: false,
+    mounted: false,
   };
   static contextType = AuthContext;
 
