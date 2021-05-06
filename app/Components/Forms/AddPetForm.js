@@ -142,7 +142,8 @@ class AddPetForm extends React.Component {
               this.state.typeSelected
             )
             .then((doc) => {
-              this.props.addPet(doc.id);
+              //this.props.addPet(doc.id);
+              this.context.addPet(doc.id);
               this.props.close();
             });
         }

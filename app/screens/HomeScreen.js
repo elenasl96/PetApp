@@ -58,6 +58,8 @@ class HomeScreen extends React.Component {
     dbUserAnimal.getUserAnimals(this.context.uid).then((pets) => {
 
               if (this.state.mounted) {
+                //this.setState({ pets: pets });
+                this.context.savePets(pets);
                 this.setState({ pets: pets });
               }
 
@@ -133,9 +135,17 @@ class HomeScreen extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.places != this.context.savedPlaces) {
+
+    if (this.state.places.length != this.context.savedPlaces.length) {
+      console.log("COMPONENT DID UPDATE FOR SAVEDPLACES");
       this.setState({ places: this.context.savedPlaces });
     }
+
+    if (!this.state.showPetForm && prevState.showPetForm) {
+      console.log("COMPONENT DID UPDATE FOR PETS");
+      this.setState({ pets: this.context.pets });
+    }
+
   }
 
   componentWillUnmount() {

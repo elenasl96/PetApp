@@ -37,9 +37,10 @@ export default class MapScreen extends React.Component {
     search: null,
   };
 
+/*
   constructor() {
     super();
-  }
+  } */
 
   componentDidMount() {
     this.setState({ mounted: true });
@@ -54,8 +55,6 @@ export default class MapScreen extends React.Component {
         });
       });
       Promise.all(promises).then((places) => {
-        console.log("PLACES");
-        console.log(places);
         this.setState({ places: places });
         this.showAllMarkers();
       });

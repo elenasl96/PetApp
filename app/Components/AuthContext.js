@@ -11,10 +11,9 @@ class AuthContextProvider extends Component {
     user: null,
     loading: false,
     uid: "",
-    places: null,
+    places: [],
     savedPlaces: [],
-    //lastlogin:"",
-    //   pets: [],
+    pets: [],
   };
 
   componentDidMount() {
@@ -52,14 +51,12 @@ class AuthContextProvider extends Component {
 
   deletePlace = (place) =>{
       let places = this.state.places;
-      console.log("context length: " + places);
       let index = places.indexOf(place);
       if (index != -1) {
         places.splice(index, 1);
       }
 
       this.savePlaces(places);
-      console.log("context length: " + this.state.places.length);
   };
 
   saveFavouritePlaces = (places) => {
@@ -80,9 +77,32 @@ class AuthContextProvider extends Component {
         if (index != -1) {
           places.splice(index, 1);
         }
-
         this.saveFavouritePlaces(places);
   };
+
+  savePets = (pets) => {
+      if (this.state.mounted) {
+        this.setState({ pets: pets });
+      }
+  };
+
+    addPet = (pet) =>{
+          console.log("ADD PET CONTEXT");
+          console.log("context length " + this.state.pets.length);
+          let pets = this.state.pets;
+          pets.push(pet);
+          this.savePets(pets);
+          console.log("context length " + this.state.pets.length);
+    };
+
+    deletePet = (pet) =>{
+          let pets = this.state.pets;
+          let index = pets.indexOf(pet);
+          if (index != -1) {
+            pets.splice(index, 1);
+          }
+          this.savePets(pet);
+    };
 
   /*
   saveLastLogin = (lastlogin) => {
@@ -139,6 +159,9 @@ class AuthContextProvider extends Component {
           saveFavouritePlaces: this.saveFavouritePlaces,
           addFavouritePlace: this.addFavouritePlace,
           deleteFavouritePlace: this.deleteFavouritePlace,
+          savePets: this.savePets,
+          addPet: this.addPet,
+          deletePet: this.deletePet,
         }}
       >
         {this.props.children}
