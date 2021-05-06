@@ -9,18 +9,14 @@ class StarButton extends React.Component {
 
   state = {
     favorite: false,
-    id: undefined,
     mounted: false,
   };
 
   constructor(props) {
     super(props);
-    //console.log("STAR");
-    //console.log(this.props.pid);
     dbPlace.getSavedPlaces(this.props.uid).then((savedPlaces) => {
       savedPlaces.forEach((savedPlaceId) => {
         if (this.props.pid == savedPlaceId) {
-          this.setState({ id: savedPlaceId });
           this.setState({ favorite: true });
         }
       });
@@ -37,21 +33,14 @@ class StarButton extends React.Component {
 
   addToFavorite = () => {
     dbPlace.addSavedPlace(this.props.uid, this.props.pid);
-    //console.log("save place: " + this.props.pid);
     this.setState({ favorite: true });
-    this.context.savedPlaces.push(this.props.pid);
-    this.context.saveFavouritePlaces(this.context.savedPlaces);
-    //console.log(this.context.savedPlaces);
+    this.context.addFavouritePlace(this.props.pid);
   };
 
   deleteFromFavorite = () => {
-    dbPlace.deleteSavedPlace(this.props.uid, this.state.id);
-    let index = this.context.savedPlaces.indexOf(this.state.id);
-    if (index != -1) {
-      this.context.savedPlaces.splice(index, 1);
-    }
-    this.context.saveFavouritePlaces(this.context.savedPlaces);
+    dbPlace.deleteSavedPlace(this.props.uid,this.props.pid);
     this.setState({ favorite: false });
+    this.context.deleteFavouritePlace(this.props.pid);
   };
 
   render() {

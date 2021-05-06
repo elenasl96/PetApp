@@ -20,8 +20,6 @@ class PlaceButton extends React.Component {
 
   componentDidMount() {
     this.setState({ mounted: true });
-    console.log("COMPONENT DID MOUNT PLACE BUTTON");
-    //this.getMyPlaces(this.props.places);
   }
 
   getMyPlaces(places) {
@@ -40,10 +38,18 @@ class PlaceButton extends React.Component {
   }
 
   showPlace(place) {
-    this.props.navigation.navigate("Place", {
-      place: place,
-      deletePlace: this.props.deletePlace,
-    });
+    if(!this.props.isSavedPlace){
+        this.props.navigation.navigate("Place", {
+          place: place,
+          deletePlace: this.props.deletePlace,
+        });
+    }
+    else{
+        this.props.navigation.navigate("Place", {
+                  place: place,
+                  // no need for delete in this case
+        });
+    }
   }
 
   componentWillUnmount() {

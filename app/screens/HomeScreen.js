@@ -34,92 +34,106 @@ class HomeScreen extends React.Component {
   static contextType = AuthContext;
 
   componentDidMount() {
-    //console.log("REMOUNTED");
+
     this.setState({ mounted: true });
-    //db.populateDb();  --- for populate the db
+
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        dbUserAnimal.getUserAnimals(this.context.uid).then((pets) => {
-          if (this.state.mounted) {
-            this.setState({ pets: pets });
-          }
-          var info = this.context.user;
-          var animals = [];
-          var uid = this.context.uid;
-          if (pets.length != 0) {
-            pets.forEach((aid) => {
-              dbUserAnimal.getUserAnimal(uid, aid).then((animal) => {
-                animals.push(animal);
-                if (pets.length == animals.length) {
-                  let promise = new Promise((resolve, reject) => {
-                    dbFeed.addRandomFeeds(animals, uid, info.getLastLogin(), 0);
-                    setTimeout(() => {
-                      resolve();
-                    }, 1000);
-                  });
-                  promise.then(() => {
-                    dbFeed.getUserFeeds(uid).then((feeds) => {
-                      if (this.state.mounted) {
-                        this.setState({ feeds: feeds });
-                        this.setState({ mounted: true });
-                      }
-                    });
-                  });
-                }
-              });
-            });
-          } else {
-            let promise = new Promise((resolve, reject) => {
-              dbFeed.addRandomFeeds(
-                animals,
-                uid,
-                info.getLastLogin(),
-                info.days
-              );
-              setTimeout(() => {
-                resolve();
-              }, 1000);
-            });
-            promise.then(() => {
-              dbFeed.getUserFeeds(uid).then((feeds) => {
-                if (this.state.mounted) {
-                  this.setState({ feeds: feeds });
-                  this.setState({ mounted: true });
-                }
-              });
-            });
-          }
-        });
-        var places = [];
-        dbPlace.getSavedPlaces(this.context.uid).then((placeIds) => {
-          placeIds.forEach((placeId) => {
-            places.push(placeId);
-            if (this.state.mounted) {
-              this.setState({ places: places });
-            }
-          });
-        });
-        console.log(this.context.user);
-        // MY PLACES
+
+        let loadFeed = true;
+        this.getUserPets(loadFeed);
+
+        this.getSavedPlaces();
+
+
         if (this.context.user.type == "business") {
-          dbPlace.getMyPlaces(this.context.uid).then((PIDs) => {
-            if (this.state.mounted) {
-              this.context.savePlaces(PIDs);
-            }
-            //console.log("My places");
-            //console.log(this.context.places);
-          });
+          this.getMyPlaces();
         }
+
       }
     });
   }
 
+  getUserPets(loadFeed){  // get user pets and feeds related to them
+    dbUserAnimal.getUserAnimals(this.context.uid).then((pets) => {
+
+              if (this.state.mounted) {
+                this.setState({ pets: pets });
+              }
+
+              if(loadFeed){
+                this.getUserFeeds(pets);
+              }
+    });
+  }
+
+  getUserFeeds(pets){
+    var info = this.context.user;
+
+    var animals = [];
+    var uid = this.context.uid;
+
+                  if (pets.length != 0 ) {
+                    pets.forEach((aid) => {
+                      dbUserAnimal.getUserAnimal(uid, aid).then((animal) => {
+                        animals.push(animal);
+                        if (pets.length == animals.length) {
+                          let promise = new Promise((resolve, reject) => {
+                            dbFeed.addRandomFeeds(animals, uid, info.getLastLogin(), 0);
+                            setTimeout(() => {
+                              resolve();
+                            }, 1000);
+                          });
+                          promise.then(() => {
+                            dbFeed.getUserFeeds(uid).then((feeds) => {
+                              if (this.state.mounted) {
+                                this.setState({ feeds: feeds });
+                              }
+                            });
+                          });
+                        }
+                      });
+                    });
+                  } else {
+                    let promise = new Promise((resolve, reject) => {
+                      dbFeed.addRandomFeeds(
+                        animals,
+                        uid,
+                        info.getLastLogin(),
+                        info.days
+                      );
+                      setTimeout(() => {
+                        resolve();
+                      }, 1000);
+                    });
+                    promise.then(() => {
+                      dbFeed.getUserFeeds(uid).then((feeds) => {
+                        if (this.state.mounted) {
+                          this.setState({ feeds: feeds });
+                        }
+                      });
+                    });
+                  }
+  }
+
+  getSavedPlaces(){
+    dbPlace.getSavedPlaces(this.context.uid).then((places) => {
+        if (this.state.mounted) {
+          this.context.saveFavouritePlaces(places);
+        }
+    });
+  }
+
+  getMyPlaces(){
+    dbPlace.getMyPlaces(this.context.uid).then((PIDs) => {
+                if (this.state.mounted) {
+                  this.context.savePlaces(PIDs);
+                }
+   });
+  }
+
   componentDidUpdate(prevProps, prevState) {
-    //console.log("UPDATE");
-    //console.log(prevState.places);
-    //console.log(this.context.savedPlaces);
     if (this.state.places != this.context.savedPlaces) {
-      //console.log("HOMEUPDATE");
       this.setState({ places: this.context.savedPlaces });
     }
   }
@@ -136,7 +150,6 @@ class HomeScreen extends React.Component {
 
   addPet = (petID) => {
     this.state.pets.push(petID);
-    //console.log(this.state.pets);
     if (this.state.mounted) {
       this.setState({ pets: this.state.pets });
     }
@@ -149,7 +162,7 @@ class HomeScreen extends React.Component {
     if (index != -1) {
       petsUpdated.splice(index, 1);
     }
-    //console.log(petsUpdated);
+
     if (this.state.mounted) {
       this.setState({ pets: petsUpdated });
     }
@@ -159,22 +172,6 @@ class HomeScreen extends React.Component {
     this.props.navigation.navigate("Pet", {
       deletePet: this.deletePet(),
     });
-  };
-
-  deletePlace = (pid) => {
-    dbPlace.deletePlace(pid); // delete place from db
-    dbPlace.deleteSavedPlace(this.context.uid, pid); // delete MyPlace from db
-
-    let index = this.context.places.indexOf(pid);
-    if (index != -1) {
-      this.context.places.splice(index, 1);
-    }
-    this.context.savePlaces(this.context.places); //update context of my places
-    //console.log("places after delete");
-    //console.log(this.context.places);
-    if (this.state.mounted) {
-      this.setState({ places: this.context.places });
-    }
   };
 
   render() {
@@ -214,7 +211,6 @@ class HomeScreen extends React.Component {
                     <PetButton
                       uid={this.context.uid}
                       pets={this.state.pets}
-                      //pets = {this.context.pets}
                       navigation={this.props.navigation}
                       deleteAnimal={this.deletePet}
                       type="useranimal"
@@ -240,7 +236,7 @@ class HomeScreen extends React.Component {
                   uid={this.context.uid}
                   places={this.state.places}
                   navigation={this.props.navigation}
-                  deletePlace={this.deletePlace}
+                  isSavedPlace = {true}
                 ></PlaceButton>
               ) : null}
             </View>

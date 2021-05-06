@@ -28,24 +28,23 @@ export default class HomeBusiness extends React.Component {
 
   componentDidMount() {
     this.setState({ mounted: true });
-    //console.log("places in homebusiness");
     console.log("COMPONENT DID MOUNT HOME BUSINESS");
     this.getMyPlaces(this.context.places);
   }
 
   getMyPlaces(places) {
-    let promises = places.map((placeID) => {
-      return dbPlace.getPlace(placeID).then((place) => {
-        place.id = placeID;
-        return place;
-      });
-    });
+           let promises = places.map((placeID) => {
+                 return dbPlace.getPlace(placeID).then((place) => {
+                   place.id = placeID;
+                   return place;
+                 });
+               });
 
-    Promise.all(promises).then((places) => {
-      if (this.state.mounted) {
-        this.setState({ places: places });
-      }
-    });
+               Promise.all(promises).then((places) => {
+                 if (this.state.mounted) {
+                   this.setState({ places: places });
+                 }
+               });
   }
 
   componentDidUpdate(prevProps, prevState) {
