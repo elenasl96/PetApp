@@ -96,12 +96,15 @@ class AuthContextProvider extends Component {
     };
 
     deletePet = (pet) =>{
+          console.log("DELETE PET CONTEXT");
           let pets = this.state.pets;
+          console.log("context length " + this.state.pets.length);
           let index = pets.indexOf(pet);
           if (index != -1) {
             pets.splice(index, 1);
           }
           this.savePets(pet);
+          console.log("context length " + this.state.pets.length);
     };
 
   /*

@@ -30,6 +30,7 @@ class HomeScreen extends React.Component {
     feeds: [],
     mounted: false,
     showPetForm: false,
+    onDeletePet: false,
   };
   static contextType = AuthContext;
 
@@ -41,7 +42,8 @@ class HomeScreen extends React.Component {
       if (user) {
 
         let loadFeed = true;
-        this.getUserPets(loadFeed);
+
+        this.getUserPets([],loadFeed);
 
         this.getSavedPlaces();
 
@@ -54,19 +56,37 @@ class HomeScreen extends React.Component {
     });
   }
 
-  getUserPets(loadFeed){  // get user pets and feeds related to them
+  getUserPets(pets,loadFeed){  // get user pets and feeds related to them
+    if(loadFeed){
     dbUserAnimal.getUserAnimals(this.context.uid).then((pets) => {
-
-              if (this.state.mounted) {
-                //this.setState({ pets: pets });
+                this.getMyPets(pets); // converts ids in Animal objects
                 this.context.savePets(pets);
-                this.setState({ pets: pets });
-              }
-
-              if(loadFeed){
                 this.getUserFeeds(pets);
-              }
     });
+    }
+    else{
+      console.log("PETS: " + pets);
+      if(pets.length != 0){this.getMyPets(pets);}
+      else{this.setState({pets:pets});}
+    }
+
+  }
+
+  getMyPets(pets){
+     console.log("GETS MY PETS!!!");
+
+     let promises = pets.map((petID) => {
+           return dbUserAnimal.getUserAnimal(this.context.uid,petID).then((pet) => {
+             pet.id = petID;
+             return pet;
+           });
+         });
+
+         Promise.all(promises).then((pets) => {
+           if (this.state.mounted) {
+             this.setState({ pets: pets });
+           }
+         });
   }
 
   getUserFeeds(pets){
@@ -142,8 +162,19 @@ class HomeScreen extends React.Component {
     }
 
     if (!this.state.showPetForm && prevState.showPetForm) {
-      console.log("COMPONENT DID UPDATE FOR PETS");
-      this.setState({ pets: this.context.pets });
+      console.log("COMPONENT DID UPDATE FOR ADDING PETS");
+      //this.setState({ pets: this.context.pets });
+      this.getUserPets(this.context.pets,false);
+    }
+
+    if (this.state.onDeletePet && !prevState.onDeletePet) {
+          console.log("COMPONENT DID UPDATE FOR DELETING PETS");
+          //this.setState({ pets: this.context.pets });
+          console.log("MY CONTEXT AFTER DELETE: " + this.context.pets);
+          this.getUserPets(this.context.pets,false);
+          if(this.state.mounted){
+            this.setState({onDeletePet:false});
+          }
     }
 
   }
@@ -167,15 +198,8 @@ class HomeScreen extends React.Component {
 
   deletePet = (petID) => {
     dbUserAnimal.deleteAnimal(this.context.uid, petID);
-    let petsUpdated = this.state.pets;
-    let index = petsUpdated.indexOf(petID);
-    if (index != -1) {
-      petsUpdated.splice(index, 1);
-    }
-
-    if (this.state.mounted) {
-      this.setState({ pets: petsUpdated });
-    }
+    this.context.deletePet(petID);
+    this.setState({ onDeletePet: true });
   };
 
   showPet = () => {
