@@ -39,12 +39,12 @@ export default class LostPetsScreen extends React.Component {
   componentDidUpdate() {
     if (this.state.lostPets.length != this.context.lostPets.length) {
       this.setState({ lostPets: this.context.lostPets });
-      console.log("LOST PETS: " + this.state.lostPets);
+      //console.log("LOST PETS: " + this.state.lostPets);
     }
 
     if (this.state.lostPetsSeen.length != this.context.lostPetsSeen.length) {
       this.setState({ lostPetsSeen: this.context.lostPetsSeen });
-      console.log("LOST PETS SEEN: " + this.state.lostPetsSeen);
+      //console.log("LOST PETS SEEN: " + this.state.lostPetsSeen);
     }
   }
 
