@@ -50,6 +50,7 @@ class HomeScreen extends React.Component {
 
         if (this.context.user.type == "business") {
           this.getMyPlaces();
+          this.getMyAdoptablePets();
         }
 
       }
@@ -154,6 +155,16 @@ class HomeScreen extends React.Component {
                   this.context.savePlaces(PIDs);
                 }
    });
+  }
+
+  getMyAdoptablePets(){
+    let places = this.context.places;
+
+    dbPlace.getMyPlaces(this.context.uid).then((PIDs) => {
+                    if (this.state.mounted) {
+                      this.context.savePlaces(PIDs);
+                    }
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
