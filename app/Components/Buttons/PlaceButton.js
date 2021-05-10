@@ -58,8 +58,6 @@ class PlaceButton extends React.Component {
 
   render() {
 
-    console.log("Places rendered place button: " + this.props.places);
-
     if (this.props.places != null) {
 
 

@@ -171,12 +171,12 @@ class HomeScreen extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.places.length != this.context.savedPlaces.length) {
-      console.log("COMPONENT DID UPDATE FOR SAVEDPLACES");
+      //console.log("COMPONENT DID UPDATE FOR SAVEDPLACES");
       this.getMySavedPlaces(this.context.savedPlaces);
     }
 
     if (this.state.pets.length != this.context.pets.length) {
-      console.log("COMPONENT DID UPDATE FOR PETS");
+      //console.log("COMPONENT DID UPDATE FOR PETS");
       this.getUserPets(this.context.pets, false);
     }
   }
