@@ -48,11 +48,11 @@ class ReportLossForm extends Component {
     }
   }
 
-  handleValidation() {
+  handleValidation(reportType) {
     let errors = {};
     let formIsValid = true;
 
-    if (!this.state.name.match(/^[a-zA-Z]+$/)) {
+    if (reportType === "loss" && !this.state.name.match(/^[a-zA-Z]+$/)) {
       formIsValid = false;
       errors["name"] = "Only letters in name";
     }
@@ -78,7 +78,7 @@ class ReportLossForm extends Component {
     const pet = this.props.pet;
     console.log("pet");
     console.log(this.context.uid);
-    if (this.handleValidation()) {
+    if (this.handleValidation("loss")) {
       dbLostPet
         .addLostPetNotify(
           this.state.name,
@@ -118,7 +118,13 @@ class ReportLossForm extends Component {
           this.state.email,
           this.state.telephone
         )
-        .then(() => {
+        .then((doc) => {
+          console.log("LOST PET SEEN ID TO ADD");
+          console.log(doc.id);
+          this.context.lostPetsSeen.push(doc.id);
+          this.context.saveLostPetsSeen(this.context.lostPetsSeen);
+          console.log("LOST PETS SEEN TO UPDATE:");
+          console.log(this.context.lostPetsSeen);
           this.props.close();
         });
     }

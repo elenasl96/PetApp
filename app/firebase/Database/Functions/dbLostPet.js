@@ -125,7 +125,7 @@ const dbLostPet = {
       email,
       phone
     );
-    lostPets.add(notification.toFirestore());
+    return lostPets.add(notification.toFirestore());
   },
 
   getLostPetsSeen: function () {
