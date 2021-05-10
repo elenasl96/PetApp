@@ -39,15 +39,14 @@ class HomeScreen extends React.Component {
 
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        let loadFeed = true;
 
-        this.getUserPets([], loadFeed);
+        this.getUserPets([],true);
 
-        this.getSavedPlaces();
+        this.saveFavouritePlaces();
 
         if (this.context.user.type == "business") {
           this.getMyPlaces();
-          this.getMyAdoptablePets();
+          //this.getMyAdoptablePets();
         }
       }
     });
@@ -62,7 +61,6 @@ class HomeScreen extends React.Component {
         this.getUserFeeds(pets);
       });
     } else {
-      console.log("PETS in GETUSERPETS: " + pets);
       if (pets.length != 0) {
         this.getMyPets(pets);
       } else {
@@ -72,7 +70,6 @@ class HomeScreen extends React.Component {
   }
 
   getMyPets(pets) {
-    console.log("PETS in GETMYPETS: " + pets);
 
     let promises = pets.map((petID) => {
       //console.log("ENTER MAP");
@@ -133,13 +130,26 @@ class HomeScreen extends React.Component {
     }
   }
 
-  getSavedPlaces() {
+  saveFavouritePlaces() {
     dbPlace.getSavedPlaces(this.context.uid).then((places) => {
       if (this.state.mounted) {
         this.context.saveFavouritePlaces(places);
+        this.getMySavedPlaces(places);
       }
     });
   }
+
+  getMySavedPlaces(places){
+   let promises = places.map((placeID) => {
+         return dbPlace.getPlace(placeID).then((place) => {
+           place.id = placeID;
+           return place;
+         });
+       });
+        Promise.all(promises).then((places) => {
+            this.setState({places:places});
+        });
+   }
 
   getMyPlaces() {
     dbPlace.getMyPlaces(this.context.uid).then((PIDs) => {
@@ -162,12 +172,11 @@ class HomeScreen extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (this.state.places.length != this.context.savedPlaces.length) {
       console.log("COMPONENT DID UPDATE FOR SAVEDPLACES");
-      this.setState({ places: this.context.savedPlaces });
+      this.getMySavedPlaces(this.context.savedPlaces);
     }
 
     if (this.state.pets.length != this.context.pets.length) {
       console.log("COMPONENT DID UPDATE FOR PETS");
-      console.log("CONTEXT: " + this.context.pets);
       this.getUserPets(this.context.pets, false);
     }
   }
@@ -202,6 +211,7 @@ class HomeScreen extends React.Component {
   };
 
   render() {
+
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <AddPetForm

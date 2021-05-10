@@ -67,6 +67,7 @@ const dbPlace = {
           data.region.latitudeDelta,
           data.region.longitudeDelta
         );
+        console.log("GET PLACE: " + place.name);
         return place;
       })
       .catch(function (error) {
@@ -183,16 +184,15 @@ const dbPlace = {
 
   deleteSavedPlace: function (uid, id) {
     const users = firestore.collection("Users");
-    users
+    const query = users
       .doc(uid)
       .collection("savedplaces")
-      .doc(id)
-      .delete()
-      .then(function () {
-        console.log("Document successfully deleted!");
-      })
-      .catch(function (error) {
-        console.error("Error removing document: ", error);
+      .where("pid","==",id);
+
+      query.get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          doc.ref.delete();
+        });
       });
   },
 
