@@ -37,7 +37,7 @@ export default class MapScreen extends React.Component {
     search: null,
   };
 
-/*
+  /*
   constructor() {
     super();
   } */
@@ -102,20 +102,21 @@ export default class MapScreen extends React.Component {
   }
 
   getPlaceColor(placeType) {
-    if (placeType == "kennel" || placeType == "Kennel") {
-      return "orange";
-    } else if (placeType === "Vet" || placeType === "vet") {
+    if (placeType === "Kennel") {
+      return "yellow";
+    } else if (placeType === "Veterinary") {
       return "lightblue";
-    } else {
+    } else if (placeType === "Park") {
       return "green";
+    } else {
+      return "orange";
     }
   }
 
   showVetMarkers() {
     this.hideCallouts();
-
     let vetMarkers = this.state.places.filter(
-      (marker) => marker.type === "Vet" || marker.type === "vet"
+      (marker) => marker.type === "Veterinary"
     );
     this.setState({ visibleMarkers: vetMarkers });
   }
@@ -123,10 +124,18 @@ export default class MapScreen extends React.Component {
   showKennelMarkers() {
     this.hideCallouts();
     let kennelMarkers = this.state.places.filter(
-      (marker) => marker.type === "kennel" || marker.type === "Kennel"
+      (marker) => marker.type === "Kennel"
     );
     this.setState({ visibleMarkers: kennelMarkers });
   }
+
+  showPlacesFilteredOn = (type) => {
+    this.hideCallouts();
+    let filteredMarkers = this.state.places.filter(
+      (marker) => marker.type === type
+    );
+    this.setState({ visibleMarkers: filteredMarkers });
+  };
 
   showAllMarkers() {
     this.hideCallouts();
@@ -220,17 +229,24 @@ export default class MapScreen extends React.Component {
           <View style={styles.mapTopButtons}>
             <TouchableHighlight
               style={styles.mapButton}
-              onPress={this.showVetMarkers.bind(this)}
+              onPress={() => this.showPlacesFilteredOn("Veterinary")}
               underlayColor={"rgb(200,200,200)"}
             >
               <Text style={{ textAlign: "center" }}>Vet</Text>
             </TouchableHighlight>
             <TouchableHighlight
               style={styles.mapButton}
-              onPress={this.showKennelMarkers.bind(this)}
+              onPress={() => this.showPlacesFilteredOn("Kennel")}
               underlayColor={"rgb(200,200,200)"}
             >
               <Text style={{ textAlign: "center" }}>Kennel</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={styles.mapButton}
+              onPress={() => this.showPlacesFilteredOn("Park")}
+              underlayColor={"rgb(200,200,200)"}
+            >
+              <Text style={{ textAlign: "center" }}>Park</Text>
             </TouchableHighlight>
             <TouchableHighlight
               style={styles.mapButton}

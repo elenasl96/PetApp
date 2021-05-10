@@ -40,7 +40,7 @@ class VetScreen extends React.Component {
     const place = this.props.navigation.state.params.place;
     this.setState({ mounted: true });
 
-    if (place.getType() === "Kennel") {
+    if (place.isKennel()) {
       dbAdoptableAnimal.getAdoptableAnimals(place.id).then((animals) => {
         this.setState({ animalsToAdopt: animals });
       });
@@ -50,14 +50,12 @@ class VetScreen extends React.Component {
       this.context.user.type == "business" &&
       this.context.places.includes(place.id)
     ) {
-
       this.setState({ isEditable: true });
     }
 
     const photo = place.photo;
 
-    this.setState({ photo: photo});
-
+    this.setState({ photo: photo });
   }
 
   componentWillUnmount() {
@@ -74,10 +72,6 @@ class VetScreen extends React.Component {
     if (this.state.mounted) {
       this.setState({ showNewsForm: true });
     }
-  };
-
-  isKennel = (place) => {
-    return place.getType() === "Kennel";
   };
 
   addAnimalToAdopt = (petID) => {
@@ -115,10 +109,9 @@ class VetScreen extends React.Component {
   };
 
   setPhoto = (photo) => {
-     console.log("SET PHOTO");
-      this.setState({ photo: photo });
+    console.log("SET PHOTO");
+    this.setState({ photo: photo });
   };
-
 
   render() {
     const place = this.props.navigation.state.params.place;
@@ -128,8 +121,6 @@ class VetScreen extends React.Component {
 
     return (
       <SafeAreaView style={{ flex: 1 }}>
-
-
         <AddNewsForm
           pid={pid}
           visible={this.state.showNewsForm}
@@ -147,23 +138,20 @@ class VetScreen extends React.Component {
           addPet={this.addAnimalToAdopt}
         ></AddPetForm>
 
-          <PhotoBox
-            pid={pid}
-            section={"places"}
-            setPhoto={this.setPhoto}
-            isUpdate={true}
-            photo={photo}
-            visible={this.state.showPhotoBox}
-            close={() => {
-                this.setState({ showPhotoBox: false });
-            }}
-          ></PhotoBox>
+        <PhotoBox
+          pid={pid}
+          section={"places"}
+          setPhoto={this.setPhoto}
+          isUpdate={true}
+          photo={photo}
+          visible={this.state.showPhotoBox}
+          close={() => {
+            this.setState({ showPhotoBox: false });
+          }}
+        ></PhotoBox>
 
         <View>
-          <ImageBackground
-            source={{ uri: photo }}
-            style={styles.vetImage}
-          >
+          <ImageBackground source={{ uri: photo }} style={styles.vetImage}>
             <View
               style={{
                 flex: 1,
@@ -193,8 +181,6 @@ class VetScreen extends React.Component {
                   "rgba(255,255,255,1)",
                 ]}
               >
-
-
                 <TouchableOpacity
                   style={styles.button}
                   onPress={this.openInMap.bind(this)}
@@ -210,7 +196,7 @@ class VetScreen extends React.Component {
                     >
                       <Text style={styles.buttonText}> + News </Text>
                     </TouchableOpacity>
-                    {this.isKennel(place) ? (
+                    {place.isKennel() ? (
                       <TouchableOpacity
                         style={styles.button}
                         onPress={() => this.setState({ showPetForm: true })}
@@ -225,15 +211,14 @@ class VetScreen extends React.Component {
                   <StarButton uid={this.context.uid} pid={pid} />
                 ) : null}
 
-                {isEditable? (
+                {isEditable ? (
                   <TouchableOpacity
-                          style={styles.button}
-                          onPress={() => this.setState({ showPhotoBox: true })}
-                        >
-                          <Text style={styles.buttonText}> UpdatePhoto </Text>
-                        </TouchableOpacity>
-                ) : null }
-
+                    style={styles.button}
+                    onPress={() => this.setState({ showPhotoBox: true })}
+                  >
+                    <Text style={styles.buttonText}> UpdatePhoto </Text>
+                  </TouchableOpacity>
+                ) : null}
               </LinearGradient>
             </View>
           </ImageBackground>
@@ -247,51 +232,44 @@ class VetScreen extends React.Component {
         </View>
 
         <ScrollView showsVerticalScrollIndicator={false}>
-
-
-          <ScrollView horizontal={true}
-           showsHorizontalScrollIndicator={false}
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
             style={{ paddingTop: 10 }}
           >
             <News placeId={pid}></News>
           </ScrollView>
 
-        {console.log("adoptable animals")}
-        {console.log(this.state.animalsToAdopt)}
-        {this.state.animalsToAdopt.length > 0 ? (
+          {console.log("adoptable animals")}
+          {console.log(this.state.animalsToAdopt)}
+          {this.state.animalsToAdopt.length > 0 ? (
+            <View style={styles.mainContent}>
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+              >
+                <Text style={styles.title}>Adoptable pets</Text>
+                <PetButton
+                  navigation={this.props.navigation}
+                  pets={this.state.animalsToAdopt}
+                  isAdoptable={true}
+                  isEditable={isEditable}
+                  pid={this.props.navigation.state.params.place.id}
+                  deleteAnimal={this.deletePet}
+                ></PetButton>
+              </ScrollView>
+            </View>
+          ) : null}
 
-        <View style={styles.mainContent}>
-
-          <ScrollView
-           horizontal={true}
-          showsHorizontalScrollIndicator={false}
-                        >
-          <Text style = {styles.title}>Adoptable pets</Text>
-            <PetButton
-              navigation={this.props.navigation}
-              pets={this.state.animalsToAdopt}
-              isAdoptable={true}
-              isEditable={isEditable}
-              pid={this.props.navigation.state.params.place.id}
-              deleteAnimal={this.deletePet}
-            ></PetButton>
-           </ScrollView>
-
-        </View>
-
-        ) : null}
-
-        {isEditable ? (
-          <TouchableOpacity
-            style={styles.button}
-            onPress={this.deletePlaceHere}
-          >
-            <Text style={styles.buttonText}>Delete place</Text>
-          </TouchableOpacity>
-        ) : null}
-
-    </ScrollView>
-
+          {isEditable ? (
+            <TouchableOpacity
+              style={styles.button}
+              onPress={this.deletePlaceHere}
+            >
+              <Text style={styles.buttonText}>Delete place</Text>
+            </TouchableOpacity>
+          ) : null}
+        </ScrollView>
       </SafeAreaView>
     );
   }
