@@ -65,7 +65,7 @@ class HomeScreen extends React.Component {
     });
     }
     else{
-      console.log("PETS: " + pets);
+      console.log("PETS in GETUSERPETS: " + pets);
       if(pets.length != 0){this.getMyPets(pets);}
       else{this.setState({pets:pets});}
     }
@@ -73,9 +73,10 @@ class HomeScreen extends React.Component {
   }
 
   getMyPets(pets){
-     console.log("GETS MY PETS!!!");
+     console.log("PETS in GETMYPETS: " + pets);
 
      let promises = pets.map((petID) => {
+           //console.log("ENTER MAP");
            return dbUserAnimal.getUserAnimal(this.context.uid,petID).then((pet) => {
              pet.id = petID;
              return pet;
@@ -87,6 +88,7 @@ class HomeScreen extends React.Component {
              this.setState({ pets: pets });
            }
          });
+
   }
 
   getUserFeeds(pets){
@@ -161,20 +163,10 @@ class HomeScreen extends React.Component {
       this.setState({ places: this.context.savedPlaces });
     }
 
-    if (!this.state.showPetForm && prevState.showPetForm) {
-      console.log("COMPONENT DID UPDATE FOR ADDING PETS");
-      //this.setState({ pets: this.context.pets });
-      this.getUserPets(this.context.pets,false);
-    }
-
-    if (this.state.onDeletePet && !prevState.onDeletePet) {
-          console.log("COMPONENT DID UPDATE FOR DELETING PETS");
-          //this.setState({ pets: this.context.pets });
-          console.log("MY CONTEXT AFTER DELETE: " + this.context.pets);
+    if (this.state.pets.length != this.context.pets.length) {
+          console.log("COMPONENT DID UPDATE FOR PETS");
+          console.log("CONTEXT: " +  this.context.pets);
           this.getUserPets(this.context.pets,false);
-          if(this.state.mounted){
-            this.setState({onDeletePet:false});
-          }
     }
 
   }
@@ -197,7 +189,7 @@ class HomeScreen extends React.Component {
   };
 
   deletePet = (petID) => {
-    dbUserAnimal.deleteAnimal(this.context.uid, petID);
+    //dbUserAnimal.deleteAnimal(this.context.uid, petID);
     this.context.deletePet(petID);
     this.setState({ onDeletePet: true });
   };
@@ -238,9 +230,14 @@ class HomeScreen extends React.Component {
             <View style={styles.myPetsContainer}>
               <View style={styles.myPets}>
                 <ScrollView
-                  horizontal={true}
+                  horizontal={false}
                   showsHorizontalScrollIndicator={false}
                 >
+                <Text style={styles.largeText}>Your pets</Text>
+                <ScrollView
+                                  horizontal={true}
+                                  showsHorizontalScrollIndicator={false}
+                                >
                   {this.state.pets.length > 0 ? (
                     <PetButton
                       uid={this.context.uid}
@@ -249,9 +246,10 @@ class HomeScreen extends React.Component {
                       deleteAnimal={this.deletePet}
                       type="useranimal"
                     ></PetButton>
-                  ) : (
-                    <Text style={styles.largeText}>Your pets</Text>
-                  )}
+                  ) :
+                    null
+                  }
+
 
                   <TouchableHighlight
                     onPress={this.showPetForm}
@@ -260,6 +258,7 @@ class HomeScreen extends React.Component {
                     <AntDesign name="plus" size={50} style={styles.plus} />
                   </TouchableHighlight>
                 </ScrollView>
+              </ScrollView>
               </View>
             </View>
 

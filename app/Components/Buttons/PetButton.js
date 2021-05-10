@@ -29,7 +29,6 @@ class PetButton extends React.Component {
 
   render() {
 
-    if (this.props.pets != null) {
     const navigation = this.props.navigation;
     const pets = this.props.pets;
     const isAdoptable = this.props.isAdoptable;
@@ -90,15 +89,6 @@ class PetButton extends React.Component {
               });
           });
      }
-  }
-  else{
-    return (
-            <Text style={{ textAlign: "center" }}>
-              Pets added will appear there!
-            </Text>
-     );
-   }
-
   }
 }
 
