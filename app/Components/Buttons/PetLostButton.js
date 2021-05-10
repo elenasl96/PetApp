@@ -7,75 +7,38 @@ import {
   View,
 } from "react-native";
 import dbLostPet from "../../firebase/Database/Functions/dbLostPet";
+import { AuthContext } from "../../Components/AuthContext";
 
 class PetLostButton extends React.Component {
   state = {
-    lostPets: null,
+    lostPets: [],
     mounted: false,
   };
+
+  static contextType = AuthContext;
 
   componentDidMount() {
     this.setState({ mounted: true });
   }
 
   componentDidUpdate() {
-    if (this.state.lostPets == null && this.state.mounted) {
-      const navigation = this.props.navigation;
+    if (
+      this.props.pets.length != this.state.lostPets.length &&
+      this.state.mounted
+    ) {
       const pets = this.props.pets;
-      if (pets == undefined) return;
-      var lostPetsButtons = [];
 
-      pets.map((petID) => {
-        dbLostPet.getLostPetNotification(petID).then((animal) => {
-          lostPetsButtons.push(
-            <View key={petID}>
-              <TouchableHighlight
-                style={{
-                  backgroundColor: "white",
-
-                  width: 180,
-                  height: 240,
-                  marginLeft: 10,
-                  marginBottom: 10,
-                  borderRadius: 35,
-                  padding: 10,
-                  shadowColor: "#EEE",
-                  shadowOffset: {
-                    width: 0,
-                    height: 1,
-                  },
-                  shadowOpacity: 0.18,
-                  shadowRadius: 1.0,
-                }}
-                value={petID}
-                onPress={() =>
-                  navigation.push("LostPet", {
-                    pet: animal,
-                    petID: petID,
-                  })
-                }
-              >
-                <View>
-                  <View style={styles.imageContainer}>
-                    <Image
-                      source={require("../../../assets/images/Gioia.jpg")}
-                      style={styles.petImage}
-                    ></Image>
-                  </View>
-
-                  <View style={styles.textContainer}>
-                    <Text style={styles.text}>{animal.getName()}</Text>
-                    <Text style={styles.text}>{animal.getPlace()}</Text>
-                    <Text style={styles.text}>{animal.getTimestamp()}</Text>
-                  </View>
-                </View>
-              </TouchableHighlight>
-            </View>
-          );
-          if (this.state.mounted) {
-            this.setState({ lostPets: lostPetsButtons });
-          }
+      let promises = pets.map((petID) => {
+        return dbLostPet.getLostPetNotification(petID).then((animal) => {
+          animal.id = petID;
+          return animal;
         });
+      });
+
+      Promise.all(promises).then((lostPets) => {
+        if (this.state.mounted) {
+          this.setState({ lostPets: lostPets });
+        }
       });
     }
   }
@@ -85,8 +48,53 @@ class PetLostButton extends React.Component {
   }
 
   render() {
-    if (this.state.lostPets != null) {
-      return this.state.lostPets;
+    if (this.state.lostPets.length > 0) {
+      console.log("LENGHT: " + this.state.lostPets.length);
+      return this.state.lostPets.map((animal) => (
+        <View key={animal.id}>
+          <TouchableHighlight
+            style={{
+              backgroundColor: "white",
+
+              width: 180,
+              height: 240,
+              marginLeft: 10,
+              marginBottom: 10,
+              borderRadius: 35,
+              padding: 10,
+              shadowColor: "#EEE",
+              shadowOffset: {
+                width: 0,
+                height: 1,
+              },
+              shadowOpacity: 0.18,
+              shadowRadius: 1.0,
+            }}
+            value={animal.id}
+            onPress={() =>
+              navigation.push("LostPet", {
+                pet: animal,
+                petID: animal.id,
+              })
+            }
+          >
+            <View>
+              <View style={styles.imageContainer}>
+                <Image
+                  source={{ uri: animal.photo }}
+                  style={styles.petImage}
+                ></Image>
+              </View>
+
+              <View style={styles.textContainer}>
+                <Text style={styles.text}>{animal.getName()}</Text>
+                <Text style={styles.text}>{animal.getPlace()}</Text>
+                <Text style={styles.text}>{animal.getTimestamp()}</Text>
+              </View>
+            </View>
+          </TouchableHighlight>
+        </View>
+      ));
     } else {
       return <Text style={{ textAlign: "center" }}>No Pet Lost</Text>;
     }

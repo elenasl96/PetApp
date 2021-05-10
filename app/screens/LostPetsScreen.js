@@ -175,7 +175,7 @@ export default class LostPetsScreen extends React.Component {
                 {this.state.lostPets.length > 0 && this.state.showLostPets ? (
                   <PetLostButton
                     navigation={this.props.navigation}
-                    pets={this.state.lostPets}
+                    pets={this.context.lostPets}
                   ></PetLostButton>
                 ) : null}
 
