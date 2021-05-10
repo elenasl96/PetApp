@@ -17,6 +17,7 @@ import { Feather } from "@expo/vector-icons";
 import { TextInput } from "react-native-gesture-handler";
 import mainStyle from "../styles/mainStyle";
 import utils from "../shared/utilities";
+import { AuthContext } from "../Components/AuthContext";
 
 export default class MapScreen extends React.Component {
   state = {
@@ -37,6 +38,8 @@ export default class MapScreen extends React.Component {
     search: null,
   };
 
+  static contextType = AuthContext;
+
   /*
   constructor() {
     super();
@@ -48,16 +51,23 @@ export default class MapScreen extends React.Component {
       this.setMapOnCurrentPosition();
     }
     dbPlace.getPlaces().then((placesIds) => {
-      let promises = placesIds.map((placeId) => {
-        return dbPlace.getPlace(placeId).then((place) => {
-          place.id = placeId;
-          return place;
-        });
+      this.context.saveGlobalPlaces(placesIds);
+      //  this.getAllPlaces();
+    });
+  }
+
+  getAllPlaces() {
+    let promises = this.context.globalPlaces.map((placeId) => {
+      return dbPlace.getPlace(placeId).then((place) => {
+        place.id = placeId;
+        return place;
       });
-      Promise.all(promises).then((places) => {
-        this.setState({ places: places });
-        this.showAllMarkers();
-      });
+    });
+    Promise.all(promises).then((places) => {
+      console.log("ALL PLACES");
+      console.log(places);
+      this.setState({ places: places, visibleMarkers: places });
+      //this.showAllMarkers();
     });
   }
 
@@ -70,6 +80,10 @@ export default class MapScreen extends React.Component {
       const currentPlace = this.props.navigation.state.params.currentPlace;
       this.props.navigation.state.params = null;
       this.focusMapOn(currentPlace);
+    }
+
+    if (this.state.places.length !== this.context.globalPlaces.length) {
+      this.getAllPlaces();
     }
   }
 
@@ -111,22 +125,6 @@ export default class MapScreen extends React.Component {
     } else {
       return "orange";
     }
-  }
-
-  showVetMarkers() {
-    this.hideCallouts();
-    let vetMarkers = this.state.places.filter(
-      (marker) => marker.type === "Veterinary"
-    );
-    this.setState({ visibleMarkers: vetMarkers });
-  }
-
-  showKennelMarkers() {
-    this.hideCallouts();
-    let kennelMarkers = this.state.places.filter(
-      (marker) => marker.type === "Kennel"
-    );
-    this.setState({ visibleMarkers: kennelMarkers });
   }
 
   showPlacesFilteredOn = (type) => {
@@ -200,8 +198,8 @@ export default class MapScreen extends React.Component {
   }
 
   render() {
-    this.state.markers = [];
-    //console.log(this.state.markers.length);
+    //this.state.markers = [];
+    console.log("MARKERS LENGTH START" + this.state.markers.length);
     return (
       <View style={styles.container}>
         <View style={styles.overlay}>
@@ -278,6 +276,7 @@ export default class MapScreen extends React.Component {
           onRegionChangeComplete={this.onRegionChange.bind(this)}
         >
           {(this.state.markers = [])}
+          {console.log("PLACES LENGTH: " + this.state.visibleMarkers.length)}
           {this.state.visibleMarkers.map((marker, index) => (
             <Marker
               key={index}
