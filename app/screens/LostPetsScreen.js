@@ -32,38 +32,41 @@ export default class LostPetsScreen extends React.Component {
 
   componentDidMount() {
     this.setState({ mounted: true });
-    dbLostPet.getLostPetNotifications().then((lostPetsIDs) => {
-      if (this.state.mounted) {
-        console.log("lostpets");
-        console.log(lostPetsIDs);
-        this.setState({ lostPets: lostPetsIDs });
-      }
-    });
-
-    dbLostPet.getLostPetsSeen().then((lostPetsSeenIDs) => {
-      if (this.state.mounted) {
-        console.log("lostpetsSeen");
-        console.log(lostPetsSeenIDs);
-        this.setState({ lostPetsSeen: lostPetsSeenIDs });
-      }
-    });
+    this.getLostPets();
+    this.getLostPetsSeen();
   }
 
   componentDidUpdate() {
-    if (this.state.lostPets == null) {
-      dbLostPet.getLostPetNotifications().then((lostPetsIDs) => {
-        if (this.state.mounted) {
-          console.log("lostpets");
-          console.log(lostPetsIDs);
-          this.setState({ lostPets: lostPetsIDs });
-        }
-      });
+    if (this.state.lostPets.length != this.context.lostPets.length) {
+      this.setState({ lostPets: this.context.lostPets });
+      console.log("LOST PETS: " + this.state.lostPets);
+    }
+
+    if (this.state.lostPetsSeen.length != this.context.lostPetsSeen.length) {
+      this.setState({ lostPetsSeen: this.context.lostPetsSeen });
+      console.log("LOST PETS SEEN: " + this.state.lostPetsSeen);
     }
   }
 
   componentWillUnmount() {
     this.setState({ mounted: false });
   }
+
+  getLostPets = () => {
+    dbLostPet.getLostPetNotifications().then((lostPets) => {
+      if (this.state.mounted) {
+        this.context.saveLostPets(lostPets);
+      }
+    });
+  };
+
+  getLostPetsSeen = () => {
+    dbLostPet.getLostPetsSeen().then((lostPetsSeen) => {
+      if (this.state.mounted) {
+        this.context.saveLostPetsSeen(lostPetsSeen);
+      }
+    });
+  };
 
   reportLoss = () => {
     if (this.state.mounted) {

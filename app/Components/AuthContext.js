@@ -11,10 +11,12 @@ class AuthContextProvider extends Component {
     user: null,
     loading: false,
     uid: "",
-    places: [],  //my places (for business)
+    places: [], //my places (for business)
     savedPlaces: [], //my saved places
-    pets: [],  //user pets
-    adoptablePets: {}  // map place and adoptable pets
+    pets: [], //user pets
+    adoptablePets: {}, // map place and adoptable pets
+    lostPets: [],
+    lostPetsSeen: [],
   };
 
   componentDidMount() {
@@ -44,20 +46,20 @@ class AuthContextProvider extends Component {
     }
   };
 
-  addPlace = (place) =>{
-      let places = this.state.places;
-      places.push(place);
-      this.savePlaces(places);
+  addPlace = (place) => {
+    let places = this.state.places;
+    places.push(place);
+    this.savePlaces(places);
   };
 
-  deletePlace = (place) =>{
-      let places = this.state.places;
-      let index = places.indexOf(place);
-      if (index != -1) {
-        places.splice(index, 1);
-      }
-      this.savePlaces(places);
-      this.saveAdoptablePets(place,null); // delete place from adoptable animals
+  deletePlace = (place) => {
+    let places = this.state.places;
+    let index = places.indexOf(place);
+    if (index != -1) {
+      places.splice(index, 1);
+    }
+    this.savePlaces(places);
+    this.saveAdoptablePets(place, null); // delete place from adoptable animals
   };
 
   saveFavouritePlaces = (places) => {
@@ -66,80 +68,80 @@ class AuthContextProvider extends Component {
     }
   };
 
-  addFavouritePlace = (place) =>{
-        let places = this.state.savedPlaces;
-        places.push(place);
-        this.saveFavouritePlaces(places);
+  addFavouritePlace = (place) => {
+    let places = this.state.savedPlaces;
+    places.push(place);
+    this.saveFavouritePlaces(places);
   };
 
-  deleteFavouritePlace = (place) =>{
-        let places = this.state.savedPlaces;
-        let index = places.indexOf(place);
-        if (index != -1) {
-          places.splice(index, 1);
-        }
-        this.saveFavouritePlaces(places);
+  deleteFavouritePlace = (place) => {
+    let places = this.state.savedPlaces;
+    let index = places.indexOf(place);
+    if (index != -1) {
+      places.splice(index, 1);
+    }
+    this.saveFavouritePlaces(places);
   };
 
   savePets = (pets) => {
-      if (this.state.mounted) {
-        this.setState({ pets: pets });
-      }
+    if (this.state.mounted) {
+      this.setState({ pets: pets });
+    }
   };
 
-    addPet = (pet) =>{
-          console.log("ADD PET CONTEXT");
-          console.log("context length " + this.state.pets.length);
-          let pets = this.state.pets;
-          pets.push(pet);
-          this.savePets(pets);
-          console.log("context length " + this.state.pets.length);
-    };
+  addPet = (pet) => {
+    console.log("ADD PET CONTEXT");
+    console.log("context length " + this.state.pets.length);
+    let pets = this.state.pets;
+    pets.push(pet);
+    this.savePets(pets);
+    console.log("context length " + this.state.pets.length);
+  };
 
-    deletePet = (pet) =>{
-          console.log("DELETE PET CONTEXT");
-          let pets = this.state.pets;
-          console.log("context length " + this.state.pets.length);
-          let index = pets.indexOf(pet);
-          if (index != -1) {
-            pets.splice(index, 1);
-          }
-          this.savePets(pets);
-          console.log("context length " + this.state.pets.length);
-    };
+  deletePet = (pet) => {
+    console.log("DELETE PET CONTEXT");
+    let pets = this.state.pets;
+    console.log("context length " + this.state.pets.length);
+    let index = pets.indexOf(pet);
+    if (index != -1) {
+      pets.splice(index, 1);
+    }
+    this.savePets(pets);
+    console.log("context length " + this.state.pets.length);
+  };
 
-    saveAdoptablePets = (pid,pets) => {
-          let adoptablePets = this.state.adoptablePets;
-          adoptablePets[pid] = pets;
-          if (this.state.mounted) {
-            this.setState({adoptablePets,adoptablePets});
-          }
-      };
+  saveAdoptablePets = (pid, pets) => {
+    let adoptablePets = this.state.adoptablePets;
+    adoptablePets[pid] = pets;
+    if (this.state.mounted) {
+      this.setState({ adoptablePets, adoptablePets });
+    }
+  };
 
-    addAdoptablePet = (pid,pet) =>{
-              console.log("ADD PET CONTEXT");
-              console.log("context length " + this.state.pets.length);
-              let adoptablePets = this.state.adoptablePets;
-              if(adoptablePets[pid] == null){
-                adoptablePets[pid] = [];
-              }
-              adoptablePets[pid].push(pet);
-              let pets = adoptablePets[pid];
-              this.saveAdoptablePets(pid,pets);
-              console.log("context length " + this.state.pets.length);
-    };
+  addAdoptablePet = (pid, pet) => {
+    console.log("ADD PET CONTEXT");
+    console.log("context length " + this.state.pets.length);
+    let adoptablePets = this.state.adoptablePets;
+    if (adoptablePets[pid] == null) {
+      adoptablePets[pid] = [];
+    }
+    adoptablePets[pid].push(pet);
+    let pets = adoptablePets[pid];
+    this.saveAdoptablePets(pid, pets);
+    console.log("context length " + this.state.pets.length);
+  };
 
-    deleteAdoptablePet = (pid,pet) =>{
-              console.log("DELETE PET CONTEXT");
-              let pets = this.state.adoptablePets[pid];
-              console.log("context length " + this.state.pets.length);
-              let index = pets.indexOf(pet);
-              if (index != -1) {
-                pets.splice(index, 1);
-              }
-              this.saveAdoptablePets(pid,pet);
-              console.log("context length " + this.state.pets.length);
-    };
+  deleteAdoptablePet = (pid, pet) => {
+    console.log("DELETE PET CONTEXT");
+    let pets = this.state.adoptablePets[pid];
+    console.log("context length " + this.state.pets.length);
+    let index = pets.indexOf(pet);
+    if (index != -1) {
+      pets.splice(index, 1);
+    }
+    this.saveAdoptablePets(pid, pet);
+    console.log("context length " + this.state.pets.length);
+  };
 
   /*
   saveLastLogin = (lastlogin) => {
@@ -154,6 +156,19 @@ class AuthContextProvider extends Component {
     console.log(this.state.pets);
   };
 */
+
+  saveLostPets = (pets) => {
+    if (this.state.mounted) {
+      this.setState({ lostPets: pets });
+    }
+  };
+
+  saveLostPetsSeen = (pets) => {
+    if (this.state.mounted) {
+      this.setState({ lostPetsSeen: pets });
+    }
+  };
+
   onLoginSuccess() {
     this.props.navigation.navigate("App");
   }
@@ -202,6 +217,8 @@ class AuthContextProvider extends Component {
           saveAdoptablePets: this.saveAdoptablePets,
           addAdoptablePet: this.addAdoptablePet,
           deleteAdoptablePet: this.deleteAdoptablePet,
+          saveLostPets: this.saveLostPets,
+          saveLostPetsSeen: this.saveLostPetsSeen,
         }}
       >
         {this.props.children}

@@ -35,151 +35,141 @@ class HomeScreen extends React.Component {
   static contextType = AuthContext;
 
   componentDidMount() {
-
     this.setState({ mounted: true });
 
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-
         let loadFeed = true;
 
-        this.getUserPets([],loadFeed);
+        this.getUserPets([], loadFeed);
 
         this.getSavedPlaces();
-
 
         if (this.context.user.type == "business") {
           this.getMyPlaces();
           this.getMyAdoptablePets();
         }
-
       }
     });
   }
 
-  getUserPets(pets,loadFeed){  // get user pets and feeds related to them
-    if(loadFeed){
-    dbUserAnimal.getUserAnimals(this.context.uid).then((pets) => {
-                this.getMyPets(pets); // converts ids in Animal objects
-                this.context.savePets(pets);
-                this.getUserFeeds(pets);
-    });
-    }
-    else{
+  getUserPets(pets, loadFeed) {
+    // get user pets and feeds related to them
+    if (loadFeed) {
+      dbUserAnimal.getUserAnimals(this.context.uid).then((pets) => {
+        this.getMyPets(pets); // converts ids in Animal objects
+        this.context.savePets(pets);
+        this.getUserFeeds(pets);
+      });
+    } else {
       console.log("PETS in GETUSERPETS: " + pets);
-      if(pets.length != 0){this.getMyPets(pets);}
-      else{this.setState({pets:pets});}
+      if (pets.length != 0) {
+        this.getMyPets(pets);
+      } else {
+        this.setState({ pets: pets });
+      }
     }
-
   }
 
-  getMyPets(pets){
-     console.log("PETS in GETMYPETS: " + pets);
+  getMyPets(pets) {
+    console.log("PETS in GETMYPETS: " + pets);
 
-     let promises = pets.map((petID) => {
-           //console.log("ENTER MAP");
-           return dbUserAnimal.getUserAnimal(this.context.uid,petID).then((pet) => {
-             pet.id = petID;
-             return pet;
-           });
-         });
+    let promises = pets.map((petID) => {
+      //console.log("ENTER MAP");
+      return dbUserAnimal.getUserAnimal(this.context.uid, petID).then((pet) => {
+        pet.id = petID;
+        return pet;
+      });
+    });
 
-         Promise.all(promises).then((pets) => {
-           if (this.state.mounted) {
-             this.setState({ pets: pets });
-           }
-         });
-
+    Promise.all(promises).then((pets) => {
+      if (this.state.mounted) {
+        this.setState({ pets: pets });
+      }
+    });
   }
 
-  getUserFeeds(pets){
+  getUserFeeds(pets) {
     var info = this.context.user;
 
     var animals = [];
     var uid = this.context.uid;
 
-                  if (pets.length != 0 ) {
-                    pets.forEach((aid) => {
-                      dbUserAnimal.getUserAnimal(uid, aid).then((animal) => {
-                        animals.push(animal);
-                        if (pets.length == animals.length) {
-                          let promise = new Promise((resolve, reject) => {
-                            dbFeed.addRandomFeeds(animals, uid, info.getLastLogin(), 0);
-                            setTimeout(() => {
-                              resolve();
-                            }, 1000);
-                          });
-                          promise.then(() => {
-                            dbFeed.getUserFeeds(uid).then((feeds) => {
-                              if (this.state.mounted) {
-                                this.setState({ feeds: feeds });
-                              }
-                            });
-                          });
-                        }
-                      });
-                    });
-                  } else {
-                    let promise = new Promise((resolve, reject) => {
-                      dbFeed.addRandomFeeds(
-                        animals,
-                        uid,
-                        info.getLastLogin(),
-                        info.days
-                      );
-                      setTimeout(() => {
-                        resolve();
-                      }, 1000);
-                    });
-                    promise.then(() => {
-                      dbFeed.getUserFeeds(uid).then((feeds) => {
-                        if (this.state.mounted) {
-                          this.setState({ feeds: feeds });
-                        }
-                      });
-                    });
-                  }
+    if (pets.length != 0) {
+      pets.forEach((aid) => {
+        dbUserAnimal.getUserAnimal(uid, aid).then((animal) => {
+          animals.push(animal);
+          if (pets.length == animals.length) {
+            let promise = new Promise((resolve, reject) => {
+              dbFeed.addRandomFeeds(animals, uid, info.getLastLogin(), 0);
+              setTimeout(() => {
+                resolve();
+              }, 1000);
+            });
+            promise.then(() => {
+              dbFeed.getUserFeeds(uid).then((feeds) => {
+                if (this.state.mounted) {
+                  this.setState({ feeds: feeds });
+                }
+              });
+            });
+          }
+        });
+      });
+    } else {
+      let promise = new Promise((resolve, reject) => {
+        dbFeed.addRandomFeeds(animals, uid, info.getLastLogin(), info.days);
+        setTimeout(() => {
+          resolve();
+        }, 1000);
+      });
+      promise.then(() => {
+        dbFeed.getUserFeeds(uid).then((feeds) => {
+          if (this.state.mounted) {
+            this.setState({ feeds: feeds });
+          }
+        });
+      });
+    }
   }
 
-  getSavedPlaces(){
+  getSavedPlaces() {
     dbPlace.getSavedPlaces(this.context.uid).then((places) => {
-        if (this.state.mounted) {
-          this.context.saveFavouritePlaces(places);
-        }
+      if (this.state.mounted) {
+        this.context.saveFavouritePlaces(places);
+      }
     });
   }
 
-  getMyPlaces(){
+  getMyPlaces() {
     dbPlace.getMyPlaces(this.context.uid).then((PIDs) => {
-                if (this.state.mounted) {
-                  this.context.savePlaces(PIDs);
-                }
-   });
+      if (this.state.mounted) {
+        this.context.savePlaces(PIDs);
+      }
+    });
   }
 
-  getMyAdoptablePets(){
+  getMyAdoptablePets() {
     let places = this.context.places;
 
     dbPlace.getMyPlaces(this.context.uid).then((PIDs) => {
-                    if (this.state.mounted) {
-                      this.context.savePlaces(PIDs);
-                    }
+      if (this.state.mounted) {
+        this.context.savePlaces(PIDs);
+      }
     });
   }
 
   componentDidUpdate(prevProps, prevState) {
-
     if (this.state.places.length != this.context.savedPlaces.length) {
       console.log("COMPONENT DID UPDATE FOR SAVEDPLACES");
       this.setState({ places: this.context.savedPlaces });
     }
 
     if (this.state.pets.length != this.context.pets.length) {
-          console.log("COMPONENT DID UPDATE FOR PETS");
-          console.log("CONTEXT: " +  this.context.pets);
-          this.getUserPets(this.context.pets,false);
+      console.log("COMPONENT DID UPDATE FOR PETS");
+      console.log("CONTEXT: " + this.context.pets);
+      this.getUserPets(this.context.pets, false);
     }
-
   }
 
   componentWillUnmount() {
@@ -200,7 +190,7 @@ class HomeScreen extends React.Component {
   };
 
   deletePet = (petID) => {
-    //dbUserAnimal.deleteAnimal(this.context.uid, petID);
+    dbUserAnimal.deleteAnimal(this.context.uid, petID);
     this.context.deletePet(petID);
     this.setState({ onDeletePet: true });
   };
@@ -244,32 +234,29 @@ class HomeScreen extends React.Component {
                   horizontal={false}
                   showsHorizontalScrollIndicator={false}
                 >
-                <Text style={styles.largeText}>Your pets</Text>
-                <ScrollView
-                                  horizontal={true}
-                                  showsHorizontalScrollIndicator={false}
-                                >
-                  {this.state.pets.length > 0 ? (
-                    <PetButton
-                      uid={this.context.uid}
-                      pets={this.state.pets}
-                      navigation={this.props.navigation}
-                      deleteAnimal={this.deletePet}
-                      type="useranimal"
-                    ></PetButton>
-                  ) :
-                    null
-                  }
-
-
-                  <TouchableHighlight
-                    onPress={this.showPetForm}
-                    style={styles.addPetButton}
+                  <Text style={styles.largeText}>Your pets</Text>
+                  <ScrollView
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
                   >
-                    <AntDesign name="plus" size={50} style={styles.plus} />
-                  </TouchableHighlight>
+                    {this.state.pets.length > 0 ? (
+                      <PetButton
+                        uid={this.context.uid}
+                        pets={this.state.pets}
+                        navigation={this.props.navigation}
+                        deleteAnimal={this.deletePet}
+                        type="useranimal"
+                      ></PetButton>
+                    ) : null}
+
+                    <TouchableHighlight
+                      onPress={this.showPetForm}
+                      style={styles.addPetButton}
+                    >
+                      <AntDesign name="plus" size={50} style={styles.plus} />
+                    </TouchableHighlight>
+                  </ScrollView>
                 </ScrollView>
-              </ScrollView>
               </View>
             </View>
 
@@ -280,7 +267,7 @@ class HomeScreen extends React.Component {
                   uid={this.context.uid}
                   places={this.state.places}
                   navigation={this.props.navigation}
-                  isSavedPlace = {true}
+                  isSavedPlace={true}
                 ></PlaceButton>
               ) : null}
             </View>

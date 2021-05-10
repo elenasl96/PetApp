@@ -61,7 +61,7 @@ class ReportLossForm extends Component {
       errors["breed"] = "Only letters in breed";
     }
 
-    if (isNaN(this.state.number)) {
+    if (isNaN(this.state.telephone)) {
       formIsValid = false;
       errors["number"] = "Telephone must be a number";
     }
@@ -92,7 +92,13 @@ class ReportLossForm extends Component {
           this.state.email,
           this.state.telephone
         )
-        .then(() => {
+        .then((doc) => {
+          console.log("LOST PET ID TO ADD");
+          console.log(doc.id);
+          this.context.lostPets.push(doc.id);
+          this.context.saveLostPets(this.context.lostPets);
+          console.log("LOST PETS TO UPDATE:");
+          console.log(this.context.lostPets);
           this.props.close();
         });
     }
