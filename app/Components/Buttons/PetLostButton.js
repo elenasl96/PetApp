@@ -48,6 +48,7 @@ class PetLostButton extends React.Component {
   }
 
   render() {
+    const navigation = this.props.navigation;
     if (this.state.lostPets.length > 0) {
       return this.state.lostPets.map((animal) => (
         <View key={animal.id}>
