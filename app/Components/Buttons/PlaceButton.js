@@ -60,7 +60,7 @@ class PlaceButton extends React.Component {
 
     if (this.props.places != null) {
 
-
+    if(!this.props.isSavedPlace){
       return this.props.places.map((place, index) => (
         <View key={index}>
           <TouchableHighlight
@@ -78,6 +78,27 @@ class PlaceButton extends React.Component {
           </TouchableHighlight>
         </View>
       ));
+    }else{
+
+     return this.props.places.map((place, index) => (
+             <View key={index}>
+               <TouchableHighlight
+                 onPress={() => this.showPlace(place)}
+                 style={styles.pet}
+               >
+                 <ImageBackground
+                   source={{ uri: place.photo }}
+                   style={styles.petImage}
+                 >
+                   <View style={styles.overlay}>
+                     <Text style={styles.title}>{place.name}</Text>
+                   </View>
+                 </ImageBackground>
+               </TouchableHighlight>
+             </View>
+           ));
+    }
+
     } else {
       return (
         <Text style={{ textAlign: "center" }}>
@@ -112,5 +133,19 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
+  pet: {
+      marginHorizontal: 10,
+      width: 150,
+      height: 150,
+      borderRadius: 75,
+      backgroundColor: "orange",
+      elevation: 5,
+    },
+    petImage: {
+      width: 150,
+      height: 150,
+      borderRadius: 75,
+      resizeMode: "cover",
+    },
 });
 export default PlaceButton;

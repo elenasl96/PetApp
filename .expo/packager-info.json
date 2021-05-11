@@ -2,5 +2,8 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 15384
+  "packagerPid": 9316,
+  "expoServerNgrokUrl": "https://xw-bt9.matteogambella.petapp.exp.direct",
+  "packagerNgrokUrl": "https://packager.xw-bt9.matteogambella.petapp.exp.direct",
+  "ngrokPid": 17824
 }

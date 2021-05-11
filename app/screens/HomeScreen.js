@@ -139,7 +139,8 @@ class HomeScreen extends React.Component {
     });
   }
 
-  getMySavedPlaces(places){
+  getMySavedPlaces(placeIDs){
+   /*
    let promises = places.map((placeID) => {
          return dbPlace.getPlace(placeID).then((place) => {
            place.id = placeID;
@@ -148,8 +149,24 @@ class HomeScreen extends React.Component {
        });
         Promise.all(promises).then((places) => {
             this.setState({places:places});
-        });
-   }
+        });*/
+      var places = [];
+      placeIDs.map((placeID) => {
+         dbPlace.getPlace(placeID).then((place) => {
+                 if(place == null){
+                   dbPlace.deleteSavedPlace(this.context.uid,placeID);
+                   this.context.deleteFavouritePlace(placeID);
+                 }
+                 else{
+                 place.id = placeID;
+                 places.push(place);
+                 }
+                 if(places.length == placeIDs.length){
+                   this.setState({places:places});
+                 }
+         });
+     });
+ }
 
   getMyPlaces() {
     dbPlace.getMyPlaces(this.context.uid).then((PIDs) => {
@@ -272,14 +289,23 @@ class HomeScreen extends React.Component {
 
             <View style={styles.myPlaceContainer}>
               <Text style={styles.largeText}>Your Favourite Places</Text>
+
               {this.state.places.length > 0 ? (
+
+                 <ScrollView
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
+                >
                 <PlaceButton
                   uid={this.context.uid}
                   places={this.state.places}
                   navigation={this.props.navigation}
                   isSavedPlace={true}
                 ></PlaceButton>
+                 </ScrollView>
+
               ) : null}
+
             </View>
           </ScrollView>
         </View>
@@ -373,7 +399,7 @@ const styles = StyleSheet.create({
   },
   myPlaceContainer: {
     flexDirection: "column",
-    paddingHorizontal: 0,
+    //paddingHorizontal: 0,
   },
   myPlaces: {
     flexWrap: "nowrap",

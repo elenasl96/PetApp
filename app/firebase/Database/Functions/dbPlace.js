@@ -70,7 +70,8 @@ const dbPlace = {
         return place;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
+        //console.log("Error getting documents: ", error);
+        //console.log("Place " + pid + " does not exist anymore, let's remove it from saved place!");
       });
   },
 
