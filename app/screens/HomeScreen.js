@@ -7,6 +7,7 @@ import {
   Image,
   TouchableHighlight,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import firebase from "firebase";
@@ -22,6 +23,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import AddPetForm from "../Components/Forms/AddPetForm";
 import dbAdoptableAnimal from "../firebase/Database/Functions/dbAdoptableAnimal";
+import LoadingOverlay from "../Components/Custom/loadingOverlay";
 
 class HomeScreen extends React.Component {
   state = {
@@ -31,16 +33,16 @@ class HomeScreen extends React.Component {
     mounted: false,
     showPetForm: false,
     onDeletePet: false,
+    loading: false,
   };
   static contextType = AuthContext;
 
   componentDidMount() {
-    this.setState({ mounted: true });
+    this.setState({ mounted: true, loading: true });
 
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-
-        this.getUserPets([],true);
+        this.getUserPets([], true);
 
         this.saveFavouritePlaces();
 
@@ -70,7 +72,6 @@ class HomeScreen extends React.Component {
   }
 
   getMyPets(pets) {
-
     let promises = pets.map((petID) => {
       //console.log("ENTER MAP");
       return dbUserAnimal.getUserAnimal(this.context.uid, petID).then((pet) => {
@@ -106,7 +107,7 @@ class HomeScreen extends React.Component {
             promise.then(() => {
               dbFeed.getUserFeeds(uid).then((feeds) => {
                 if (this.state.mounted) {
-                  this.setState({ feeds: feeds });
+                  this.setState({ feeds: feeds, loading: false });
                 }
               });
             });
@@ -123,7 +124,7 @@ class HomeScreen extends React.Component {
       promise.then(() => {
         dbFeed.getUserFeeds(uid).then((feeds) => {
           if (this.state.mounted) {
-            this.setState({ feeds: feeds });
+            this.setState({ feeds: feeds, loading: false });
           }
         });
       });
@@ -139,8 +140,8 @@ class HomeScreen extends React.Component {
     });
   }
 
-  getMySavedPlaces(placeIDs){
-   /*
+  getMySavedPlaces(placeIDs) {
+    /*
    let promises = places.map((placeID) => {
          return dbPlace.getPlace(placeID).then((place) => {
            place.id = placeID;
@@ -150,23 +151,22 @@ class HomeScreen extends React.Component {
         Promise.all(promises).then((places) => {
             this.setState({places:places});
         });*/
-      var places = [];
-      placeIDs.map((placeID) => {
-         dbPlace.getPlace(placeID).then((place) => {
-                 if(place == null){
-                   dbPlace.deleteSavedPlace(this.context.uid,placeID);
-                   this.context.deleteFavouritePlace(placeID);
-                 }
-                 else{
-                 place.id = placeID;
-                 places.push(place);
-                 }
-                 if(places.length == placeIDs.length){
-                   this.setState({places:places});
-                 }
-         });
-     });
- }
+    var places = [];
+    placeIDs.map((placeID) => {
+      dbPlace.getPlace(placeID).then((place) => {
+        if (place == null) {
+          dbPlace.deleteSavedPlace(this.context.uid, placeID);
+          this.context.deleteFavouritePlace(placeID);
+        } else {
+          place.id = placeID;
+          places.push(place);
+        }
+        if (places.length == placeIDs.length) {
+          this.setState({ places: places });
+        }
+      });
+    });
+  }
 
   getMyPlaces() {
     dbPlace.getMyPlaces(this.context.uid).then((PIDs) => {
@@ -174,17 +174,18 @@ class HomeScreen extends React.Component {
         this.context.savePlaces(PIDs);
       }
       PIDs.map((placeID) => {
-       dbPlace.getPlace(placeID).then((place) => {
-              if(place.isKennel()){
-               dbAdoptableAnimal.getAdoptableAnimals(placeID).then((animals) => {
-                       this.context.saveAdoptablePets(placeID,animals);
-               });
-              }
-       });
-     });
-   });
+        dbPlace.getPlace(placeID).then((place) => {
+          console.log(place);
+          if (place.isKennel()) {
+            dbAdoptableAnimal.getAdoptableAnimals(placeID).then((animals) => {
+              this.context.saveAdoptablePets(placeID, animals);
+            });
+          }
+        });
+      });
+    });
   }
-/*
+  /*
   getMyAdoptablePets() {
     let places = this.context.places;
 
@@ -237,7 +238,6 @@ class HomeScreen extends React.Component {
   };
 
   render() {
-
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <AddPetForm
@@ -248,6 +248,8 @@ class HomeScreen extends React.Component {
           addPet={this.addPet}
         ></AddPetForm>
         <NotificationsHandler></NotificationsHandler>
+        <LoadingOverlay visible={this.state.loading}></LoadingOverlay>
+
         <View style={styles.mainContent}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.feedContainer}>
@@ -300,21 +302,18 @@ class HomeScreen extends React.Component {
               <Text style={styles.largeText}>Your Favourite Places</Text>
 
               {this.state.places.length > 0 ? (
-
-                 <ScrollView
+                <ScrollView
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}
                 >
-                <PlaceButton
-                  uid={this.context.uid}
-                  places={this.state.places}
-                  navigation={this.props.navigation}
-                  isSavedPlace={true}
-                ></PlaceButton>
-                 </ScrollView>
-
+                  <PlaceButton
+                    uid={this.context.uid}
+                    places={this.state.places}
+                    navigation={this.props.navigation}
+                    isSavedPlace={true}
+                  ></PlaceButton>
+                </ScrollView>
               ) : null}
-
             </View>
           </ScrollView>
         </View>
