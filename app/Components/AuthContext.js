@@ -112,8 +112,15 @@ class AuthContextProvider extends Component {
   };
 
   saveAdoptablePets = (pid, pets) => {
-    let adoptablePets = this.state.adoptablePets;
+    console.log("SAVE ADOPTABLE PETS: " + pets);
+    var adoptablePets = this.state.adoptablePets;
+    if(pets == null){
+      adoptablePets[pid] = [];
+    }
+    else{
     adoptablePets[pid] = pets;
+    }
+
     if (this.state.mounted) {
       this.setState({ adoptablePets, adoptablePets });
     }
@@ -135,13 +142,14 @@ class AuthContextProvider extends Component {
   deleteAdoptablePet = (pid, pet) => {
     console.log("DELETE PET CONTEXT");
     let pets = this.state.adoptablePets[pid];
-    console.log("context length " + this.state.pets.length);
+    console.log("context length " + pets.length);
     let index = pets.indexOf(pet);
     if (index != -1) {
       pets.splice(index, 1);
     }
-    this.saveAdoptablePets(pid, pet);
-    console.log("context length " + this.state.pets.length);
+    this.saveAdoptablePets(pid, pets);
+    pets = this.state.adoptablePets[pid];
+    console.log("context length " + pets.length);
   };
 
   /*

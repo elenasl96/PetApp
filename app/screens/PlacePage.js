@@ -31,35 +31,95 @@ class VetScreen extends React.Component {
     showNewsForm: false,
     showPetForm: false,
     showPhotoBox: false,
-    animalsToAdopt: [],
+    pets: [],
     isEditable: false,
     photo: null,
+    isKennel: false,
   };
 
   componentDidMount() {
     const place = this.props.navigation.state.params.place;
-    this.setState({ mounted: true });
+    var isKennel = false;
+    var isEditable = false;
 
-    if (place.isKennel()) {
-      dbAdoptableAnimal.getAdoptableAnimals(place.id).then((animals) => {
-        this.setState({ animalsToAdopt: animals });
-      });
-    }
+    console.log("COMPONENT DID MOUNT PLACE");
 
     if (
-      this.context.user.type == "business" &&
-      this.context.places.includes(place.id)
-    ) {
-      this.setState({ isEditable: true });
+          this.context.user.type == "business" &&
+          this.context.places.includes(place.id)
+        ) {
+          isEditable = true;
+        }
+
+    if (place.isKennel()) {
+       isKennel = true;
+       if(isEditable){
+         this.getAdoptablePets(this.context.adoptablePets[place.id]); //your kennel, ids are in context
+       }
+       else{
+         this.getAdoptablePetsFromDb(); //not your kennel , ids must be retrieved in db
+       }
     }
 
     const photo = place.photo;
 
-    this.setState({ photo: photo });
+    this.setState({ mounted : true , photo: photo , isKennel: isKennel , isEditable: isEditable });
+    this.setState({pets:[]});
   }
 
   componentWillUnmount() {
     this.setState({ mounted: false });
+  }
+
+  componentDidUpdate(prevProps,prevState){
+
+    const placeID = this.props.navigation.state.params.place.id;
+
+    if (this.state.isKennel && this.state.isEditable){
+     if(this.state.pets.length != this.context.adoptablePets[placeID].length) {
+          console.log("COMPONENT DID UPDATE FOR ADOPTABLE PETS");
+          console.log("PETS: " + this.context.adoptablePets[placeID]);
+          this.getAdoptablePets(this.context.adoptablePets[placeID]);
+     }
+    }
+
+  }
+
+  getAdoptablePets(petIDs){
+    console.log("GET ADOPTABLE PETS");
+    const placeID = this.props.navigation.state.params.place.id;
+
+    if(petIDs.length != 0){
+    let promises = petIDs.map((petID) => {
+             return dbAdoptableAnimal.getAdoptableAnimal(placeID,petID).then((pet) => {
+               pet.id = petID;
+               return pet;
+             });
+           });
+            Promise.all(promises).then((pets) => {
+                this.setState({pets:pets});
+    });
+    }
+    else{
+     this.setState({pets:petIDs});
+    }
+  }
+
+  getAdoptablePetsFromDb(){
+    const placeID = this.props.navigation.state.params.place.id;
+    dbAdoptableAnimal.getAdoptableAnimals(placeID).then((animals) => {
+       if (animals!= null){
+       let promises = animals.map((petID) => {
+                    return dbAdoptableAnimal.getAdoptableAnimal(placeID,petID).then((pet) => {
+                      pet.id = petID;
+                      return pet;
+                    });
+                  });
+                   Promise.all(promises).then((pets) => {
+                       this.setState({pets:pets});
+      });
+      }
+    });
   }
 
   openInMap = () => {
@@ -74,17 +134,7 @@ class VetScreen extends React.Component {
     }
   };
 
-  addAnimalToAdopt = (petID) => {
-    //console.log("Add animal to adopt");
-    this.state.animalsToAdopt.push(petID);
-    //console.log(this.state.animalsToAdopt);
-    if (this.state.mounted) {
-      this.setState({ animalsToAdopt: this.state.animalsToAdopt });
-    }
-  };
-
   deletePlaceHere = () => {
-    //OK
     const placeID = this.props.navigation.state.params.place.id;
     const photo = this.props.navigation.state.params.place.photo;
     storageManager.deleteFile(photo);
@@ -93,19 +143,9 @@ class VetScreen extends React.Component {
   };
 
   deletePet = (petID) => {
-    //console.log("Delete adoptable pet");
-    //console.log(this.state.animalsToAdopt);
     const pid = this.props.navigation.state.params.place.id;
     dbAdoptableAnimal.deleteAdoptableAnimal(pid, petID);
-    let petsUpdated = this.state.animalsToAdopt;
-    let index = petsUpdated.indexOf(petID);
-    if (index != -1) {
-      petsUpdated.splice(index, 1);
-    }
-    //console.log(petsUpdated);
-    if (this.state.mounted) {
-      this.setState({ animalsToAdopt: petsUpdated });
-    }
+    this.context.deleteAdoptablePet(pid,petID);
   };
 
   setPhoto = (photo) => {
@@ -241,17 +281,17 @@ class VetScreen extends React.Component {
           </ScrollView>
 
           {console.log("adoptable animals")}
-          {console.log(this.state.animalsToAdopt)}
-          {this.state.animalsToAdopt.length > 0 ? (
+          {console.log(this.state.pets)}
+          <Text style={styles.title}>Adoptable pets</Text>
+          {this.state.pets.length > 0 ? (
             <View style={styles.mainContent}>
               <ScrollView
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
               >
-                <Text style={styles.title}>Adoptable pets</Text>
                 <PetButton
                   navigation={this.props.navigation}
-                  pets={this.state.animalsToAdopt}
+                  pets={this.state.pets}
                   isAdoptable={true}
                   isEditable={isEditable}
                   pid={this.props.navigation.state.params.place.id}

@@ -33,12 +33,13 @@ class PetButton extends React.Component {
     const pets = this.props.pets;
     const isAdoptable = this.props.isAdoptable;
     var isEditable = true; // the logic is : if it's not adoptable it's for sure editable
+    var pid = null;
 
     if (isAdoptable) {
       isEditable = this.props.isEditable;
+      pid = this.props.pid;
     }
 
-    if (!isAdoptable) {
           return pets.map((animal) => (
                 <TouchableHighlight
                   style={styles.pet}
@@ -51,6 +52,7 @@ class PetButton extends React.Component {
                       deleteAnimal: this.props.deleteAnimal,
                       isAdoptable: isAdoptable,
                       isEditable: isEditable,
+                      pid: pid,
                     })
                   }
                 >
@@ -60,35 +62,6 @@ class PetButton extends React.Component {
                   ></Image>
                 </TouchableHighlight>
             ));
-        } else {
-          const pid = this.props.pid;
-          return pets.map((petID) => {
-            dbAdoptableAnimal
-              .getAdoptableAnimal(pid, petID.toString())
-              .then((animal) => {
-                  <TouchableHighlight
-                    style={styles.pet}
-                    value={petID}
-                    key={petID}
-                    onPress={() =>
-                      navigation.push("Pet", {
-                        pet: animal,
-                        petID: petID.toString(),
-                        pid: pid,
-                        isAdoptable: isAdoptable,
-                        isEditable: isEditable,
-                        deleteAnimal: this.props.deleteAnimal,
-                      })
-                    }
-                  >
-                    <Image
-                      source={{ uri: animal.photo }}
-                      style={styles.petImage}
-                    ></Image>
-                  </TouchableHighlight>
-              });
-          });
-     }
   }
 }
 

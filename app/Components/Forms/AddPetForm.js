@@ -126,7 +126,7 @@ class AddPetForm extends React.Component {
               this.state.profile
             )
             .then((doc) => {
-              this.props.addPet(doc.id);
+              this.context.addAdoptablePet(this.props.pid,doc.id);
               this.props.close();
             });
         } else {
