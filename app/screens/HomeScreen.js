@@ -173,9 +173,18 @@ class HomeScreen extends React.Component {
       if (this.state.mounted) {
         this.context.savePlaces(PIDs);
       }
-    });
+      PIDs.map((placeID) => {
+       dbPlace.getPlace(placeID).then((place) => {
+              if(place.isKennel()){
+               dbAdoptableAnimal.getAdoptableAnimals(placeID).then((animals) => {
+                       this.context.saveAdoptablePets(placeID,animals);
+               });
+              }
+       });
+     });
+   });
   }
-
+/*
   getMyAdoptablePets() {
     let places = this.context.places;
 
@@ -184,7 +193,7 @@ class HomeScreen extends React.Component {
         this.context.savePlaces(PIDs);
       }
     });
-  }
+  }*/
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.places.length != this.context.savedPlaces.length) {

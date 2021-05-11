@@ -36,11 +36,12 @@ export default class HomeBusiness extends React.Component {
   getMyPlaces(places) {
     let promises = places.map((placeID) => {
       return dbPlace.getPlace(placeID).then((place) => {
+        /*
         if(place.isKennel()){
          dbAdoptableAnimal.getAdoptableAnimals(placeID).then((animals) => {
                  this.context.saveAdoptablePets(placeID,animals);
          });
-        }
+        }*/
         place.id = placeID;
         return place;
       });
