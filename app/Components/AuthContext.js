@@ -17,6 +17,7 @@ class AuthContextProvider extends Component {
     adoptablePets: {}, // map place and adoptable pets
     lostPets: [],
     lostPetsSeen: [],
+    globalPlaces: [],
   };
 
   componentDidMount() {
@@ -169,6 +170,12 @@ class AuthContextProvider extends Component {
     }
   };
 
+  saveGlobalPlaces = (places) => {
+    if (this.state.mounted) {
+      this.setState({ globalPlaces: places });
+    }
+  };
+
   onLoginSuccess() {
     this.props.navigation.navigate("App");
   }
@@ -219,6 +226,7 @@ class AuthContextProvider extends Component {
           deleteAdoptablePet: this.deleteAdoptablePet,
           saveLostPets: this.saveLostPets,
           saveLostPetsSeen: this.saveLostPetsSeen,
+          saveGlobalPlaces: this.saveGlobalPlaces,
         }}
       >
         {this.props.children}

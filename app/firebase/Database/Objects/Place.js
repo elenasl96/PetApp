@@ -85,6 +85,6 @@ export default class Place {
 
   //utility
   isKennel() {
-    return this.type == "kennel";
+    return this.type === "Kennel";
   }
 }

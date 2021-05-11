@@ -33,18 +33,18 @@ export default class HomeBusiness extends React.Component {
   }
 
   getMyPlaces(places) {
-           let promises = places.map((placeID) => {
-                 return dbPlace.getPlace(placeID).then((place) => {
-                   place.id = placeID;
-                   return place;
-                 });
-               });
+    let promises = places.map((placeID) => {
+      return dbPlace.getPlace(placeID).then((place) => {
+        place.id = placeID;
+        return place;
+      });
+    });
 
-               Promise.all(promises).then((places) => {
-                 if (this.state.mounted) {
-                   this.setState({ places: places });
-                 }
-               });
+    Promise.all(promises).then((places) => {
+      if (this.state.mounted) {
+        this.setState({ places: places });
+      }
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -74,6 +74,13 @@ export default class HomeBusiness extends React.Component {
     dbPlace.deleteMyPlace(this.context.uid, pid); // delete MyPlace from db
     this.context.deletePlace(pid); // delete place from context
     this.setState({ onDelete: true });
+
+    //delete place from map
+    let index = this.context.globalPlaces.indexOf(pid);
+    if (index !== -1) {
+      this.context.globalPlaces.splice(index, 1);
+      this.context.saveGlobalPlaces(this.context.globalPlaces);
+    }
   };
 
   render() {

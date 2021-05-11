@@ -49,7 +49,6 @@ class PetLostButton extends React.Component {
 
   render() {
     if (this.state.lostPets.length > 0) {
-      console.log("LENGHT: " + this.state.lostPets.length);
       return this.state.lostPets.map((animal) => (
         <View key={animal.id}>
           <TouchableHighlight

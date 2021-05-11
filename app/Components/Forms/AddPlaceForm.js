@@ -108,6 +108,10 @@ export default class AddPlaceForm extends React.Component {
               .then((doc) => {
                 this.context.addPlace(doc.id);
                 dbPlace.addUserPlace(this.context.uid, doc.id);
+                //Update global places to update map
+                this.context.globalPlaces.push(doc.id);
+                this.context.saveGlobalPlaces(this.context.globalPlaces);
+
                 this.props.close();
               });
           });
