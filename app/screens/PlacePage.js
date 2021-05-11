@@ -45,79 +45,86 @@ class VetScreen extends React.Component {
     console.log("COMPONENT DID MOUNT PLACE");
 
     if (
-          this.context.user.type == "business" &&
-          this.context.places.includes(place.id)
-        ) {
-          isEditable = true;
-        }
+      this.context.user.type == "business" &&
+      this.context.places.includes(place.id)
+    ) {
+      isEditable = true;
+    }
 
     if (place.isKennel()) {
-       isKennel = true;
-       if(isEditable){
-         this.getAdoptablePets(this.context.adoptablePets[place.id]); //your kennel, ids are in context
-       }
-       else{
-         this.getAdoptablePetsFromDb(); //not your kennel , ids must be retrieved in db
-       }
+      isKennel = true;
+      if (isEditable) {
+        this.getAdoptablePets(this.context.adoptablePets[place.id]); //your kennel, ids are in context
+      } else {
+        this.getAdoptablePetsFromDb(); //not your kennel , ids must be retrieved in db
+      }
     }
 
     const photo = place.photo;
 
-    this.setState({ mounted : true , photo: photo , isKennel: isKennel , isEditable: isEditable });
-    this.setState({pets:[]});
+    this.setState({
+      mounted: true,
+      photo: photo,
+      isKennel: isKennel,
+      isEditable: isEditable,
+    });
+    this.setState({ pets: [] });
   }
 
   componentWillUnmount() {
     this.setState({ mounted: false });
   }
 
-  componentDidUpdate(prevProps,prevState){
-
+  componentDidUpdate(prevProps, prevState) {
     const placeID = this.props.navigation.state.params.place.id;
 
-    if (this.state.isKennel && this.state.isEditable){
-     if(this.state.pets.length != this.context.adoptablePets[placeID].length) {
-          console.log("COMPONENT DID UPDATE FOR ADOPTABLE PETS");
-          console.log("PETS: " + this.context.adoptablePets[placeID]);
-          this.getAdoptablePets(this.context.adoptablePets[placeID]);
-     }
+    if (this.state.isKennel && this.state.isEditable) {
+      if (
+        this.state.pets.length != this.context.adoptablePets[placeID].length
+      ) {
+        console.log("COMPONENT DID UPDATE FOR ADOPTABLE PETS");
+        console.log("PETS: " + this.context.adoptablePets[placeID]);
+        this.getAdoptablePets(this.context.adoptablePets[placeID]);
+      }
     }
-
   }
 
-  getAdoptablePets(petIDs){
+  getAdoptablePets(petIDs) {
     console.log("GET ADOPTABLE PETS");
     const placeID = this.props.navigation.state.params.place.id;
 
-    if(petIDs.length != 0){
-    let promises = petIDs.map((petID) => {
-             return dbAdoptableAnimal.getAdoptableAnimal(placeID,petID).then((pet) => {
-               pet.id = petID;
-               return pet;
-             });
-           });
-            Promise.all(promises).then((pets) => {
-                this.setState({pets:pets});
-    });
-    }
-    else{
-     this.setState({pets:petIDs});
+    if (petIDs.length != 0) {
+      let promises = petIDs.map((petID) => {
+        return dbAdoptableAnimal
+          .getAdoptableAnimal(placeID, petID)
+          .then((pet) => {
+            pet.id = petID;
+            return pet;
+          });
+      });
+      Promise.all(promises).then((pets) => {
+        this.setState({ pets: pets });
+      });
+    } else {
+      this.setState({ pets: petIDs });
     }
   }
 
-  getAdoptablePetsFromDb(){
+  getAdoptablePetsFromDb() {
     const placeID = this.props.navigation.state.params.place.id;
     dbAdoptableAnimal.getAdoptableAnimals(placeID).then((animals) => {
-       if (animals!= null){
-       let promises = animals.map((petID) => {
-                    return dbAdoptableAnimal.getAdoptableAnimal(placeID,petID).then((pet) => {
-                      pet.id = petID;
-                      return pet;
-                    });
-                  });
-                   Promise.all(promises).then((pets) => {
-                       this.setState({pets:pets});
-      });
+      if (animals != null) {
+        let promises = animals.map((petID) => {
+          return dbAdoptableAnimal
+            .getAdoptableAnimal(placeID, petID)
+            .then((pet) => {
+              pet.id = petID;
+              return pet;
+            });
+        });
+        Promise.all(promises).then((pets) => {
+          this.setState({ pets: pets });
+        });
       }
     });
   }
@@ -145,7 +152,7 @@ class VetScreen extends React.Component {
   deletePet = (petID) => {
     const pid = this.props.navigation.state.params.place.id;
     dbAdoptableAnimal.deleteAdoptableAnimal(pid, petID);
-    this.context.deleteAdoptablePet(pid,petID);
+    this.context.deleteAdoptablePet(pid, petID);
   };
 
   setPhoto = (photo) => {
@@ -282,7 +289,10 @@ class VetScreen extends React.Component {
 
           {console.log("adoptable animals")}
           {console.log(this.state.pets)}
-          <Text style={styles.title}>Adoptable pets</Text>
+          {this.state.pets.length > 0 ? (
+            <Text style={styles.title}>Adoptable pets</Text>
+          ) : null}
+
           {this.state.pets.length > 0 ? (
             <View style={styles.mainContent}>
               <ScrollView
