@@ -37,7 +37,7 @@ export default class LoadingOverlay extends React.Component {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <ActivityIndicator size="large" color="#FFF" />
+            <ActivityIndicator size="large" color="orange" />
           </View>
         </View>
       </Modal>
@@ -50,11 +50,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    //marginTop: 22,
+    marginTop: 55,
+    marginBottom: 55,
   },
   modalView: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.3)",
+    backgroundColor: "white",
     justifyContent: "center",
     alignContent: "center",
     paddingVertical: 10,
