@@ -1,11 +1,4 @@
-export default class Animal {
-  name: string;
-  age: int;
-  breed: string;
-  size: string;
-  color: string;
-  photo: string;
-  type: string;
+export default class UserAnimal {
 
   constructor(name, age, breed, size, color, photo,type) {
     this.name = name;

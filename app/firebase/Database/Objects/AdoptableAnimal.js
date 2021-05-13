@@ -1,6 +1,5 @@
 import UserAnimal from "./UserAnimal.js";
 export default class AdoptableAnimal extends UserAnimal {
-  profile: string;
 
   constructor(name, age, breed, size, color, photo, type, profile) {
     super(name, age, breed, size, color, photo, type);

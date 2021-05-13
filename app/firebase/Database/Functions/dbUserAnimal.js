@@ -6,38 +6,16 @@ const dbUserAnimal = {
     const users = firestore.collection("Users");
     const animals = users.doc(uid).collection("Animals");
     let animal = new UserAnimal(name, age, breed, size, color, photo, type);
-    //console.log(type);
-    //console.log(animal);
     return animals.add(animal.toFirestore());
   },
-  /* how to call get from outside
-  db.UserAnimals('axr4183').then(function(animals){
-             console.log(animals);
-          });
-*/
+
   addAnimalDisease: function (uid, aid, disease) {
     const users = firestore.collection("Users");
     const animals = users.doc(uid).collection("Animals");
     animals.doc(aid).collection("Diseases").add({ name: disease });
   },
-  /*
-  addAnimalStat: function (uid, aid) {
-    const users = firestore.collection("Users");
-    const stats = users
-      .doc(uid)
-      .collection("Animals")
-      .doc(aid)
-      .collection("Stats");
-    stats.add({ name: stat });
-  },
-
-  */
 
   addAnimalStatSample: function (uid, aid, stat, value) {
-    console.log("uid: " + uid);
-    console.log("aid: " + aid);
-    console.log("stat: " + stat);
-    console.log("value: " + value);
     const users = firestore.collection("Users");
     const animals = users.doc(uid).collection("Animals");
     animals
@@ -47,7 +25,6 @@ const dbUserAnimal = {
       .collection("Samples")
       .doc(Date.now().toString())
       .set({
-        //label: utils.timestamp(),
         value: value,
       });
   },
@@ -61,21 +38,7 @@ const dbUserAnimal = {
       .get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
-          // doc.data() is never undefined for query doc snapshots
-          //console.log(doc.id, " => ", doc.data());
           animals.push(doc.id);
-          /*
-                           animals.push(new UserAnimal(
-                                 data.name,
-                                 data.age,
-                                 data.breed,
-                                 data.size,
-                                 data.photo,
-                                 data.diseases,
-                                 data.stats
-                               ));
-                           */
-          //console.log(user);
           return animals;
         });
 
@@ -96,10 +59,7 @@ const dbUserAnimal = {
       .doc(aid)
       .get()
       .then(function (doc) {
-        // doc.data() is never undefined for query doc snapshots
-        //console.log(doc.id, " => ", doc.data());
         let data = doc.data();
-        //console.log(data);
         animal = new UserAnimal(
           data.name,
           data.age,
@@ -109,7 +69,6 @@ const dbUserAnimal = {
           data.photo,
           data.type
         );
-        //console.log(user);
         return animal;
       })
       .catch(function (error) {
@@ -127,10 +86,7 @@ const dbUserAnimal = {
       .get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
-          // doc.data() is never undefined for query doc snapshots
-          //console.log(doc.id, " => ", doc.data());
           stats.push(doc.id);
-          //console.log(user);
           return stats;
         });
         return stats;
@@ -229,10 +185,7 @@ const dbUserAnimal = {
       .get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
-          // doc.data() is never undefined for query doc snapshots
-          //console.log(doc.id, " => ", doc.data());
           samples.push(doc.id);
-          //console.log(user);
           return samples;
         });
         return samples;
@@ -256,10 +209,7 @@ const dbUserAnimal = {
       .doc(id)
       .get()
       .then(function (doc) {
-        // doc.data() is never undefined for query doc snapshots
-        //console.log(doc.id, " => ", doc.data());
         sample = doc.data();
-        //console.log(user);
         return sample;
       })
       .catch(function (error) {
@@ -279,10 +229,7 @@ const dbUserAnimal = {
       .get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
-          // doc.data() is never undefined for query doc snapshots
-          //console.log(doc.id, " => ", doc.data());
           diseases.push(doc.id);
-          //console.log(user);
           return diseases;
         });
         return diseases;
@@ -304,10 +251,7 @@ const dbUserAnimal = {
       .doc(id)
       .get()
       .then(function (doc) {
-        // doc.data() is never undefined for query doc snapshots
-        //console.log(doc.id, " => ", doc.data());
         disease = doc.data();
-        //console.log(user);
         return disease;
       })
       .catch(function (error) {
@@ -418,7 +362,7 @@ const dbUserAnimal = {
 
   deleteAnimal: function (uid, aid) {
     const users = firestore.collection("Users");
-    this.getAnimalDiseases(uid, aid).then(function (diseases) {
+    dbUserAnimal.getAnimalDiseases(uid, aid).then(function (diseases) {
       if (diseases.length != 0) {
         // diseases are optional so must be checked
         diseases.forEach((id) =>
@@ -458,7 +402,6 @@ const dbUserAnimal = {
 
   // get disease descriptions
   getDiseaseDescription(name) {
-    //console.log("Description of disease " + name);
     var ref = firestore.collection("DiseaseDescriptions");
     var descriptions = [];
     return ref
@@ -466,9 +409,7 @@ const dbUserAnimal = {
       .get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
-          // doc.data() is never undefined for query doc snapshots
           descriptions.push(doc.data().description);
-          //console.log(user);
           return descriptions;
         });
         return descriptions;

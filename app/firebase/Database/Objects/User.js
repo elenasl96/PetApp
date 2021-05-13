@@ -1,11 +1,4 @@
 export default class User {
-  name: string;
-  photo: string;
-  type: string;
-  address: string;
-  days: int;
-  lastlogin: string;
-  notificationtoken: String;
 
   constructor(name, photo, type, address, days, lastlogin, notificationtoken) {
     this.name = name;

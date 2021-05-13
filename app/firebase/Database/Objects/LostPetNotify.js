@@ -1,15 +1,4 @@
 export default class LostPetNotify {
-  name: string;
-  photo: string;
-  size: string;
-  color: string;
-  breed: string;
-  notes: string;
-  place: string;
-  timestamp: string;
-  uid: string;
-  email: string;
-  phone: string;
 
   constructor(
     name,

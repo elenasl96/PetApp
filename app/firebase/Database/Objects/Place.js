@@ -1,10 +1,4 @@
 export default class Place {
-  name: string;
-  type: string;
-  description: string;
-  photo: string;
-  address: string;
-  region: Object;
 
   constructor(
     name,

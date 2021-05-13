@@ -8,10 +8,9 @@ import dbPlace from "./dbPlace.js";
 
 const dbUser = {
   // user info
-  addUser: function (uid, name, photo, type, address) {
+  addUser: function (uid,name, photo, type, address) {
     const users = firestore.collection("Users");
     let user = new User(name, photo, type, address, 0, utils.timestamp(), "");
-    console.log(user);
     return users.doc(uid).set(user.toFirestore());
   },
 
@@ -39,57 +38,59 @@ const dbUser = {
         return user;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
+        console.log("Error getting documents");
       });
   },
 
   deleteUser: function (uid, type) {
     const users = firestore.collection("Users");
 
-    this.getUserNotifications(uid).then(function (notifications) {
+    dbNotification.getUserNotifications(uid).then(function (notifications) {
       if (notifications.length != 0) {
-        notifications.forEach((id) =>
-          dbNotification.deleteUserNotification(uid, id)
-        );
+        notifications.forEach((id) =>dbNotification.deleteUserNotification(uid, id));
       }
-
-      if (type == "business") {
-        users
-          .doc(uid)
-          .delete()
-          .then(function () {
-            console.log("Document successfully deleted!");
-          })
-          .catch(function (error) {
-            console.error("Error removing document: ", error);
-          });
-      } else {
-        dbFeed.getUserFeeds(uid).then(function (feeds) {
+      dbFeed.getUserFeeds(uid).then(function (feeds) {
           if (feeds.length != 0) {
             feeds.forEach((id) => dbFeed.deleteUserFeed(uid, id));
           }
-          dbUser.getSavedPlaces(uid).then(function (savedplaces) {
+          dbPlace.getSavedPlaces(uid).then(function (savedplaces) {
             if (savedplaces.length != 0) {
-              savedplaces.forEach((id) => dbUser.deleteSavedPlace(uid, id));
+              savedplaces.forEach((id) => dbPlace.deleteSavedPlace(uid, id));
             }
             dbUserAnimal.getUserAnimals(uid).then(function (animals) {
               if (animals.length != 0) {
                 animals.forEach((id) => dbUserAnimal.deleteAnimal(uid, id));
               }
+              if (type == "business") {
+                dbPlace.getMyPlaces(uid).then(function (places) {
+                  if(places.length != 0){
+                    places.forEach((id) => dbPlace.deleteMyPlace(uid,id));
+                  } 
               users
                 .doc(uid)
                 .delete()
                 .then(function () {
-                  console.log("Document successfully deleted!");
+                  //console.log("Document successfully deleted!");
                 })
                 .catch(function (error) {
                   console.error("Error removing document: ", error);
                 });
+              }); 
+              }else{
+                users
+                .doc(uid)
+                .delete()
+                .then(function () {
+                  //console.log("Document successfully deleted!");
+                })
+                .catch(function (error) {
+                  console.error("Error removing document: ", error);
+                });
+              }
             });
           });
         });
-      }
-    });
+      });
   },
 
   updateUserPhoto: function (uid, url) {

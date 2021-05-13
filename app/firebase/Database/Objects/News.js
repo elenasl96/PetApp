@@ -1,7 +1,4 @@
 export default class News {
-  title: string;
-  text: string;
-  timestamp: string;
 
   constructor(title, text, timestamp) {
     this.title = title;

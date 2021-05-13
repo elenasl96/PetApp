@@ -1,10 +1,5 @@
 export default class Feed {
 
-     title : string;
-     text : string;
-     type: string;
-
-
      constructor(title,text,type){
           this.title = title;
           this.text = text;

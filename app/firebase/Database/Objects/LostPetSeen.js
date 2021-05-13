@@ -1,14 +1,4 @@
 export default class LostPetSeen {
-  photo: string;
-  size: string;
-  color: string;
-  breed: string;
-  notes: string;
-  place: string;
-  timestamp: string;
-  uid: string;
-  email: string;
-  phone: string;
 
   constructor(
     photo,

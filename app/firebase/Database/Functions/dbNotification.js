@@ -2,7 +2,7 @@ import {firestore} from "../../firebaseconfig.js";
 import Notification from "../Objects/Notification.js";
 
 const dbNotification = {
-  ddUserNotification: function (uid, title, text) {
+  addUserNotification: function (uid, title, text) {
       const users = firestore.collection("Users");
       let notification = new Notification(title, text, utils.timestampAccurate());
       users.doc(uid).collection("Notifications").add(notification.toFirestore());
