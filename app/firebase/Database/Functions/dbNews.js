@@ -19,16 +19,9 @@ const dbNews = {
       .get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
-          // doc.data() is never undefined for query doc snapshots
-          //console.log(doc.id, " => ", doc.data());
-          //let data = doc.data();
-          //let feed = new Feed(data.title,data.text);
           news.push(doc.id);
-          //console.log(news);
-          //console.log(feed);
           return news;
         });
-        console.log(news);
         return news;
       })
       .catch(function (error) {
@@ -45,7 +38,7 @@ const dbNews = {
       .doc(newsid)
       .delete()
       .then(function () {
-        console.log("Document successfully deleted!");
+        //console.log("Document successfully deleted!");
       })
       .catch(function (error) {
         console.error("Error removing document: ", error);

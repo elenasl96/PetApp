@@ -141,7 +141,7 @@ const dbPlace = {
           .doc(pid)
           .delete()
           .then(function () {
-            console.log("Document successfully deleted!");
+            //console.log("Document successfully deleted!");
           })
           .catch(function (error) {
             console.error("Error removing document: ", error);
