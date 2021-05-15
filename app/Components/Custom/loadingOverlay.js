@@ -2,14 +2,9 @@ import React from "react";
 import {
   StyleSheet,
   View,
-  Text,
-  TextInput,
-  ScrollView,
-  TouchableOpacity,
   Modal,
   ActivityIndicator,
 } from "react-native";
-import dbNews from "../../firebase/Database/Functions/dbNews";
 import { AuthContext } from "../AuthContext";
 
 import mainStyle from "../../styles/mainStyle";

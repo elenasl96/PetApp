@@ -10,7 +10,6 @@ const dbNews = {
   },
 
   getAllNews: function (pid) {
-    //console.log("getAllNews");
     const places = firestore.collection("Places");
     var news = [];
     return places
@@ -30,7 +29,6 @@ const dbNews = {
   },
 
   deleteNews: function (pid, newsid) {
-    //console.log("delete news");
     const places = firestore.collection("Places");
     return places
       .doc(pid)
@@ -54,8 +52,6 @@ const dbNews = {
       .doc(newsid)
       .get()
       .then(function (doc) {
-        // doc.data() is never undefined for query doc snapshots
-        //console.log(doc.id, " => ", doc.data());
         let data = doc.data();
         news = new News(data.title, data.text, data.timestamp);
         return news;

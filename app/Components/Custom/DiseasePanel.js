@@ -2,15 +2,9 @@ import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
-  TextInput,
   View,
-  SafeAreaView,
-  Button,
-  Image,
   TouchableHighlight,
   ScrollView,
-  ImageBackground,
-  TouchableOpacity,
 } from "react-native";
 
 import { Picker } from "@react-native-picker/picker";

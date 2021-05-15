@@ -13,7 +13,6 @@ const dbAdoptableAnimal = {
     type,
     profile
   ) {
-    //console.log("addAdoptableAnimal");
     const places = firestore.collection("Places");
     let animal = new AdoptableAnimal(
       name,
@@ -25,7 +24,6 @@ const dbAdoptableAnimal = {
       type,
       profile
     );
-    //console.log(animal);
     return places.doc(pid).collection("Animals").add(animal.toFirestore());
   },
 
@@ -40,8 +38,6 @@ const dbAdoptableAnimal = {
       .doc(aid)
       .get()
       .then(function (doc) {
-        // doc.data() is never undefined for query doc snapshots
-        //console.log(doc.id, " => ", doc.data());
         let data = doc.data();
         animal = new AdoptableAnimal(
           data.name,
@@ -53,7 +49,6 @@ const dbAdoptableAnimal = {
           data.type,
           data.profile
         );
-        //console.log(user);
         return animal;
       })
       .catch(function (error) {
@@ -93,11 +88,8 @@ const dbAdoptableAnimal = {
       .get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
-          // doc.data() is never undefined for query doc snapshots
-          //console.log(doc.id, " => ", doc.data());
           let data = doc.data();
           animals.push(doc.id);
-          //console.log(user);
           return animals;
         });
 
@@ -126,10 +118,7 @@ const dbAdoptableAnimal = {
       .get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
-          // doc.data() is never undefined for query doc snapshots
-          //console.log(doc.id, " ==> ", doc.data());
           diseases.push(doc.id);
-          //console.log(user);
           return diseases;
         });
         return diseases;
@@ -252,7 +241,6 @@ const dbAdoptableAnimal = {
 
   // get disease descriptions
   getDiseaseDescription(name) {
-    //console.log("Description of disease " + name);
     var ref = firestore.collection("DiseaseDescriptions");
     var descriptions = [];
     return ref
@@ -260,9 +248,7 @@ const dbAdoptableAnimal = {
       .get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
-          // doc.data() is never undefined for query doc snapshots
           descriptions.push(doc.data().description);
-          //console.log(user);
           return descriptions;
         });
         return descriptions;

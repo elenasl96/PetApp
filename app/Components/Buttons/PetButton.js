@@ -1,15 +1,11 @@
 import React, { useContext, useEffect } from "react";
 import {
   StyleSheet,
-  Text,
   Image,
   TouchableHighlight,
-  View,
 } from "react-native";
-import firebase from "firebase";
-import dbUserAnimal from "../../firebase/Database/Functions/dbUserAnimal";
+
 import { AuthContext } from "../AuthContext";
-import dbAdoptableAnimal from "../../firebase/Database/Functions/dbAdoptableAnimal";
 
 class PetButton extends React.Component {
 

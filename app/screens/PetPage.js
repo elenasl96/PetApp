@@ -15,8 +15,6 @@ import {
 } from "react-native";
 
 import mainStyle from "../styles/mainStyle";
-import dbUserAnimal from "../firebase/Database/Functions/dbUserAnimal";
-import dbAdoptableAnimal from "../firebase/Database/Functions/dbAdoptableAnimal";
 import storageManager from "../firebase/Storage/storage";
 import { AuthContext } from "../Components/AuthContext";
 import { withNavigation } from "react-navigation";

@@ -12,7 +12,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import mainStyle from "../styles/mainStyle";
-import dbLostPet from "../firebase/Database/Functions/dbLostPet";
 import { AuthContext } from "../Components/AuthContext";
 import NotifySightButton from "../Components/Buttons/NotifySightButton";
 

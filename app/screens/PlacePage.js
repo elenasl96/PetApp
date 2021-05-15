@@ -12,7 +12,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import dbAdoptableAnimal from "../firebase/Database/Functions/dbAdoptableAnimal";
-import dbPlace from "../firebase/Database/Functions/dbPlace";
 import News from "../Components/Custom/News";
 import { AuthContext } from "../Components/AuthContext";
 import { LinearGradient } from "expo-linear-gradient";

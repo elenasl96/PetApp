@@ -32,16 +32,6 @@ const dbPlace = {
     var id;
 
     return places.add(place.toFirestore());
-    /*
-    .then(function(docRef) {
-        console.log("Document written with ID: ", docRef.id);
-        dbPlace.addUserPlace(docRef.id);
-        id = docRef.id;
-        return id;
-    })
-    .catch(function(error) {
-        console.error("Error adding document: ", error);
-    });*/
   },
 
   getPlace: function (pid) {
@@ -51,11 +41,7 @@ const dbPlace = {
       .doc(pid)
       .get()
       .then(function (doc) {
-        // doc.data() is never undefined for query doc snapshots
-        //console.log(doc.id, " => ", doc.data());
         let data = doc.data();
-        //console.log("region");
-        //console.log(data.region);
         place = new Place(
           data.name,
           data.type,
@@ -70,23 +56,17 @@ const dbPlace = {
         return place;
       })
       .catch(function (error) {
-        //console.log("Error getting documents: ", error);
-        //console.log("Place " + pid + " does not exist anymore, let's remove it from saved place!");
       });
   },
 
   getPlaces: function () {
-    // needs a range filter
     const map = firestore.collection("Places");
     var places = [];
     return map
       .get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
-          // doc.data() is never undefined for query doc snapshots
-          //console.log(doc.id, " => ", doc.data());
           places.push(doc.id);
-          //console.log(user);
           return places;
         });
 
@@ -121,10 +101,6 @@ const dbPlace = {
 
   deletePlace: function (pid) {
     const places = firestore.collection("Places");
-
-    console.log("pid to be delete: " + pid);
-
-
     dbNews.getAllNews(pid).then(function (news) {
       if (news.length != 0) {
         news.forEach((newsid) => dbNews.deleteNews(pid, newsid));
@@ -136,7 +112,6 @@ const dbPlace = {
             dbAdoptableAnimal.deleteAdoptableAnimal(pid, aid);
           });
         }
-        //console.log("deletePlace");
         places
           .doc(pid)
           .delete()
@@ -167,10 +142,7 @@ const dbPlace = {
       .get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
-          // doc.data() is never undefined for query doc snapshots
-          //console.log(doc.id, " => ", doc.data());
           savedplaces.push(doc.data().pid);
-          //console.log(user);
           return savedplaces;
         });
 
@@ -217,10 +189,7 @@ const dbPlace = {
         .get()
         .then(function (querySnapshot) {
           querySnapshot.forEach(function (doc) {
-            // doc.data() is never undefined for query doc snapshots
-            //console.log(doc.id, " => ", doc.data());
             myplaces.push(doc.data().pid);
-            //console.log(user);
             return myplaces;
           });
           return myplaces;
@@ -239,10 +208,7 @@ const dbPlace = {
         .doc(id)
         .get()
         .then(function (doc) {
-          // doc.data() is never undefined for query doc snapshots
-          //console.log(doc.id, " => ", doc.data());
           myplace = doc.data().pid;
-          //console.log(user);
           return myplace;
         })
         .catch(function (error) {

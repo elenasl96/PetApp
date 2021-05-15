@@ -1,5 +1,6 @@
 import {firestore} from "../../firebaseconfig.js";
 import Notification from "../Objects/Notification.js";
+import utils from "../../../shared/utilities";
 
 const dbNotification = {
   addUserNotification: function (uid, title, text) {
@@ -17,10 +18,7 @@ const dbNotification = {
         .get()
         .then(function (querySnapshot) {
           querySnapshot.forEach(function (doc) {
-            // doc.data() is never undefined for query doc snapshots
-            //console.log(doc.id, " => ", doc.data());
             notifications.push(doc.id);
-            //console.log(feed);
             return notifications;
           });
           return notifications;

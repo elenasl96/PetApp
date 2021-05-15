@@ -2,16 +2,10 @@ import React, { useContext, useEffect } from "react";
 import {
   StyleSheet,
   Text,
-  Image,
-  TouchableHighlight,
-  View,
 } from "react-native";
-import firebase from "firebase";
 import dbFeed from "../../firebase/Database/Functions/dbFeed";
-import { AuthContext } from "../AuthContext";
 import mainStyle from "../../styles/mainStyle.js";
 import { LinearGradient } from "expo-linear-gradient";
-//import Animal from "../firebase/Animal.js";
 
 class FeedBox extends React.Component {
   state = {

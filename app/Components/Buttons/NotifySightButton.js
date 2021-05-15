@@ -1,11 +1,7 @@
-import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
 import React, { useState, useEffect, useRef } from "react";
 import {
   Text,
-  View,
-  Button,
-  Platform,
   TouchableOpacity,
   StyleSheet,
 } from "react-native";

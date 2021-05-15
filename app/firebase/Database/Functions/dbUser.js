@@ -21,8 +21,6 @@ const dbUser = {
       .doc(uid)
       .get()
       .then(function (doc) {
-        // doc.data() is never undefined for query doc snapshots
-        //console.log(doc.id, " => ", doc.data());
         let data = doc.data();
 
         user = new User(
@@ -34,7 +32,6 @@ const dbUser = {
           data.lastlogin,
           data.notificationtoken
         );
-        //console.log(user);
         return user;
       })
       .catch(function (error) {

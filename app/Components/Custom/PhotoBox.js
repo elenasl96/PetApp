@@ -1,9 +1,7 @@
 import React from "react";
 import {
-  Button,
   Image,
   View,
-  Platform,
   StyleSheet,
   TouchableHighlight,
   Text,
@@ -12,8 +10,6 @@ import {
   Modal,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import Constants from "expo-constants";
-import * as Permissions from "expo-permissions";
 import * as MediaLibrary from "expo-media-library";
 import { AuthContext } from "../AuthContext";
 import storageManager from "../../firebase/Storage/storage";

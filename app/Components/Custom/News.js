@@ -2,8 +2,6 @@ import React, { useContext } from "react";
 import {
   StyleSheet,
   Text,
-  Image,
-  TouchableHighlight,
   View,
 } from "react-native";
 import dbNews from "../../firebase/Database/Functions/dbNews";
