@@ -9,15 +9,6 @@ import dbPlace from "../firebase/Database/Functions/dbPlace";
 import User from "../firebase/Database/Objects/User";
 
 beforeAll(() => {
-    
-    //run this the first time to refresh db 
-    // seems not to delete adoptable animals and diseases, value of samples in useranimal and saved places of user 
-    /*
-    dbLostPet.deleteLostPetNotificationByUid('user1'); //OK
-    dbLostPet.deleteLostPetSeenByUid('user2'); //OK  */
-    
-    //dbUser.deleteUser('G2lmt9yiq6NgUkRnk73CJwRdABE3');
-    //dbUserAnimal.deleteAnimal('user1','mcRitDAc1luOiVvbAgc4');
 
     dbPlace.addPlace('place1',
     'Kennel',
@@ -46,6 +37,8 @@ beforeAll(() => {
                                                 'Black',
                                                 'https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=3596224033779591&height=100&width=100&ext=1618930868&hash=AeS7Ycc-xZFda11qK44',
                                                 'Dog').then((doc) => {
+                                                    dbUserAnimal.addAnimalStat('user1',doc.id,'weight');
+                                                    dbUserAnimal.addAnimalStat('user1',doc.id,'height');
                                                     dbUserAnimal.addAnimalStatSample('user1',doc.id,'weight',30);
                                                     dbUserAnimal.addAnimalStatSample('user1',doc.id,'height',30);
                                                     dbUserAnimal.addAnimalDisease('user1',doc.id,'Disease1');
