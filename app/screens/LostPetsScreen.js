@@ -321,6 +321,25 @@ export default class LostPetsScreen extends React.Component {
                 ) : null}
               </View>
 
+              {this.state.showLostPets ? (
+                <Text style={styles.title}>Lost pets</Text>
+              ) : null}
+              {this.state.showLostPets ? (
+                <Text style={styles.text}>
+                  Help other owners to find their beloved pets or report your
+                  loss clicking on the button below.
+                </Text>
+              ) : null}
+
+              {this.state.showLostPetsSeen ? (
+                <Text style={styles.title}>Lost pets seen</Text>
+              ) : null}
+              {this.state.showLostPetsSeen ? (
+                <Text style={styles.text}>
+                  All sightings will be reported in this section.
+                </Text>
+              ) : null}
+
               <View
                 style={{
                   flex: 1,
@@ -432,6 +451,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontWeight: "bold",
     fontSize: 20,
+    textAlign: "center",
+  },
+  text: {
+    marginLeft: 15,
+    marginVertical: 15,
+    fontSize: 15,
+    textAlign: "center",
   },
   myPlaces: {
     flex: 1,
