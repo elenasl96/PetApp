@@ -134,17 +134,6 @@ export default class HomeBusiness extends React.Component {
             </View>
           </ScrollView>
         </View>
-
-        <View style={styles.bottomMenu}>
-          <TouchableHighlight onPress={null}>
-            <View style={styles.mainButtonContainer}>
-              <Image
-                source={require("../../../assets/images/paw.png")}
-                style={styles.mainButton}
-              ></Image>
-            </View>
-          </TouchableHighlight>
-        </View>
       </SafeAreaView>
     );
   }

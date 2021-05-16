@@ -20,14 +20,13 @@ class LostPetNotifyScreen extends React.Component {
 
   state = { mount: false };
 
-   componentDidMount(){
-      this.setState({mounted:true});
-    }
+  componentDidMount() {
+    this.setState({ mounted: true });
+  }
 
-    componentWillUnmount(){
-      this.setState({mounted:false});
-    }
-
+  componentWillUnmount() {
+    this.setState({ mounted: false });
+  }
 
   replyToLoss = () => {
     this.props.navigation.navigate("ReportLoss", {
@@ -124,17 +123,6 @@ class LostPetNotifyScreen extends React.Component {
               </Text>
             </View>
           </ScrollView>
-        </View>
-
-        <View style={styles.bottomMenu}>
-          <TouchableHighlight onPress={null}>
-            <View style={styles.mainButtonContainer}>
-              <Image
-                source={require("../../assets/images/paw.png")}
-                style={styles.mainButton}
-              ></Image>
-            </View>
-          </TouchableHighlight>
         </View>
       </SafeAreaView>
     );
