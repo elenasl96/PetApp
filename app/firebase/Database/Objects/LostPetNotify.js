@@ -42,6 +42,10 @@ export default class LostPetNotify {
     return this.breed;
   }
 
+  getColor() {
+    return this.color;
+  }
+
   getNotes() {
     return this.notes;
   }

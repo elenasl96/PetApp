@@ -26,7 +26,10 @@ export default class LostPetsScreen extends React.Component {
     showLostPetsSeen: false,
     showReportLossForm: false,
     showReportSightForm: false,
+    lostPetsMatched: [],
+    showPetsMatched: false,
     mounted: false,
+    report: null,
   };
   static contextType = AuthContext;
 
@@ -74,10 +77,88 @@ export default class LostPetsScreen extends React.Component {
     }
   };
 
+  sendForm = (lostPet) => {
+    const pet = this.props.pet;
+    this.setState({ report: lostPet });
+    console.log("pet");
+    console.log(this.context.uid);
+
+    /*dbLostPet
+        .addLostPetNotify(
+          this.state.name,
+          this.state.photo,
+          this.state.size,
+          this.state.color,
+          this.state.breed,
+          this.state.notes,
+          this.state.place,
+          this.context.uid,
+          this.state.email,
+          this.state.telephone
+        )
+        .then((doc) => {
+          console.log("LOST PET ID TO ADD");
+          console.log(doc.id);
+          this.context.lostPets.push(doc.id);
+          this.context.saveLostPets(this.context.lostPets);
+          console.log("LOST PETS TO UPDATE:");
+          console.log(this.context.lostPets);
+          this.props.close();
+        }); */
+    dbLostPet.getLostPetsMatched(lostPet).then((lostPetsMatched) => {
+      if (lostPetsMatched.length > 0) {
+        this.setState({
+          showLostPets: false,
+          showLostPetsSeen: false,
+          showReportLossForm: false,
+          lostPetsMatched: lostPetsMatched,
+          showPetsMatched: true,
+        });
+      } else {
+      }
+    });
+  };
+
   reportSight = () => {
     if (this.state.mounted) {
       this.setState({ showReportSightForm: true });
     }
+  };
+
+  cancelReport = () => {
+    if (this.state.mounted) {
+      this.setState({
+        showPetsMatched: false,
+        showLostPets: true,
+        lostPetsMatched: null,
+      });
+    }
+  };
+
+  confirmReport = () => {
+    console.log(this.state.report);
+    dbLostPet
+      .addLostPetNotify(
+        this.state.report.getName(),
+        this.state.report.getPhoto(),
+        this.state.report.getSize(),
+        this.state.report.getColor(),
+        this.state.report.getBreed(),
+        this.state.report.getNotes(),
+        this.state.report.getPlace(),
+        this.context.uid,
+        this.state.report.getEmail(),
+        this.state.report.getPhone()
+      )
+      .then((doc) => {
+        console.log("LOST PET ID TO ADD");
+        console.log(doc.id);
+        this.context.lostPets.push(doc.id);
+        this.context.saveLostPets(this.context.lostPets);
+        console.log("LOST PETS TO UPDATE:");
+        console.log(this.context.lostPets);
+        this.setState({ showPetsMatched: false, showLostPets: true });
+      });
   };
 
   render() {
@@ -89,6 +170,8 @@ export default class LostPetsScreen extends React.Component {
           close={() => {
             this.setState({ showReportLossForm: false });
           }}
+          navigation={this.props.navigation}
+          sendForm={this.sendForm}
         ></ReportLossForm>
         <ReportLossForm
           pet={null}
@@ -97,6 +180,7 @@ export default class LostPetsScreen extends React.Component {
           close={() => {
             this.setState({ showReportSightForm: false });
           }}
+          navigation={this.props.navigation}
         ></ReportLossForm>
         <View style={styles.mainContent}>
           <View style={styles.bottomOverlay}>
@@ -125,6 +209,35 @@ export default class LostPetsScreen extends React.Component {
               >
                 <Text style={{ textAlign: "center" }}>
                   <Feather name="search" size={24} color="black" /> Report Loss
+                </Text>
+              </TouchableHighlight>
+            ) : null}
+
+            {this.state.showPetsMatched ? (
+              <TouchableHighlight
+                style={styles.mapButton}
+                onPress={() => {
+                  this.confirmReport();
+                }}
+                underlayColor={"rgb(200,200,200)"}
+              >
+                <Text style={{ textAlign: "center" }}>
+                  <Feather name="alert-circle" size={24} color="black" /> Send
+                  report
+                </Text>
+              </TouchableHighlight>
+            ) : null}
+
+            {this.state.showPetsMatched ? (
+              <TouchableHighlight
+                style={styles.mapButton}
+                onPress={() => {
+                  this.cancelReport();
+                }}
+                underlayColor={"rgb(200,200,200)"}
+              >
+                <Text style={{ textAlign: "center" }}>
+                  <Feather name="alert-circle" size={24} color="black" /> Cancel
                 </Text>
               </TouchableHighlight>
             ) : null}
@@ -185,6 +298,16 @@ export default class LostPetsScreen extends React.Component {
                     navigation={this.props.navigation}
                     pets={this.state.lostPetsSeen}
                   ></PetLostSeenButton>
+                ) : null}
+
+                {this.state.showPetsMatched ? (
+                  <View>
+                    <Text style={styles.title}>Matched Pets</Text>
+                    <PetLostButton
+                      navigation={this.props.navigation}
+                      pets={this.state.lostPetsMatched}
+                    ></PetLostButton>
+                  </View>
                 ) : null}
               </View>
             </View>

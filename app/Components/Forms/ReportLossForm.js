@@ -17,6 +17,9 @@ import { ScrollView } from "react-native-gesture-handler";
 import PhotoBox from "../Custom/PhotoBox";
 import { Picker } from "@react-native-picker/picker";
 import constants from "../../shared/constants";
+import LostPetNotify from "../../firebase/Database/Objects/LostPetNotify";
+import MatchPetsModal from "../Custom/matchPetsModal";
+import PetLostButton from "../Buttons/PetLostButton";
 
 class ReportLossForm extends Component {
   static contextType = AuthContext;
@@ -29,7 +32,7 @@ class ReportLossForm extends Component {
     notes: null,
     place: null,
     email: null,
-    telephone: null,
+    phone: null,
     mounted: false,
     errors: {},
   };
@@ -61,7 +64,7 @@ class ReportLossForm extends Component {
       errors["breed"] = "Only letters in breed";
     }
 
-    if (isNaN(this.state.telephone)) {
+    if (isNaN(this.state.phone)) {
       formIsValid = false;
       errors["number"] = "Telephone must be a number";
     }
@@ -74,12 +77,31 @@ class ReportLossForm extends Component {
     this.setState({ mounted: false });
   }
 
+  closeModal = () => {
+    this.setState({
+      showPetsMatched: false,
+    });
+  };
+
   reportLoss = () => {
     const pet = this.props.pet;
     console.log("pet");
     console.log(this.context.uid);
     if (this.handleValidation("loss")) {
-      dbLostPet
+      let lostPet = new LostPetNotify(
+        this.state.name,
+        this.state.photo,
+        this.state.size,
+        this.state.color,
+        this.state.breed,
+        this.state.notes,
+        this.state.place,
+        "",
+        "",
+        this.state.email,
+        this.state.phone
+      );
+      /*dbLostPet
         .addLostPetNotify(
           this.state.name,
           this.state.photo,
@@ -100,7 +122,8 @@ class ReportLossForm extends Component {
           console.log("LOST PETS TO UPDATE:");
           console.log(this.context.lostPets);
           this.props.close();
-        });
+        }); */
+      this.props.sendForm(lostPet);
     }
   };
 
@@ -116,7 +139,7 @@ class ReportLossForm extends Component {
           this.state.place,
           this.context.uid,
           this.state.email,
-          this.state.telephone
+          this.state.phone
         )
         .then((doc) => {
           console.log("LOST PET SEEN ID TO ADD");
@@ -267,8 +290,8 @@ class ReportLossForm extends Component {
                   placeholderTextColor="#616161"
                   returnKeyType="next"
                   textContentType="telephoneNumber"
-                  value={this.state.telephone}
-                  onChangeText={(telephone) => this.setState({ telephone })}
+                  value={this.state.phone}
+                  onChangeText={(phone) => this.setState({ phone })}
                 />
               </View>
               {this.state.errors["number"] != null ? (
@@ -308,6 +331,17 @@ class ReportLossForm extends Component {
                   </View>
                 </TouchableOpacity>
               )}
+
+              {this.state.showPetsMatched ? (
+                <View>
+                  <Text style={styles.title}>Matched Pets</Text>
+                  <PetLostButton
+                    navigation={this.props.navigation}
+                    pets={this.state.lostPetsMatched}
+                    closeModal={this.closeModal.bind(this)}
+                  ></PetLostButton>
+                </View>
+              ) : null}
             </ScrollView>
           </View>
         </View>

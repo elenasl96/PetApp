@@ -47,8 +47,17 @@ class PetLostButton extends React.Component {
     this.setState({ mounted: false });
   }
 
+  showLostPet = (animal) => {
+    if (this.props.closeModal) {
+      this.props.closeModal();
+    }
+    this.props.navigation.push("LostPet", {
+      pet: animal,
+      petID: animal.id,
+    });
+  };
+
   render() {
-    const navigation = this.props.navigation;
     if (this.state.lostPets.length > 0) {
       return this.state.lostPets.map((animal) => (
         <View key={animal.id}>
@@ -71,12 +80,7 @@ class PetLostButton extends React.Component {
               shadowRadius: 1.0,
             }}
             value={animal.id}
-            onPress={() =>
-              navigation.push("LostPet", {
-                pet: animal,
-                petID: animal.id,
-              })
-            }
+            onPress={() => this.showLostPet(animal)}
           >
             <View>
               <View style={styles.imageContainer}>
