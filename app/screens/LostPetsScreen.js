@@ -77,11 +77,42 @@ export default class LostPetsScreen extends React.Component {
     }
   };
 
-  sendForm = (lostPet) => {
+  sendForm = (lostPet, seen) => {
     const pet = this.props.pet;
     this.setState({ report: lostPet });
     console.log("pet");
     console.log(this.context.uid);
+    if (seen) {
+      dbLostPet.getLostPetsMatched(lostPet).then((lostPetsMatched) => {
+        if (lostPetsMatched.length > 0) {
+          this.setState({
+            showLostPets: false,
+            showLostPetsSeen: false,
+            showReportLossForm: false,
+            lostPetsMatched: lostPetsMatched,
+            showPetsMatched: true,
+          });
+        } else {
+          this.confirmReport(lostPet);
+          this.setState({ showReportLossForm: false });
+        }
+      });
+    } else {
+      dbLostPet.getLostPetsMatched(lostPet).then((lostPetsMatched) => {
+        if (lostPetsMatched.length > 0) {
+          this.setState({
+            showLostPets: false,
+            showLostPetsSeen: false,
+            showReportLossForm: false,
+            lostPetsMatched: lostPetsMatched,
+            showPetsMatched: true,
+          });
+        } else {
+          this.confirmReport(lostPet);
+          this.setState({ showReportLossForm: false });
+        }
+      });
+    }
 
     /*dbLostPet
         .addLostPetNotify(
@@ -105,18 +136,6 @@ export default class LostPetsScreen extends React.Component {
           console.log(this.context.lostPets);
           this.props.close();
         }); */
-    dbLostPet.getLostPetsMatched(lostPet).then((lostPetsMatched) => {
-      if (lostPetsMatched.length > 0) {
-        this.setState({
-          showLostPets: false,
-          showLostPetsSeen: false,
-          showReportLossForm: false,
-          lostPetsMatched: lostPetsMatched,
-          showPetsMatched: true,
-        });
-      } else {
-      }
-    });
   };
 
   reportSight = () => {
@@ -158,6 +177,31 @@ export default class LostPetsScreen extends React.Component {
         console.log("LOST PETS TO UPDATE:");
         console.log(this.context.lostPets);
         this.setState({ showPetsMatched: false, showLostPets: true });
+      });
+  };
+
+  confirmReportSeen = () => {
+    console.log(this.state.report);
+    dbLostPet
+      .addLostPetSeen(
+        this.state.photo,
+        this.state.size,
+        this.state.color,
+        this.state.breed,
+        this.state.notes,
+        this.state.place,
+        this.context.uid,
+        this.state.email,
+        this.state.phone
+      )
+      .then((doc) => {
+        console.log("LOST PET SEEN ID TO ADD");
+        console.log(doc.id);
+        this.context.lostPetsSeen.push(doc.id);
+        this.context.saveLostPetsSeen(this.context.lostPetsSeen);
+        console.log("LOST PETS SEEN TO UPDATE:");
+        console.log(this.context.lostPetsSeen);
+        this.setState({ showPetsMatched: false, showLostPetsSeen: true });
       });
   };
 

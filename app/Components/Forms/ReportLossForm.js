@@ -20,6 +20,7 @@ import constants from "../../shared/constants";
 import LostPetNotify from "../../firebase/Database/Objects/LostPetNotify";
 import MatchPetsModal from "../Custom/matchPetsModal";
 import PetLostButton from "../Buttons/PetLostButton";
+import LostPetSeen from "../../firebase/Database/Objects/LostPetSeen";
 
 class ReportLossForm extends Component {
   static contextType = AuthContext;
@@ -35,6 +36,7 @@ class ReportLossForm extends Component {
     phone: null,
     mounted: false,
     errors: {},
+    typeSelected: "Dog",
   };
 
   componentDidMount() {
@@ -58,10 +60,6 @@ class ReportLossForm extends Component {
     if (reportType === "loss" && !this.state.name.match(/^[a-zA-Z]+$/)) {
       formIsValid = false;
       errors["name"] = "Only letters in name";
-    }
-    if (!this.state.breed.match(/^[a-zA-Z]+$/)) {
-      formIsValid = false;
-      errors["breed"] = "Only letters in breed";
     }
 
     if (isNaN(this.state.phone)) {
@@ -129,8 +127,21 @@ class ReportLossForm extends Component {
 
   reportSight = () => {
     if (this.handleValidation()) {
-      dbLostPet
-        .addLostPetSeen(
+      let lostPet = new LostPetSeen(
+        this.state.photo,
+        this.state.size,
+        this.state.color,
+        this.state.breed,
+        this.state.notes,
+        this.state.place,
+        "",
+        "",
+        this.state.email,
+        this.state.phone
+      );
+      /*dbLostPet
+        .addLostPetNotify(
+          this.state.name,
           this.state.photo,
           this.state.size,
           this.state.color,
@@ -139,17 +150,18 @@ class ReportLossForm extends Component {
           this.state.place,
           this.context.uid,
           this.state.email,
-          this.state.phone
+          this.state.telephone
         )
         .then((doc) => {
-          console.log("LOST PET SEEN ID TO ADD");
+          console.log("LOST PET ID TO ADD");
           console.log(doc.id);
-          this.context.lostPetsSeen.push(doc.id);
-          this.context.saveLostPetsSeen(this.context.lostPetsSeen);
-          console.log("LOST PETS SEEN TO UPDATE:");
-          console.log(this.context.lostPetsSeen);
+          this.context.lostPets.push(doc.id);
+          this.context.saveLostPets(this.context.lostPets);
+          console.log("LOST PETS TO UPDATE:");
+          console.log(this.context.lostPets);
           this.props.close();
-        });
+        }); */
+      this.props.sendForm(lostPet, "seen");
     }
   };
 
@@ -237,14 +249,28 @@ class ReportLossForm extends Component {
               ) : null}
               {this.props.pet == null ? (
                 <View style={mainStyle.form}>
-                  <TextInput
-                    style={mainStyle.inputText}
-                    placeholder="Breed"
-                    placeholderTextColor="#616161"
-                    returnKeyType="next"
-                    value={this.state.breed}
-                    onChangeText={(breed) => this.setState({ breed })}
-                  />
+                  <Picker
+                    selectedValue={this.state.typeSelected}
+                    style={{ height: 50, width: "100%" }}
+                    onValueChange={(type) =>
+                      this.setState({ typeSelected: type })
+                    }
+                  >
+                    {types}
+                  </Picker>
+                </View>
+              ) : null}
+              {this.props.pet == null ? (
+                <View style={mainStyle.form}>
+                  <Picker
+                    selectedValue={this.state.breedSelected}
+                    style={{ height: 50, width: "100%" }}
+                    onValueChange={(breed) =>
+                      this.setState({ breedSelected: breed })
+                    }
+                  >
+                    {this.state.typeSelected == "Dog" ? breedsDog : breedsCat}
+                  </Picker>
                 </View>
               ) : null}
               {this.state.errors["breed"] != null ? (

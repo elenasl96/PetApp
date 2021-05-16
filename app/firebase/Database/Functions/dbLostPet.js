@@ -242,6 +242,31 @@ const dbLostPet = {
   },
 
   //----------------------------LOST PET MATCH-----------------------------
+
+  getLostPetsMatched: function (pet) {
+    console.log(pet.getBreed());
+    var notifications = [];
+    return firestore
+      .collection("LostPetNotify")
+      .where("size", "==", pet.getSize())
+      .where("breed", "==", pet.getBreed())
+      .where("color", "==", pet.getColor())
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          // doc.data() is never undefined for query doc snapshots
+          console.log("DATA");
+          console.log(doc.data());
+          notifications.push(doc.id);
+          //console.log(feed);
+          return notifications;
+        });
+        return notifications;
+      })
+      .catch(function (error) {
+        console.log("Error getting documents: ", error);
+      });
+  },
 };
 
 export default dbLostPet;
