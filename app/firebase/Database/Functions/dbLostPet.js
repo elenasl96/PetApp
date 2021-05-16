@@ -52,6 +52,24 @@ const dbLostPet = {
       });
   },
 
+  getLostPetNotificationsByUid: function (uid) {
+    const lostPets = firestore.collection("LostPetNotify");
+    var notifications = [];
+    return lostPets
+      .where("uid","==",uid)
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          notifications.push(doc.id);
+          return notifications;
+        });
+        return notifications;
+      })
+      .catch(function (error) {
+        console.log("Error getting documents: ", error);
+      });
+  },
+
   getLostPetNotification: function (lid) {
     const lostPets = firestore.collection("LostPetNotify");
     var notification;
@@ -86,11 +104,24 @@ const dbLostPet = {
       .doc(lid)
       .delete()
       .then(function () {
-        console.log("Document successfully deleted!");
+        //console.log("Document successfully deleted!");
       })
       .catch(function (error) {
         console.error("Error removing document: ", error);
       });
+  },
+
+  deleteLostPetNotificationByUid: function (uid) {
+    const lostPets = firestore.collection("LostPetNotify");
+    const query = lostPets
+      .where("uid","==",uid);
+      query.get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          //console.log(uid);
+          doc.ref.delete();
+        });
+      });
+
   },
 
   //-----------------------------Lost Pets Seen ------------------------------
@@ -140,6 +171,24 @@ const dbLostPet = {
       });
   },
 
+  getLostPetsSeenByUid: function (uid) {
+    const lostPets = firestore.collection("LostPetSeen");
+    var notifications = [];
+    return lostPets
+      .where("uid","==",uid)
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          notifications.push(doc.id);
+          return notifications;
+        });
+        return notifications;
+      })
+      .catch(function (error) {
+        console.log("Error getting documents: ", error);
+      });
+  },
+
   getLostPetSeen: function (lid) {
     const lostPets = firestore.collection("LostPetSeen");
     var notification;
@@ -173,12 +222,25 @@ const dbLostPet = {
       .doc(lid)
       .delete()
       .then(function () {
-        console.log("Document successfully deleted!");
+        //console.log("Document successfully deleted!");
       })
       .catch(function (error) {
         console.error("Error removing document: ", error);
       });
   },
+
+  deleteLostPetSeenByUid: function (uid) {
+    const lostPets = firestore.collection("LostPetSeen");
+    const query = lostPets
+      .where("uid","==",uid);
+      query.get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          //console.log(uid);
+          doc.ref.delete();
+        });
+      });
+  },
+
 };
 
 export default dbLostPet;

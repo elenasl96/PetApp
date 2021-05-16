@@ -100,12 +100,14 @@ const dbPlace = {
   },  */
 
   deletePlace: function (pid) {
+  dbPlace.getPlace(pid).then((place) => {
     const places = firestore.collection("Places");
     dbNews.getAllNews(pid).then(function (news) {
       if (news.length != 0) {
         news.forEach((newsid) => dbNews.deleteNews(pid, newsid));
       }
-
+      if(place.type == "Kennel"){
+      console.log("KENNEL");
       dbAdoptableAnimal.getAdoptableAnimals(pid).then(function (animals) {
         if (animals.length != 0) {
           animals.forEach(function (aid) {
@@ -122,8 +124,21 @@ const dbPlace = {
             console.error("Error removing document: ", error);
           });
       });
+    }
+    else{
+      console.log(" NO KENNEL");
+      places
+          .doc(pid)
+          .delete()
+          .then(function () {
+            //console.log("Document successfully deleted!");
+          })
+          .catch(function (error) {
+            console.error("Error removing document: ", error);
+          });
+    }
     });
-
+  });
   },
 
   // saved place
@@ -153,8 +168,20 @@ const dbPlace = {
       });
   },
 
+  deletePlaceByName: function (name) {
+    const places = firestore.collection("Places");
+    const query = places
+      .where("name","==",name);
+      query.get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          //doc.ref.delete();
+          dbPlace.deletePlace(doc.id);
+        });
+      });
+  },
 
-  deleteSavedPlace: function (uid, id) {
+
+  deleteSavedPlaceByPid: function (uid, pid) {
     const users = firestore.collection("Users");
     const query = users
       .doc(uid)
@@ -165,6 +192,21 @@ const dbPlace = {
         querySnapshot.forEach(function(doc) {
           doc.ref.delete();
         });
+      });
+  },
+
+  deleteSavedPlace: function (uid, id) {
+    const users = firestore.collection("Users");
+    const query = users
+      .doc(uid)
+      .collection("savedplaces")
+      .doc(id)
+      .delete()
+      .then(function () {
+       // console.log("Document successfully deleted!");
+      })
+      .catch(function (error) {
+        console.error("Error removing document: ", error);
       });
   },
 

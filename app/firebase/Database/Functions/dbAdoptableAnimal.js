@@ -140,11 +140,7 @@ const dbAdoptableAnimal = {
       .doc(id)
       .get()
       .then(function (doc) {
-        // doc.data() is never undefined for query doc snapshots
-        //console.log(doc);
-        //console.log(doc.id, " => ", doc.data());
         disease = doc.data();
-        //console.log(user);
         return disease;
       })
       .catch(function (error) {
@@ -171,14 +167,16 @@ const dbAdoptableAnimal = {
   },
 
   deleteAdoptableAnimal: function (pid, aid) {
+
     const places = firestore.collection("Places");
-    this.getAdoptableAnimalDiseases(pid, aid).then(function (diseases) {
+    dbAdoptableAnimal.getAdoptableAnimalDiseases(pid, aid).then(function (diseases) {
       if (diseases.length != 0) {
         // diseases are optional so must be checked
         diseases.forEach(function (id) {
           dbAdoptableAnimal.deleteAdoptableAnimalDisease(pid, aid, id);
         });
       }
+      console.log("DELETE");
       places
         .doc(pid)
         .collection("Animals")

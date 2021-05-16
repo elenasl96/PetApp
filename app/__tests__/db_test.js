@@ -1,4 +1,3 @@
-
 import dbUser from "../firebase/Database/Functions/dbUser";
 import dbUserAnimal from "../firebase/Database/Functions/dbUserAnimal";
 import dbAdoptableAnimal from "../firebase/Database/Functions/dbAdoptableAnimal";
@@ -10,6 +9,15 @@ import dbPlace from "../firebase/Database/Functions/dbPlace";
 import User from "../firebase/Database/Objects/User";
 
 beforeAll(() => {
+    
+    //run this the first time to refresh db 
+    // seems not to delete adoptable animals and diseases, value of samples in useranimal and saved places of user 
+    /*
+    dbLostPet.deleteLostPetNotificationByUid('user1'); //OK
+    dbLostPet.deleteLostPetSeenByUid('user2'); //OK  */
+    
+    //dbUser.deleteUser('G2lmt9yiq6NgUkRnk73CJwRdABE3');
+    //dbUserAnimal.deleteAnimal('user1','mcRitDAc1luOiVvbAgc4');
 
     dbPlace.addPlace('place1',
     'Kennel',
@@ -30,6 +38,19 @@ beforeAll(() => {
                      dbPlace.addSavedPlace('user1',place.id);
                      dbFeed.addRandomFeeds([],'user1','15/05/2021',0);
                      dbNotification.addUserNotification('user1','Welcome to GPaw','Hi!');
+                     dbUserAnimal.addUserAnimal('user1',
+                                                'test',
+                                                10,
+                                                'Labrador',
+                                                'Medium',
+                                                'Black',
+                                                'https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=3596224033779591&height=100&width=100&ext=1618930868&hash=AeS7Ycc-xZFda11qK44',
+                                                'Dog').then((doc) => {
+                                                    dbUserAnimal.addAnimalStatSample('user1',doc.id,'weight',30);
+                                                    dbUserAnimal.addAnimalStatSample('user1',doc.id,'height',30);
+                                                    dbUserAnimal.addAnimalDisease('user1',doc.id,'Disease1');
+
+                                                });
                    });
     
 
@@ -65,7 +86,7 @@ beforeAll(() => {
       });
 
                 });
-    
+       
      dbLostPet.addLostPetNotify(
                     'Willy',
                     'https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=3596224033779591&height=100&width=100&ext=1618930868&hash=AeS7Ycc-xZFda11qK44',
@@ -87,63 +108,41 @@ beforeAll(() => {
     'user2',
     'user2@gmail.com',
     'phone');
-     
-          
+       
 })
+
 
 test('db user1 test', () => {
     return expect(dbUser.getUser('user1')).resolves.toBeInstanceOf(User);
-});
+}); 
 
 test('db user2 test', () => {
     return expect(dbUser.getUser('user2')).resolves.toBeInstanceOf(User);
 });
 
 test('db savedplaces test', () => {
-    return expect(dbPlace.getSavedPlaces('user1')).resolves.toBeDefined();
+    return expect(dbPlace.getSavedPlaces('user1')).resolves.toBeDefined(); //toHaveLength(1)
 });
 
 test('db myplaces test', () => {
-    return expect(dbPlace.getMyPlaces('user2')).resolves.toBeDefined();
+    return expect(dbPlace.getMyPlaces('user2')).resolves.toBeDefined(); //toHaveLength(1)
 });
 
 test('db feeds test', () => {
-    return expect(dbFeed.getUserFeeds('user2')).resolves.toBeDefined();
+    return expect(dbFeed.getUserFeeds('user2')).resolves.toBeDefined();   //toHaveLength(5)
 });
 
 test('db notifications test', () => {
-    return expect(dbNotification.getUserNotifications('user2')).resolves.toBeDefined();
+    return expect(dbNotification.getUserNotifications('user2')).resolves.toBeDefined();  //toHaveLength(1)
 });
 
-
-
 test('db lostpetnotify test', () => {
-    return expect(dbLostPet.getLostPetNotifications()).resolves.toBeDefined();
+    return expect(dbLostPet.getLostPetNotificationsByUid('user1')).resolves.toBeDefined();  //toHaveLength(1)
 });
 
 test('db lostpetseen test', () => {
-    return expect(dbLostPet.getLostPetsSeen()).resolves.toBeDefined();
+    return expect(dbLostPet.getLostPetsSeenByUid('user2')).resolves.toBeDefined();  //toHaveLength(1)
 });
-
-
-
-
-beforeEach(() => {
-    dbUserAnimal.addUserAnimal('user1',
-    'test',
-    10,
-    'Labrador',
-    'Medium',
-    'Black',
-    'https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=3596224033779591&height=100&width=100&ext=1618930868&hash=AeS7Ycc-xZFda11qK44',
-    'Dog').then((doc) => {
-        dbUserAnimal.addAnimalStatSample('user1',doc.id,'weight',30);
-        dbUserAnimal.addAnimalStatSample('user1',doc.id,'height',30);
-        dbUserAnimal.addAnimalDisease('user1',doc.id,'Disease1');
-
-    });
-
-})
 
 test('db useranimal test', () => {
     return expect(dbUserAnimal.getUserAnimals('user1')).resolves.toBeDefined(); //toHaveLength(1)
@@ -154,6 +153,5 @@ test('getdiseasedescription' , () => {
 });
 
 afterAll(() => {
-   dbUser.deleteUser('user1');
-   dbUser.deleteUser('user2');
+
 })
