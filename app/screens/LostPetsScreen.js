@@ -17,6 +17,7 @@ import PetLostSeenButton from "../Components/Buttons/PetLostSeenButton";
 import ReportLossForm from "../Components/Forms/ReportLossForm";
 import mainStyle from "../styles/mainStyle";
 import { Feather } from "@expo/vector-icons";
+import LoadingOverlay from "../Components/Custom/loadingOverlay";
 
 export default class LostPetsScreen extends React.Component {
   state = {
@@ -30,6 +31,7 @@ export default class LostPetsScreen extends React.Component {
     showPetsMatched: false,
     mounted: false,
     report: null,
+    loading: true,
   };
   static contextType = AuthContext;
 
@@ -59,6 +61,7 @@ export default class LostPetsScreen extends React.Component {
     dbLostPet.getLostPetNotifications().then((lostPets) => {
       if (this.state.mounted) {
         this.context.saveLostPets(lostPets);
+        this.setState({ loading: false });
       }
     });
   };
@@ -210,6 +213,7 @@ export default class LostPetsScreen extends React.Component {
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
+        <LoadingOverlay visible={this.state.loading}></LoadingOverlay>
         <ReportLossForm
           pet={null}
           visible={this.state.showReportLossForm}
