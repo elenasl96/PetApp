@@ -228,35 +228,6 @@ export default class LostPetsScreen extends React.Component {
         ></ReportLossForm>
         <View style={styles.mainContent}>
           <View style={styles.bottomOverlay}>
-            {this.state.showLostPetsSeen ? (
-              <TouchableHighlight
-                style={styles.mapButton}
-                onPress={() => {
-                  this.reportSight();
-                }}
-                underlayColor={"rgb(200,200,200)"}
-              >
-                <Text style={{ textAlign: "center" }}>
-                  <Feather name="alert-circle" size={24} color="black" /> Report
-                  sight
-                </Text>
-              </TouchableHighlight>
-            ) : null}
-
-            {this.state.showLostPets ? (
-              <TouchableHighlight
-                style={styles.mapButton}
-                onPress={() => {
-                  this.reportLoss();
-                }}
-                underlayColor={"rgb(200,200,200)"}
-              >
-                <Text style={{ textAlign: "center" }}>
-                  <Feather name="search" size={24} color="black" /> Report Loss
-                </Text>
-              </TouchableHighlight>
-            ) : null}
-
             {this.state.showPetsMatched ? (
               <TouchableHighlight
                 style={styles.mapButton}
@@ -290,8 +261,20 @@ export default class LostPetsScreen extends React.Component {
             <View style={styles.myPlacesContainer}>
               <View style={styles.buttons}>
                 {this.state.showLostPets ? (
+                  <TouchableHighlight
+                    onPress={() => {
+                      this.reportLoss();
+                    }}
+                    underlayColor={"rgb(200,200,200)"}
+                  >
+                    <View style={styles.button}>
+                      <Feather name="alert-triangle" size={24} color="white" />
+                      <Text style={styles.buttonText}>Report Loss </Text>
+                    </View>
+                  </TouchableHighlight>
+                ) : null}
+                {this.state.showLostPets ? (
                   <TouchableOpacity
-                    style={styles.button}
                     onPress={() => {
                       this.setState({
                         showLostPets: false,
@@ -299,14 +282,31 @@ export default class LostPetsScreen extends React.Component {
                       });
                     }}
                   >
-                    <Text style={styles.buttonText}>
-                      Go to pets sights &gt; S
-                    </Text>
+                    <View style={styles.button}>
+                      <Feather
+                        name="arrow-right-circle"
+                        size={24}
+                        color="white"
+                      />
+                      <Text style={styles.buttonText}>Go to pet sights </Text>
+                    </View>
                   </TouchableOpacity>
                 ) : null}
                 {this.state.showLostPetsSeen ? (
+                  <TouchableHighlight
+                    onPress={() => {
+                      this.reportSight();
+                    }}
+                    underlayColor={"rgb(200,200,200)"}
+                  >
+                    <View style={styles.button}>
+                      <Feather name="alert-circle" size={24} color="white" />
+                      <Text style={styles.buttonText}>Report sight </Text>
+                    </View>
+                  </TouchableHighlight>
+                ) : null}
+                {this.state.showLostPetsSeen ? (
                   <TouchableOpacity
-                    style={styles.button}
                     onPress={() => {
                       this.setState({
                         showLostPets: true,
@@ -314,9 +314,14 @@ export default class LostPetsScreen extends React.Component {
                       });
                     }}
                   >
-                    <Text style={styles.buttonText}>
-                      Go to lost pets &gt; S
-                    </Text>
+                    <View style={styles.button}>
+                      <Feather
+                        name="arrow-right-circle"
+                        size={24}
+                        color="white"
+                      />
+                      <Text style={styles.buttonText}>Go to lost pets </Text>
+                    </View>
                   </TouchableOpacity>
                 ) : null}
               </View>
@@ -397,7 +402,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   buttons: {
-    paddingTop: 5,
+    paddingTop: 25,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
@@ -407,20 +412,24 @@ const styles = StyleSheet.create({
     paddingRight: 20,
   },
   button: {
-    //backgroundColor: "#F9844A",
-    //height: 44,
-    //borderRadius: 22,
-
-    padding: 10,
+    backgroundColor: "#F9844A",
+    height: 44,
+    borderRadius: 22,
+    flexDirection: "row",
+    paddingVertical: 10,
+    paddingHorizontal: 17,
     marginLeft: 10,
-    borderBottomColor: "orange",
-    borderBottomWidth: 2,
+    overflow: "hidden",
+    elevation: 2,
+    //borderBottomColor: "orange",
+    //borderBottomWidth: 2,
   },
 
   buttonText: {
-    color: "orange",
+    color: "white",
     alignSelf: "center",
     fontWeight: "bold",
+    marginLeft: 5,
   },
 
   mainTitle: {
