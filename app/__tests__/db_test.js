@@ -6,7 +6,7 @@ import dbLostPet from "../firebase/Database/Functions/dbLostPet";
 import dbNews from "../firebase/Database/Functions/dbNews";
 import dbNotification from "../firebase/Database/Functions/dbNotification";
 import dbPlace from "../firebase/Database/Functions/dbPlace";
-import User from "../firebase/Database/Objects/User";
+
 
 beforeAll(() => {
 
@@ -104,17 +104,16 @@ beforeAll(() => {
        
 })
 
+afterAll(() => {
+    dbUser.deleteUser('user1','user');
+    dbUser.deleteUser('user2','business');
+    dbLostPet.deleteLostPetNotificationByUid('user1');
+    dbLostPet.deleteLostPetSeenByUid('user2');
+})
 
-test('db user1 test', () => {
-    return expect(dbUser.getUser('user1')).resolves.toBeInstanceOf(User);
-}); 
-
-test('db user2 test', () => {
-    return expect(dbUser.getUser('user2')).resolves.toBeInstanceOf(User);
-});
 
 test('db savedplaces test', () => {
-    return expect(dbPlace.getSavedPlaces('user1')).resolves.toBeDefined(); //toHaveLength(1)
+    return expect(dbPlace.getSavedPlace('user1')).resolves.toBeDefined(); //toHaveLength(1)
 });
 
 test('db myplaces test', () => {
@@ -145,6 +144,3 @@ test('getdiseasedescription' , () => {
     return expect(dbUserAnimal.getDiseaseDescription('Disease1')).resolves.toHaveLength(1);
 });
 
-afterAll(() => {
-
-})

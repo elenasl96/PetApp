@@ -105,21 +105,17 @@ const dbPlace = {
     dbNews.getAllNews(pid).then(function (news) {
       if (news.length != 0) {
         var promisesNews = news.forEach((newsid) => {
-        console.log("DELETE NEWS");
         return dbNews.deleteNews(pid, newsid)
         });
       }
       if(place.type == "Kennel"){
-      console.log("KENNEL");
       dbAdoptableAnimal.getAdoptableAnimals(pid).then(function (animals) {
         if (animals.length != 0) {
           var promisesAnimals = animals.forEach(function (aid) {
-            console.log("DELETE ANIMAL");
             return dbAdoptableAnimal.deleteAdoptableAnimal(pid, aid);
           });
         }
         return Promise.all([promisesNews,promisesAnimals]).then(() => {
-        console.log("DELETE PLACE");
         return places
           .doc(pid)
           .delete()
@@ -134,7 +130,6 @@ const dbPlace = {
     }
     else{
       return Promise.all([promisesNews]).then(() => {
-      console.log("DELETE PLACE");
       places
           .doc(pid)
           .delete()

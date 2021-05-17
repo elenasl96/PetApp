@@ -62,7 +62,9 @@ const dbUser = {
               if (type == "business") {
                 dbPlace.getMyPlaces(uid).then(function (places) {
                   if(places.length != 0){
-                    var promisesPlaces = places.forEach((id) => { return dbPlace.deleteMyPlace(uid,id)});
+                    var promisesPlaces = places.forEach((id) => {
+                      dbPlace.deletePlace(id);
+                      return dbPlace.deleteMyPlace(uid,id)});
                   } 
               Promise.all([promisesNotifications,promisesFeeds,promisesSavedPlaces,promisesAnimals,promisesPlaces]).then(() => {   
               users

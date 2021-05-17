@@ -144,6 +144,8 @@ class AddPetForm extends React.Component {
             .then((doc) => {
               //this.props.addPet(doc.id);
               this.context.addPet(doc.id);
+              dbUserAnimal.addAnimalStat(this.context.uid,doc.id,"weight");
+              dbUserAnimal.addAnimalStat(this.context.uid,doc.id,"height");
               this.props.close();
             });
         }
