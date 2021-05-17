@@ -43,26 +43,28 @@ const dbUser = {
     const users = firestore.collection("Users");
 
     dbNotification.getUserNotifications(uid).then(function (notifications) {
+
       if (notifications.length != 0) {
-        notifications.forEach((id) =>dbNotification.deleteUserNotification(uid, id));
+         var promisesNotifications = notifications.forEach((id) =>{return dbNotification.deleteUserNotification(uid, id)});
       }
       dbFeed.getUserFeeds(uid).then(function (feeds) {
           if (feeds.length != 0) {
-            feeds.forEach((id) => dbFeed.deleteUserFeed(uid, id));
+            var promisesFeeds = feeds.forEach((id) =>{ return dbFeed.deleteUserFeed(uid, id)});
           }
           dbPlace.getSavedPlaces(uid).then(function (savedplaces) {
             if (savedplaces.length != 0) {
-              savedplaces.forEach((id) => dbPlace.deleteSavedPlace(uid, id));
+              var promisesSavedPlaces = savedplaces.forEach((id) => {return dbPlace.deleteSavedPlaceByPid(uid, id)});
             }
             dbUserAnimal.getUserAnimals(uid).then(function (animals) {
               if (animals.length != 0) {
-                animals.forEach((id) => dbUserAnimal.deleteAnimal(uid, id));
+                var promisesAnimals = animals.forEach((id) =>{ return dbUserAnimal.deleteAnimal(uid, id)});
               }
               if (type == "business") {
                 dbPlace.getMyPlaces(uid).then(function (places) {
                   if(places.length != 0){
-                    places.forEach((id) => dbPlace.deleteMyPlace(uid,id));
+                    var promisesPlaces = places.forEach((id) => { return dbPlace.deleteMyPlace(uid,id)});
                   } 
+              Promise.all([promisesNotifications,promisesFeeds,promisesSavedPlaces,promisesAnimals,promisesPlaces]).then(() => {   
               users
                 .doc(uid)
                 .delete()
@@ -72,8 +74,10 @@ const dbUser = {
                 .catch(function (error) {
                   console.error("Error removing document: ", error);
                 });
+              });
               }); 
               }else{
+                Promise.all([promisesNotifications,promisesFeeds,promisesSavedPlaces,promisesAnimals]).then(() => { 
                 users
                 .doc(uid)
                 .delete()
@@ -83,6 +87,7 @@ const dbUser = {
                 .catch(function (error) {
                   console.error("Error removing document: ", error);
                 });
+              });
               }
             });
           });

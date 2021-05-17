@@ -9,7 +9,8 @@ import dbPlace from "../firebase/Database/Functions/dbPlace";
 
 beforeAll(() => {
     
-    //dbUserAnimal.deleteAnimal('user1','JJYfQqODn8BXerv42Qi'); //OK
+    dbUser.deleteUser('user1'); 
+    //dbUserAnimal.deleteAnimal('user1','DR5BCzY9sMxwxjcco7oH');
     //dbLostPet.deleteLostPetNotificationByUid('user1'); //OK
     //dbLostPet.deleteLostPetSeenByUid('user2'); //OK 
     // to fix : delete user, delete adopt animal , delete place

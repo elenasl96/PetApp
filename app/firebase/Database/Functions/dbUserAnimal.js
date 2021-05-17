@@ -380,9 +380,7 @@ const dbUserAnimal = {
       if (diseases.length != 0) {
         // diseases are optional so must be checked
         var promisesDiseases = diseases.forEach((id) => {
-          console.log("DELETE DISEASE");
           return dbUserAnimal.deleteAnimalDisease(uid, aid, id);
-
         });
       }
 
@@ -393,7 +391,6 @@ const dbUserAnimal = {
                if (samples.length != 0) {
                   var index = 1;
                   samples.forEach((sampleid) => {
-                    console.log("DELETE SAMPLE");
                     dbUserAnimal.deleteAnimalStatSample(uid, aid, id, sampleid);
                     if(index == samples.length){
                       return dbUserAnimal.deleteAnimalStat(uid, aid, id);
@@ -408,14 +405,15 @@ const dbUserAnimal = {
           });
         }
 
-        Promise.all([promisesDiseases,promisesStats]).then(() => {
-                    users
+        
+
+       return Promise.all([promisesDiseases,promisesStats]).then(() => {
+                    return users
                       .doc(uid)
                       .collection("Animals")
                       .doc(aid)
                       .delete()
                       .then(function () {
-                        console.log("DELETE ANIMAL");
                         //console.log("Document successfully deleted!");
                       })
                       .catch(function (error) {
@@ -427,9 +425,6 @@ const dbUserAnimal = {
       });
     });
   },
-
-
-  
 
   // get disease descriptions
   getDiseaseDescription(name) {

@@ -54,7 +54,7 @@ const dbNotification = {
 
     deleteUserNotification: function (uid, nid) {
       const users = firestore.collection("Users");
-      users
+      return users
         .doc(uid)
         .collection("Notifications")
         .doc(nid)

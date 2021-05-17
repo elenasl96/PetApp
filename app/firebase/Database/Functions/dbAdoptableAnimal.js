@@ -167,27 +167,29 @@ const dbAdoptableAnimal = {
   },
 
   deleteAdoptableAnimal: function (pid, aid) {
-
     const places = firestore.collection("Places");
     dbAdoptableAnimal.getAdoptableAnimalDiseases(pid, aid).then(function (diseases) {
       if (diseases.length != 0) {
         // diseases are optional so must be checked
-        diseases.forEach(function (id) {
-          dbAdoptableAnimal.deleteAdoptableAnimalDisease(pid, aid, id);
+        var promisesDiseases = diseases.forEach((id) => {
+          return dbAdoptableAnimal.deleteAdoptableAnimalDisease(pid, aid, id);
         });
       }
-      console.log("DELETE");
-      places
-        .doc(pid)
-        .collection("Animals")
-        .doc(aid)
-        .delete()
-        .then(function () {
-          console.log("Document successfully deleted!");
-        })
-        .catch(function (error) {
-          console.error("Error removing document: ", error);
-        });
+
+       return Promise.all([promisesDiseases]).then(() => {
+                    return places
+                      .doc(pid)
+                      .collection("Animals")
+                      .doc(aid)
+                      .delete()
+                      .then(function () {
+                        //console.log("Document successfully deleted!");
+                      })
+                      .catch(function (error) {
+                        console.error("Error removing document: ", error);
+                      });
+        });  
+    
     });
   },
 

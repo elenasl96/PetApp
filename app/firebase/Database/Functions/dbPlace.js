@@ -104,17 +104,23 @@ const dbPlace = {
     const places = firestore.collection("Places");
     dbNews.getAllNews(pid).then(function (news) {
       if (news.length != 0) {
-        news.forEach((newsid) => dbNews.deleteNews(pid, newsid));
+        var promisesNews = news.forEach((newsid) => {
+        console.log("DELETE NEWS");
+        return dbNews.deleteNews(pid, newsid)
+        });
       }
       if(place.type == "Kennel"){
       console.log("KENNEL");
       dbAdoptableAnimal.getAdoptableAnimals(pid).then(function (animals) {
         if (animals.length != 0) {
-          animals.forEach(function (aid) {
-            dbAdoptableAnimal.deleteAdoptableAnimal(pid, aid);
+          var promisesAnimals = animals.forEach(function (aid) {
+            console.log("DELETE ANIMAL");
+            return dbAdoptableAnimal.deleteAdoptableAnimal(pid, aid);
           });
         }
-        places
+        return Promise.all([promisesNews,promisesAnimals]).then(() => {
+        console.log("DELETE PLACE");
+        return places
           .doc(pid)
           .delete()
           .then(function () {
@@ -123,10 +129,12 @@ const dbPlace = {
           .catch(function (error) {
             console.error("Error removing document: ", error);
           });
+        });
       });
     }
     else{
-      console.log(" NO KENNEL");
+      return Promise.all([promisesNews]).then(() => {
+      console.log("DELETE PLACE");
       places
           .doc(pid)
           .delete()
@@ -136,6 +144,7 @@ const dbPlace = {
           .catch(function (error) {
             console.error("Error removing document: ", error);
           });
+        });
     }
     });
   });
@@ -186,7 +195,7 @@ const dbPlace = {
     const query = users
       .doc(uid)
       .collection("savedplaces")
-      .where("pid","==",id);
+      .where("pid","==",pid);
 
       query.get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
@@ -197,7 +206,7 @@ const dbPlace = {
 
   deleteSavedPlace: function (uid, id) {
     const users = firestore.collection("Users");
-    const query = users
+    return users
       .doc(uid)
       .collection("savedplaces")
       .doc(id)
@@ -260,9 +269,9 @@ const dbPlace = {
 
     deleteMyPlace: function (uid, id) {
       query = firestore.collection("Users").doc(uid).collection("MyPlaces").where('pid','==',id);
-      query.get().then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
-          doc.ref.delete();
+      return query.get().then(function(querySnapshot) {
+        return querySnapshot.forEach(function(doc) {
+          return doc.ref.delete();
         });
       });
     },
