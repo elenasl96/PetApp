@@ -56,7 +56,7 @@ const dbLostPet = {
     const lostPets = firestore.collection("LostPetNotify");
     var notifications = [];
     return lostPets
-      .where("uid","==",uid)
+      .where("uid", "==", uid)
       .get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
@@ -113,15 +113,13 @@ const dbLostPet = {
 
   deleteLostPetNotificationByUid: function (uid) {
     const lostPets = firestore.collection("LostPetNotify");
-    const query = lostPets
-      .where("uid","==",uid);
-      query.get().then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
-          //console.log(uid);
-          doc.ref.delete();
-        });
+    const query = lostPets.where("uid", "==", uid);
+    query.get().then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        //console.log(uid);
+        doc.ref.delete();
       });
-
+    });
   },
 
   //-----------------------------Lost Pets Seen ------------------------------
@@ -175,7 +173,7 @@ const dbLostPet = {
     const lostPets = firestore.collection("LostPetSeen");
     var notifications = [];
     return lostPets
-      .where("uid","==",uid)
+      .where("uid", "==", uid)
       .get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
@@ -231,14 +229,13 @@ const dbLostPet = {
 
   deleteLostPetSeenByUid: function (uid) {
     const lostPets = firestore.collection("LostPetSeen");
-    const query = lostPets
-      .where("uid","==",uid);
-      query.get().then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
-          //console.log(uid);
-          doc.ref.delete();
-        });
+    const query = lostPets.where("uid", "==", uid);
+    query.get().then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        //console.log(uid);
+        doc.ref.delete();
       });
+    });
   },
 
   //----------------------------LOST PET MATCH-----------------------------
@@ -247,7 +244,7 @@ const dbLostPet = {
     console.log(pet.getBreed());
     var notifications = [];
     return firestore
-      .collection("LostPetNotify")
+      .collection(pet.getCollection())
       .where("size", "==", pet.getSize())
       .where("breed", "==", pet.getBreed())
       .where("color", "==", pet.getColor())

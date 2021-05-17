@@ -1,5 +1,4 @@
 export default class LostPetNotify {
-
   constructor(
     name,
     photo,
@@ -68,6 +67,10 @@ export default class LostPetNotify {
 
   getPhone() {
     return this.phone;
+  }
+
+  getCollection() {
+    return "LostPetNotify";
   }
 
   toFirestore() {

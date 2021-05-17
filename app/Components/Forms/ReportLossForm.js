@@ -121,7 +121,7 @@ class ReportLossForm extends Component {
           console.log(this.context.lostPets);
           this.props.close();
         }); */
-      this.props.sendForm(lostPet);
+      this.props.sendForm(lostPet, false);
     }
   };
 
@@ -161,7 +161,7 @@ class ReportLossForm extends Component {
           console.log(this.context.lostPets);
           this.props.close();
         }); */
-      this.props.sendForm(lostPet, "seen");
+      this.props.sendForm(lostPet, true);
     }
   };
 

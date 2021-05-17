@@ -1,5 +1,4 @@
 export default class LostPetSeen {
-
   constructor(
     photo,
     size,
@@ -40,6 +39,10 @@ export default class LostPetSeen {
     return this.notes;
   }
 
+  getColor() {
+    return this.color;
+  }
+
   getPlace() {
     return this.place;
   }
@@ -58,6 +61,10 @@ export default class LostPetSeen {
 
   getPhone() {
     return this.phone;
+  }
+
+  getCollection() {
+    return "LostPetSeen";
   }
 
   toFirestore() {
