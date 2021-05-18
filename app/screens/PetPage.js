@@ -18,6 +18,8 @@ import mainStyle from "../styles/mainStyle";
 import storageManager from "../firebase/Storage/storage";
 import { AuthContext } from "../Components/AuthContext";
 import { withNavigation } from "react-navigation";
+import { AntDesign } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 
 //--- custom components -------
 import PhotoBox from "../Components/Custom/PhotoBox";
@@ -103,22 +105,8 @@ class PetScreen extends React.Component {
                 <ImageBackground
                   source={{ uri: this.state.photo }}
                   style={styles.petImage}
-                  imageStyle={{ borderRadius: 50 }}
-                >
-                  <Text
-                    style={[
-                      styles.title,
-                      {
-                        color: "white",
-                        textShadowColor: "black",
-                        textShadowRadius: 2,
-                        alignSelf: "center",
-                      },
-                    ]}
-                  >
-                    {pet.name}
-                  </Text>
-                </ImageBackground>
+                  imageStyle={{ borderRadius: 150 }}
+                ></ImageBackground>
               </View>
 
               <View style={styles.buttons}>
@@ -127,7 +115,9 @@ class PetScreen extends React.Component {
                     style={styles.button}
                     onPress={this.deletePet}
                   >
-                    <Text style={styles.buttonText}>Delete pet</Text>
+                    <Text style={styles.buttonText}>
+                      <AntDesign name="delete" size={24} color="red" />
+                    </Text>
                   </TouchableOpacity>
                 ) : null}
 
@@ -138,7 +128,9 @@ class PetScreen extends React.Component {
                       this.setState({ showReportLossForm: true });
                     }}
                   >
-                    <Text style={styles.buttonText}>Report loss</Text>
+                    <Text style={styles.buttonText}>
+                      <Feather name="alert-circle" size={24} color="orange" />
+                    </Text>
                   </TouchableOpacity>
                 ) : null}
 
@@ -149,7 +141,9 @@ class PetScreen extends React.Component {
                       this.setState({ showPhotoBox: true });
                     }}
                   >
-                    <Text style={styles.buttonText}>Update photo</Text>
+                    <Text style={styles.buttonText}>
+                      <Feather name="image" size={24} color="lightblue" />
+                    </Text>
                   </TouchableOpacity>
                 ) : null}
               </View>
@@ -169,31 +163,31 @@ class PetScreen extends React.Component {
               ></PhotoBox>
             ) : null}
 
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignContent: "center",
+              }}
             >
-              <TouchableHighlight>
-                <View style={styles.info}>
-                  <Text>Size</Text>
-                  <Text>{pet.size}</Text>
-                </View>
-              </TouchableHighlight>
+              <View style={styles.info}>
+                <Text style={styles.infoTitle}>Age </Text>
+                <Text style={styles.infoText}>{pet.getAge()} </Text>
+              </View>
+              <View style={styles.info}>
+                <Text style={styles.infoTitle}>Size </Text>
+                <Text style={styles.infoText}>{pet.getSize()} </Text>
+              </View>
+              <View style={styles.info}>
+                <Text style={styles.infoTitle}>Breed </Text>
+                <Text style={styles.infoText}>{pet.getBreed()} </Text>
+              </View>
 
-              <TouchableHighlight>
-                <View style={styles.info}>
-                  <Text>Breed</Text>
-                  <Text>{pet.breed}</Text>
-                </View>
-              </TouchableHighlight>
-
-              <TouchableHighlight>
-                <View style={styles.info}>
-                  <Text>Color</Text>
-                  <Text>{pet.color}</Text>
-                </View>
-              </TouchableHighlight>
-            </ScrollView>
+              <View style={styles.info}>
+                <Text style={styles.infoTitle}>Color </Text>
+                <Text style={styles.infoText}>{pet.getColor()} </Text>
+              </View>
+            </View>
 
             <DiseasePanel
               petID={petID}
@@ -256,16 +250,12 @@ const styles = StyleSheet.create({
     height: 30,
   },
   button: {
-    backgroundColor: "#F9844A",
-    minWidth: 100,
-    height: 44,
+    backgroundColor: "#FFFFFF",
     borderRadius: 22,
-    paddingHorizontal: 12,
-    paddingVertical: 5,
-    marginBottom: 5,
+    padding: 10,
+    marginBottom: 10,
     marginLeft: 10,
-    alignContent: "center",
-    justifyContent: "center",
+    elevation: 2,
   },
   buttonText: {
     alignSelf: "center",
@@ -278,14 +268,15 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     paddingTop: 20,
-    paddingBottom: 20,
+    //paddingBottom: 20,
   },
   pet: {
     width: 150,
     height: 150,
-    borderRadius: 75,
-    backgroundColor: "white",
+    //borderRadius: 150,
+    //backgroundColor: "white",
     marginLeft: 10,
+    elevation: 2,
   },
   petImage: {
     flex: 1,
@@ -293,18 +284,29 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     width: 150,
     height: 150,
-    borderRadius: 75,
-    resizeMode: "cover",
+    //borderRadius: 0,
+    //resizeMode: "cover",
     padding: 10,
+    elevation: 2,
   },
   info: {
-    flex: 1,
-    flexDirection: "column",
-    backgroundColor: "#F9C74F",
-    borderRadius: 20,
+    //backgroundColor: "#F9C74F",
+    backgroundColor: "white",
+    borderRadius: 15,
     marginLeft: 7,
     marginRight: 5,
     padding: 10,
+    marginBottom: 10,
+    elevation: 3,
+  },
+  infoText: {
+    textAlign: "center",
+    fontWeight: "bold",
+  },
+  infoTitle: {
+    color: "#f94144",
+    fontWeight: "bold",
+    textAlign: "center",
   },
   title: {
     fontWeight: "bold",

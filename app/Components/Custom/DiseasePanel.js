@@ -13,6 +13,9 @@ import dbUserAnimal from "../../firebase/Database/Functions/dbUserAnimal";
 import dbAdoptableAnimal from "../../firebase/Database/Functions/dbAdoptableAnimal";
 import constants from "../../shared/constants";
 import { AuthContext } from "../AuthContext";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 
 class DiseasePanel extends React.Component {
   // props petID , type
@@ -208,9 +211,17 @@ class DiseasePanel extends React.Component {
             Diseases
           </Text>
         ) : (
-          <Text style={{ marginHorizontal: 15, marginVertical: 10 }}>
-            The pet is in good health!
-          </Text>
+          <View style={styles.healthStatus}>
+            <FontAwesome5 name="heartbeat" size={24} color="red" />
+            <Text
+              style={{
+                textAlignVertical: "center",
+                marginLeft: 10,
+              }}
+            >
+              The pet is in good health, great!
+            </Text>
+          </View>
         )}
 
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -221,49 +232,52 @@ class DiseasePanel extends React.Component {
           <Text style={styles.text}>{descriptionShown}</Text>
         ) : null}
 
-     { isEditable ? (
+        {isEditable ? (
+          <View style={styles.diseaseBox}>
+            <View style={styles.healthStatus}>
+              <Text>
+                <MaterialCommunityIcons
+                  name="tag-heart-outline"
+                  size={24}
+                  color="black"
+                />
+              </Text>
 
-       <>
-
-        <Text style={{ marginHorizontal: 15, marginBottom: 10 }}>
-          Add diseases
-        </Text>
-
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "center",
-            alignContent: "center",
-            paddingHorizontal: 15,
-          }}
-        >
-
-
-          <View style={styles.form}>
-            <Picker
-              selectedValue={this.state.diseaseSelected}
-              style={{ height: 50, width: "100%" }}
-              onValueChange={(disease) =>
-                this.setState({ diseaseSelected: disease })
-              }
+              <Text style={{ marginHorizontal: 15, marginBottom: 10 }}>
+                Add diseases
+              </Text>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                justifyContent: "center",
+                alignContent: "center",
+                paddingHorizontal: 15,
+              }}
             >
-              {diseasesSelectable}
-            </Picker>
+              <View style={styles.form}>
+                <Picker
+                  selectedValue={this.state.diseaseSelected}
+                  style={{ height: 50, width: "100%" }}
+                  onValueChange={(disease) =>
+                    this.setState({ diseaseSelected: disease })
+                  }
+                >
+                  {diseasesSelectable}
+                </Picker>
+              </View>
+
+              <TouchableHighlight
+                style={styles.button}
+                onPress={this.addDisease.bind(this)}
+                underlayColor={"rgb(200,200,200)"}
+              >
+                <AntDesign name="plus" size={24} color="red" />
+              </TouchableHighlight>
+            </View>
           </View>
-
-          <TouchableHighlight
-            style={styles.button}
-            onPress={this.addDisease.bind(this)}
-            underlayColor={"rgb(200,200,200)"}
-          >
-            <Text style={{ textAlign: "center" }}>Add</Text>
-          </TouchableHighlight>
-
-        </View>
-        </>
-
-        ): null }
+        ) : null}
 
         {this.state.errors["addDisease"] != null ? (
           <Text style={styles.error}>{this.state.errors["addDisease"]}</Text>
@@ -309,30 +323,19 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   button: {
-    backgroundColor: "#F9844A",
-    minWidth: 50,
-    height: 44,
+    backgroundColor: "#FFF",
     borderRadius: 22,
-    paddingHorizontal: 12,
-    paddingVertical: 5,
+    padding: 10,
     marginVertical: 5,
-    marginHorizontal: 15,
+    marginLeft: 15,
     alignContent: "center",
     justifyContent: "center",
+    elevation: 2,
   },
   buttonText: {
     alignSelf: "center",
   },
-  form: {
-    borderRadius: 30,
-    flex: 1,
-    backgroundColor: "#43AA8B",
-    borderRadius: 25,
-    height: 50,
-    justifyContent: "center",
-    alignSelf: "center",
-    paddingLeft: 30,
-  },
+
   info: {
     flex: 1,
     flexDirection: "column",
@@ -369,6 +372,32 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "red",
     width: "80%",
+  },
+  healthStatus: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+    marginVertical: 5,
+  },
+  diseaseBox: {
+    alignSelf: "center",
+    backgroundColor: "#fde2e4",
+    elevation: 2,
+    width: "90%",
+    paddingVertical: 15,
+    borderRadius: 15,
+    marginVertical: 10,
+  },
+  form: {
+    borderRadius: 30,
+    flex: 1,
+    backgroundColor: "#FFF",
+    borderRadius: 25,
+    height: 50,
+    justifyContent: "center",
+    alignSelf: "center",
+    paddingLeft: 30,
+    elevation: 1,
   },
 });
 export default DiseasePanel;

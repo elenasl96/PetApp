@@ -13,6 +13,8 @@ import mainStyle from "../../styles/mainStyle";
 import { AuthContext } from "../AuthContext";
 
 import { LineChart } from "react-native-chart-kit";
+import { AntDesign } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 class Chart extends React.Component {
   state = {
@@ -218,14 +220,14 @@ class Chart extends React.Component {
 
     return (
       <>
-        <Text style={styles.title}>Pet statistics</Text>
+        <Text style={styles.title}>Health monitor</Text>
         <View style={styles.statisticButtons}>
           <TouchableHighlight
             style={styles.button}
             onPress={this.showWeight.bind(this)}
             underlayColor={"rgb(200,200,200)"}
           >
-            <Text style={{ textAlign: "center" }}>weight</Text>
+            <Text style={styles.subtitle}>Weight </Text>
           </TouchableHighlight>
 
           <TouchableHighlight
@@ -233,7 +235,7 @@ class Chart extends React.Component {
             onPress={this.showHeight.bind(this)}
             underlayColor={"rgb(200,200,200)"}
           >
-            <Text style={{ textAlign: "center" }}>height</Text>
+            <Text style={styles.subtitle}>Height </Text>
           </TouchableHighlight>
         </View>
 
@@ -281,34 +283,48 @@ class Chart extends React.Component {
             No samples yet. Add new samples below.
           </Text>
         )}
-
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "center",
-            padding: 15,
-          }}
-        >
-          <View style={styles.form}>
-            <TextInput
-              style={styles.input}
-              placeholder="Value"
-              placeholderTextColor="#616161"
-              returnKeyType="next"
-              textContentType="name"
-              value={this.state.newdata}
-              onChangeText={(newdata) => this.setState({ newdata })}
-            />
+        <View style={styles.sampleBox}>
+          <View style={styles.healthStatus}>
+            <Text>
+              <MaterialCommunityIcons
+                name="tag-text-outline"
+                size={24}
+                color="black"
+              />
+            </Text>
+            <Text style={{ marginHorizontal: 15, marginBottom: 10 }}>
+              Add new sample
+            </Text>
           </View>
-
-          <TouchableHighlight
-            style={styles.button}
-            onPress={this.addPetStatSample.bind(this)}
-            underlayColor={"rgb(200,200,200)"}
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "center",
+              alignContent: "center",
+              paddingHorizontal: 15,
+            }}
           >
-            <Text>Save</Text>
-          </TouchableHighlight>
+            <View style={styles.form}>
+              <TextInput
+                style={styles.input}
+                placeholder="Value"
+                placeholderTextColor="#616161"
+                returnKeyType="next"
+                textContentType="name"
+                value={this.state.newdata}
+                onChangeText={(newdata) => this.setState({ newdata })}
+              />
+            </View>
+
+            <TouchableHighlight
+              style={styles.button}
+              onPress={this.addPetStatSample.bind(this)}
+              underlayColor={"rgb(200,200,200)"}
+            >
+              <AntDesign name="plus" size={24} color="black" />
+            </TouchableHighlight>
+          </View>
         </View>
 
         {this.state.errors["samples"] != null ? (
@@ -340,9 +356,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   title: {
+    color: "#4cc9f0",
     fontWeight: "bold",
     fontSize: 20,
     marginVertical: 10,
+    textAlign: "center",
+  },
+  subtitle: {
+    color: "#4cc9f0",
+    fontWeight: "bold",
     textAlign: "center",
   },
   text: {
@@ -361,16 +383,14 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   button: {
-    backgroundColor: "#F9844A",
-    minWidth: 50,
-    height: 44,
+    backgroundColor: "#FFF",
     borderRadius: 22,
-    paddingHorizontal: 12,
-    paddingVertical: 5,
+    padding: 10,
     marginVertical: 5,
-    marginHorizontal: 15,
+    marginLeft: 15,
     alignContent: "center",
     justifyContent: "center",
+    elevation: 2,
   },
   buttonText: {
     alignSelf: "center",
@@ -378,12 +398,13 @@ const styles = StyleSheet.create({
   form: {
     borderRadius: 30,
     flex: 1,
-    backgroundColor: "#43AA8B",
+    backgroundColor: "#FFF",
     borderRadius: 25,
     height: 50,
     justifyContent: "center",
     alignSelf: "center",
     paddingLeft: 30,
+    elevation: 1,
   },
   input: {
     flex: 1,
@@ -399,6 +420,23 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "red",
     width: "80%",
+  },
+  sampleBox: {
+    backgroundColor: "#cbe5f6",
+
+    alignSelf: "center",
+
+    elevation: 2,
+    width: "90%",
+    paddingVertical: 15,
+    borderRadius: 15,
+    marginVertical: 10,
+  },
+  healthStatus: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+    marginVertical: 5,
   },
 });
 
