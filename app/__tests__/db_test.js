@@ -113,7 +113,7 @@ afterAll(() => {
 
 
 test('db savedplaces test', () => {
-    return expect(dbPlace.getSavedPlace('user1')).resolves.toBeDefined(); //toHaveLength(1)
+    return expect(dbPlace.getSavedPlaces('user1')).resolves.toBeDefined(); //toHaveLength(1)
 });
 
 test('db myplaces test', () => {
