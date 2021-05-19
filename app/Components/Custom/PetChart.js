@@ -220,7 +220,6 @@ class Chart extends React.Component {
 
     return (
       <>
-        <Text style={styles.title}>Health monitor</Text>
         <View style={styles.statisticButtons}>
           <TouchableHighlight
             style={styles.button}
@@ -240,49 +239,61 @@ class Chart extends React.Component {
         </View>
 
         {data.length != 0 ? (
-          <>
+          <View>
             <View style={styles.container}>
-              <View>
-                <LineChart
-                  data={{
-                    labels: labels,
-                    datasets: [{ data: data }],
-                  }}
-                  width={Dimensions.get("window").width - 16} // from react-native
-                  height={200}
-                  //yAxisLabel={}
-                  chartConfig={{
-                    //backgroundColor: 'white',
-                    backgroundGradientFrom: "#eff3ff",
-                    backgroundGradientTo: "#efefef",
-                    decimalPlaces: 2, // optional, defaults to 2dp
-                    color: (opacity = 255) => `rgba(0, 0, 0, ${opacity})`,
-                    style: {
-                      borderRadius: 16,
-                    },
-                    propsForDots: {
-                      r: "6",
-                      strokeWidth: "2",
-                      stroke: "#ffa726",
-                    },
-                    propsForBackgroundLines: {
-                      strokeDasharray: "", // solid background lines with no dashes
-                    },
-                  }}
-                  bezier
-                  style={{
-                    marginVertical: 8,
-                    borderRadius: 16,
-                  }}
-                />
-              </View>
+              <LineChart
+                data={{
+                  labels: labels,
+                  datasets: [{ data: data }],
+                }}
+                width={Dimensions.get("window").width - 16} // from react-native
+                height={200}
+                //yAxisLabel={}
+                chartConfig={{
+                  //backgroundColor: 'white',
+                  backgroundGradientFrom: "#eff3ff",
+                  backgroundGradientTo: "#efefef",
+                  decimalPlaces: 2, // optional, defaults to 2dp
+                  color: (opacity = 255) => `rgba(0, 0, 0, ${opacity})`,
+                  style: {
+                    borderRadius: 15,
+                  },
+                  propsForDots: {
+                    r: "6",
+                    strokeWidth: "2",
+                    stroke: "#ffa726",
+                  },
+                  propsForBackgroundLines: {
+                    strokeDasharray: "", // solid background lines with no dashes
+                  },
+                }}
+                bezier
+                style={{
+                  margin: 10,
+                  borderRadius: 15,
+                }}
+              />
             </View>
-          </>
+            <View>
+              <TouchableHighlight
+                onPress={this.deleteStatSample.bind(this)}
+                underlayColor={"rgb(200,200,200)"}
+              >
+                <View style={styles.deleteButton}>
+                  <AntDesign name="delete" size={24} color="red" />
+                  <Text style={{ marginLeft: 8, textAlignVertical: "center" }}>
+                    Delete last statistic
+                  </Text>
+                </View>
+              </TouchableHighlight>
+            </View>
+          </View>
         ) : (
           <Text style={styles.text}>
             No samples yet. Add new samples below.
           </Text>
         )}
+
         <View style={styles.sampleBox}>
           <View style={styles.healthStatus}>
             <Text>
@@ -293,7 +304,7 @@ class Chart extends React.Component {
               />
             </Text>
             <Text style={{ marginHorizontal: 15, marginBottom: 10 }}>
-              Add new sample
+              Add new sample {this.state.newtype}
             </Text>
           </View>
           <View
@@ -331,16 +342,6 @@ class Chart extends React.Component {
           <Text style={styles.error}>{this.state.errors["samples"]}</Text>
         ) : null}
 
-        {data.length != 0 ? (
-          <TouchableHighlight
-            style={styles.button}
-            onPress={this.deleteStatSample.bind(this)}
-            underlayColor={"rgb(200,200,200)"}
-          >
-            <Text style={{ textAlign: "center" }}>Delete last statistic</Text>
-          </TouchableHighlight>
-        ) : null}
-
         {this.state.errors["delete"] != null ? (
           <Text style={styles.error}>{this.state.errors["delete"]}</Text>
         ) : null}
@@ -354,14 +355,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    paddingHorizontal: 30,
   },
-  title: {
-    color: "#4cc9f0",
-    fontWeight: "bold",
-    fontSize: 20,
-    marginVertical: 10,
-    textAlign: "center",
-  },
+
   subtitle: {
     color: "#4cc9f0",
     fontWeight: "bold",
@@ -437,6 +433,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     marginVertical: 5,
+  },
+  deleteButton: {
+    flex: 1,
+    alignSelf: "center",
+    flexDirection: "row",
+
+    backgroundColor: "#FFF",
+    borderRadius: 22,
+    padding: 10,
+    marginVertical: 5,
+    elevation: 2,
   },
 });
 
