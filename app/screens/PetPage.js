@@ -20,6 +20,7 @@ import { AuthContext } from "../Components/AuthContext";
 import { withNavigation } from "react-navigation";
 import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
 //--- custom components -------
 import PhotoBox from "../Components/Custom/PhotoBox";
@@ -101,18 +102,10 @@ class PetScreen extends React.Component {
         <View style={styles.mainContent}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.petContainer}>
-              <View style={styles.pet}>
-                <ImageBackground
-                  source={{ uri: this.state.photo }}
-                  style={styles.petImage}
-                  imageStyle={{ borderRadius: 150 }}
-                ></ImageBackground>
-              </View>
-
               <View style={styles.buttons}>
                 {isEditable ? (
                   <TouchableOpacity
-                    style={styles.button}
+                    style={[styles.button, { marginLeft: 60 }]}
                     onPress={this.deletePet}
                   >
                     <Text style={styles.buttonText}>
@@ -123,7 +116,7 @@ class PetScreen extends React.Component {
 
                 {!isAdoptable ? (
                   <TouchableOpacity
-                    style={styles.button}
+                    style={[styles.button, { marginLeft: 20 }]}
                     onPress={() => {
                       this.setState({ showReportLossForm: true });
                     }}
@@ -136,7 +129,7 @@ class PetScreen extends React.Component {
 
                 {!isAdoptable ? (
                   <TouchableOpacity
-                    style={styles.button}
+                    style={[styles.button, { marginLeft: 60 }]}
                     onPress={() => {
                       this.setState({ showPhotoBox: true });
                     }}
@@ -146,6 +139,24 @@ class PetScreen extends React.Component {
                     </Text>
                   </TouchableOpacity>
                 ) : null}
+              </View>
+              <View>
+                <ImageBackground
+                  source={{ uri: this.state.photo }}
+                  style={styles.petImage}
+                  imageStyle={{ borderRadius: 150 }}
+                ></ImageBackground>
+              </View>
+              <View style={styles.petName}>
+                <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+                  {pet.getName()}
+                </Text>
+                <Ionicons
+                  style={{ textAlign: "center" }}
+                  name="md-paw"
+                  size={24}
+                  color="#f94144"
+                />
               </View>
             </View>
 
@@ -188,6 +199,7 @@ class PetScreen extends React.Component {
                 <Text style={styles.infoText}>{pet.getColor()} </Text>
               </View>
             </View>
+            <Text style={styles.title}>Health monitor</Text>
 
             <DiseasePanel
               petID={petID}
@@ -233,10 +245,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   buttons: {
-    flex: 1,
     flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
     paddingBottom: 10,
   },
   petButton: {
@@ -256,6 +265,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: 10,
     elevation: 2,
+    alignSelf: "center",
   },
   buttonText: {
     alignSelf: "center",
@@ -268,6 +278,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     paddingTop: 20,
+    justifyContent: "center",
+    alignContent: "center",
     //paddingBottom: 20,
   },
   pet: {
@@ -279,9 +291,6 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   petImage: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "flex-end",
     width: 150,
     height: 150,
     //borderRadius: 0,
@@ -297,7 +306,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
     padding: 10,
     marginBottom: 10,
-    elevation: 3,
+    elevation: 2,
   },
   infoText: {
     textAlign: "center",
@@ -356,6 +365,17 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "red",
     width: "80%",
+  },
+  title: {
+    color: "#4cc9f0",
+    fontWeight: "bold",
+    fontSize: 20,
+    marginVertical: 10,
+    textAlign: "center",
+  },
+  petName: {
+    alignSelf: "center",
+    margin: 15,
   },
 });
 export default withNavigation(PetScreen);

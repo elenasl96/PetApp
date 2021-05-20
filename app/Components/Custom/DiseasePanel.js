@@ -180,13 +180,13 @@ class DiseasePanel extends React.Component {
       //console.log("s: "+ s);
       return (
         <TouchableHighlight
-          style={styles.info}
+          style={styles.disease}
           value={s}
           key={s}
           onPress={() => this.setState({ diseaseShown: s })}
         >
           <View style={styles.info}>
-            <Text>{s}</Text>
+            <Text style={{ fontWeight: "bold" }}>{s}</Text>
           </View>
         </TouchableHighlight>
       );
@@ -207,8 +207,9 @@ class DiseasePanel extends React.Component {
     return (
       <>
         {temp.length != 0 ? (
-          <Text style={{ marginHorizontal: 15, marginVertical: 10 }}>
-            Diseases
+          <Text style={styles.title}>
+            Ough! Your pet is suffering of some diseases... Monitor it and
+            checkout your daily feed to retrieve suggestions!
           </Text>
         ) : (
           <View style={styles.healthStatus}>
@@ -224,12 +225,34 @@ class DiseasePanel extends React.Component {
           </View>
         )}
 
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+        <ScrollView
+          style={{ marginHorizontal: 10 }}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+        >
           {diseases}
         </ScrollView>
 
         {temp.length != 0 ? (
-          <Text style={styles.text}>{descriptionShown}</Text>
+          <View
+            style={{
+              marginHorizontal: 20,
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignContent: "flex-end",
+            }}
+          >
+            <Text style={styles.diseaseDescription}>{descriptionShown}</Text>
+            <TouchableHighlight
+              onPress={this.deleteDisease.bind(this)}
+              underlayColor={"rgb(200,200,200)"}
+            >
+              <View style={styles.deleteButton}>
+                <AntDesign name="delete" size={24} color="red" />
+              </View>
+            </TouchableHighlight>
+          </View>
         ) : null}
 
         {isEditable ? (
@@ -282,16 +305,6 @@ class DiseasePanel extends React.Component {
         {this.state.errors["addDisease"] != null ? (
           <Text style={styles.error}>{this.state.errors["addDisease"]}</Text>
         ) : null}
-
-        {temp.length != 0 ? (
-          <TouchableHighlight
-            style={styles.button}
-            onPress={this.deleteDisease.bind(this)}
-            underlayColor={"rgb(200,200,200)"}
-          >
-            <Text style={{ textAlign: "center" }}>Delete disease selected</Text>
-          </TouchableHighlight>
-        ) : null}
       </>
     );
   }
@@ -307,6 +320,11 @@ const styles = StyleSheet.create({
   },
   text: {
     margin: 15,
+  },
+  diseaseDescription: {
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    elevation: 2,
   },
   topBar: {
     flexDirection: "row",
@@ -335,19 +353,22 @@ const styles = StyleSheet.create({
   buttonText: {
     alignSelf: "center",
   },
-
-  info: {
+  disease: {
     flex: 1,
     flexDirection: "column",
-    backgroundColor: "powderblue",
-    borderRadius: 20,
-    marginLeft: 7,
+    backgroundColor: "white",
+    borderRadius: 15,
+    marginLeft: 10,
     marginRight: 5,
+    marginBottom: 5,
     padding: 10,
+    elevation: 2,
   },
   title: {
-    fontWeight: "bold",
-    fontSize: 20,
+    fontWeight: "400",
+    fontSize: 16,
+    marginHorizontal: 20,
+    marginBottom: 15,
   },
 
   descriptionContainer: {
@@ -398,6 +419,16 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     paddingLeft: 30,
     elevation: 1,
+  },
+  deleteButton: {
+    flex: 1,
+    alignSelf: "flex-start",
+    flexDirection: "row",
+    backgroundColor: "#FFF",
+    borderRadius: 22,
+    padding: 10,
+    marginVertical: 5,
+    elevation: 2,
   },
 });
 export default DiseasePanel;
