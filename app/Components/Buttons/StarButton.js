@@ -57,7 +57,7 @@ class StarButton extends React.Component {
       );
     } else {
       return (
-        <TouchableOpacity onPress={() => this.addToFavorite()}>
+        <TouchableOpacity id="button_fav" onPress={() => this.addToFavorite()}>
           <AntDesign
             name="staro"
             size={32}
