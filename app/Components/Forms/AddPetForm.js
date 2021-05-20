@@ -48,7 +48,7 @@ class AddPetForm extends React.Component {
   registerPet = async () => {
 
     let errors = validator.handlePetValidation(this.state.name,this.state.age,this.state.photo,this.props.adoptable,this.state.profile);
-    var isValid = validator.isValid(errors);
+    let isValid = validator.isValid(errors);
     this.setState({errors:errors});
 
     if (isValid) {

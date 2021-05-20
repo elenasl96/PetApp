@@ -40,37 +40,6 @@ export default class AddPlaceForm extends React.Component {
     this.setState({ mounted: false });
   }
 
-  handleValidation() {
-    let errors = {};
-    errors["name"] = null;
-    errors["description"] = null;
-    errors["address"] = null;
-    let formIsValid = true;
-
-    // Name
-    if (this.state.name == "") {
-      formIsValid = false;
-      errors["name"] = "Name cannot be empty";
-    }
-
-    // Description
-    if (this.state.description == "") {
-      formIsValid = false;
-      errors["description"] = "Description cannot be empty";
-    }
-
-    // Address
-    if (this.state.address == "" || this.state.city == "") {
-      formIsValid = false;
-      errors["address"] = "Address cannot be empty";
-    }
-
-    if (this.state.mounted) {
-      this.setState({ errors: errors });
-    }
-    return formIsValid;
-  }
-
   setPhoto = (photo) => {
     if (this.state.mounted) {
       this.setState({ photo: photo });
@@ -78,7 +47,12 @@ export default class AddPlaceForm extends React.Component {
   };
 
   async registerPlace() {
-    if (this.handleValidation()) {
+
+    let errors = validator.handlePlaceValidation(this.state.name,this.state.description,this.state.photo,this.state.address,this.state.city);
+    let isValid = validator.isValid(errors);
+    this.setState({errors:errors});
+
+    if (isValid) {
       let { status } = await Location.requestPermissionsAsync();
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
@@ -210,6 +184,9 @@ export default class AddPlaceForm extends React.Component {
               ) : null}
 
               <PhotoBox setPhoto={this.setPhoto} isUpdate={false}></PhotoBox>
+              {this.state.errors["photo"] != null ? (
+                <Text style={styles.error}>{this.state.errors["photo"]}</Text>
+              ) : null}
 
               <TouchableOpacity
                 style={{

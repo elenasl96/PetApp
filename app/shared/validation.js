@@ -53,6 +53,68 @@ handlePetValidation: function(name,age,photo,adoptable,profile) {
 
   },
 
+  handleNewsValidation(title,text) {
+    let errors = {};
+    errors["title"] = null;
+    errors["text"] = null;
+
+    //title
+    if (title == "") {
+      errors["title"] = "Title cannot be empty";
+    }
+
+    //text
+    if (text == "") {
+      errors["text"] = "Text cannot be empty";
+    }
+
+    return errors;
+  },
+
+  
+  handlePlaceValidation(name,description,photo,address,city) {
+    let errors = {};
+    errors["name"] = null;
+    errors["description"] = null;
+    errors["address"] = null;
+
+    // Name
+    if (name == "") {
+      errors["name"] = "Name cannot be empty";
+    }
+
+    // Description
+    if (description == "") {
+      errors["description"] = "Description cannot be empty";
+    }
+
+    if (photo == null) {
+        errors["photo"] = "You must load a photo";
+    }
+
+    // Address
+    if (address == "" || city == "") {
+      errors["address"] = "Address cannot be empty";
+    }
+    
+    return errors;
+
+  },
+
+  handleReportValidation(phone,reportType,name) {
+    let errors = {};
+
+    if (reportType === "loss" && !name.match(/^[a-zA-Z]+$/)) {
+      errors["name"] = "Only letters in name";
+    }
+
+    if (isNaN(phone)) {
+      errors["number"] = "Telephone must be a number";
+    }
+
+    return errors;
+  },
+
   handlePhotoValidation(photo){
 
     let errors = {};

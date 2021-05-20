@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import dbNews from "../../firebase/Database/Functions/dbNews";
 import { AuthContext } from "../AuthContext";
-
+import validator from "../../shared/validation";
 import mainStyle from "../../styles/mainStyle";
 
 export default class AddNewsForm extends React.Component {
@@ -29,34 +29,13 @@ export default class AddNewsForm extends React.Component {
     this.setState({mounted:false});
   }
 
-  handleValidation() {
-    let errors = {};
-    errors["title"] = null;
-    errors["text"] = null;
-    let formIsValid = true;
-
-    //title
-    if (this.state.title == "") {
-      formIsValid = false;
-      errors["title"] = "Title cannot be empty";
-    }
-
-    //text
-    if (this.state.text == "") {
-      formIsValid = false;
-      errors["text"] = "Text cannot be empty";
-    }
-
-    if (this.state.mounted) {
-    this.setState({ errors: errors });
-    }
-    return formIsValid;
-  }
-
   addNews() {
-    console.log("AddNews");
-    if (this.handleValidation()) {
-      console.log("Valid");
+
+    let errors = validator.handleNewsValidation(this.state.name,this.state.description,this.state.photo,this.state.address,this.state.city);
+    let isValid = validator.isValid(errors);
+    this.setState({errors:errors});
+
+    if (isValid) {
       const pid = this.props.pid;
       dbNews.addNews(pid, this.state.title, this.state.text).then(() => {
         this.props.close();
