@@ -22,6 +22,7 @@ import AddPetForm from "../Components/Forms/AddPetForm";
 import PetButton from "../Components/Buttons/PetButton";
 import storageManager from "../firebase/Storage/storage";
 import PhotoBox from "../Components/Custom/PhotoBox";
+import mainStyle from "../styles/mainStyle";
 
 class VetScreen extends React.Component {
   static contextType = AuthContext;
@@ -228,7 +229,7 @@ class VetScreen extends React.Component {
                 ]}
               >
                 <TouchableOpacity
-                  style={styles.button}
+                  style={mainStyle.roundButton}
                   onPress={this.openInMap.bind(this)}
                 >
                   <Text style={styles.buttonText}>Open in map </Text>
@@ -237,14 +238,14 @@ class VetScreen extends React.Component {
                 {isEditable ? (
                   <>
                     <TouchableOpacity
-                      style={styles.button}
+                      style={mainStyle.roundButton}
                       onPress={() => this.addNews()}
                     >
                       <Text style={styles.buttonText}> + News </Text>
                     </TouchableOpacity>
                     {place.isKennel() ? (
                       <TouchableOpacity
-                        style={styles.button}
+                        style={mainStyle.roundButton}
                         onPress={() => this.setState({ showPetForm: true })}
                       >
                         <Text style={styles.buttonText}> + Animals </Text>
@@ -259,10 +260,10 @@ class VetScreen extends React.Component {
 
                 {isEditable ? (
                   <TouchableOpacity
-                    style={styles.button}
+                    style={mainStyle.roundButton}
                     onPress={() => this.setState({ showPhotoBox: true })}
                   >
-                    <Text style={styles.buttonText}> UpdatePhoto </Text>
+                    <Text style={styles.buttonText}> Update Photo </Text>
                   </TouchableOpacity>
                 ) : null}
               </LinearGradient>

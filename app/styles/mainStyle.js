@@ -68,4 +68,13 @@ export default StyleSheet.create({
     color: "red",
     width: "80%",
   },
+  roundButton: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 22,
+    padding: 10,
+    marginBottom: 10,
+    marginLeft: 10,
+    elevation: 2,
+    alignSelf: "center",
+  },
 });

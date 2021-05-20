@@ -292,7 +292,7 @@ class DiseasePanel extends React.Component {
               </View>
 
               <TouchableHighlight
-                style={styles.button}
+                style={mainStyle.roundButton}
                 onPress={this.addDisease.bind(this)}
                 underlayColor={"rgb(200,200,200)"}
               >
@@ -339,16 +339,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "flex-start",
     paddingBottom: 10,
-  },
-  button: {
-    backgroundColor: "#FFF",
-    borderRadius: 22,
-    padding: 10,
-    marginVertical: 5,
-    marginLeft: 15,
-    alignContent: "center",
-    justifyContent: "center",
-    elevation: 2,
   },
   buttonText: {
     alignSelf: "center",

@@ -105,7 +105,7 @@ class PetScreen extends React.Component {
               <View style={styles.buttons}>
                 {isEditable ? (
                   <TouchableOpacity
-                    style={[styles.button, { marginLeft: 60 }]}
+                    style={[mainStyle.roundButton, { marginLeft: 60 }]}
                     onPress={this.deletePet}
                   >
                     <Text style={styles.buttonText}>
@@ -116,7 +116,7 @@ class PetScreen extends React.Component {
 
                 {!isAdoptable ? (
                   <TouchableOpacity
-                    style={[styles.button, { marginLeft: 20 }]}
+                    style={[mainStyle.roundButton, { marginLeft: 20 }]}
                     onPress={() => {
                       this.setState({ showReportLossForm: true });
                     }}
@@ -129,7 +129,7 @@ class PetScreen extends React.Component {
 
                 {!isAdoptable ? (
                   <TouchableOpacity
-                    style={[styles.button, { marginLeft: 60 }]}
+                    style={[mainStyle.roundButton, { marginLeft: 60 }]}
                     onPress={() => {
                       this.setState({ showPhotoBox: true });
                     }}
