@@ -15,7 +15,7 @@ import { AuthContext } from "../AuthContext";
 import { withNavigation } from "react-navigation";
 import { Picker } from "@react-native-picker/picker";
 import constants from "../../shared/constants";
-
+import validator from  "../../shared/validation";
 import mainStyle from "../../styles/mainStyle";
 import { ScrollView } from "react-native-gesture-handler";
 import dbAdoptableAnimal from "../../firebase/Database/Functions/dbAdoptableAnimal";
@@ -45,73 +45,16 @@ class AddPetForm extends React.Component {
     }
   }
 
-  handleValidation() {
-    let errors = {};
-    errors["name"] = null;
-    errors["age"] = null;
-    let formIsValid = true;
-    //Name
-    if (this.state.name == "") {
-      formIsValid = false;
-      errors["name"] = "Name cannot be empty";
-    } else if (!this.state.name.match(/^[a-zA-Z]+$/)) {
-      formIsValid = false;
-      errors["name"] = "Only letters in name";
-    }
-
-    //Age
-
-    if (this.state.age == "") {
-      formIsValid = false;
-      errors["age"] = "Age cannot be empty";
-    } else if (isNaN(this.state.age)) {
-      formIsValid = false;
-      errors["age"] = "Age must be a number";
-    } else if (
-      this.state.age > 20 ||
-      this.state.age < 0 ||
-      !Number.isInteger(Number(this.state.age))
-    ) {
-      console.log(this.state.age > 20);
-      console.log(this.state.age < 0);
-      console.log(!Number.isInteger(this.state.age));
-      formIsValid = false;
-      errors["age"] = "Age is an integer between 0 and 20 ";
-    }
-
-    if (this.props.adoptable && !this.state.profile) {
-      errors["profile"] = "Profile cannot be empty";
-    }
-
-    //console.log(errors);
-    if (this.state.mounted) {
-      this.setState({ errors: errors });
-    }
-    return formIsValid;
-  }
-
   registerPet = async () => {
-    if (this.handleValidation()) {
-      console.log("Registering pet...");
-      /*
-      this.upload(this.state.photo).then((url) => {
-          //console.log("url: " + this.state.url);
-          dbUserAnimal.addUserAnimal(
-                  this.context.uid,
-                  this.state.name,
-                  this.state.age,
-                  this.state.breedSelected,
-                  this.state.sizeSelected,
-                  this.state.colorSelected,
-                  this.state.url,
-                  this.state.typeSelected
-                );
-      });*/
+
+    let errors = validator.handlePetValidation(this.state.name,this.state.age,this.state.photo,this.props.adoptable,this.state.profile);
+    var isValid = validator.isValid(errors);
+    this.setState({errors:errors});
+
+    if (isValid) {
       const response = await fetch(this.state.photo);
       const file = await response.blob();
       storageManager.toStorage(this.context.uid, file, "pets").then((url) => {
-        console.log("url: " + url);
-        //this.state.url = url;
         if (this.props.adoptable) {
           dbAdoptableAnimal
             .addAdoptableAnimal(
@@ -152,15 +95,6 @@ class AddPetForm extends React.Component {
       });
     }
   };
-  /*
-  upload = async (uri) => {  // not used
-    const response = await fetch(uri);
-    const file = await response.blob();
-    storageManager.toStorage(this.context.uid, file, "pets").then((url) => {
-      console.log("url: " + url);
-      this.state.url = url;
-    });
-  }; */
 
   setPhoto = (photo) => {
     if (this.state.mounted) {
@@ -302,11 +236,16 @@ class AddPetForm extends React.Component {
                   />
                 </View>
               ) : null}
+
               {this.state.errors["profile"] != null ? (
                 <Text style={styles.error}>{this.state.errors["profile"]}</Text>
               ) : null}
 
               <PhotoBox setPhoto={this.setPhoto} isUpdate={false}></PhotoBox>
+
+              {this.state.errors["photo"] != null ? (
+                <Text style={styles.error}>{this.state.errors["photo"]}</Text>
+              ) : null}
 
               <TouchableOpacity
                 style={{
