@@ -199,6 +199,12 @@ class PetScreen extends React.Component {
                 <Text style={styles.infoText}>{pet.getColor()} </Text>
               </View>
             </View>
+            {isAdoptable ? (
+              <View style={styles.profile}>
+                <Text style={styles.title}>Profile</Text>
+                <Text>{pet.profile}</Text>
+              </View>
+            ) : null}
             <Text style={styles.title}>Health monitor</Text>
 
             <DiseasePanel
@@ -211,16 +217,7 @@ class PetScreen extends React.Component {
               {" "}
             </DiseasePanel>
 
-            {!isAdoptable ? (
-              <Chart petID={petID}></Chart>
-            ) : (
-              <TouchableHighlight>
-                <View style={styles.info}>
-                  <Text>Profile</Text>
-                  <Text>{pet.profile}</Text>
-                </View>
-              </TouchableHighlight>
-            )}
+            {!isAdoptable ? <Chart petID={petID}></Chart> : null}
           </ScrollView>
         </View>
       </SafeAreaView>
@@ -306,6 +303,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
     padding: 10,
     marginBottom: 10,
+    marginTop: 10,
     elevation: 2,
   },
   infoText: {
@@ -316,10 +314,6 @@ const styles = StyleSheet.create({
     color: "#f94144",
     fontWeight: "bold",
     textAlign: "center",
-  },
-  title: {
-    fontWeight: "bold",
-    fontSize: 20,
   },
 
   descriptionContainer: {
@@ -376,6 +370,9 @@ const styles = StyleSheet.create({
   petName: {
     alignSelf: "center",
     margin: 15,
+  },
+  profile: {
+    paddingHorizontal: 20,
   },
 });
 export default withNavigation(PetScreen);

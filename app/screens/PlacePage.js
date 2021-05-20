@@ -23,6 +23,9 @@ import PetButton from "../Components/Buttons/PetButton";
 import storageManager from "../firebase/Storage/storage";
 import PhotoBox from "../Components/Custom/PhotoBox";
 import mainStyle from "../styles/mainStyle";
+import { Feather } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 
 class VetScreen extends React.Component {
   static contextType = AuthContext;
@@ -168,157 +171,161 @@ class VetScreen extends React.Component {
 
     return (
       <SafeAreaView style={{ flex: 1 }}>
-        <AddNewsForm
-          pid={pid}
-          visible={this.state.showNewsForm}
-          close={() => {
-            this.setState({ showNewsForm: false });
-          }}
-        ></AddNewsForm>
-        <AddPetForm
-          adoptable={true}
-          pid={pid}
-          visible={this.state.showPetForm}
-          close={() => {
-            this.setState({ showPetForm: false });
-          }}
-          addPet={this.addAnimalToAdopt}
-        ></AddPetForm>
+        <ScrollView>
+          <AddNewsForm
+            pid={pid}
+            visible={this.state.showNewsForm}
+            close={() => {
+              this.setState({ showNewsForm: false });
+            }}
+          ></AddNewsForm>
+          <AddPetForm
+            adoptable={true}
+            pid={pid}
+            visible={this.state.showPetForm}
+            close={() => {
+              this.setState({ showPetForm: false });
+            }}
+            addPet={this.addAnimalToAdopt}
+          ></AddPetForm>
 
-        <PhotoBox
-          pid={pid}
-          section={"places"}
-          setPhoto={this.setPhoto}
-          isUpdate={true}
-          photo={photo}
-          visible={this.state.showPhotoBox}
-          close={() => {
-            this.setState({ showPhotoBox: false });
-          }}
-        ></PhotoBox>
+          <PhotoBox
+            pid={pid}
+            section={"places"}
+            setPhoto={this.setPhoto}
+            isUpdate={true}
+            photo={photo}
+            visible={this.state.showPhotoBox}
+            close={() => {
+              this.setState({ showPhotoBox: false });
+            }}
+          ></PhotoBox>
 
-        <View>
-          <ImageBackground source={{ uri: photo }} style={styles.vetImage}>
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "column",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text
-                style={[
-                  styles.title,
-                  {
-                    color: "white",
-                    textShadowColor: "black",
-                    textShadowRadius: 2,
-                  },
-                ]}
+          <View>
+            <ImageBackground source={{ uri: photo }} style={styles.vetImage}>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "column",
+                  justifyContent: "flex-end",
+                }}
               >
-                {place.getName()}
-              </Text>
-
-              <LinearGradient
-                style={styles.buttons}
-                // Background Linear Gradient
-                colors={[
-                  "rgba(255,255,255, 0.8)",
-                  "rgba(255,255,255,0.95)",
-                  "rgba(255,255,255,1)",
-                ]}
-              >
-                <TouchableOpacity
-                  style={mainStyle.roundButton}
-                  onPress={this.openInMap.bind(this)}
+                <Text
+                  style={[
+                    styles.title,
+                    {
+                      color: "white",
+                      textShadowColor: "black",
+                      textShadowRadius: 5,
+                      textAlign: "center",
+                    },
+                  ]}
                 >
-                  <Text style={styles.buttonText}>Open in map </Text>
-                </TouchableOpacity>
+                  {place.getName()}
+                </Text>
 
-                {isEditable ? (
-                  <>
-                    <TouchableOpacity
-                      style={mainStyle.roundButton}
-                      onPress={() => this.addNews()}
-                    >
-                      <Text style={styles.buttonText}> + News </Text>
-                    </TouchableOpacity>
-                    {place.isKennel() ? (
-                      <TouchableOpacity
-                        style={mainStyle.roundButton}
-                        onPress={() => this.setState({ showPetForm: true })}
-                      >
-                        <Text style={styles.buttonText}> + Animals </Text>
-                      </TouchableOpacity>
-                    ) : null}
-                  </>
-                ) : null}
-
-                {!isEditable ? (
-                  <StarButton uid={this.context.uid} pid={pid} />
-                ) : null}
-
-                {isEditable ? (
+                <LinearGradient
+                  style={styles.buttons}
+                  // Background Linear Gradient
+                  colors={[
+                    "rgba(255,255,255, 0.8)",
+                    "rgba(255,255,255,0.95)",
+                    "rgba(255,255,255,1)",
+                  ]}
+                >
                   <TouchableOpacity
                     style={mainStyle.roundButton}
-                    onPress={() => this.setState({ showPhotoBox: true })}
+                    onPress={this.openInMap.bind(this)}
                   >
-                    <Text style={styles.buttonText}> Update Photo </Text>
+                    <Feather name="map" size={24} color="lightgreen" />
                   </TouchableOpacity>
-                ) : null}
-              </LinearGradient>
-            </View>
-          </ImageBackground>
-        </View>
-        <View style={styles.details}>
-          <Text>
-            {place.getAddress()}
-            {"\n"}
-            {place.getDescription()}
-          </Text>
-        </View>
 
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <ScrollView
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            style={{ paddingTop: 10 }}
-          >
-            <News placeId={pid}></News>
-          </ScrollView>
+                  {isEditable ? (
+                    <>
+                      <TouchableOpacity
+                        style={mainStyle.roundButton}
+                        onPress={() => this.addNews()}
+                      >
+                        <FontAwesome
+                          name="newspaper-o"
+                          size={24}
+                          color="powderblue"
+                        />
+                      </TouchableOpacity>
+                      {place.isKennel() ? (
+                        <TouchableOpacity
+                          style={mainStyle.roundButton}
+                          onPress={() => this.setState({ showPetForm: true })}
+                        >
+                          <FontAwesome name="paw" size={24} color="orange" />
+                        </TouchableOpacity>
+                      ) : null}
+                    </>
+                  ) : null}
 
-          {console.log("adoptable animals")}
-          {console.log(this.state.pets)}
-          {this.state.pets.length > 0 ? (
-            <Text style={styles.title}>Adoptable pets</Text>
-          ) : null}
+                  {!isEditable ? (
+                    <StarButton uid={this.context.uid} pid={pid} />
+                  ) : null}
 
-          {this.state.pets.length > 0 ? (
-            <View style={styles.mainContent}>
+                  {isEditable ? (
+                    <TouchableOpacity
+                      style={mainStyle.roundButton}
+                      onPress={() => this.setState({ showPhotoBox: true })}
+                    >
+                      <FontAwesome name="image" size={24} color="orange" />
+                    </TouchableOpacity>
+                  ) : null}
+
+                  {isEditable ? (
+                    <TouchableOpacity
+                      style={mainStyle.roundButton}
+                      onPress={this.deletePlaceHere}
+                    >
+                      <AntDesign name="delete" size={24} color="red" />
+                    </TouchableOpacity>
+                  ) : null}
+                </LinearGradient>
+              </View>
+            </ImageBackground>
+          </View>
+          <View style={styles.details}>
+            <Text>
+              {place.getAddress()}
+              {"\n"}
+              {place.getDescription()}
+            </Text>
+            {this.state.pets.length > 0 ? (
+              <Text style={styles.title2}>Pets for adoption</Text>
+            ) : null}
+
+            {this.state.pets.length > 0 ? (
+              <View style={styles.mainContent}>
+                <ScrollView
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
+                >
+                  <PetButton
+                    navigation={this.props.navigation}
+                    pets={this.state.pets}
+                    isAdoptable={true}
+                    isEditable={isEditable}
+                    pid={this.props.navigation.state.params.place.id}
+                    deleteAnimal={this.deletePet}
+                  ></PetButton>
+                </ScrollView>
+              </View>
+            ) : null}
+
+            <ScrollView showsVerticalScrollIndicator={false}>
               <ScrollView
-                horizontal={true}
                 showsHorizontalScrollIndicator={false}
+                style={{ paddingTop: 10 }}
               >
-                <PetButton
-                  navigation={this.props.navigation}
-                  pets={this.state.pets}
-                  isAdoptable={true}
-                  isEditable={isEditable}
-                  pid={this.props.navigation.state.params.place.id}
-                  deleteAnimal={this.deletePet}
-                ></PetButton>
+                <Text style={styles.title2}>News</Text>
+                <News placeId={pid}></News>
               </ScrollView>
-            </View>
-          ) : null}
-
-          {isEditable ? (
-            <TouchableOpacity
-              style={styles.button}
-              onPress={this.deletePlaceHere}
-            >
-              <Text style={styles.buttonText}>Delete place</Text>
-            </TouchableOpacity>
-          ) : null}
+            </ScrollView>
+          </View>
         </ScrollView>
       </SafeAreaView>
     );
@@ -351,12 +358,12 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   buttons: {
-    paddingTop: 5,
+    paddingTop: 15,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
   },
   button: {
     //backgroundColor: "#F9844A",
@@ -374,7 +381,13 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontWeight: "bold",
   },
-
+  title2: {
+    color: "#4cc9f0",
+    fontWeight: "bold",
+    fontSize: 20,
+    marginVertical: 15,
+    textAlign: "center",
+  },
   title: {
     fontWeight: "bold",
     fontSize: 20,

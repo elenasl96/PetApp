@@ -19,6 +19,7 @@ import mainStyle from "../../styles/mainStyle";
 import * as Location from "expo-location";
 import { Picker } from "@react-native-picker/picker";
 import constants from "../../shared/constants";
+import validator from "../../shared/validation";
 
 export default class AddPlaceForm extends React.Component {
   static contextType = AuthContext;
@@ -47,10 +48,15 @@ export default class AddPlaceForm extends React.Component {
   };
 
   async registerPlace() {
-
-    let errors = validator.handlePlaceValidation(this.state.name,this.state.description,this.state.photo,this.state.address,this.state.city);
+    let errors = validator.handlePlaceValidation(
+      this.state.name,
+      this.state.description,
+      this.state.photo,
+      this.state.address,
+      this.state.city
+    );
     let isValid = validator.isValid(errors);
-    this.setState({errors:errors});
+    this.setState({ errors: errors });
 
     if (isValid) {
       let { status } = await Location.requestPermissionsAsync();

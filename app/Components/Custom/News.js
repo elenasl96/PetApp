@@ -1,9 +1,5 @@
 import React, { useContext } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import dbNews from "../../firebase/Database/Functions/dbNews";
 import { AuthContext } from "../AuthContext";
 import { AntDesign } from "@expo/vector-icons";
@@ -76,7 +72,7 @@ class News extends React.Component {
 
 const styles = StyleSheet.create({
   feedContainer: {
-    width: "97%",
+    width: "100%",
     paddingBottom: 20,
     alignSelf: "center",
   },
