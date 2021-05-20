@@ -19,6 +19,7 @@ import mainStyle from "../styles/mainStyle";
 import dbUser from "../firebase/Database/Functions/dbUser";
 import { AuthContext } from "../Components/AuthContext.js";
 import { Picker } from "@react-native-picker/picker";
+import validator from "../shared/validation.js";
 
 class SignUpScreen extends React.Component {
   static contextType = AuthContext;
@@ -59,16 +60,16 @@ class SignUpScreen extends React.Component {
 
   async signUpWithEmail() {
     if (this.state.emailSignup) {
-      console.log(this.state);
-      if (
-        this.state.name &&
-        this.state.email &&
-        this.state.password &&
-        this.state.address &&
-        this.state.type &&
-        this.state.type !== "" &&
-        this.state.photo
-      ) {
+      let errors = validator.handleSignUpValidation(
+        this.state.name,
+        this.state.email,
+        this.state.password,
+        this.state.type,
+        this.state.photo,
+        "email"
+      );
+      this.setState({ errors: errors });
+      if (validator.isValid(errors)) {
         await auth()
           .createUserWithEmailAndPassword(this.state.email, this.state.password)
           .then((credential) => {
