@@ -17,6 +17,7 @@ import dbUserAnimal from "../../firebase/Database/Functions/dbUserAnimal";
 import dbPlace from "../../firebase/Database/Functions/dbPlace";
 import dbUser from "../../firebase/Database/Functions/dbUser";
 import dbAdoptableAnimal from "../../firebase/Database/Functions/dbAdoptableAnimal";
+import validator from  "../../shared/validation";
 
 
 class PhotoBox extends React.Component {
@@ -118,20 +119,21 @@ class PhotoBox extends React.Component {
 
   updatePhoto = async () => {
 
-      let errors = {};
       const photoUpdate = this.state.photoUpdate;
       const photo = this.state.photo;
-      if (photoUpdate != null) {
+      let errors = validator.handlePhotoValidation(this.state.photoUpdate);
+      let isValid = validator.isValid(errors);
+      if (isValid) {
         storageManager.deleteFile(photo); // deletes old photo from storage
         this.upload(photoUpdate);
-      } else {
-        errors["photo"] = "You must load a photo";
-      }
+      } 
 
       if (this.state.mounted) {
       this.setState({ errors: errors });
       }
+
   };
+
 
   setPhotoUpdate = (photo) => {
       let errors = {};
@@ -141,13 +143,6 @@ class PhotoBox extends React.Component {
       }
   };
 
-  /*  function used to pass the photo to the container
-  setPhoto = (photo) => {
-      let errors = {};
-      this.setState({ photo: photo });
-      this.setState({ errors: errors }); //clean errors
-  };
-  */
 
   upload = async (uri) => {     // logic to differentiate the storages
     const section = this.props.section;
@@ -210,8 +205,6 @@ class PhotoBox extends React.Component {
                 });
     }
 
-
-    //this.props.setPhoto(uri); // update container photo
 
   };
 

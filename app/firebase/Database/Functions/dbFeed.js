@@ -79,11 +79,12 @@ getFeedsByFilter(pet, filter, value, id) {
       .get()
       .then(function (doc) {
         let data = doc.data();
-        feed = new Feed(data.title, data.text);
+        feed = new Feed(data.title, data.text, data.type);
+        console.log(feed);
         return feed;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
+        //console.log("Error getting documents: ", error);
       });
   },
 
@@ -103,7 +104,7 @@ getFeedsByFilter(pet, filter, value, id) {
         return feeds;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
+        //console.log("Error getting documents: ", error);
       });
   },
 

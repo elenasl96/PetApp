@@ -17,6 +17,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import PhotoBox from "../Custom/PhotoBox";
 import { Picker } from "@react-native-picker/picker";
 import constants from "../../shared/constants";
+import validator from "../../shared/validation";
 import LostPetNotify from "../../firebase/Database/Objects/LostPetNotify";
 import MatchPetsModal from "../Custom/matchPetsModal";
 import PetLostButton from "../Buttons/PetLostButton";
@@ -53,24 +54,6 @@ class ReportLossForm extends Component {
     }
   }
 
-  handleValidation(reportType) {
-    let errors = {};
-    let formIsValid = true;
-
-    if (reportType === "loss" && !this.state.name.match(/^[a-zA-Z]+$/)) {
-      formIsValid = false;
-      errors["name"] = "Only letters in name";
-    }
-
-    if (isNaN(this.state.phone)) {
-      formIsValid = false;
-      errors["number"] = "Telephone must be a number";
-    }
-    console.log(errors);
-    this.setState({ errors: errors });
-    return formIsValid;
-  }
-
   componentWillUnmount() {
     this.setState({ mounted: false });
   }
@@ -83,9 +66,10 @@ class ReportLossForm extends Component {
 
   reportLoss = () => {
     const pet = this.props.pet;
-    console.log("pet");
-    console.log(this.context.uid);
-    if (this.handleValidation("loss")) {
+    let errors = validator.handleReportValidation(this.state.phone,"loss",this.state.name);
+    let isValid = validator.isValid(errors);
+    this.setState({errors:errors});
+    if (isValid) {
       let lostPet = new LostPetNotify(
         this.state.name,
         this.state.photo,
@@ -99,34 +83,15 @@ class ReportLossForm extends Component {
         this.state.email,
         this.state.phone
       );
-      /*dbLostPet
-        .addLostPetNotify(
-          this.state.name,
-          this.state.photo,
-          this.state.size,
-          this.state.color,
-          this.state.breed,
-          this.state.notes,
-          this.state.place,
-          this.context.uid,
-          this.state.email,
-          this.state.telephone
-        )
-        .then((doc) => {
-          console.log("LOST PET ID TO ADD");
-          console.log(doc.id);
-          this.context.lostPets.push(doc.id);
-          this.context.saveLostPets(this.context.lostPets);
-          console.log("LOST PETS TO UPDATE:");
-          console.log(this.context.lostPets);
-          this.props.close();
-        }); */
       this.props.sendForm(lostPet, false);
     }
   };
 
   reportSight = () => {
-    if (this.handleValidation()) {
+    let errors = validator.handleReportValidation(this.state.phone);
+    let isValid = validator.isValid(errors);
+    this.setState({errors:errors});
+    if (isValid) {
       let lostPet = new LostPetSeen(
         this.state.photo,
         this.state.size,
@@ -139,28 +104,6 @@ class ReportLossForm extends Component {
         this.state.email,
         this.state.phone
       );
-      /*dbLostPet
-        .addLostPetNotify(
-          this.state.name,
-          this.state.photo,
-          this.state.size,
-          this.state.color,
-          this.state.breed,
-          this.state.notes,
-          this.state.place,
-          this.context.uid,
-          this.state.email,
-          this.state.telephone
-        )
-        .then((doc) => {
-          console.log("LOST PET ID TO ADD");
-          console.log(doc.id);
-          this.context.lostPets.push(doc.id);
-          this.context.saveLostPets(this.context.lostPets);
-          console.log("LOST PETS TO UPDATE:");
-          console.log(this.context.lostPets);
-          this.props.close();
-        }); */
       this.props.sendForm(lostPet, true);
     }
   };
