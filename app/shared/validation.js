@@ -1,18 +1,13 @@
 const validator = {
-
-
-isValid(errors){
-
+  isValid(errors) {
     let isValid = true;
     for (const [key, value] of Object.entries(errors)) {
-        if (value !== null)
-          isValid = false;
+      if (value !== null) isValid = false;
     }
     return isValid;
-},
+  },
 
-handlePetValidation: function(name,age,photo,adoptable,profile) {
-
+  handlePetValidation: function (name, age, photo, adoptable, profile) {
     let errors = {};
     errors["name"] = null;
     errors["age"] = null;
@@ -29,15 +24,10 @@ handlePetValidation: function(name,age,photo,adoptable,profile) {
     //Age
 
     if (age == "") {
-
       errors["age"] = "Age cannot be empty";
     } else if (isNaN(age)) {
       errors["age"] = "Age must be a number";
-    } else if (
-      age > 20 ||
-      age < 0 ||
-      !Number.isInteger(Number(age))
-    ) {
+    } else if (age > 20 || age < 0 || !Number.isInteger(Number(age))) {
       errors["age"] = "Age is an integer between 0 and 20 ";
     }
 
@@ -46,14 +36,13 @@ handlePetValidation: function(name,age,photo,adoptable,profile) {
     }
 
     if (photo == null) {
-        errors["photo"] = "You must load a photo";
+      errors["photo"] = "You must load a photo";
     }
 
     return errors;
-
   },
 
-  handleNewsValidation(title,text) {
+  handleNewsValidation(title, text) {
     let errors = {};
     errors["title"] = null;
     errors["text"] = null;
@@ -71,8 +60,7 @@ handlePetValidation: function(name,age,photo,adoptable,profile) {
     return errors;
   },
 
-  
-  handlePlaceValidation(name,description,photo,address,city) {
+  handlePlaceValidation(name, description, photo, address, city) {
     let errors = {};
     errors["name"] = null;
     errors["description"] = null;
@@ -89,19 +77,18 @@ handlePetValidation: function(name,age,photo,adoptable,profile) {
     }
 
     if (photo == null) {
-        errors["photo"] = "You must load a photo";
+      errors["photo"] = "You must load a photo";
     }
 
     // Address
     if (address == "" || city == "") {
       errors["address"] = "Address cannot be empty";
     }
-    
-    return errors;
 
+    return errors;
   },
 
-  handleReportValidation(phone,reportType,name) {
+  handleReportValidation(phone, reportType, name) {
     let errors = {};
 
     if (reportType === "loss" && !name.match(/^[a-zA-Z]+$/)) {
@@ -115,17 +102,39 @@ handlePetValidation: function(name,age,photo,adoptable,profile) {
     return errors;
   },
 
-  handlePhotoValidation(photo){
-
+  handlePhotoValidation(photo) {
     let errors = {};
     if (photo == null) {
-        errors["photo"] = "You must load a photo";
+      errors["photo"] = "You must load a photo";
     }
     return errors;
-
   },
 
+  handleSignUpValidation(name, email, password, userType, photo, signUpType) {
+    let errors = {};
 
+    if (name == "" && !name.match(/^[a-zA-Z]+$/)) {
+      errors["name"] = "You must put some letters in name";
+    }
+
+    if (email == "" && signUpType == "email") {
+      errors["email"] = "Email cannot be empty";
+    }
+
+    if (password == "" && signUpType == "email") {
+      errors["email"] = "Password cannot be empty";
+    }
+
+    if (userType == "") {
+      errors["userType"] = "Choose a user type";
+    }
+
+    if (photo == "" && signUpType == "email") {
+      errors["photo"] = "Choose a photo";
+    }
+
+    return errors;
+  },
 };
 
 export default validator;
