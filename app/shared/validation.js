@@ -31,7 +31,7 @@ const validator = {
       errors["age"] = "Age is an integer between 0 and 20 ";
     }
 
-    if (adoptable && !profile) {
+    if (adoptable && profile==null) {
       errors["profile"] = "Profile cannot be empty";
     }
 
