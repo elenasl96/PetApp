@@ -58,6 +58,7 @@
     "@babel/core": "~7.9.0",
     "@babel/preset-env": "^7.13.12",
     "@babel/preset-react": "^7.12.13",
+    "@testing-library/react-native": "^7.2.0",
     "@types/jest": "^26.0.23",
     "@types/react": "^17.0.5",
     "@types/react-native": "^0.64.5",
@@ -74,6 +75,9 @@
   },
   "private": true,
   "jest": {
-    "preset": "jest-expo-enzyme"
+    "preset": "jest-expo-enzyme",
+    "transformIgnorePatterns": [
+        "node_modules/(?!(jest-)?react-native|@react-native-community|@react-native-picker/picker)"
+      ]
   }
 }

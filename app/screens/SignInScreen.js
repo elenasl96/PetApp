@@ -126,9 +126,9 @@ class SignInScreen extends React.Component {
         <SafeAreaView style={{ flex: 1 }}>
           <KeyboardAvoidingView
             style={mainStyle.container}
-            behavior={Platform.OS == "ios" ? "padding" : "height"}
-            keyboardVerticalOffset={Platform.OS == "ios" ? 0 : 20}
-            enabled={Platform.OS === "ios" ? true : false}
+            //behavior={Platform.OS == "ios" ? "padding" : "height"}
+            //keyboardVerticalOffset={Platform.OS == "ios" ? 0 : 20}
+            //enabled={Platform.OS === "ios" ? true : false}
           >
             <Text style={mainStyle.logo}>PetApp</Text>
             <View style={mainStyle.form}>
@@ -158,6 +158,7 @@ class SignInScreen extends React.Component {
             {this.renderLoading()}
             <Text style={mainStyle.error}>{this.state.errorMessage}</Text>
             <TouchableOpacity
+              testID = "SignIn.Button"
               style={{ width: "80%", marginVertical: 8 }}
               onPress={this.signInWithEmail.bind(this)}
             >
@@ -178,7 +179,7 @@ class SignInScreen extends React.Component {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.continueButton}
-              onPress={this.context.signInWithGoogle}
+             // onPress={this.context.signInWithGoogle}
             >
               <View style={styles.googleButton}>
                 <Text style={styles.lightText}>Continue with Google</Text>
@@ -186,6 +187,7 @@ class SignInScreen extends React.Component {
             </TouchableOpacity>
             <View>
               <Text
+                testID = "SignIn.ToSignUp"
                 style={styles.text}
                 onPress={() => {
                   this.props.navigation.navigate("SignUp");

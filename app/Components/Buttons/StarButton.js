@@ -46,7 +46,7 @@ class StarButton extends React.Component {
   render() {
     if (this.state.favorite) {
       return (
-        <TouchableOpacity onPress={() => this.deleteFromFavorite()}>
+        <TouchableOpacity testID = "StarButton.deleteFromFavorite" onPress={() => this.deleteFromFavorite()}>
           <AntDesign
             name="star"
             size={32}
@@ -57,7 +57,7 @@ class StarButton extends React.Component {
       );
     } else {
       return (
-        <TouchableOpacity id="button_fav" onPress={() => this.addToFavorite()}>
+        <TouchableOpacity testID = "StarButton.addFavorite" id="button_fav" onPress={() => this.addToFavorite()}>
           <AntDesign
             name="staro"
             size={32}

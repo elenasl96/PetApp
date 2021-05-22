@@ -188,9 +188,9 @@ class SignUpScreen extends React.Component {
         <SafeAreaView style={{ flex: 1 }}>
           <KeyboardAvoidingView
             style={mainStyle.container}
-            behavior={Platform.OS == "ios" ? "padding" : "height"}
-            keyboardVerticalOffset={Platform.OS == "ios" ? 0 : 20}
-            enabled={Platform.OS === "ios" ? true : false}
+            //behavior={Platform.OS == "ios" ? "padding" : "height"}
+            //keyboardVerticalOffset={Platform.OS == "ios" ? 0 : 20}
+            //enabled={Platform.OS === "ios" ? true : false}
           >
             <Text style={mainStyle.logo}>PetApp</Text>
             {this.state.emailSignup ? (
