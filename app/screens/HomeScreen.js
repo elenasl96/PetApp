@@ -66,7 +66,9 @@ class HomeScreen extends React.Component {
       if (pets.length != 0) {
         this.getMyPets(pets);
       } else {
+        if(this.state.mounted){
         this.setState({ pets: pets });
+        }
       }
     }
   }
@@ -161,7 +163,7 @@ class HomeScreen extends React.Component {
           place.id = placeID;
           places.push(place);
         }
-        if (places.length == placeIDs.length) {
+        if (places.length == placeIDs.length && this.state.mounted) {
           this.setState({ places: places });
         }
       });
@@ -228,7 +230,9 @@ class HomeScreen extends React.Component {
   deletePet = (petID) => {
     dbUserAnimal.deleteAnimal(this.context.uid, petID);
     this.context.deletePet(petID);
+    if(this.state.mounted){
     this.setState({ onDeletePet: true });
+    }
   };
 
   showPet = () => {

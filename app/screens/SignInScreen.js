@@ -57,6 +57,7 @@ class SignInScreen extends React.Component {
       await auth()
         .signInWithEmailAndPassword(this.state.email, this.state.password)
         .then((credential) => {
+          console.log("LOGIN SUCCESS");
           auth().setPersistence(auth.Auth.Persistence.LOCAL);
           dbUser.getUser(credential.user.uid).then((userFromDb) => {
             if (this.state.mounted) {
@@ -74,6 +75,7 @@ class SignInScreen extends React.Component {
           }
         });
     } else {
+      console.log("LOGIN FAILED");
       this.onLoginFailure.bind(this)("Fill in all the fields");
     }
   }
@@ -133,6 +135,7 @@ class SignInScreen extends React.Component {
             <Text style={mainStyle.logo}>PetApp</Text>
             <View style={mainStyle.form}>
               <TextInput
+                testID = "SignIn.emailInput"
                 style={mainStyle.inputText}
                 placeholder="Email"
                 placeholderTextColor="#616161"
@@ -145,6 +148,7 @@ class SignInScreen extends React.Component {
             </View>
             <View style={mainStyle.form}>
               <TextInput
+                testID = "SignIn.passwordInput"
                 style={mainStyle.inputText}
                 placeholder="Password"
                 placeholderTextColor="#616161"

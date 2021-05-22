@@ -14,3 +14,18 @@ it("shows invalid message",() => {
    fireEvent.press(getByTestId("SignIn.Button"));
    getByText("Fill in all the fields");
 })
+
+it("navigates to signup page", async() => {
+
+   const pushMock = jest.fn();
+
+   const{getByTestId,getByText,queryAllByText} = render(<SignInScreen navigation = {{ navigate : pushMock}} />);
+   
+   //fireEvent.changeText(getByTestId("SignIn.emailInput"),"test@hotmail.com");
+   //fireEvent.changeText(getByTestId("SignIn.passwordInput"),"test97");
+   fireEvent.press(getByTestId("SignIn.ToSignUp"));
+
+   expect(pushMock).toBeCalledWith('SignUp');
+   expect(pushMock).toHaveBeenCalledTimes(1);
+
+})
