@@ -31,7 +31,7 @@ const MapNavigator = createStackNavigator(
       }),
     },
 
-/*
+    /*
     AnimalsToAdopt: {
       screen: AnimalsToAdoptScreen,
       path: "kennelProfile/:kennel",
@@ -57,7 +57,7 @@ const MapNavigator = createStackNavigator(
     defaultNavigationOptions: {
       headerTitle: () => <NavBar />,
       headerStyle: {
-        backgroundColor: "#F9844A",
+        backgroundColor: "#f4978e",
       },
       headerTintColor: "#fff",
       headerTitleStyle: {

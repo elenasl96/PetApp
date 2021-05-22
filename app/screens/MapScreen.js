@@ -344,8 +344,8 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   mapButton: {
-    padding: 8,
-    borderRadius: 30,
+    padding: 12,
+    borderRadius: 35,
     backgroundColor: "rgba(255, 255, 255, 1)",
     overflow: "hidden",
     elevation: 2,
@@ -362,6 +362,7 @@ const styles = StyleSheet.create({
   searchBox: {
     flex: 1,
     flexDirection: "row",
+    marginVertical: 5,
   },
   markerImage: {
     height: 35,

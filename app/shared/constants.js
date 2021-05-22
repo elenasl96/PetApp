@@ -7,6 +7,12 @@ const constants = {
   TYPES_PETS: ["Dog", "Cat"],
   DISEASES_DOG: ["Disease1", "Disease2"],
   DISEASES_CAT: ["Disease3", "Disease4", "Disease5"],
+  FEED_TYPE: {
+    general: "general",
+    breed: "breed",
+    age: "age",
+    size: "size",
+  },
 };
 
 export default constants;

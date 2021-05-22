@@ -29,7 +29,7 @@ const HomeBusinessNavigator = createStackNavigator(
       }),
     },
 
-/*
+    /*
     AnimalsToAdopt: {
       screen: AnimalsToAdoptScreen,
       path: "kennelProfile/:kennel",
@@ -54,7 +54,7 @@ const HomeBusinessNavigator = createStackNavigator(
     defaultNavigationOptions: {
       headerTitle: () => <NavBar />,
       headerStyle: {
-        backgroundColor: "#F9844A",
+        backgroundColor: "#f4978e",
       },
       headerTintColor: "#fff",
       headerTitleStyle: {

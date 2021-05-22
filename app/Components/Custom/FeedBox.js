@@ -1,11 +1,9 @@
 import React, { useContext, useEffect } from "react";
-import {
-  StyleSheet,
-  Text,
-} from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import dbFeed from "../../firebase/Database/Functions/dbFeed";
 import mainStyle from "../../styles/mainStyle.js";
 import { LinearGradient } from "expo-linear-gradient";
+import { Ionicons } from "@expo/vector-icons";
 
 class FeedBox extends React.Component {
   state = {
@@ -24,11 +22,15 @@ class FeedBox extends React.Component {
             key={index}
             style={styles.feed}
             // Background Linear Gradient
-            colors={["#caf0f8", "#48cae4", "#00b4d8"]}
+            //colors={["#caf0f8", "#48cae4", "#00b4d8"]}
+            colors={["#fff", feed.getColor(), feed.getColor()]}
             start={{ x: 0.8, y: 0 }}
             locations={[0, 0.5, 1]}
           >
-            <Text style={mainStyle.title}>{feed.getTitle()}</Text>
+            <View style={styles.header}>
+              <Text style={mainStyle.title}>{feed.getTitle()}</Text>
+              {feed.getIcon()}
+            </View>
             <Text style={mainStyle.text}>{feed.getText()}</Text>
           </LinearGradient>
         );
@@ -63,14 +65,19 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     padding: 15,
-    elevation: 7,
-    marginBottom: 10,
+    elevation: 2,
+    marginVertical: 5,
   },
   petImage: {
     width: 150,
     height: 150,
     borderRadius: 75,
     resizeMode: "cover",
+  },
+  header: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });
 

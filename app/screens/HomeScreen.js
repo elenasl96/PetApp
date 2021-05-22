@@ -266,36 +266,34 @@ class HomeScreen extends React.Component {
               </ScrollView>
             </View>
 
-            <View style={styles.myPetsContainer}>
-              <View style={styles.myPets}>
+            <View style={styles.myPets}>
+              <ScrollView
+                horizontal={false}
+                showsHorizontalScrollIndicator={false}
+              >
+                <Text style={styles.largeText}>Your pets</Text>
                 <ScrollView
-                  horizontal={false}
+                  horizontal={true}
                   showsHorizontalScrollIndicator={false}
                 >
-                  <Text style={styles.largeText}>Your pets</Text>
-                  <ScrollView
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                  >
-                    {this.state.pets.length > 0 ? (
-                      <PetButton
-                        uid={this.context.uid}
-                        pets={this.state.pets}
-                        navigation={this.props.navigation}
-                        deleteAnimal={this.deletePet}
-                        type="useranimal"
-                      ></PetButton>
-                    ) : null}
+                  {this.state.pets.length > 0 ? (
+                    <PetButton
+                      uid={this.context.uid}
+                      pets={this.state.pets}
+                      navigation={this.props.navigation}
+                      deleteAnimal={this.deletePet}
+                      type="useranimal"
+                    ></PetButton>
+                  ) : null}
 
-                    <TouchableHighlight
-                      onPress={this.showPetForm}
-                      style={styles.addPetButton}
-                    >
-                      <AntDesign name="plus" size={50} style={styles.plus} />
-                    </TouchableHighlight>
-                  </ScrollView>
+                  <TouchableHighlight
+                    onPress={this.showPetForm}
+                    style={styles.addPetButton}
+                  >
+                    <AntDesign name="plus" size={50} style={styles.plus} />
+                  </TouchableHighlight>
                 </ScrollView>
-              </View>
+              </ScrollView>
             </View>
 
             <View style={styles.myPlaceContainer}>
@@ -372,20 +370,15 @@ const styles = StyleSheet.create({
     marginRight: 10,
     padding: 15,
   },
-  myPetsContainer: {
-    flexDirection: "column",
-  },
 
   title: {
     marginLeft: 15,
-    marginTop: 10,
     fontWeight: "bold",
     fontSize: 20,
   },
   myPets: {
     flexWrap: "nowrap",
     flexDirection: "row",
-    paddingTop: 10,
     paddingBottom: 10,
     backgroundColor: "white",
   },
@@ -453,7 +446,7 @@ const styles = StyleSheet.create({
   largeText: {
     fontSize: 30,
     marginHorizontal: 10,
-    marginVertical: 5,
+    marginBottom: 10,
   },
 });
 export default HomeScreen;

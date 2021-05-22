@@ -17,7 +17,7 @@ const TabBusinessNavigator = createMaterialBottomTabNavigator(
   {
     initialRouteName: "Home",
 
-    barStyle: { backgroundColor: "#F9844A" },
+    barStyle: { backgroundColor: "#fff" },
 
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, horizontal, tintColor }) => {

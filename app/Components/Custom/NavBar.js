@@ -19,7 +19,7 @@ class NavBar extends Component {
   render() {
     return (
       <View style={styles.topBar}>
-        <Text style={styles.mainTitle}>{this.props.title} </Text>
+        <Text style={styles.mainTitle}> </Text>
         <View style={styles.profileContainer}>
           {this.context.user.name ? (
             <Text style={styles.username}>{this.context.user.name} </Text>

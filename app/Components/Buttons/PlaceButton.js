@@ -57,44 +57,44 @@ class PlaceButton extends React.Component {
 
   render() {
     if (this.props.places != null) {
-      if (!this.props.isSavedPlace) {
-        return this.props.places.map((place, index) => (
-          <View key={index}>
-            <TouchableHighlight
-              onPress={() => this.showPlace(place)}
-              style={styles.place}
+      //  if (!this.props.isSavedPlace) {
+      return this.props.places.map((place, index) => (
+        <View key={index}>
+          <TouchableHighlight
+            onPress={() => this.showPlace(place)}
+            style={styles.place}
+          >
+            <ImageBackground
+              source={{ uri: place.photo }}
+              style={styles.placeImage}
+              imageStyle={{ borderRadius: 20 }}
             >
-              <ImageBackground
-                source={{ uri: place.photo }}
-                style={styles.placeImage}
-                imageStyle={{ borderRadius: 20 }}
-              >
-                <View style={styles.overlay}>
-                  <Text style={styles.title}>{place.name}</Text>
-                </View>
-              </ImageBackground>
-            </TouchableHighlight>
-          </View>
-        ));
-      } else {
-        return this.props.places.map((place, index) => (
-          <View key={index}>
-            <TouchableHighlight
-              onPress={() => this.showPlace(place)}
-              style={styles.pet}
+              <View style={styles.overlay}>
+                <Text style={styles.title}>{place.name}</Text>
+              </View>
+            </ImageBackground>
+          </TouchableHighlight>
+        </View>
+      ));
+      /*} else {
+      return this.props.places.map((place, index) => (
+        <View key={index}>
+          <TouchableHighlight
+            onPress={() => this.showPlace(place)}
+            style={styles.pet}
+          >
+            <ImageBackground
+              source={{ uri: place.photo }}
+              imageStyle={{ borderRadius: 20 }}
             >
-              <ImageBackground
-                source={{ uri: place.photo }}
-                imageStyle={{ borderRadius: 20 }}
-              >
-                <View style={styles.overlay}>
-                  <Text style={styles.title}>{place.name}</Text>
-                </View>
-              </ImageBackground>
-            </TouchableHighlight>
-          </View>
-        ));
-      }
+              <View style={styles.overlay}>
+                <Text style={styles.title}>{place.name}</Text>
+              </View>
+            </ImageBackground>
+          </TouchableHighlight>
+        </View>
+      ));
+       }*/
     } else {
       return (
         <Text style={{ textAlign: "center" }}>
