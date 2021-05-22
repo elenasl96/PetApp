@@ -38,17 +38,16 @@ class PlaceButton extends React.Component {
   }
 
   showPlace(place) {
-    if(!this.props.isSavedPlace){
-        this.props.navigation.navigate("Place", {
-          place: place,
-          deletePlace: this.props.deletePlace,
-        });
-    }
-    else{
-        this.props.navigation.navigate("Place", {
-                  place: place,
-                  // no need for delete in this case
-        });
+    if (!this.props.isSavedPlace) {
+      this.props.navigation.navigate("Place", {
+        place: place,
+        deletePlace: this.props.deletePlace,
+      });
+    } else {
+      this.props.navigation.navigate("Place", {
+        place: place,
+        // no need for delete in this case
+      });
     }
   }
 
@@ -57,48 +56,45 @@ class PlaceButton extends React.Component {
   }
 
   render() {
-
     if (this.props.places != null) {
-
-    if(!this.props.isSavedPlace){
-      return this.props.places.map((place, index) => (
-        <View key={index}>
-          <TouchableHighlight
-            onPress={() => this.showPlace(place)}
-            style={styles.place}
-          >
-            <ImageBackground
-              source={{ uri: place.photo }}
-              style={styles.placeImage}
+      if (!this.props.isSavedPlace) {
+        return this.props.places.map((place, index) => (
+          <View key={index}>
+            <TouchableHighlight
+              onPress={() => this.showPlace(place)}
+              style={styles.place}
             >
-              <View style={styles.overlay}>
-                <Text style={styles.title}>{place.name}</Text>
-              </View>
-            </ImageBackground>
-          </TouchableHighlight>
-        </View>
-      ));
-    }else{
-
-     return this.props.places.map((place, index) => (
-             <View key={index}>
-               <TouchableHighlight
-                 onPress={() => this.showPlace(place)}
-                 style={styles.pet}
-               >
-                 <ImageBackground
-                   source={{ uri: place.photo }}
-                   style={styles.petImage}
-                 >
-                   <View style={styles.overlay}>
-                     <Text style={styles.title}>{place.name}</Text>
-                   </View>
-                 </ImageBackground>
-               </TouchableHighlight>
-             </View>
-           ));
-    }
-
+              <ImageBackground
+                source={{ uri: place.photo }}
+                style={styles.placeImage}
+                imageStyle={{ borderRadius: 20 }}
+              >
+                <View style={styles.overlay}>
+                  <Text style={styles.title}>{place.name}</Text>
+                </View>
+              </ImageBackground>
+            </TouchableHighlight>
+          </View>
+        ));
+      } else {
+        return this.props.places.map((place, index) => (
+          <View key={index}>
+            <TouchableHighlight
+              onPress={() => this.showPlace(place)}
+              style={styles.pet}
+            >
+              <ImageBackground
+                source={{ uri: place.photo }}
+                imageStyle={{ borderRadius: 20 }}
+              >
+                <View style={styles.overlay}>
+                  <Text style={styles.title}>{place.name}</Text>
+                </View>
+              </ImageBackground>
+            </TouchableHighlight>
+          </View>
+        ));
+      }
     } else {
       return (
         <Text style={{ textAlign: "center" }}>
@@ -114,38 +110,46 @@ const styles = StyleSheet.create({
     width: "100%",
     elevation: 2,
     marginVertical: 7,
+    borderRadius: 20,
   },
   title: {
     marginVertical: 55,
-    color: "white",
-    textShadowColor: "black",
+    color: "orange",
+    textShadowColor: "orange",
     textShadowRadius: 3,
-    alignSelf: "center",
     fontSize: 20,
+    backgroundColor: "white",
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 20,
+    position: "absolute",
+    right: 10,
+    bottom: -40,
   },
   placeImage: {
     width: "100%",
     height: 150,
     resizeMode: "cover",
+    borderRadius: 20,
   },
   overlay: {
-    backgroundColor: "rgba(150, 150, 150, 0.3)",
+    backgroundColor: "rgba(150, 150, 150, 0)",
     width: "100%",
     height: "100%",
+    borderRadius: 20,
   },
   pet: {
-      marginHorizontal: 10,
-      width: 150,
-      height: 150,
-      borderRadius: 75,
-      backgroundColor: "orange",
-      elevation: 5,
-    },
-    petImage: {
-      width: 150,
-      height: 150,
-      borderRadius: 75,
-      resizeMode: "cover",
-    },
+    marginHorizontal: 10,
+    width: 150,
+    height: 150,
+    backgroundColor: "orange",
+    elevation: 5,
+  },
+  petImage: {
+    width: 150,
+    height: 150,
+    borderRadius: 20,
+    resizeMode: "cover",
+  },
 });
 export default PlaceButton;

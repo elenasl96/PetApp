@@ -16,6 +16,7 @@ import dbPlace from "../../firebase/Database/Functions/dbPlace.js";
 import dbAdoptableAnimal from "../../firebase/Database/Functions/dbAdoptableAnimal.js";
 import PlaceButton from "../../Components/Buttons/PlaceButton";
 import AddPlaceForm from "../../Components/Forms/AddPlaceForm";
+import { AntDesign } from "@expo/vector-icons";
 
 export default class HomeBusiness extends React.Component {
   state = {
@@ -105,22 +106,21 @@ export default class HomeBusiness extends React.Component {
         <View style={styles.mainContent}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.myPlacesContainer}>
-              <Text style={styles.title}>My Places</Text>
+              <View style={styles.titleBox}>
+                <Text style={styles.title}>My Places </Text>
+                <TouchableHighlight
+                  onPress={this.addPlace}
+                  style={styles.addPetButton}
+                >
+                  <AntDesign name="plus" size={50} style={styles.plus} />
+                </TouchableHighlight>
+              </View>
+
               <View style={styles.myPlaces}>
                 <ScrollView
                   vertical={true}
                   showsHorizontalScrollIndicator={false}
                 >
-                  <TouchableHighlight
-                    onPress={this.addPlace}
-                    style={styles.placeButton}
-                  >
-                    <Image
-                      source={require("../../../assets/images/add.png")}
-                      style={styles.addButton}
-                    ></Image>
-                  </TouchableHighlight>
-
                   {this.state.places.length > 0 ? (
                     <PlaceButton
                       uid={this.context.uid}
@@ -198,11 +198,16 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 20,
   },
+  titleBox: {
+    flex: 1,
+    flexDirection: "row",
+    marginTop: 10,
+    justifyContent: "center",
+  },
   myPlaces: {
     flexWrap: "nowrap",
     flexDirection: "column",
-    paddingTop: 10,
-    paddingBottom: 10,
+    padding: 20,
     backgroundColor: "white",
   },
   place: {
