@@ -20,6 +20,7 @@ import dbUser from "../firebase/Database/Functions/dbUser";
 import { AuthContext } from "../Components/AuthContext.js";
 import { Picker } from "@react-native-picker/picker";
 import validator from "../shared/validation.js";
+import { ScrollView } from "react-native-gesture-handler";
 
 class SignUpScreen extends React.Component {
   static contextType = AuthContext;
@@ -184,132 +185,127 @@ class SignUpScreen extends React.Component {
         }}
       >
         <SafeAreaView style={{ flex: 1 }}>
-          <KeyboardAvoidingView
-            style={mainStyle.container}
-            behavior={Platform.OS == "ios" ? "padding" : "height"}
-            keyboardVerticalOffset={Platform.OS == "ios" ? 0 : 20}
-            enabled={Platform.OS === "ios" ? true : false}
+          <ScrollView
+            contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
           >
-            <Text style={mainStyle.logo}>PetApp</Text>
-            {this.state.emailSignup ? (
-              <View style={mainStyle.form}>
-                <TextInput
-                  style={mainStyle.inputText}
-                  placeholder="Name"
-                  placeholderTextColor="#616161"
-                  returnKeyType="next"
-                  textContentType="name"
-                  value={this.state.name}
-                  onChangeText={(name) => this.setState({ name })}
-                />
-              </View>
-            ) : null}
+            <KeyboardAvoidingView
 
-            {this.state.emailSignup ? (
-              <View style={mainStyle.form}>
-                <TextInput
-                  style={mainStyle.inputText}
-                  placeholder="Email"
-                  placeholderTextColor="#616161"
-                  returnKeyType="next"
-                  keyboardType="email-address"
-                  textContentType="emailAddress"
-                  value={this.state.email}
-                  onChangeText={(email) => this.setState({ email })}
-                />
-              </View>
-            ) : null}
+            //behavior={Platform.OS == "ios" ? "padding" : "height"}
+            //keyboardVerticalOffset={Platform.OS == "ios" ? 0 : 20}
+            //enabled={Platform.OS === "ios" ? true : false}
+            >
+              <Text style={mainStyle.logo}>PetApp</Text>
+              {this.state.emailSignup ? (
+                <View style={mainStyle.form}>
+                  <TextInput
+                    style={mainStyle.inputText}
+                    placeholder="Name"
+                    placeholderTextColor="#616161"
+                    returnKeyType="next"
+                    textContentType="name"
+                    value={this.state.name}
+                    onChangeText={(name) => this.setState({ name })}
+                  />
+                </View>
+              ) : null}
 
-            {this.state.emailSignup ? (
-              <View style={mainStyle.form}>
-                <TextInput
-                  style={mainStyle.inputText}
-                  placeholder="Password"
-                  placeholderTextColor="#616161"
-                  returnKeyType="done"
-                  textContentType="newPassword"
-                  secureTextEntry={true}
-                  value={this.state.password}
-                  onChangeText={(password) => this.setState({ password })}
-                />
-              </View>
-            ) : null}
+              {this.state.emailSignup ? (
+                <View style={mainStyle.form}>
+                  <TextInput
+                    style={mainStyle.inputText}
+                    placeholder="Email"
+                    placeholderTextColor="#616161"
+                    returnKeyType="next"
+                    keyboardType="email-address"
+                    textContentType="emailAddress"
+                    value={this.state.email}
+                    onChangeText={(email) => this.setState({ email })}
+                  />
+                </View>
+              ) : null}
 
-            {this.state.emailSignup ? (
-              <PhotoBox setPhoto={this.setPhoto} isUpdate={false}></PhotoBox>
-            ) : null}
+              {this.state.emailSignup ? (
+                <View style={mainStyle.form}>
+                  <TextInput
+                    style={mainStyle.inputText}
+                    placeholder="Password"
+                    placeholderTextColor="#616161"
+                    returnKeyType="done"
+                    textContentType="newPassword"
+                    secureTextEntry={true}
+                    value={this.state.password}
+                    onChangeText={(password) => this.setState({ password })}
+                  />
+                </View>
+              ) : null}
 
-            {this.state.emailSignup ||
-            this.state.facebookSignup ||
-            this.state.googleSignup ? (
-              <View style={mainStyle.form}>
-                <TextInput
-                  style={mainStyle.inputText}
-                  placeholder="Address"
-                  placeholderTextColor="#616161"
-                  returnKeyType="next"
-                  textContentType="addressCity"
-                  value={this.state.address}
-                  onChangeText={(address) => this.setState({ address })}
-                />
-              </View>
-            ) : null}
+              {this.state.emailSignup ? (
+                <PhotoBox setPhoto={this.setPhoto} isUpdate={false}></PhotoBox>
+              ) : null}
 
-            {this.state.emailSignup ||
-            this.state.facebookSignup ||
-            this.state.googleSignup ? (
-              <View style={mainStyle.form}>
-                <Picker
-                  selectedValue={""}
-                  style={{ height: 50, width: "100%" }}
-                  onValueChange={(itemValue, itemIndex) =>
-                    this.setState({ type: itemValue })
-                  }
+              {this.state.emailSignup ||
+              this.state.facebookSignup ||
+              this.state.googleSignup ? (
+                <View style={mainStyle.form}>
+                  <TextInput
+                    style={mainStyle.inputText}
+                    placeholder="Address"
+                    placeholderTextColor="#616161"
+                    returnKeyType="next"
+                    textContentType="addressCity"
+                    value={this.state.address}
+                    onChangeText={(address) => this.setState({ address })}
+                  />
+                </View>
+              ) : null}
+
+              {this.state.emailSignup ||
+              this.state.facebookSignup ||
+              this.state.googleSignup ? (
+                <View style={mainStyle.form}>
+                  <Picker
+                    selectedValue={""}
+                    style={{ height: 50, width: "100%" }}
+                    onValueChange={(itemValue, itemIndex) =>
+                      this.setState({ type: itemValue })
+                    }
+                  >
+                    <Picker.Item label="Select user type" value="" />
+                    <Picker.Item label="Basic user" value="user" />
+                    <Picker.Item label="Business user" value="business" />
+                  </Picker>
+                </View>
+              ) : null}
+
+              {this.renderLoading()}
+              <Text style={styles.error}>{this.state.errorMessage}</Text>
+              <TouchableOpacity onPress={this.signUpWithEmail.bind(this)}>
+                <View style={[styles.button, styles.emailButton]}>
+                  <Text style={styles.text}>Sign Up with email</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={this.signInWithFacebook.bind(this)}>
+                <View style={[styles.button, styles.facebookButton]}>
+                  <Text style={styles.buttonText}>Signup with Facebook</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={this.context.signInWithGoogle}>
+                <View style={[styles.button, styles.googleButton]}>
+                  <Text style={styles.buttonText}>Signup with Google</Text>
+                </View>
+              </TouchableOpacity>
+              <View style={[styles.linkBox, mainStyle.link]}>
+                <Text
+                  style={styles.text}
+                  onPress={() => {
+                    this.props.navigation.navigate("SignIn");
+                  }}
                 >
-                  <Picker.Item label="Select user type" value="" />
-                  <Picker.Item label="Basic user" value="user" />
-                  <Picker.Item label="Business user" value="business" />
-                </Picker>
+                  Already have an account?
+                </Text>
               </View>
-            ) : null}
-
-            {this.renderLoading()}
-            <Text style={styles.error}>{this.state.errorMessage}</Text>
-            <TouchableOpacity
-              style={{ width: "80%", marginVertical: 8 }}
-              onPress={this.signUpWithEmail.bind(this)}
-            >
-              <View style={styles.emailButton}>
-                <Text style={styles.text}>Sign Up with email</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{ width: "80%", marginVertical: 8 }}
-              onPress={this.signInWithFacebook.bind(this)}
-            >
-              <View style={styles.button}>
-                <Text style={styles.buttonText}>Signup with Facebook</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{ width: "80%", marginVertical: 8 }}
-              onPress={this.context.signInWithGoogle}
-            >
-              <View style={styles.googleButton}>
-                <Text style={styles.buttonText}>Signup with Google</Text>
-              </View>
-            </TouchableOpacity>
-            <View style={{ marginTop: 10 }}>
-              <Text
-                style={styles.text}
-                onPress={() => {
-                  this.props.navigation.navigate("SignIn");
-                }}
-              >
-                Already have an account?
-              </Text>
-            </View>
-          </KeyboardAvoidingView>
+            </KeyboardAvoidingView>
+          </ScrollView>
         </SafeAreaView>
       </TouchableWithoutFeedback>
     );
@@ -339,39 +335,40 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 17,
     textAlign: "center",
+    fontWeight: "bold",
   },
   button: {
-    backgroundColor: "#3A559F",
-    height: 44,
-    flexDirection: "row",
+    maxWidth: 300,
+    width: "95%",
+    marginTop: 15,
+    borderRadius: 50,
+    height: 50,
     justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 22,
+    alignSelf: "center",
+    padding: 20,
+    elevation: 4,
   },
+
   buttonText: {
     letterSpacing: 0.5,
     fontSize: 16,
     color: "#FFFFFF",
+    fontWeight: "bold",
+    textAlign: "center",
   },
-  googleButton: {
-    backgroundColor: "rgb(255, 50, 50)",
-    height: 44,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 22,
-    borderWidth: 1,
-    borderColor: "#707070",
-  },
+
   emailButton: {
     backgroundColor: "#FFFFFF",
-    height: 44,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 22,
-    borderWidth: 1,
-    borderColor: "#707070",
+  },
+  facebookButton: {
+    backgroundColor: "#1d3557",
+  },
+  googleButton: {
+    backgroundColor: "#e63946",
+  },
+
+  linkBox: {
+    marginVertical: 20,
   },
   error: {
     fontSize: 18,

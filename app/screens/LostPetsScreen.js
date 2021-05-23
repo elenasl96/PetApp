@@ -288,6 +288,7 @@ export default class LostPetsScreen extends React.Component {
                       this.reportLoss();
                     }}
                     underlayColor={"rgb(200,200,200)"}
+                    style={{ borderRadius: 20 }}
                   >
                     <View style={styles.button}>
                       <Feather name="alert-triangle" size={24} color="white" />
@@ -444,8 +445,7 @@ const styles = StyleSheet.create({
     paddingRight: 20,
   },
   button: {
-    backgroundColor: "#F9844A",
-    height: 44,
+    backgroundColor: "#fe6d73",
     borderRadius: 22,
     flexDirection: "row",
     paddingVertical: 10,

@@ -17,6 +17,7 @@ import * as Facebook from "expo-facebook";
 import dbUser from "../firebase/Database/Functions/dbUser";
 import mainStyle from "../styles/mainStyle";
 import { AuthContext } from "../Components/AuthContext";
+import { ScrollView } from "react-native-gesture-handler";
 
 class SignInScreen extends React.Component {
   static contextType = AuthContext;
@@ -100,13 +101,15 @@ class SignInScreen extends React.Component {
         //console.log("Facebook data:");
         //console.log(facebookProfileData);
         if (facebookProfileData.additionalUserInfo.isNewUser) {
-          dbUser.addUser(
-            auth().currentUser.uid,
-            facebookProfileData.additionalUserInfo.profile.name,
-            facebookProfileData.additionalUserInfo.profile.picture.data.url,
-            this.state.type,
-            this.state.address
-          ).then("User Registered");
+          dbUser
+            .addUser(
+              auth().currentUser.uid,
+              facebookProfileData.additionalUserInfo.profile.name,
+              facebookProfileData.additionalUserInfo.profile.picture.data.url,
+              this.state.type,
+              this.state.address
+            )
+            .then("User Registered");
         }
 
         dbUser.getUser(user.uid).then((userFromDb) => {
@@ -126,81 +129,81 @@ class SignInScreen extends React.Component {
         }}
       >
         <SafeAreaView style={{ flex: 1 }}>
-          <KeyboardAvoidingView
-            style={mainStyle.container}
-            //behavior={Platform.OS == "ios" ? "padding" : "height"}
-            //keyboardVerticalOffset={Platform.OS == "ios" ? 0 : 20}
-            //enabled={Platform.OS === "ios" ? true : false}
+          <ScrollView
+            contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
           >
-            <Text style={mainStyle.logo}>PetApp</Text>
-            <View style={mainStyle.form}>
-              <TextInput
-                testID = "SignIn.emailInput"
-                style={mainStyle.inputText}
-                placeholder="Email"
-                placeholderTextColor="#616161"
-                returnKeyType="next"
-                keyboardType="email-address"
-                textContentType="emailAddress"
-                value={this.state.email}
-                onChangeText={(email) => this.setState({ email })}
-              />
-            </View>
-            <View style={mainStyle.form}>
-              <TextInput
-                testID = "SignIn.passwordInput"
-                style={mainStyle.inputText}
-                placeholder="Password"
-                placeholderTextColor="#616161"
-                returnKeyType="done"
-                textContentType="newPassword"
-                secureTextEntry={true}
-                value={this.state.password}
-                onChangeText={(password) => this.setState({ password })}
-              />
-            </View>
-            {this.renderLoading()}
-            <Text style={mainStyle.error}>{this.state.errorMessage}</Text>
-            <TouchableOpacity
-              testID = "SignIn.Button"
-              style={{ width: "80%", marginVertical: 8 }}
-              onPress={this.signInWithEmail.bind(this)}
+            <KeyboardAvoidingView
+              style={mainStyle.container}
+              //behavior={Platform.OS == "ios" ? "padding" : "height"}
+              //keyboardVerticalOffset={Platform.OS == "ios" ? 0 : 20}
+              //enabled={Platform.OS === "ios" ? true : false}
             >
-              <View style={styles.emailButton}>
-                <Text style={styles.text}>Sign In with email</Text>
+              <Text style={mainStyle.logo}>PetApp</Text>
+              <View style={mainStyle.form}>
+                <TextInput
+                  testID="SignIn.emailInput"
+                  style={mainStyle.inputText}
+                  placeholder="Email"
+                  placeholderTextColor="#616161"
+                  returnKeyType="next"
+                  keyboardType="email-address"
+                  textContentType="emailAddress"
+                  value={this.state.email}
+                  onChangeText={(email) => this.setState({ email })}
+                />
               </View>
-            </TouchableOpacity>
-
-            <Text style={{ marginVertical: 10 }}>OR</Text>
-
-            <TouchableOpacity
-              style={styles.continueButton}
-              onPress={this.signInWithFacebook.bind(this)}
-            >
-              <View style={styles.button}>
-                <Text style={styles.lightText}>Continue with Facebook</Text>
+              <View style={mainStyle.form}>
+                <TextInput
+                  testID="SignIn.passwordInput"
+                  style={mainStyle.inputText}
+                  placeholder="Password"
+                  placeholderTextColor="#616161"
+                  returnKeyType="done"
+                  textContentType="newPassword"
+                  secureTextEntry={true}
+                  value={this.state.password}
+                  onChangeText={(password) => this.setState({ password })}
+                />
               </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.continueButton}
-             // onPress={this.context.signInWithGoogle}
-            >
-              <View style={styles.googleButton}>
-                <Text style={styles.lightText}>Continue with Google</Text>
-              </View>
-            </TouchableOpacity>
-            <View>
-              <Text
-                testID = "SignIn.ToSignUp"
-                style={styles.text}
-                onPress={() => {
-                  this.props.navigation.navigate("SignUp");
-                }}
+              {this.renderLoading()}
+              <Text style={mainStyle.error}>{this.state.errorMessage}</Text>
+              <TouchableOpacity
+                testID="SignIn.Button"
+                onPress={this.signInWithEmail.bind(this)}
               >
-                Don't have an Account?
-              </Text>
-            </View>
-          </KeyboardAvoidingView>
+                <View style={[styles.button, styles.emailButton]}>
+                  <Text style={styles.text}>Sign In with email</Text>
+                </View>
+              </TouchableOpacity>
+
+              <Text style={{ marginVertical: 10 }}>OR</Text>
+
+              <TouchableOpacity onPress={this.signInWithFacebook.bind(this)}>
+                <View style={[styles.button, styles.facebookButton]}>
+                  <Text style={styles.lightText}>Continue with Facebook</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+              // onPress={this.context.signInWithGoogle}
+              >
+                <View style={[styles.button, styles.googleButton]}>
+                  <Text style={styles.lightText}>Continue with Google</Text>
+                </View>
+              </TouchableOpacity>
+
+              <View style={[styles.linkBox, mainStyle.link]}>
+                <Text
+                  testID="SignIn.ToSignUp"
+                  style={styles.text}
+                  onPress={() => {
+                    this.props.navigation.navigate("SignUp");
+                  }}
+                >
+                  Don't have an Account?
+                </Text>
+              </View>
+            </KeyboardAvoidingView>
+          </ScrollView>
         </SafeAreaView>
       </TouchableWithoutFeedback>
     );
@@ -211,12 +214,15 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   button: {
-    backgroundColor: "#3A559F",
-    height: 44,
-    flexDirection: "row",
+    maxWidth: 300,
+    width: "95%",
+    marginTop: 15,
+    borderRadius: 50,
+    height: 50,
     justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 22,
+    alignSelf: "center",
+    padding: 20,
+    elevation: 4,
   },
   continueButton: {
     width: "80%",
@@ -235,27 +241,19 @@ const styles = StyleSheet.create({
   },
   emailButton: {
     backgroundColor: "#FFFFFF",
-    height: 44,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 22,
-    borderWidth: 1,
-    borderColor: "#707070",
+  },
+  facebookButton: {
+    backgroundColor: "#1d3557",
   },
   googleButton: {
-    backgroundColor: "rgb(255, 50, 50)",
-    height: 44,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 22,
-    borderWidth: 1,
-    borderColor: "#707070",
+    backgroundColor: "#e63946",
   },
   text: {
     fontSize: 17,
     textAlign: "center",
+  },
+  linkBox: {
+    marginVertical: 20,
   },
 });
 export default SignInScreen;

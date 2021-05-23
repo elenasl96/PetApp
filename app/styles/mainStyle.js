@@ -3,24 +3,28 @@ import { StyleSheet } from "react-native";
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#2a9d8f",
+    backgroundColor: "white",
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
   },
   logo: {
     fontSize: 50,
     color: "#fb5b5a",
-    marginBottom: 40,
+    marginVertical: 30,
+    alignSelf: "center",
   },
   form: {
-    width: 300,
+    maxWidth: 300,
+    width: "95%",
     marginTop: 15,
-    backgroundColor: "#43AA8B",
+    backgroundColor: "#fff",
     borderRadius: 25,
     height: 50,
     justifyContent: "center",
     alignSelf: "center",
     padding: 20,
+    elevation: 4,
   },
   input: {
     fontSize: 20,
@@ -49,8 +53,12 @@ export default StyleSheet.create({
   text: {
     fontSize: 18,
   },
+  link: {
+    fontWeight: "bold",
+    fontSize: 20,
+  },
   button: {
-    backgroundColor: "#3A559F",
+    backgroundColor: "#fff",
     height: 44,
     flexDirection: "row",
     justifyContent: "center",
