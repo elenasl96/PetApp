@@ -116,11 +116,12 @@ export default class HomeBusiness extends React.Component {
                 </TouchableHighlight>
               </View>
 
-              <View style={styles.myPlaces}>
-                <ScrollView
-                  vertical={true}
-                  showsHorizontalScrollIndicator={false}
-                >
+              <ScrollView
+                style={{ width: "100%" }}
+                vertical={true}
+                showsHorizontalScrollIndicator={false}
+              >
+                <View style={styles.myPlaces}>
                   {this.state.places.length > 0 ? (
                     <PlaceButton
                       uid={this.context.uid}
@@ -129,8 +130,8 @@ export default class HomeBusiness extends React.Component {
                       deletePlace={this.deletePlace}
                     ></PlaceButton>
                   ) : null}
-                </ScrollView>
-              </View>
+                </View>
+              </ScrollView>
             </View>
           </ScrollView>
         </View>
@@ -190,6 +191,7 @@ const styles = StyleSheet.create({
   },
 
   myPlacesContainer: {
+    flex: 1,
     flexDirection: "column",
   },
   title: {
@@ -205,10 +207,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   myPlaces: {
-    flexWrap: "nowrap",
-    flexDirection: "column",
+    flex: 1,
+    flexWrap: "wrap",
+    flexDirection: "row",
     padding: 20,
     backgroundColor: "white",
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
   },
   place: {
     marginLeft: 15,

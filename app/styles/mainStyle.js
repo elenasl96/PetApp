@@ -44,7 +44,7 @@ export default StyleSheet.create({
   },
   inputText: {
     height: 50,
-    color: "white",
+    color: "black",
   },
   title: {
     fontSize: 23,

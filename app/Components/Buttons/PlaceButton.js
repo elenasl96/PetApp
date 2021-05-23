@@ -59,7 +59,10 @@ class PlaceButton extends React.Component {
     if (this.props.places != null) {
       //  if (!this.props.isSavedPlace) {
       return this.props.places.map((place, index) => (
-        <View key={index}>
+        <View
+          key={index}
+          style={{ flex: 3, flexBasis: 300, maxWidth: 400, margin: 10 }}
+        >
           <TouchableHighlight
             onPress={() => this.showPlace(place)}
             style={styles.place}
@@ -107,10 +110,14 @@ class PlaceButton extends React.Component {
 
 const styles = StyleSheet.create({
   place: {
-    width: "100%",
+    //maxWidth: 300,
     elevation: 2,
     marginVertical: 7,
     borderRadius: 20,
+    //flexGrow: 0,
+    //flexShrink: 1,
+    //flexBasis: 200,
+    //flex: 2,
   },
   title: {
     marginVertical: 55,

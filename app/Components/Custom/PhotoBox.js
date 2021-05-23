@@ -17,38 +17,35 @@ import dbUserAnimal from "../../firebase/Database/Functions/dbUserAnimal";
 import dbPlace from "../../firebase/Database/Functions/dbPlace";
 import dbUser from "../../firebase/Database/Functions/dbUser";
 import dbAdoptableAnimal from "../../firebase/Database/Functions/dbAdoptableAnimal";
-import validator from  "../../shared/validation";
-
+import validator from "../../shared/validation";
 
 class PhotoBox extends React.Component {
+  // props: ids , section , initial photo (if any) , boolean to show (or not) update button
 
-// props: ids , section , initial photo (if any) , boolean to show (or not) update button
+  // form includes this component asking to show ( or not to show) update button, initial photo and ids are passed just for the update.
 
-// form includes this component asking to show ( or not to show) update button, initial photo and ids are passed just for the update.
+  // if update is enabled the image picked should go to updatephoto and to the container
+  // if not update the picked should be passed to the container with a set photo.
 
-// if update is enabled the image picked should go to updatephoto and to the container
-// if not update the picked should be passed to the container with a set photo.
-
-//errors are handled for the update only
+  //errors are handled for the update only
 
   state = {
     //photo: null,   // photo container
     photoUpdate: null, // local photo ( the one potentially used to update)
-    mounted:false,
-    visible:false,
+    mounted: false,
+    visible: false,
     errors: {},
   };
 
   static contextType = AuthContext;
 
-  componentDidMount(){
-    this.setState({mounted:true});
-    if (this.props.isUpdate){
-    //console.log("IN DID MOUNT");
-       this.setState({photo: this.props.photo,visible:this.props.visible});  // photo passed from the container, our initial photo
-    }
-    else{
-       this.setState({visible:true});
+  componentDidMount() {
+    this.setState({ mounted: true });
+    if (this.props.isUpdate) {
+      //console.log("IN DID MOUNT");
+      this.setState({ photo: this.props.photo, visible: this.props.visible }); // photo passed from the container, our initial photo
+    } else {
+      this.setState({ visible: true });
     }
   }
 
@@ -68,24 +65,23 @@ class PhotoBox extends React.Component {
       console.log(result);
 
       if (!result.cancelled) {
-              if (this.props.isUpdate){
-                  if (this.state.mounted) {
-                  this.setPhotoUpdate(result.uri);
-                  }
-              }
-              else{
-                  this.props.setPhoto(result.uri);
-                  if (this.state.mounted) {
-                  this.setState({photoUpdate:result.uri});
-                  }
-              }
+        if (this.props.isUpdate) {
+          if (this.state.mounted) {
+            this.setPhotoUpdate(result.uri);
+          }
+        } else {
+          this.props.setPhoto(result.uri);
+          if (this.state.mounted) {
+            this.setState({ photoUpdate: result.uri });
+          }
+        }
       }
     }
   };
 
-   componentWillUnmount() {
-      this.setState({ mounted: false });
-    }
+  componentWillUnmount() {
+    this.setState({ mounted: false });
+  }
 
   // method to open the camera
   openCamera = async () => {
@@ -102,196 +98,182 @@ class PhotoBox extends React.Component {
       });
 
       if (!result.cancelled) {
-        if (this.props.isUpdate){
-            if (this.state.mounted) {
+        if (this.props.isUpdate) {
+          if (this.state.mounted) {
             this.setPhotoUpdate(result.uri);
-            }
-        }
-        else{
-            this.props.setPhoto(result.uri);
-            if (this.state.mounted) {
-            this.setState({photoUpdate:result.uri});
-            }
+          }
+        } else {
+          this.props.setPhoto(result.uri);
+          if (this.state.mounted) {
+            this.setState({ photoUpdate: result.uri });
+          }
         }
       }
     }
   };
 
   updatePhoto = async () => {
+    const photoUpdate = this.state.photoUpdate;
+    const photo = this.state.photo;
+    let errors = validator.handlePhotoValidation(this.state.photoUpdate);
+    let isValid = validator.isValid(errors);
+    if (isValid) {
+      storageManager.deleteFile(photo); // deletes old photo from storage
+      this.upload(photoUpdate);
+    }
 
-      const photoUpdate = this.state.photoUpdate;
-      const photo = this.state.photo;
-      let errors = validator.handlePhotoValidation(this.state.photoUpdate);
-      let isValid = validator.isValid(errors);
-      if (isValid) {
-        storageManager.deleteFile(photo); // deletes old photo from storage
-        this.upload(photoUpdate);
-      } 
-
-      if (this.state.mounted) {
+    if (this.state.mounted) {
       this.setState({ errors: errors });
-      }
-
+    }
   };
-
 
   setPhotoUpdate = (photo) => {
-      let errors = {};
-      if (this.state.mounted) {
+    let errors = {};
+    if (this.state.mounted) {
       this.setState({ photoUpdate: photo });
       this.setState({ errors: errors }); //clean errors
-      }
+    }
   };
 
-
-  upload = async (uri) => {     // logic to differentiate the storages
+  upload = async (uri) => {
+    // logic to differentiate the storages
     const section = this.props.section;
     const uid = this.context.uid;
-    if (section == "pets"){
+    if (section == "pets") {
       const petID = this.props.petID;
       const response = await fetch(uri);
       const file = await response.blob();
-      storageManager.toStorage(uid, file,section).then((url) => {
-         dbUserAnimal.updatePetPhoto(uid, petID, url); // update ref in db
-         if (this.state.mounted) {
-         this.setState({ photo: url });
-         }
-         this.props.setPhoto(url);
-         this.props.close();
+      storageManager.toStorage(uid, file, section).then((url) => {
+        dbUserAnimal.updatePetPhoto(uid, petID, url); // update ref in db
+        if (this.state.mounted) {
+          this.setState({ photo: url });
+        }
+        this.props.setPhoto(url);
+        this.props.close();
       });
     }
 
-    if (section == "places"){
-
-        const pid = this.props.pid;
-        const response = await fetch(uri);
-        const file = await response.blob();
-        storageManager.toStorage(uid, file,section).then((url) => {
-           dbPlace.updatePlacePhoto(pid,url); // update ref in db
-           if (this.state.mounted) {
-           this.setState({ photo: url });
-           }
-           this.props.setPhoto(url);
-           this.props.close();
-        });
+    if (section == "places") {
+      const pid = this.props.pid;
+      const response = await fetch(uri);
+      const file = await response.blob();
+      storageManager.toStorage(uid, file, section).then((url) => {
+        dbPlace.updatePlacePhoto(pid, url); // update ref in db
+        if (this.state.mounted) {
+          this.setState({ photo: url });
+        }
+        this.props.setPhoto(url);
+        this.props.close();
+      });
     }
 
-    if (section == "kennelpets"){
-            const pid = this.props.pid;
-            const petID = this.props.petID;
-            const response = await fetch(uri);
-            const file = await response.blob();
-            storageManager.toStorage(uid, file,section).then((url) => {
-               dbAdoptableAnimal.updateAdoptablePetPhoto(pid,petID,url); // update ref in db
-               if (this.state.mounted) {
-               this.setState({ photo: url });
-               }
-               this.props.setPhoto(url);
-               this.props.close();
-            });
+    if (section == "kennelpets") {
+      const pid = this.props.pid;
+      const petID = this.props.petID;
+      const response = await fetch(uri);
+      const file = await response.blob();
+      storageManager.toStorage(uid, file, section).then((url) => {
+        dbAdoptableAnimal.updateAdoptablePetPhoto(pid, petID, url); // update ref in db
+        if (this.state.mounted) {
+          this.setState({ photo: url });
+        }
+        this.props.setPhoto(url);
+        this.props.close();
+      });
     }
 
-    if (section == "user"){
-                const uid = this.context.uid;
-                const response = await fetch(uri);
-                const file = await response.blob();
-                storageManager.toStorage(uid, file,section).then((url) => {
-                   dbUser.updateUserPhoto(pid,url); // update ref in db
-                   if (this.state.mounted) {
-                   this.setState({ photo: url });
-                   }
-                   this.props.setPhoto(url);
-                   this.props.close();
-                });
+    if (section == "user") {
+      const uid = this.context.uid;
+      const response = await fetch(uri);
+      const file = await response.blob();
+      storageManager.toStorage(uid, file, section).then((url) => {
+        dbUser.updateUserPhoto(pid, url); // update ref in db
+        if (this.state.mounted) {
+          this.setState({ photo: url });
+        }
+        this.props.setPhoto(url);
+        this.props.close();
+      });
     }
-
-
   };
 
   render() {
+    const photoUpdate = this.state.photoUpdate;
+    const photo = this.state.photo;
 
-   const photoUpdate = this.state.photoUpdate;
-   const photo = this.state.photo;
+    if (this.props.isUpdate) {
+      return (
+        // Mode update
 
-  if(this.props.isUpdate){
-  return (   // Mode update
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={this.props.visible}
+          onRequestClose={() => {
+            this.props.close();
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+              >
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: "column",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TouchableOpacity onPress={this.pickImage.bind(this)}>
+                    <View style={styles.button}>
+                      <Text> Pick image from gallery </Text>
+                    </View>
+                  </TouchableOpacity>
 
-    <Modal
-            animationType="slide"
-            transparent={true}
-            visible={this.props.visible}
-            onRequestClose={() => {
-              this.props.close();
-            }}
-          >
-    <View style={styles.centeredView}>
-     <View style={styles.modalView}>
+                  <TouchableOpacity onPress={this.openCamera.bind(this)}>
+                    <View style={styles.button}>
+                      <Text>Open the camera </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </ScrollView>
 
-     <ScrollView
-      horizontal={true}
-      showsHorizontalScrollIndicator={false}
-          >
-      <View
-        style={{ flex: 1, flexDirection: "column", justifyContent: "center" }}
-      >
+              <ScrollView
+                horizontal={false}
+                showsHorizontalScrollIndicator={false}
+              >
+                {photoUpdate != null ? (
+                  <View>
+                    <Image source={{ uri: photoUpdate }} style={styles.image} />
+                  </View>
+                ) : (
+                  <View style={styles.image}></View>
+                )}
 
-        <TouchableOpacity onPress={this.pickImage.bind(this)}>
-          <View style={styles.button}>
-            <Text> Pick image from gallery </Text>
+                <TouchableHighlight
+                  style={styles.petButton}
+                  onPress={this.updatePhoto.bind(this)}
+                  underlayColor={"rgb(200,200,200)"}
+                >
+                  <View style>
+                    <Text>Update photo</Text>
+                  </View>
+                </TouchableHighlight>
+
+                {this.state.errors["photo"] != null ? (
+                  <Text style={styles.error}>{this.state.errors["photo"]}</Text>
+                ) : null}
+              </ScrollView>
+            </View>
           </View>
-        </TouchableOpacity>
-
-
-        <TouchableOpacity onPress={this.openCamera.bind(this)}>
-          <View style={styles.button}>
-            <Text>Open the camera </Text>
-          </View>
-        </TouchableOpacity>
-
-      </View>
-     </ScrollView>
-
-     <ScrollView
-                 horizontal={false}
-                 showsHorizontalScrollIndicator={false}
-     >
-
-    {photoUpdate != null ? (
-      <View>
-     <Image source={{ uri:photoUpdate }} style={styles.image} />
-      </View>
-    ) :
-    (<View style={styles.image} >
-     </View>)
-     }
-
-
-   <TouchableHighlight
-    style={styles.petButton}
-    onPress={this.updatePhoto.bind(this)}
-    underlayColor={"rgb(200,200,200)"}
-  >
-    <View style>
-      <Text>Update photo</Text>
-    </View>
-   </TouchableHighlight>
-
-
-  {this.state.errors["photo"] != null ? (
-                        <Text style={styles.error}>{this.state.errors["photo"]}</Text>
-                      ) : null}
-  </ScrollView>
-
-    </View>
-    </View>
-    </Modal>
-  );
-
-  }
-  else{    // Mode form
-     return(
+        </Modal>
+      );
+    } else {
+      // Mode form
+      return (
         <View
-
           style={{
             flex: 1,
             flexDirection: "row",
@@ -300,70 +282,62 @@ class PhotoBox extends React.Component {
           }}
         >
           <View
-            style={{ flex: 1, flexDirection: "column", justifyContent: "center" }}
+            style={{
+              flex: 1,
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
           >
-
-
             <TouchableOpacity onPress={this.pickImage.bind(this)}>
               <View style={styles.button}>
                 <Text> Pick image from gallery </Text>
               </View>
             </TouchableOpacity>
 
-
             <TouchableOpacity onPress={this.openCamera.bind(this)}>
               <View style={styles.button}>
                 <Text>Open the camera </Text>
               </View>
             </TouchableOpacity>
-
           </View>
-         <ScrollView
-                     horizontal={false}
-                     showsHorizontalScrollIndicator={false}
-         >
+          {photoUpdate != null ? (
+            <View>
+              <Image source={{ uri: photoUpdate }} style={styles.image} />
+            </View>
+          ) : (
+            <View style={styles.image}></View>
+          )}
 
-        {photoUpdate != null ? (
-          <View>
-         <Image source={{ uri:photoUpdate }} style={styles.image} />
-          </View>
-        ) :
-        (<View style={styles.image} >
-         </View>)
-         }
+          {this.props.isUpdate ? (
+            <TouchableHighlight
+              style={styles.petButton}
+              onPress={this.updatePhoto.bind(this)}
+              underlayColor={"rgb(200,200,200)"}
+            >
+              <View style>
+                <Text>Update photo</Text>
+              </View>
+            </TouchableHighlight>
+          ) : null}
 
-      {this.props.isUpdate  ? (
-       <TouchableHighlight
-                        style={styles.petButton}
-                        onPress={this.updatePhoto.bind(this)}
-                        underlayColor={"rgb(200,200,200)"}
-                      >
-                        <View style>
-                          <Text>Update photo</Text>
-                        </View>
-       </TouchableHighlight>
-      ) : null}
-
-      {this.state.errors["photo"] != null ? (
-                            <Text style={styles.error}>{this.state.errors["photo"]}</Text>
-                          ) : null}
-      </ScrollView>
-
+          {this.state.errors["photo"] != null ? (
+            <Text style={styles.error}>{this.state.errors["photo"]}</Text>
+          ) : null}
         </View>
       );
+    }
   }
-  }
-
 }
-
 
 const styles = StyleSheet.create({
   image: {
-      width: 120,
-      height: 120,
-      backgroundColor: "lightgrey",
-      borderRadius: 20,
-    },
+    width: 120,
+    height: 120,
+    backgroundColor: "lightgrey",
+    borderRadius: 20,
+
+    elevation: 3,
+  },
   container: {
     flex: 1,
     alignItems: "center",
@@ -373,27 +347,27 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   centeredView: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      marginTop: 22,
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 0,
+    backgroundColor: "white",
+    borderRadius: 20,
+    paddingVertical: 10,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
     },
-    modalView: {
-      margin: 0,
-      backgroundColor: "white",
-      borderRadius: 20,
-      paddingVertical: 10,
-      alignItems: "center",
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      width: "90%",
-      shadowOpacity: 0.25,
-      shadowRadius: 4,
-      elevation: 5,
-    },
+    width: "90%",
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
   topBar: {
     flexDirection: "row",
     justifyContent: "space-between",
