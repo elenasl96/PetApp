@@ -66,9 +66,13 @@ class ReportLossForm extends Component {
 
   reportLoss = () => {
     const pet = this.props.pet;
-    let errors = validator.handleReportValidation(this.state.phone,"loss",this.state.name);
+    let errors = validator.handleReportValidation(
+      this.state.phone,
+      "loss",
+      this.state.name
+    );
     let isValid = validator.isValid(errors);
-    this.setState({errors:errors});
+    this.setState({ errors: errors });
     if (isValid) {
       let lostPet = new LostPetNotify(
         this.state.name,
@@ -90,7 +94,7 @@ class ReportLossForm extends Component {
   reportSight = () => {
     let errors = validator.handleReportValidation(this.state.phone);
     let isValid = validator.isValid(errors);
-    this.setState({errors:errors});
+    this.setState({ errors: errors });
     if (isValid) {
       let lostPet = new LostPetSeen(
         this.state.photo,
@@ -143,9 +147,12 @@ class ReportLossForm extends Component {
           this.props.close();
         }}
       >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={mainStyle.centeredView}>
+          <View style={mainStyle.modalView}>
+            <ScrollView
+              style={{ width: "80%" }}
+              showsVerticalScrollIndicator={false}
+            >
               {this.props.sight ? (
                 <Text style={styles.title}>Report Sight</Text>
               ) : (
@@ -373,28 +380,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "red",
     width: "80%",
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    paddingVertical: 10,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    width: "90%",
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
   },
 });
 

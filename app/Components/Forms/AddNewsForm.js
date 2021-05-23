@@ -21,19 +21,24 @@ export default class AddNewsForm extends React.Component {
     errors: {}, // dict
   };
 
-  componentDidMount(){
-    this.setState({mounted:true});
+  componentDidMount() {
+    this.setState({ mounted: true });
   }
 
-  componentWillUnmount(){
-    this.setState({mounted:false});
+  componentWillUnmount() {
+    this.setState({ mounted: false });
   }
 
   addNews() {
-
-    let errors = validator.handleNewsValidation(this.state.name,this.state.description,this.state.photo,this.state.address,this.state.city);
+    let errors = validator.handleNewsValidation(
+      this.state.name,
+      this.state.description,
+      this.state.photo,
+      this.state.address,
+      this.state.city
+    );
     let isValid = validator.isValid(errors);
-    this.setState({errors:errors});
+    this.setState({ errors: errors });
 
     if (isValid) {
       const pid = this.props.pid;
@@ -53,9 +58,12 @@ export default class AddNewsForm extends React.Component {
           this.props.close();
         }}
       >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={mainStyle.centeredView}>
+          <View style={mainStyle.modalView}>
+            <ScrollView
+              style={{ width: "100%" }}
+              showsVerticalScrollIndicator={false}
+            >
               <Text style={styles.title}>Write news</Text>
 
               <View style={mainStyle.form}>
@@ -156,27 +164,5 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "red",
     width: "80%",
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
-  },
-  modalView: {
-    margin: 0,
-    backgroundColor: "white",
-    borderRadius: 20,
-    paddingVertical: 10,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    width: "90%",
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
   },
 });

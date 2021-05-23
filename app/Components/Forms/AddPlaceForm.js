@@ -113,9 +113,12 @@ export default class AddPlaceForm extends React.Component {
           this.props.close();
         }}
       >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={mainStyle.centeredView}>
+          <View style={mainStyle.modalView}>
+            <ScrollView
+              style={{ width: "100%" }}
+              showsVerticalScrollIndicator={false}
+            >
               <Text style={styles.title}>Add new place</Text>
               <View style={mainStyle.form}>
                 <Picker
@@ -269,27 +272,5 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "red",
     width: "80%",
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    paddingVertical: 10,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    width: "90%",
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
   },
 });

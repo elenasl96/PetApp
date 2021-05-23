@@ -205,55 +205,57 @@ class DiseasePanel extends React.Component {
     }
 
     return (
-      <>
-        {temp.length != 0 ? (
-          <Text style={styles.title}>
-            Ough! Your pet is suffering of some diseases... Monitor it and
-            checkout your daily feed to retrieve suggestions!
-          </Text>
-        ) : (
-          <View style={styles.healthStatus}>
-            <FontAwesome5 name="heartbeat" size={24} color="red" />
-            <Text
+      <View style={{ flex: 1 }}>
+        <View style={styles.descriptionContainer}>
+          {temp.length != 0 ? (
+            <Text style={styles.title}>
+              Ough! Your pet is suffering of some diseases... Monitor it and
+              checkout your daily feed to retrieve suggestions!
+            </Text>
+          ) : (
+            <View style={styles.healthStatus}>
+              <FontAwesome5 name="heartbeat" size={24} color="red" />
+              <Text
+                style={{
+                  textAlignVertical: "center",
+                  marginLeft: 10,
+                }}
+              >
+                The pet is in good health, great!
+              </Text>
+            </View>
+          )}
+
+          <ScrollView
+            style={{ marginHorizontal: 10 }}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+          >
+            {diseases}
+          </ScrollView>
+
+          {temp.length != 0 ? (
+            <View
               style={{
-                textAlignVertical: "center",
-                marginLeft: 10,
+                marginHorizontal: 20,
+                flex: 1,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignContent: "flex-end",
               }}
             >
-              The pet is in good health, great!
-            </Text>
-          </View>
-        )}
-
-        <ScrollView
-          style={{ marginHorizontal: 10 }}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-        >
-          {diseases}
-        </ScrollView>
-
-        {temp.length != 0 ? (
-          <View
-            style={{
-              marginHorizontal: 20,
-              flex: 1,
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignContent: "flex-end",
-            }}
-          >
-            <Text style={styles.diseaseDescription}>{descriptionShown}</Text>
-            <TouchableHighlight
-              onPress={this.deleteDisease.bind(this)}
-              underlayColor={"rgb(200,200,200)"}
-            >
-              <View style={styles.deleteButton}>
-                <AntDesign name="delete" size={24} color="red" />
-              </View>
-            </TouchableHighlight>
-          </View>
-        ) : null}
+              <Text style={styles.diseaseDescription}>{descriptionShown}</Text>
+              <TouchableHighlight
+                onPress={this.deleteDisease.bind(this)}
+                underlayColor={"rgb(200,200,200)"}
+              >
+                <View style={styles.deleteButton}>
+                  <AntDesign name="delete" size={24} color="red" />
+                </View>
+              </TouchableHighlight>
+            </View>
+          ) : null}
+        </View>
 
         {isEditable ? (
           <View style={styles.diseaseBox}>
@@ -305,7 +307,7 @@ class DiseasePanel extends React.Component {
         {this.state.errors["addDisease"] != null ? (
           <Text style={styles.error}>{this.state.errors["addDisease"]}</Text>
         ) : null}
-      </>
+      </View>
     );
   }
 }
@@ -395,6 +397,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fde2e4",
     elevation: 2,
     width: "90%",
+    maxWidth: 500,
     paddingVertical: 15,
     borderRadius: 15,
     marginVertical: 10,
@@ -419,6 +422,10 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 5,
     elevation: 2,
+  },
+  descriptionContainer: {
+    width: "90%",
+    alignSelf: "center",
   },
 });
 export default DiseasePanel;

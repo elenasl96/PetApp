@@ -15,7 +15,7 @@ import { AuthContext } from "../AuthContext";
 import { withNavigation } from "react-navigation";
 import { Picker } from "@react-native-picker/picker";
 import constants from "../../shared/constants";
-import validator from  "../../shared/validation";
+import validator from "../../shared/validation";
 import mainStyle from "../../styles/mainStyle";
 import { ScrollView } from "react-native-gesture-handler";
 import dbAdoptableAnimal from "../../firebase/Database/Functions/dbAdoptableAnimal";
@@ -46,10 +46,15 @@ class AddPetForm extends React.Component {
   }
 
   registerPet = async () => {
-
-    let errors = validator.handlePetValidation(this.state.name,this.state.age,this.state.photo,this.props.adoptable,this.state.profile);
+    let errors = validator.handlePetValidation(
+      this.state.name,
+      this.state.age,
+      this.state.photo,
+      this.props.adoptable,
+      this.state.profile
+    );
     let isValid = validator.isValid(errors);
-    this.setState({errors:errors});
+    this.setState({ errors: errors });
 
     if (isValid) {
       const response = await fetch(this.state.photo);
@@ -69,7 +74,7 @@ class AddPetForm extends React.Component {
               this.state.profile
             )
             .then((doc) => {
-              this.context.addAdoptablePet(this.props.pid,doc.id);
+              this.context.addAdoptablePet(this.props.pid, doc.id);
               this.props.close();
             });
         } else {
@@ -87,8 +92,8 @@ class AddPetForm extends React.Component {
             .then((doc) => {
               //this.props.addPet(doc.id);
               this.context.addPet(doc.id);
-              dbUserAnimal.addAnimalStat(this.context.uid,doc.id,"weight");
-              dbUserAnimal.addAnimalStat(this.context.uid,doc.id,"height");
+              dbUserAnimal.addAnimalStat(this.context.uid, doc.id, "weight");
+              dbUserAnimal.addAnimalStat(this.context.uid, doc.id, "height");
               this.props.close();
             });
         }
@@ -143,9 +148,12 @@ class AddPetForm extends React.Component {
           this.props.close();
         }}
       >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={mainStyle.centeredView}>
+          <View style={mainStyle.modalView}>
+            <ScrollView
+              style={{ width: "100%" }}
+              showsVerticalScrollIndicator={false}
+            >
               <Text style={styles.title}>+ Pet </Text>
               <View style={mainStyle.form}>
                 <TextInput
@@ -322,28 +330,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "red",
     width: "80%",
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    paddingVertical: 10,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    width: "90%",
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
   },
 });
 

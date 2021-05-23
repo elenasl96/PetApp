@@ -246,7 +246,7 @@ class Chart extends React.Component {
                   labels: labels,
                   datasets: [{ data: data }],
                 }}
-                width={Dimensions.get("window").width - 16} // from react-native
+                width={Dimensions.get("window").width * 0.9} // from react-native
                 height={200}
                 //yAxisLabel={}
                 chartConfig={{
@@ -352,10 +352,7 @@ class Chart extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 30,
+    alignSelf: "center",
   },
 
   subtitle: {
@@ -409,11 +406,10 @@ const styles = StyleSheet.create({
   },
   sampleBox: {
     backgroundColor: "#cbe5f6",
-
     alignSelf: "center",
-
     elevation: 2,
     width: "90%",
+    maxWidth: 500,
     paddingVertical: 15,
     borderRadius: 15,
     marginVertical: 10,
