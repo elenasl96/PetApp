@@ -58,7 +58,6 @@ class SignInScreen extends React.Component {
       await auth()
         .signInWithEmailAndPassword(this.state.email, this.state.password)
         .then((credential) => {
-          console.log("LOGIN SUCCESS");
           auth().setPersistence(auth.Auth.Persistence.LOCAL);
           dbUser.getUser(credential.user.uid).then((userFromDb) => {
             if (this.state.mounted) {
@@ -76,7 +75,6 @@ class SignInScreen extends React.Component {
           }
         });
     } else {
-      console.log("LOGIN FAILED");
       this.onLoginFailure.bind(this)("Fill in all the fields");
     }
   }
