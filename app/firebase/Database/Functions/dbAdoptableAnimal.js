@@ -239,12 +239,23 @@ const dbAdoptableAnimal = {
       });
   },
 
+  addDiseaseDescription(name,description,type){
+    const ref = firestore.collection("DiseaseDescriptions");
+    let disease = {
+       name: name,
+       description: description,
+       type: type,
+    };
+    ref.add(disease);
+  },
+
   // get disease descriptions
-  getDiseaseDescription(name) {
+  getDiseaseDescription(name,type) {
     var ref = firestore.collection("DiseaseDescriptions");
     var descriptions = [];
     return ref
       .where("name", "==", name)
+      .where("type","==", type)
       .get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {

@@ -30,7 +30,7 @@ class AddPetForm extends React.Component {
     typeSelected: "Dog",
     prevTypeSelected: "Dog",
     breedSelected: "None",
-    colorSelected: "White",
+    colorSelected: "Apricot",
     sizeSelected: "Small",
     profile: null,
     errors: {}, // dict

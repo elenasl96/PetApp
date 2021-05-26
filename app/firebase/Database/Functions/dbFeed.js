@@ -15,7 +15,7 @@ getFeedsByFilter(pet, filter, value, id) {
         .then(function (querySnapshot) {
           querySnapshot.forEach(function (doc) {
             let data = doc.data();
-            let feed = new Feed(data.title, data.text, filter);
+            let feed = new Feed(data.id,data.name,data.title, data.text, filter);
             feeds.push(feed);
             return feeds;
           });
@@ -35,7 +35,7 @@ getFeedsByFilter(pet, filter, value, id) {
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
           let data = doc.data();
-          let feed = new Feed(data.title, data.text, "General");
+          let feed = new Feed(data.id,data.name,data.title, data.text, "General");
           feeds.push(feed);
           return feeds;
         });
@@ -46,27 +46,23 @@ getFeedsByFilter(pet, filter, value, id) {
       });
   },
 
+
   addUserFeed: function (uid, title, text, type) {
     const users = firestore.collection("Users");
-    let feed = new Feed(title, text, type);
+    let feed = new Feed("","",title, text, type);
     users.doc(uid).collection("Feed").add(feed.toFirestore());
   },
 
   addFeedToGeneral: function (id, title, text) {
     const feeds = firestore.collection("Feed").doc("General");
-    let feed = new Feed(title, text, "General");
+    let feed = new Feed(id,"",title, text, "General");
     feeds.collection(id).add(feed.toFirestore());
   },
 
-  addPetFeed: function (pet, type, id, title, text) {
+  addPetFeed: function (pet, type, id,name,title, text) {
     const feeds = firestore.collection("Feed").doc(pet);
-    let feed = {
-      id: id,
-      title: title,
-      text: text,
-      type: type,
-    };
-    feeds.collection(type).add(feed);
+    let feed = new Feed(id,name,title,text,type);
+    feeds.collection(type).add(feed.toFirestore());
   },
 
   getUserFeed: function (uid, fid) {
@@ -79,7 +75,7 @@ getFeedsByFilter(pet, filter, value, id) {
       .get()
       .then(function (doc) {
         let data = doc.data();
-        feed = new Feed(data.title, data.text, data.type);
+        feed = new Feed(data.id,data.name,data.title, data.text, data.type);
         console.log(feed);
         return feed;
       })
@@ -124,7 +120,7 @@ getFeedsByFilter(pet, filter, value, id) {
   },
 
   deleteUserFeeds: function (uid) {
-    this.getUserFeeds(uid).then(function (feeds) {
+    dbFeed.getUserFeeds(uid).then(function (feeds) {
       if (feeds.length != 0) {
         feeds.forEach((id) => dbFeed.deleteUserFeed(uid, id));
       }
@@ -165,9 +161,8 @@ getFeedsByFilter(pet, filter, value, id) {
   },
 
   addRandomFeeds: function (animals, uid, lastlogin, days) {
-    var feeds = [];
-    var alreadyLoggedInToday = false;
 
+    console.log("ADD RANDOM FEEDS");
     if (lastlogin != utils.timestamp() || days == 0) {// daily feed  days = 0 is the first access
       var newdays = days + 1;
       firestore
@@ -190,8 +185,8 @@ getFeedsByFilter(pet, filter, value, id) {
         dbFeed.addAgeFeeds(uid, type, id);
         type = types[Math.floor(Math.random() * types.length)];
         dbFeed.addSizeFeeds(uid, type, id);
-        num = 2;
         id = "" + id + "";
+        num = 2;
         dbFeed.addGeneralFeeds(uid, id, num);
       } else {
         num = 5;

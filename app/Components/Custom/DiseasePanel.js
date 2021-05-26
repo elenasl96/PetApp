@@ -44,7 +44,7 @@ class DiseasePanel extends React.Component {
               this.setState({ diseaseShown: disease.name });
             }
             dbUserAnimal
-              .getDiseaseDescription(disease.name)
+              .getDiseaseDescription(disease.name,this.props.type)
               .then((descriptions) => {
                 this.state.diseases[disease.name] = descriptions[0];
                 this.setState({ mounted: true });
@@ -118,13 +118,13 @@ class DiseasePanel extends React.Component {
         this.setState({ diseaseShown: disease });
       }
       if (!this.props.isAdoptable) {
-        dbUserAnimal.getDiseaseDescription(disease).then((descriptions) => {
+        dbUserAnimal.getDiseaseDescription(disease,this.props.type).then((descriptions) => {
           this.state.diseases[disease] = descriptions[0];
           this.setState({ mounted: true });
         });
       } else {
         dbAdoptableAnimal
-          .getDiseaseDescription(disease)
+          .getDiseaseDescription(disease,this.props.type)
           .then((descriptions) => {
             this.state.diseases[disease] = descriptions[0];
             this.setState({ mounted: true });

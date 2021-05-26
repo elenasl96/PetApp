@@ -43,7 +43,7 @@ class LostPetNotifyScreen extends React.Component {
             <View style={styles.petContainer}>
               <View style={styles.pet}>
                 <ImageBackground
-                  source={require("../../assets/images/Gioia.jpg")}
+                  //source={require("../../assets/images/Gioia.jpg")}
                   style={styles.petImage}
                   imageStyle={{ borderRadius: 50 }}
                 >
