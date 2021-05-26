@@ -1,5 +1,4 @@
 export default class Place {
-
   constructor(
     name,
     type,
@@ -38,7 +37,7 @@ export default class Place {
   }
 
   getPhoto() {
-    console.log(this.photo);
+    //console.log(this.photo);
     if (this.photo && this.photo !== "") {
       return this.photo;
     } else {
@@ -63,6 +62,14 @@ export default class Place {
       latitude: this.region.latitude,
       longitude: this.region.longitude,
     };
+  }
+
+  getLat() {
+    return this.region.latitude;
+  }
+
+  getLng() {
+    return this.region.longitude;
   }
 
   //serialize

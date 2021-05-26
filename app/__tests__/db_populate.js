@@ -11,15 +11,14 @@ import { pet, uids, place } from "../firebase/Database/Population";
 import constants from "../shared/constants";
 
 beforeAll(() => {
-
-  constants.BREEDS_DOG.map((breed) =>{
-     let title = "Feed for " + breed;
-     dbFeed.addPetFeed("Dog","Breed",0,breed,title,"Text");
+  /*constants.BREEDS_DOG.map((breed) => {
+    let title = "Feed for " + breed;
+    dbFeed.addPetFeed("Dog", "Breed", 0, breed, title, "Text");
   });
 
-  constants.BREEDS_CAT.map((breed) =>{
+  constants.BREEDS_CAT.map((breed) => {
     let title = "Feed for " + breed;
-    dbFeed.addPetFeed("Cat","Breed",0,breed,title,"Text");
+    dbFeed.addPetFeed("Cat", "Breed", 0, breed, title, "Text");
   });
 
   /*
@@ -33,8 +32,6 @@ beforeAll(() => {
     let description = "Description for " + disease;
     dbUserAnimal.addDiseaseDescription(disease,description,"Cat");
   });*/
-
-
 });
 
 afterAll(() => {});
@@ -46,6 +43,7 @@ test("pet population", () => {
 });
 
 test("place population", () => {
-  //dbPopulate.addPlaceToUser(uids.elena, place.labVeterinary);
+  dbPopulate.addPlaceToUser(uids.elena, place.labVeterinary);
+  dbPopulate.addPlaceToUser(uids.elena, place.confortHouse);
   return expect(true).toBeTruthy();
 });

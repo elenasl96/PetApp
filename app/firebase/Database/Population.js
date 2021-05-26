@@ -33,10 +33,21 @@ export const place = {
     "LabVeterinary",
     constants.TYPES_PLACES[0],
     "We take care of your best friend. Our team is the more professional in the city.",
-    "",
+    "https://firebasestorage.googleapis.com/v0/b/petapp-64e34.appspot.com/o/places%2FgbfBtH1XbDMYice2pM0zV7caEjn21619081104651?alt=media&token=58c5bd7f-0312-4ff0-9880-289c690d8f7c",
     "Via farini 2, Milano",
     "45.482860279390565",
     "9.18166729801941",
+    "",
+    ""
+  ),
+  confortHouse: new Place(
+    "Confort House",
+    constants.TYPES_PLACES[2],
+    "Find a place in which your friend can meet new friends.",
+    "https://firebasestorage.googleapis.com/v0/b/petapp-64e34.appspot.com/o/places%2Fkennel.jpg?alt=media&token=c2ada513-2e3b-4e10-9a75-6a47b303592c",
+    "Piazza Maciachini 1, Milano",
+    "45.49742784437551",
+    "9.18689115569105",
     "",
     ""
   ),
