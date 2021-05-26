@@ -3,7 +3,7 @@ import React, { useContext, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 
 export default class Feed {
-  constructor(id,name,title, text, type) {
+  constructor(id, name, title, text, type) {
     this.id = id;
     this.name = name;
     this.title = title;
@@ -11,11 +11,11 @@ export default class Feed {
     this.type = type;
   }
 
-  getId(){
+  getId() {
     return this.id;
   }
 
-  getName(){
+  getName() {
     return this.name;
   }
 
@@ -33,13 +33,13 @@ export default class Feed {
 
   getColor() {
     if (this.type == constants.FEED_TYPE.age) {
-      return "green";
+      return "#bee1e6";
     } else if (this.type == constants.FEED_TYPE.breed) {
-      return "blue";
+      return "#dfe7fd";
     } else if (this.type == constants.FEED_TYPE.general) {
-      return "orange";
+      return "#fde2e4";
     } else if ((this.type = constants.FEED_TYPE.size)) {
-      return "powderblue";
+      return "#fad2e1";
     }
   }
 
@@ -47,14 +47,12 @@ export default class Feed {
     console.log(this.type);
     if (this.type === constants.FEED_TYPE.age) {
       return (
-        <Ionicons name="bandage-outline" size={24} color={this.getColor()} />
+        <Ionicons name="md-color-wand" size={24} color={this.getColor()} />
       );
     } else if (this.type === constants.FEED_TYPE.breed) {
-      return <Ionicons name="male-female" size={24} color={this.getColor()} />;
+      return <Ionicons name="ios-male" size={24} color={this.getColor()} />;
     } else if (this.type === constants.FEED_TYPE.general) {
-      return (
-        <Ionicons name="md-heart-outline" size={24} color={this.getColor()} />
-      );
+      return <Ionicons name="ios-heart" size={24} color={this.getColor()} />;
     } else if (this.type === constants.FEED_TYPE.size) {
       return <Ionicons name="md-fitness" size={24} color={this.getColor()} />;
     } else {
