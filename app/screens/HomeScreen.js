@@ -39,7 +39,12 @@ class HomeScreen extends React.Component {
 
   componentDidMount() {
     this.setState({ mounted: true, loading: true });
+    //if(this.state.mounted){
+      this.loadInfo();
+    //}
+  }
 
+  loadInfo(){
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.getUserPets([], true);
@@ -101,7 +106,7 @@ class HomeScreen extends React.Component {
           animals.push(animal);
           if (pets.length == animals.length) {
             let promise = new Promise((resolve, reject) => {
-              dbFeed.addRandomFeeds(animals, uid, info.getLastLogin(), 0);
+              dbFeed.addRandomFeeds(animals, uid, info.getLastLogin(),info.getDays()); //info.getDays());
               setTimeout(() => {
                 resolve();
               }, 1000);

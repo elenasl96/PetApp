@@ -127,9 +127,7 @@ class SignInScreen extends React.Component {
         }}
       >
         <SafeAreaView style={{ flex: 1 }}>
-          <ScrollView
-            contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
-          >
+       
             <KeyboardAvoidingView
               style={mainStyle.container}
               //behavior={Platform.OS == "ios" ? "padding" : "height"}
@@ -201,7 +199,7 @@ class SignInScreen extends React.Component {
                 </Text>
               </View>
             </KeyboardAvoidingView>
-          </ScrollView>
+        
         </SafeAreaView>
       </TouchableWithoutFeedback>
     );

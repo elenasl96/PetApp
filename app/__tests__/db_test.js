@@ -141,6 +141,6 @@ test('db useranimal test', () => {
 });
 
 test('getdiseasedescription' , () => {
-    return expect(dbUserAnimal.getDiseaseDescription('Disease1')).resolves.toHaveLength(1);
+    return expect(dbUserAnimal.getDiseaseDescription('Cancer','Cat')).resolves.toHaveLength(1);
 });
 

@@ -3,21 +3,12 @@ import React, { useContext, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 
 export default class Feed {
-  constructor(id, name, title, text, type) {
-    this.id = id;
-    this.name = name;
+  constructor(title, text, type) {
     this.title = title;
     this.text = text;
     this.type = type;
   }
 
-  getId() {
-    return this.id;
-  }
-
-  getName() {
-    return this.name;
-  }
 
   getTitle() {
     return this.title;
@@ -62,8 +53,6 @@ export default class Feed {
 
   toFirestore() {
     return {
-      id: this.id,
-      name: this.name,
       title: this.title,
       text: this.text,
       type: this.type,

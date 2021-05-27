@@ -15,7 +15,7 @@ getFeedsByFilter(pet, filter, value, id) {
         .then(function (querySnapshot) {
           querySnapshot.forEach(function (doc) {
             let data = doc.data();
-            let feed = new Feed(data.id,data.name,data.title, data.text, filter);
+            let feed = new Feed(data.title, data.text, filter);
             feeds.push(feed);
             return feeds;
           });
@@ -35,7 +35,7 @@ getFeedsByFilter(pet, filter, value, id) {
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
           let data = doc.data();
-          let feed = new Feed(data.id,data.name,data.title, data.text, "General");
+          let feed = new Feed(data.title, data.text, "General");
           feeds.push(feed);
           return feeds;
         });
@@ -49,20 +49,30 @@ getFeedsByFilter(pet, filter, value, id) {
 
   addUserFeed: function (uid, title, text, type) {
     const users = firestore.collection("Users");
-    let feed = new Feed("","",title, text, type);
+    let feed = new Feed(title, text, type);
     users.doc(uid).collection("Feed").add(feed.toFirestore());
   },
 
   addFeedToGeneral: function (id, title, text) {
     const feeds = firestore.collection("Feed").doc("General");
-    let feed = new Feed(id,"",title, text, "General");
-    feeds.collection(id).add(feed.toFirestore());
+    let feed = {
+      title: title,
+      text: text,
+      type: "General",
+     };  
+    feeds.collection(id).add(feed);
   },
 
   addPetFeed: function (pet, type, id,name,title, text) {
     const feeds = firestore.collection("Feed").doc(pet);
-    let feed = new Feed(id,name,title,text,type);
-    feeds.collection(type).add(feed.toFirestore());
+    let feed = 
+    {id: Number(id),
+     name: name,
+     title: title,
+     text: text,
+     type: type,
+    };    
+    feeds.collection(type).add(feed);
   },
 
   getUserFeed: function (uid, fid) {
@@ -75,8 +85,7 @@ getFeedsByFilter(pet, filter, value, id) {
       .get()
       .then(function (doc) {
         let data = doc.data();
-        feed = new Feed(data.id,data.name,data.title, data.text, data.type);
-        console.log(feed);
+        feed = new Feed(data.title, data.text, data.type);
         return feed;
       })
       .catch(function (error) {
@@ -112,7 +121,7 @@ getFeedsByFilter(pet, filter, value, id) {
       .doc(fid)
       .delete()
       .then(function () {
-        //console.log("Document successfully deleted!");
+        console.log("Document successfully deleted!");
       })
       .catch(function (error) {
         console.error("Error removing document: ", error);
@@ -170,7 +179,7 @@ getFeedsByFilter(pet, filter, value, id) {
         .doc(uid)
         .update({ lastlogin: utils.timestamp(), days: newdays });
       dbFeed.deleteUserFeeds(uid);
-      var id = days % 31;
+      var id = 0 //days % 31;
       var num = 1; // num general feeds
       if (animals.length != 0) { //at least one animal
         var types = [];
@@ -208,8 +217,11 @@ getFeedsByFilter(pet, filter, value, id) {
       });
 
       var breed = breeds[Math.floor(Math.random() * breeds.length)];
-
+      console.log("BREED SELECTED: " + breed);
+      console.log("TYPE SELECTED: " + type);
+      console.log("ID SELECTED: " + id);
       dbFeed.getFeedsByFilter(type, "Breed", breed, id).then(function (feeds) {
+        console.log("FEEDS FOR BREEDS: " + feeds);
         feeds.forEach(function (feed) {
           dbFeed.addUserFeed(uid, feed.title, feed.text, feed.type);
         });
@@ -230,7 +242,7 @@ getFeedsByFilter(pet, filter, value, id) {
       });
 
       var age = ages[Math.floor(Math.random() * ages.length)];
-
+      
       dbFeed.getFeedsByFilter(type, "Age", age, id).then(function (feeds) {
         feeds.forEach(function (feed) {
           dbFeed.addUserFeed(uid, feed.title, feed.text, feed.type);
