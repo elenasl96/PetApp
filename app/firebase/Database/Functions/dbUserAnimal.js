@@ -447,6 +447,7 @@ const dbUserAnimal = {
   },
 
   addDiseaseDescription(name,description,type){
+    
     const ref = firestore.collection("DiseaseDescriptions");
     let disease = {
        name: name,

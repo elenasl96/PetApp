@@ -239,7 +239,7 @@ const constants = {
     "Lymphocytopenia",
     "Mastocytoma",
     "Rabies",
-    "Salmonellosis",
+    "Salmonella",
     "Tetanus",
     "Thelaziasis",
     "Toxocariasis",
