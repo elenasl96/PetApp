@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   TouchableWithoutFeedback,
   Keyboard,
+  ScrollView,
 } from "react-native";
 import { auth } from "../firebase/firebaseconfig.js";
 import "firebase/firestore";
@@ -17,7 +18,6 @@ import * as Facebook from "expo-facebook";
 import dbUser from "../firebase/Database/Functions/dbUser";
 import mainStyle from "../styles/mainStyle";
 import { AuthContext } from "../Components/AuthContext";
-import { ScrollView } from "react-native-gesture-handler";
 
 class SignInScreen extends React.Component {
   static contextType = AuthContext;
@@ -127,7 +127,7 @@ class SignInScreen extends React.Component {
         }}
       >
         <SafeAreaView style={{ flex: 1 }}>
-       
+           <ScrollView>
             <KeyboardAvoidingView
               style={mainStyle.container}
               //behavior={Platform.OS == "ios" ? "padding" : "height"}
@@ -199,7 +199,7 @@ class SignInScreen extends React.Component {
                 </Text>
               </View>
             </KeyboardAvoidingView>
-        
+         </ScrollView>
         </SafeAreaView>
       </TouchableWithoutFeedback>
     );
