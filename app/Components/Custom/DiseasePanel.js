@@ -44,7 +44,7 @@ class DiseasePanel extends React.Component {
               this.setState({ diseaseShown: disease.name });
             }
             dbUserAnimal
-              .getDiseaseDescription(disease.name,this.props.type)
+              .getDiseaseDescription(disease.name, this.props.type)
               .then((descriptions) => {
                 this.state.diseases[disease.name] = descriptions[0];
                 this.setState({ mounted: true });
@@ -118,13 +118,15 @@ class DiseasePanel extends React.Component {
         this.setState({ diseaseShown: disease });
       }
       if (!this.props.isAdoptable) {
-        dbUserAnimal.getDiseaseDescription(disease,this.props.type).then((descriptions) => {
-          this.state.diseases[disease] = descriptions[0];
-          this.setState({ mounted: true });
-        });
+        dbUserAnimal
+          .getDiseaseDescription(disease, this.props.type)
+          .then((descriptions) => {
+            this.state.diseases[disease] = descriptions[0];
+            this.setState({ mounted: true });
+          });
       } else {
         dbAdoptableAnimal
-          .getDiseaseDescription(disease,this.props.type)
+          .getDiseaseDescription(disease, this.props.type)
           .then((descriptions) => {
             this.state.diseases[disease] = descriptions[0];
             this.setState({ mounted: true });
@@ -227,7 +229,7 @@ class DiseasePanel extends React.Component {
           )}
 
           <ScrollView
-            style={{ marginHorizontal: 10 }}
+            //style={{ marginHorizontal: 0 }}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
           >
@@ -237,19 +239,20 @@ class DiseasePanel extends React.Component {
           {temp.length != 0 ? (
             <View
               style={{
-                marginHorizontal: 20,
+                paddingHorizontal: 20,
                 flex: 1,
                 flexDirection: "row",
-                justifyContent: "space-between",
-                alignContent: "flex-end",
+                justifyContent: "center",
+                alignContent: "flex-start",
               }}
             >
               <Text style={styles.diseaseDescription}>{descriptionShown}</Text>
               <TouchableHighlight
+                style={styles.deleteButton}
                 onPress={this.deleteDisease.bind(this)}
                 underlayColor={"rgb(200,200,200)"}
               >
-                <View style={styles.deleteButton}>
+                <View>
                   <AntDesign name="delete" size={24} color="red" />
                 </View>
               </TouchableHighlight>
@@ -325,7 +328,7 @@ const styles = StyleSheet.create({
   },
   diseaseDescription: {
     paddingVertical: 10,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
     elevation: 2,
   },
   topBar: {
@@ -364,7 +367,7 @@ const styles = StyleSheet.create({
   },
 
   descriptionContainer: {
-    padding: 10,
+    padding: 0,
   },
 
   mainButtonContainer: {
@@ -414,14 +417,11 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   deleteButton: {
-    flex: 1,
-    alignSelf: "flex-start",
-    flexDirection: "row",
     backgroundColor: "#FFF",
     borderRadius: 22,
     padding: 10,
-    marginVertical: 5,
     elevation: 2,
+    alignSelf: "flex-start",
   },
   descriptionContainer: {
     width: "90%",
