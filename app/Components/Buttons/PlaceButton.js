@@ -61,7 +61,7 @@ class PlaceButton extends React.Component {
       return this.props.places.map((place, index) => (
         <View
           key={index}
-          style={{ flex: 3, flexBasis: 300, maxWidth: 400, margin: 10 }}
+          style={{ flex: 3, flexBasis: 300, maxWidth: 300, margin: 10 }}
         >
           <TouchableHighlight
             onPress={() => this.showPlace(place)}
