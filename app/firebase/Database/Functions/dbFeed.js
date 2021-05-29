@@ -75,6 +75,7 @@ getFeedsByFilter(pet, filter, value, id) {
     feeds.collection(type).add(feed);
   },
 
+
   getUserFeed: function (uid, fid) {
     const users = firestore.collection("Users");
     var feed;
@@ -102,7 +103,9 @@ getFeedsByFilter(pet, filter, value, id) {
       .get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
-          feeds.push(doc.id);
+          //feeds.push(doc.id);
+          let feed = doc.data()
+          feeds.push(new Feed(feed.title,feed.text,feed.type));
           return feeds;
         });
 
@@ -115,7 +118,7 @@ getFeedsByFilter(pet, filter, value, id) {
 
   deleteUserFeed: function (uid, fid) {
     const users = firestore.collection("Users");
-    users
+    return users
       .doc(uid)
       .collection("Feed")
       .doc(fid)
@@ -129,11 +132,12 @@ getFeedsByFilter(pet, filter, value, id) {
   },
 
   deleteUserFeeds: function (uid) {
-    dbFeed.getUserFeeds(uid).then(function (feeds) {
-      if (feeds.length != 0) {
-        feeds.forEach((id) => dbFeed.deleteUserFeed(uid, id));
-      }
-    });
+      query = firestore.collection("Users").doc(uid).collection("Feed");
+      query.get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          doc.ref.delete();
+        });
+      });
   },
 
 
@@ -169,46 +173,99 @@ getFeedsByFilter(pet, filter, value, id) {
       });
   },
 
-  addRandomFeeds: function (animals, uid, lastlogin, days) {
+  getFeeds: function (animals, uid, lastlogin, days) {
 
-    console.log("ADD RANDOM FEEDS");
+    var feeds = [];
     if (lastlogin != utils.timestamp() || days == 0) {// daily feed  days = 0 is the first access
       var newdays = days + 1;
       firestore
         .collection("Users")
         .doc(uid)
         .update({ lastlogin: utils.timestamp(), days: newdays });
-      dbFeed.deleteUserFeeds(uid);
-      var id = 0 //days % 31;
+
+      var id = days % 2;
       var num = 1; // num general feeds
+      id = id.toString(); // casts id to string 
+
+      dbFeed.deleteUserFeeds(uid); 
+
       if (animals.length != 0) { //at least one animal
+
+        
         var types = [];
         animals.forEach(function (animal) {
           if (!types.includes(animal.type)) {
             types.push(animal.type);
           }
         });
+
+
         var type = types[Math.floor(Math.random() * types.length)];
-        dbFeed.addBreedFeeds(uid, type, id);
+
+        let promiseBreed = dbFeed.getBreedFeed(uid,type,id); 
+
+        
         type = types[Math.floor(Math.random() * types.length)];
-        dbFeed.addAgeFeeds(uid, type, id);
+        let promiseAge = dbFeed.getAgeFeed(uid, type, id);
+
         type = types[Math.floor(Math.random() * types.length)];
-        dbFeed.addSizeFeeds(uid, type, id);
-        id = "" + id + "";
+        let promiseSize = dbFeed.getSizeFeed(uid, type, id);
+
         num = 2;
-        dbFeed.addGeneralFeeds(uid, id, num);
-      } else {
+        
+        let promiseGeneral = dbFeed.getRandomGeneralFeeds(id, num);
+
+        return Promise.all([promiseBreed,promiseAge,promiseSize,promiseGeneral]).then((feedsFetched)=>{  
+          
+          let i = 0;
+          feedsFetched.forEach((feed)=>{
+            if(i<3){
+            dbFeed.addUserFeed(uid,feed.title,feed.text,feed.type);
+            feeds.push(new Feed(feed.title,feed.text,feed.type));
+            }
+            else{
+              dbFeed.addUserFeed(uid,feed[0].title,feed[0].text,feed[0].type);
+              feeds.push(new Feed(feed[0].title,feed[0].text,feed[0].type));
+              dbFeed.addUserFeed(uid,feed[1].title,feed[1].text,feed[1].type);
+              feeds.push(new Feed(feed[1].title,feed[1].text,feed[1].type));
+            }
+            i = i + 1;
+            return feeds;
+          });
+          return feeds
+        });
+        
+       
+
+      } else {   
         num = 5;
-        id = "" + id + ""; // general wants a string not a number
-        dbFeed.addGeneralFeeds(uid, id, num);
+        let promiseGeneral = dbFeed.getRandomGeneralFeeds(id, num);
+        return Promise.all([promiseGeneral]).then((feedsFetched)=>{  
+          feedsFetched[0].forEach((feed)=>{
+            dbFeed.addUserFeed(uid,feed.title,feed.text,feed.type);
+            feeds.push(feed);
+            return feeds;
+          });
+
+          return feeds;
+        });
       }
     } else {
-      console.log("You have already logged in today!");
+      return dbFeed.getUserFeeds(uid).then((feedsFetched) => {
+        feedsFetched.forEach((feed)=>{
+          
+          feeds.push(feed);
+          return feeds;
+        });
+        return feeds;
+    });
     }
   },
 
-  addBreedFeeds: function (uid, type, id) {
-    dbFeed.getUserAnimalsByType(uid, type).then(function (animals) {
+  getBreedFeed: function (uid, type, id) {
+
+    var feed;
+    return dbFeed.getUserAnimalsByType(uid, type).then(function (animals) {
       var breeds = [];
       animals.forEach(function (animal) {
         if (!breeds.includes(animal.breed)) {
@@ -217,21 +274,19 @@ getFeedsByFilter(pet, filter, value, id) {
       });
 
       var breed = breeds[Math.floor(Math.random() * breeds.length)];
-      console.log("BREED SELECTED: " + breed);
-      console.log("TYPE SELECTED: " + type);
-      console.log("ID SELECTED: " + id);
-      dbFeed.getFeedsByFilter(type, "Breed", breed, id).then(function (feeds) {
-        console.log("FEEDS FOR BREEDS: " + feeds);
-        feeds.forEach(function (feed) {
-          dbFeed.addUserFeed(uid, feed.title, feed.text, feed.type);
-        });
-        return feeds;
+      return dbFeed.getFeedsByFilter(type, "Breed", breed, id).then(function (feeds) {
+       feed = feeds[Math.floor(Math.random() * feeds.length)];
+       feed = new Feed(feed.title,feed.text,feed.type);
+       return feed;
       });
     });
   },
 
-  addAgeFeeds: function (uid, type, id) {
-    dbFeed.getUserAnimalsByType(uid, type).then(function (animals) {
+  getAgeFeed: function (uid, type, id) {
+
+    var feed;
+
+    return dbFeed.getUserAnimalsByType(uid, type).then(function (animals) {
 
       var ages = [];
       animals.forEach(function (animal) {
@@ -243,16 +298,16 @@ getFeedsByFilter(pet, filter, value, id) {
 
       var age = ages[Math.floor(Math.random() * ages.length)];
       
-      dbFeed.getFeedsByFilter(type, "Age", age, id).then(function (feeds) {
-        feeds.forEach(function (feed) {
-          dbFeed.addUserFeed(uid, feed.title, feed.text, feed.type);
-        });
+      return dbFeed.getFeedsByFilter(type, "Age", age, id).then(function (feeds) {
+        feed = feeds[Math.floor(Math.random() * feeds.length)];
+        feed = new Feed(feed.title,feed.text,feed.type);
+        return feed;
       });
     });
   },
 
-  addSizeFeeds: function (uid, type, id) {
-    dbFeed.getUserAnimalsByType(uid, type).then(function (animals) {
+  getSizeFeed: function (uid, type, id) {
+    return dbFeed.getUserAnimalsByType(uid, type).then(function (animals) {
 
       var sizes = [];
       animals.forEach(function (animal) {
@@ -263,23 +318,29 @@ getFeedsByFilter(pet, filter, value, id) {
 
       var size = sizes[Math.floor(Math.random() * sizes.length)];
 
-      dbFeed.getFeedsByFilter(type, "Size", size, id).then(function (feeds) {
-        feeds.forEach(function (feed) {
-          dbFeed.addUserFeed(uid, feed.title, feed.text, feed.type);
-        });
+      return dbFeed.getFeedsByFilter(type, "Size", size, id).then(function (feeds) {
+        feed = feeds[Math.floor(Math.random() * feeds.length)];
+        feed = new Feed(feed.title,feed.text,feed.type);
+        return feed;
       });
     });
   },
 
-  addGeneralFeeds: function (uid, id, num) {
-    dbFeed.getGeneralFeeds(id).then(function (feeds) {
+  getRandomGeneralFeeds: function(id, num) {
+    var feedsTarget = [];
+    return dbFeed.getGeneralFeeds(id).then(function (feeds) {
       for (let i = 0; i < num; i++) {
         var ind = Math.floor(Math.random() * feeds.length);
         var feed = feeds[ind];
+        feed = new Feed(feed.title,feed.text,feed.type);
         feeds.splice(ind, 1);
-        dbFeed.addUserFeed(uid, feed.title, feed.text, feed.type);
+        feedsTarget.push(feed);
+        //dbFeed.addUserFeed(uid, feed.title, feed.text, feed.type);
       }
+      return feedsTarget;
     });
   },
+
 };
+
 export default dbFeed;

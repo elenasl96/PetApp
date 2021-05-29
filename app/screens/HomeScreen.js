@@ -102,38 +102,22 @@ class HomeScreen extends React.Component {
 
     if (pets.length != 0) {
       pets.forEach((aid) => {
-        dbUserAnimal.getUserAnimal(uid, aid).then((animal) => {
-          animals.push(animal);
-          if (pets.length == animals.length) {
-            let promise = new Promise((resolve, reject) => {
-              dbFeed.addRandomFeeds(animals, uid, info.getLastLogin(),info.getDays()); //info.getDays());
-              setTimeout(() => {
-                resolve();
-              }, 1000);
-            });
-            promise.then(() => {
-              dbFeed.getUserFeeds(uid).then((feeds) => {
-                if (this.state.mounted) {
-                  this.setState({ feeds: feeds, loading: false });
-                }
-              });
-            });
-          }
-        });
-      });
+             dbUserAnimal.getUserAnimal(uid, aid).then((animal) => {
+              animals.push(animal);
+              if (pets.length == animals.length) {
+                 dbFeed.getFeeds(animals,uid,info.getLastLogin(),info.getDays()).then((feeds) => {
+                      if (this.state.mounted) {
+                        this.setState({ feeds: feeds, loading: false });
+                      }
+                 });
+            }
+          });
+      });  
     } else {
-      let promise = new Promise((resolve, reject) => {
-        dbFeed.addRandomFeeds(animals, uid, info.getLastLogin(), info.days);
-        setTimeout(() => {
-          resolve();
-        }, 1000);
-      });
-      promise.then(() => {
-        dbFeed.getUserFeeds(uid).then((feeds) => {
-          if (this.state.mounted) {
-            this.setState({ feeds: feeds, loading: false });
-          }
-        });
+      dbFeed.getFeeds(animals,uid,info.getLastLogin(),info.getDays()).then((feeds) => {
+        if (this.state.mounted) {
+          this.setState({ feeds: feeds, loading: false });
+        }
       });
     }
   }

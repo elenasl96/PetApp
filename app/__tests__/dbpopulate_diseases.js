@@ -1,4 +1,7 @@
 import dbUserAnimal from "../firebase/Database/Functions/dbUserAnimal";
+import dbFeed from "../firebase/Database/Functions/dbFeed";
+import Feed from "../firebase/Database/Objects/Feed";
+import UserAnimal from "../firebase/Database/Objects/UserAnimal";
 
 beforeAll(() => {
 
@@ -58,7 +61,29 @@ beforeAll(() => {
     dbUserAnimal.addDiseaseDescription("Pyometra","Pyometra is a very serious infection of the womb, also known as the 'uterus'. It's caused by the womb filling with pus and, if left untreated, it can lead to kidney failure, toxaemia, dehydration and, in some cases, death.Symptoms of pyometra include early warning signs of the animal feeling unwell, such as vomiting, refusal to eat, lethargy, increased thirst and frequent urination.She may also appear to be uncomfortable, because pyometra is a particularly painful condition for dogs","Dog");
     dbUserAnimal.addDiseaseDescription("Rabies","Rabies is uncommon in domestic animals.When a dog does get rabies, it's usually from the bite of an infected wild animal. Raccoons, skunks, bats, and foxes are common rabies carriers. The more contact your dog has with wild animals, the higher the risk of their infection.","Dog");
     dbUserAnimal.addDiseaseDescription("Tetanus","Tetanus is a very serious disease caused by a neurotoxin called tetanospasmin that is secreted by a bacterium known as Clostridium tetani. The neurotoxin affects the nervous system of dogs which can lead to painful stiffening and paralysis of the dog's jaw, neck, and other muscles.","Dog");
-   */
+    */
+
+    // CAT FEEDS
+    /*
+    dbFeed.addPetFeed("Cat", "Breed", 0,"Bombay", "Your Bombay’s Health", "Like all cats, Bombays are susceptible to bacterial and viral infections such as panleukopenia, calicivirus, rhinotracheitis, and rabies, which are preventable through vaccination. The risk of your cat contracting these diseases is high, so the corresponding vaccines are called “core” vaccines, which are highly recommended for all cats. In addition, vaccines are available to offer protection from other dangerous diseases like feline leukemia virus (FeLV).");
+    dbFeed.addPetFeed("Cat", "Breed", 0,"Bombay", "Bombays: What a Unique Breed!", "Your cat is special! She senses your moods, is curious about your day, and has purred her way into your heart. This breed is full of personality: she is an inquisitive and lap-loving companion that can be demanding of attention but is well suited to active homes with multiple pets! Main traits: friendly, extroverted personality, may meow constantly to get your attention.");
+    dbFeed.addPetFeed("Cat", "Breed", 1,"Bombay", "Your Bombay’s Health", "Bombay are unfortunately really prone to obesity. Although they are in general really active, they can become overweight easily if not exercised regularly. Pay attention that excess weight is one of the most influential factors in the development of arthritis, diabetes, and other life-threatening diseases");
+    dbFeed.addPetFeed("Cat", "Breed", 1,"Bombay", "Bombays: What a Unique Breed!", "The Bombay is a hybrid breed that was developed in Kentucky from crossings between Sable Burmese and Black American Shorthairs. This sleek all black feline resembles a miniature black panther with golden or copper eyes and has earned the nickname “parlor panther.”Bombays are noted to be calm and frequently found lounging in the warmest spots of the house. The Bombay is outgoing and expressive; they will often be the first to welcome and entertain guests.");
+    dbFeed.addPetFeed("Cat","Age",0,"Young","Discipline your young cat","Whenever possible, give treats, praise, and attention to your cat if it is behaving nicely. If you notice it lying next to something it used to chew, reward it. If you notice it scratching the scratching pole instead of your sofa, reward it. Your cat will quickly learn the difference between good and bad behavior.");
+    dbFeed.addPetFeed("Cat","Age",0,"Young","Feed your young cat","Cats require taurine, an essential amino acid, for heart and eye health. The food you choose should be balanced for the life stage of your cat or kitten. Properly balanced foods will contain taurine. You will need to provide fresh, clean water at all times, and wash and refill your cat's water bowls daily.");
+    dbFeed.addPetFeed("Cat","Age",1,"Young","Don’t Treat Your Kitten Like an Adult Cat","Just as a human infant has vastly different needs than a teenager, a kitten will have care requirements distinct from those of a fully matured cat. In addition, you should consider a kitten’s various stages of development when caring for her.The socialization and training your cat receives during kittenhood will affect how well she will likely interact with people and other animals when she’s older.");
+    dbFeed.addPetFeed("Cat","Age",1,"Young","Feed your young cat","Felines are natural carnivores and do not intentionally consume large quantities of carbohydrates. The domestic cat's liver has adapted to the lack of carbohydrates in the diet by using amino acids to produce glucose to fuel the brain and other tissues.Studies have shown that carbohydrate digestion in young kittens is much less effective than that of a mature feline with a developed gastrointestinal tract. Highly digestible carbohydrates can be found in commercial kitten food.");
+    dbFeed.addPetFeed("Cat","Size",0,"Small","How high can a small cat jump?","Although the average healthy cat is able to jump up to six times their height in one jump – this is around 8 foot or 2.4 metres. So not be too much surprised if you'll find your small cat on top of your shelf!");
+    dbFeed.addPetFeed("Cat","Size",0,"Small","Where could my cat be hiding?","Don't worry if you don't find your pet immediately, cats love hiding places, especially small cats! They love to tuck themselves into small spaces in your closet, under your bed, or in a cardboard box or paper bag left lying on the floor. Sometimes it can take a long time and a keen eye to find your cat when she is hiding. ");
+    dbFeed.addPetFeed("Cat","Size",1,"Small","How much should a small cat eat a day?","That's a question best answered by a professional, though recommendations range between 24 to 35 calories a day per pound, to keep cats at a normal, healthy weight.");
+    
+    
+    // GENERAL FEEDS
+    dbFeed.addFeedToGeneral("0","How big is a medium sized cat?","If large domestic cats seem too big and small breeds seem tiny, a medium cat breed may be just right for you. These mid-sized cats typically weigh between 10 and 15 pounds, so they fit right into almost any home and environment, whether you live in a small apartment in the city or a big house in the suburbs.");
+    dbFeed.addFeedToGeneral("0","What is the average life expectancy of an indoor cat?","Indoor cats live on average 10-15 years, while outdoor cats live on average 2-5 years This handout is intended to help you sort out the pros and cons associated with each lifestyle so you can rest assured your cat will have both an enriched life and protection from environmental hazards.");
+    dbFeed.addFeedToGeneral("1","How big is a medium sized dog?","Medium dogs weigh between 20 and 60 pounds. Their height ranges between eight inches and 27 inches. Examples of medium-sized dogs are Beagle and Border Collie.");
+    dbFeed.addFeedToGeneral("1","What is the average life expectancy of an indoor dog?","Average Life Expectancy (in captivity) of dogs depends on their size. For small dogs it is 13 years, whereas for medium dogs it is 11 years, and finally for large dogs it is 8 years.");
+    */
     
 });
 
@@ -67,5 +92,18 @@ afterAll(() => { //run with --detectOpenHandles
 });
 
 test("addds", () => {
-    return expect(true).toBeTruthy();
+    
+    let animals = [new UserAnimal('test',
+                                                1,
+                                                'Bombay',
+                                                'Small',
+                                                'Black',
+                                                'https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=3596224033779591&height=100&width=100&ext=1618930868&hash=AeS7Ycc-xZFda11qK44',
+                                                'Cat')];
+    return expect(dbFeed.getFeeds(animals,"gbfBtH1XbDMYice2pM0zV7caEjn2","28/05/2021",1)).resolves.toHaveLength(5);
+    //return expect(dbFeed.deleteUserFeeds("gbfBtH1XbDMYice2pM0zV7caEjn2")).resolves.toBeDefined();
+    //return expect(dbFeed.deleteUserFeeds("gbfBtH1XbDMYice2pM0zV7caEjn2")).resolves.toBeDefined();
+    //dbFeed.addUserFeed("gbfBtH1XbDMYice2pM0zV7caEjn2","title","text","General");
+    //return expect(dbFeed.getUserFeeds("gbfBtH1XbDMYice2pM0zV7caEjn2")).resolves.toHaveLength(1);
+    //return expect(dbFeed.getRandomGeneralFeeds("0",2)).resolves.toHaveLength(1);
 });

@@ -15,8 +15,8 @@ class FeedBox extends React.Component {
     this.setState({ mounted: true });
     const feeds = this.props.feeds;
 
-    let promises = feeds.map((feedID, index) => {
-      return dbFeed.getUserFeed(this.props.uid, feedID).then((feed) => {
+    let promises = feeds.map((feed, index) => {
+      //return dbFeed.getUserFeed(this.props.uid, feedID).then((feed) => {
         return (
           <LinearGradient
             key={index}
@@ -34,7 +34,7 @@ class FeedBox extends React.Component {
             <Text style={mainStyle.text}>{feed.getText()}</Text>
           </LinearGradient>
         );
-      });
+      //});
     });
 
     Promise.all(promises).then((feeds) => {
