@@ -264,7 +264,7 @@ class AddPetForm extends React.Component {
                 }}
                 onPress={this.registerPet.bind(this)}
               >
-                <View style={styles.button}>
+                <View style={mainStyle.submitButton}>
                   <Text style={styles.buttonText}>Register Pet</Text>
                 </View>
               </TouchableOpacity>

@@ -106,7 +106,7 @@ export default class AddNewsForm extends React.Component {
                 }}
                 onPress={this.addNews.bind(this)}
               >
-                <View style={styles.button}>
+                <View style={mainStyle.submitButton}>
                   <Text style={styles.buttonText}>Publish news</Text>
                 </View>
               </TouchableOpacity>
@@ -146,14 +146,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     textAlign: "center",
   },
-  button: {
-    backgroundColor: "#F9844A",
-    height: 44,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 22,
-  },
+
   buttonText: {
     letterSpacing: 0.5,
     fontSize: 16,

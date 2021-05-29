@@ -24,7 +24,7 @@ export default StyleSheet.create({
     justifyContent: "center",
     alignSelf: "center",
     padding: 20,
-    elevation: 4,
+    elevation: 1,
   },
   input: {
     fontSize: 20,
@@ -70,6 +70,16 @@ export default StyleSheet.create({
     fontSize: 16,
     color: "#FFFFFF",
   },
+  submitButton: {
+    backgroundColor: "#76c893",
+    height: 44,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 22,
+    marginTop: 20,
+    elevation: 2,
+  },
   error: {
     fontSize: 18,
     textAlign: "center",
@@ -107,6 +117,6 @@ export default StyleSheet.create({
     width: "90%",
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 3,
+    elevation: 2,
   },
 });

@@ -114,6 +114,7 @@ const styles = StyleSheet.create({
     elevation: 2,
     marginVertical: 7,
     borderRadius: 20,
+    backgroundColor: "white",
     //flexGrow: 0,
     //flexShrink: 1,
     //flexBasis: 200,

@@ -206,7 +206,7 @@ export default class AddPlaceForm extends React.Component {
                 }}
                 onPress={this.registerPlace.bind(this)}
               >
-                <View style={styles.button}>
+                <View style={mainStyle.submitButton}>
                   <Text style={styles.buttonText}>Register Place</Text>
                 </View>
               </TouchableOpacity>

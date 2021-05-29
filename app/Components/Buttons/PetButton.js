@@ -1,14 +1,9 @@
 import React, { useContext, useEffect } from "react";
-import {
-  StyleSheet,
-  Image,
-  TouchableHighlight,
-} from "react-native";
+import { StyleSheet, Image, TouchableHighlight } from "react-native";
 
 import { AuthContext } from "../AuthContext";
 
 class PetButton extends React.Component {
-
   state = {
     mounted: false,
   };
@@ -16,7 +11,7 @@ class PetButton extends React.Component {
   static contextType = AuthContext;
 
   componentDidMount() {
-      this.setState({ mounted: true });
+    this.setState({ mounted: true });
   }
 
   componentWillUnmount() {
@@ -24,7 +19,6 @@ class PetButton extends React.Component {
   }
 
   render() {
-
     const navigation = this.props.navigation;
     const pets = this.props.pets;
     const isAdoptable = this.props.isAdoptable;
@@ -36,28 +30,25 @@ class PetButton extends React.Component {
       pid = this.props.pid;
     }
 
-          return pets.map((animal) => (
-                <TouchableHighlight
-                  style={styles.pet}
-                  value={animal.id}
-                  key={animal.id}
-                  onPress={() =>
-                    navigation.push("Pet", {
-                      pet: animal,
-                      petID: animal.id,
-                      deleteAnimal: this.props.deleteAnimal,
-                      isAdoptable: isAdoptable,
-                      isEditable: isEditable,
-                      pid: pid,
-                    })
-                  }
-                >
-                  <Image
-                    source={{ uri: animal.photo }}
-                    style={styles.petImage}
-                  ></Image>
-                </TouchableHighlight>
-            ));
+    return pets.map((animal) => (
+      <TouchableHighlight
+        style={styles.pet}
+        value={animal.id}
+        key={animal.id}
+        onPress={() =>
+          navigation.push("Pet", {
+            pet: animal,
+            petID: animal.id,
+            deleteAnimal: this.props.deleteAnimal,
+            isAdoptable: isAdoptable,
+            isEditable: isEditable,
+            pid: pid,
+          })
+        }
+      >
+        <Image source={{ uri: animal.photo }} style={styles.petImage}></Image>
+      </TouchableHighlight>
+    ));
   }
 }
 
@@ -67,7 +58,7 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     borderRadius: 75,
-    backgroundColor: "orange",
+    backgroundColor: "white",
     elevation: 5,
   },
   petImage: {

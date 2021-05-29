@@ -302,7 +302,7 @@ class ReportLossForm extends Component {
                   }}
                   onPress={this.reportLoss.bind(this)}
                 >
-                  <View style={styles.button}>
+                  <View style={mainStyle.submitButton}>
                     <Text style={styles.buttonText}>Report Loss</Text>
                   </View>
                 </TouchableOpacity>
