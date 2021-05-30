@@ -14,11 +14,15 @@ import {
 import mainStyle from "../styles/mainStyle";
 import { AuthContext } from "../Components/AuthContext";
 import NotifySightButton from "../Components/Buttons/NotifySightButton";
+import ReportLossForm from "../Components/Forms/ReportLossForm";
+import { AntDesign } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
 class LostPetNotifyScreen extends React.Component {
   static contextType = AuthContext;
 
-  state = { mount: false };
+  state = { mount: false, showReportLossForm: false };
 
   componentDidMount() {
     this.setState({ mounted: true });
@@ -36,8 +40,106 @@ class LostPetNotifyScreen extends React.Component {
 
   render() {
     const pet = this.props.navigation.state.params.pet;
+    const isEditable = true;
     return (
       <SafeAreaView style={{ flex: 1 }}>
+        <ReportLossForm
+          pet={pet}
+          visible={this.state.showReportLossForm}
+          close={() => {
+            this.setState({ showReportLossForm: false });
+          }}
+        ></ReportLossForm>
+
+        <View style={styles.mainContent}>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={styles.petContainer}>
+              <View style={styles.buttons}>
+                {isEditable ? (
+                  <TouchableOpacity
+                    style={[mainStyle.roundButton, { marginLeft: 60 }]}
+                    onPress={this.deletePet}
+                  >
+                    <Text style={styles.buttonText}>
+                      <AntDesign name="delete" size={24} color="red" />
+                    </Text>
+                  </TouchableOpacity>
+                ) : null}
+
+                {!isEditable ? (
+                  <TouchableOpacity
+                    style={[mainStyle.roundButton, { marginLeft: 20 }]}
+                    onPress={() => {
+                      this.setState({ showReportLossForm: true });
+                    }}
+                  >
+                    <Text style={styles.buttonText}>
+                      <Feather name="alert-circle" size={24} color="orange" />
+                    </Text>
+                  </TouchableOpacity>
+                ) : null}
+              </View>
+              <View>
+                <ImageBackground
+                  source={{ uri: pet.getPhoto() }}
+                  style={styles.petImage}
+                  imageStyle={{ borderRadius: 150 }}
+                ></ImageBackground>
+              </View>
+              <View style={styles.petName}>
+                <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+                  {pet.getName()}
+                </Text>
+                <Ionicons
+                  style={{ textAlign: "center" }}
+                  name="md-paw"
+                  size={24}
+                  color="#f94144"
+                />
+              </View>
+            </View>
+
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignContent: "center",
+              }}
+            >
+              <View style={styles.info}>
+                <Text style={styles.infoTitle}>Size </Text>
+                <Text style={styles.infoText}>{pet.getSize()} </Text>
+              </View>
+              <View style={styles.info}>
+                <Text style={styles.infoTitle}>Breed </Text>
+                <Text style={styles.infoText}>{pet.getBreed()} </Text>
+              </View>
+
+              <View style={styles.info}>
+                <Text style={styles.infoTitle}>Color </Text>
+                <Text style={styles.infoText}>{pet.getColor()} </Text>
+              </View>
+            </View>
+
+            <Text style={styles.title}>Lost information </Text>
+            <View style={styles.placeLost}>
+              <Text> {pet.getPlace()}</Text>
+            </View>
+
+            <Text style={styles.title}>Contacts</Text>
+            <View style={styles.contacts}>
+              <Text>Email: {pet.getEmail()}</Text>
+              <Text>Telephone: {pet.getPhone()}</Text>
+            </View>
+
+            <View style={styles.profile}>
+              <Text style={styles.title}>Notes</Text>
+              <Text>{pet.getNotes()}</Text>
+            </View>
+          </ScrollView>
+        </View>
+      </SafeAreaView>
+      /*/*<SafeAreaView style={{ flex: 1 }}>
         <View style={styles.mainContent}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.petContainer}>
@@ -124,7 +226,7 @@ class LostPetNotifyScreen extends React.Component {
             </View>
           </ScrollView>
         </View>
-      </SafeAreaView>
+                </SafeAreaView> */
     );
   }
 }
@@ -145,23 +247,27 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   buttons: {
-    flex: 1,
     flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
     paddingBottom: 10,
   },
+  petButton: {
+    padding: 10,
+    borderRadius: 25,
+    backgroundColor: "rgba(255, 255, 255, 1)",
+    overflow: "hidden",
+    elevation: 2,
+    marginHorizontal: 5,
+    width: 70,
+    height: 30,
+  },
   button: {
-    backgroundColor: "#F9844A",
-    minWidth: 100,
-    height: 44,
+    backgroundColor: "#FFFFFF",
     borderRadius: 22,
-    paddingHorizontal: 12,
-    paddingVertical: 5,
-    marginBottom: 5,
+    padding: 10,
+    marginBottom: 10,
     marginLeft: 10,
-    alignContent: "center",
-    justifyContent: "center",
+    elevation: 2,
+    alignSelf: "center",
   },
   buttonText: {
     alignSelf: "center",
@@ -174,37 +280,45 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     paddingTop: 20,
-    paddingBottom: 20,
+    justifyContent: "center",
+    alignContent: "center",
+    //paddingBottom: 20,
   },
   pet: {
     width: 150,
     height: 150,
-    borderRadius: 75,
-    backgroundColor: "white",
+    //borderRadius: 150,
+    //backgroundColor: "white",
     marginLeft: 10,
+    elevation: 2,
   },
   petImage: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "flex-end",
     width: 150,
     height: 150,
-    borderRadius: 75,
-    resizeMode: "cover",
+    //borderRadius: 0,
+    //resizeMode: "cover",
     padding: 10,
+    elevation: 2,
   },
   info: {
-    flex: 1,
-    flexDirection: "column",
-    backgroundColor: "#F9C74F",
-    borderRadius: 20,
+    //backgroundColor: "#F9C74F",
+    backgroundColor: "white",
+    borderRadius: 15,
     marginLeft: 7,
     marginRight: 5,
     padding: 10,
+    marginBottom: 10,
+    marginTop: 10,
+    elevation: 2,
   },
-  title: {
+  infoText: {
+    textAlign: "center",
     fontWeight: "bold",
-    fontSize: 20,
+  },
+  infoTitle: {
+    color: "#f94144",
+    fontWeight: "bold",
+    textAlign: "center",
   },
 
   descriptionContainer: {
@@ -244,6 +358,38 @@ const styles = StyleSheet.create({
     height: 50,
     resizeMode: "cover",
     tintColor: "orange",
+  },
+  error: {
+    fontSize: 18,
+    textAlign: "center",
+    color: "red",
+    width: "80%",
+  },
+  title: {
+    color: "#4cc9f0",
+    fontWeight: "bold",
+    fontSize: 20,
+    marginVertical: 10,
+    textAlign: "center",
+  },
+  petName: {
+    alignSelf: "center",
+    margin: 15,
+  },
+  profile: {
+    paddingHorizontal: 20,
+  },
+  contacts: {
+    backgroundColor: "powderblue",
+    borderRadius: 20,
+    padding: 20,
+    marginHorizontal: 20,
+  },
+  placeLost: {
+    backgroundColor: "powderblue",
+    borderRadius: 20,
+    padding: 20,
+    marginHorizontal: 20,
   },
 });
 export default LostPetNotifyScreen;
