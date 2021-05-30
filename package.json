@@ -19,6 +19,7 @@
     "expo": "^39.0.4",
     "expo-calendar": "~8.5.0",
     "expo-cli": "^4.0.13",
+    "expo-device": "~2.3.0",
     "expo-facebook": "~9.0.0",
     "expo-google-sign-in": "~8.3.0",
     "expo-image-picker": "~9.1.1",
@@ -80,7 +81,11 @@
     "transformIgnorePatterns": [
       "node_modules/(?!(jest-)?react-native|@react-native-community|@react-native-picker/picker)"
     ],
-    "setupFilesAfterEnv": ["@testing-library/jest-native/extend-expect"],
-    "setupFiles" : ["./setupJest.js"]
+    "setupFilesAfterEnv": [
+      "@testing-library/jest-native/extend-expect"
+    ],
+    "setupFiles": [
+      "./setupJest.js"
+    ]
   }
 }

@@ -118,7 +118,7 @@ getFeedsByFilter(pet, filter, value, id) {
 
   deleteUserFeed: function (uid, fid) {
     const users = firestore.collection("Users");
-    return users
+    users
       .doc(uid)
       .collection("Feed")
       .doc(fid)

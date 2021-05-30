@@ -57,5 +57,7 @@ const RadioButtonGroup = ({
 }, children));
 
 RadioButtonGroup.displayName = 'RadioButton.Group';
-export default RadioButtonGroup;
+export default RadioButtonGroup; // @component-docs ignore-next-line
+
+export { RadioButtonGroup };
 //# sourceMappingURL=RadioButtonGroup.js.map

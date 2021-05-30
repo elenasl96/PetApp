@@ -1,5 +1,6 @@
 import dbUserAnimal from "../firebase/Database/Functions/dbUserAnimal";
 import dbFeed from "../firebase/Database/Functions/dbFeed";
+import dbUser from "../firebase/Database/Functions/dbUser";
 import Feed from "../firebase/Database/Objects/Feed";
 import UserAnimal from "../firebase/Database/Objects/UserAnimal";
 
@@ -100,7 +101,24 @@ test("addds", () => {
                                                 'Black',
                                                 'https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=3596224033779591&height=100&width=100&ext=1618930868&hash=AeS7Ycc-xZFda11qK44',
                                                 'Cat')];
-    return expect(dbFeed.getFeeds(animals,"gbfBtH1XbDMYice2pM0zV7caEjn2","28/05/2021",1)).resolves.toHaveLength(5);
+    return expect(dbFeed.getFeeds([],"gbfBtH1XbDMYice2pM0zV7caEjn2","28/05/2021",1)).resolves.toHaveLength(5);
+    //return expect(dbFeed.deleteUserFeeds("gbfBtH1XbDMYice2pM0zV7caEjn2")).resolves.toBeDefined();
+    //return expect(dbFeed.deleteUserFeeds("gbfBtH1XbDMYice2pM0zV7caEjn2")).resolves.toBeDefined();
+    //dbFeed.addUserFeed("gbfBtH1XbDMYice2pM0zV7caEjn2","title","text","General");
+    //return expect(dbFeed.getUserFeeds("gbfBtH1XbDMYice2pM0zV7caEjn2")).resolves.toHaveLength(1);
+    //return expect(dbFeed.getRandomGeneralFeeds("0",2)).resolves.toHaveLength(1);
+});
+
+test("addds", () => {
+    dbUser.deleteUser('user1','user');
+    let animals = [new UserAnimal('test',
+                                                1,
+                                                'Bombay',
+                                                'Small',
+                                                'Black',
+                                                'https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=3596224033779591&height=100&width=100&ext=1618930868&hash=AeS7Ycc-xZFda11qK44',
+                                                'Cat')];
+    return expect(dbFeed.getFeeds([],"gbfBtH1XbDMYice2pM0zV7caEjn2","29/05/2021",1)).resolves.toHaveLength(5);
     //return expect(dbFeed.deleteUserFeeds("gbfBtH1XbDMYice2pM0zV7caEjn2")).resolves.toBeDefined();
     //return expect(dbFeed.deleteUserFeeds("gbfBtH1XbDMYice2pM0zV7caEjn2")).resolves.toBeDefined();
     //dbFeed.addUserFeed("gbfBtH1XbDMYice2pM0zV7caEjn2","title","text","General");

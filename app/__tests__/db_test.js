@@ -27,7 +27,7 @@ beforeAll(() => {
                    'user',
                    'via calici 10').then((user1) => {
                      dbPlace.addSavedPlace('user1',place.id);
-                     dbFeed.addRandomFeeds([],'user1','15/05/2021',0);
+                     dbFeed.getFeeds([],'user1','15/05/2021',0);
                      dbNotification.addUserNotification('user1','Welcome to GPaw','Hi!');
                      dbUserAnimal.addUserAnimal('user1',
                                                 'test',
