@@ -401,10 +401,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexWrap: "wrap",
     flexDirection: "row",
-    padding: 20,
     backgroundColor: "white",
-    flex: 1,
-    flexDirection: "row",
     justifyContent: "center",
   },
   place: {
@@ -445,6 +442,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     marginHorizontal: 10,
     marginBottom: 10,
+    alignSelf: "center",
   },
 });
 export default HomeScreen;

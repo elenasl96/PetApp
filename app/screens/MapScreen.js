@@ -320,11 +320,7 @@ export default class MapScreen extends React.Component {
                 <TouchableHighlight>
                   <View style={styles.infoWindow}>
                     <Text style={styles.placeName}>{marker.name}</Text>
-                    <Text>
-                      {marker.description}
-                      {"\n"}
-                      {marker.address}
-                    </Text>
+                    <Text>{marker.address}</Text>
                   </View>
                 </TouchableHighlight>
               </Callout>
