@@ -43,10 +43,11 @@ test("pet population", () => {
   return expect(true).toBeTruthy();
   //return expect(dbFeed.getFeedsByFilter("Dog","Breed","Shiba",0)).resolves.toHaveLength(1);
 });
-/*
+
 test("place population", () => {
   //dbPopulate.addPlaceToUser(uids.elena, place.labVeterinary);
   //dbPopulate.addPlaceToUser(uids.elena, place.confortHouse);
+  //dbPopulate.addPlaceToUser(uids.matteo, place.confortHouse);
+  //dbPopulate.addPlaceToUser(uids.matteo, place.petClinic);
   return expect(true).toBeTruthy();
 });
-*/

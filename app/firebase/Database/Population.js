@@ -35,8 +35,8 @@ export const place = {
     "We take care of your best friend. Our team is the more professional in the city.",
     "https://firebasestorage.googleapis.com/v0/b/petapp-64e34.appspot.com/o/places%2FgbfBtH1XbDMYice2pM0zV7caEjn21619081104651?alt=media&token=58c5bd7f-0312-4ff0-9880-289c690d8f7c",
     "Via farini 2, Milano",
-    "45.482860279390565",
-    "9.18166729801941",
+    45.482860279390565,
+    9.18166729801941,
     "",
     ""
   ),
@@ -46,8 +46,30 @@ export const place = {
     "Find a place in which your friend can meet new friends.",
     "https://firebasestorage.googleapis.com/v0/b/petapp-64e34.appspot.com/o/places%2Fkennel.jpg?alt=media&token=c2ada513-2e3b-4e10-9a75-6a47b303592c",
     "Piazza Maciachini 1, Milano",
-    "45.49742784437551",
-    "9.18689115569105",
+    45.49742784437551,
+    9.18689115569105,
+    "",
+    ""
+  ),
+  vetty: new Place(
+    "Vetty",
+    constants.TYPES_PLACES[0],
+    "Contact us for every emergency. 24H/24H emergency veterinary.",
+    "https://firebasestorage.googleapis.com/v0/b/petapp-64e34.appspot.com/o/places%2FgbfBtH1XbDMYice2pM0zV7caEjn21619081104651?alt=media&token=58c5bd7f-0312-4ff0-9880-289c690d8f7c",
+    "Via Giuseppe Ferrari 10, Milano",
+    45.48542562941739,
+    9.184332484948477,
+    "",
+    ""
+  ),
+  petClinic: new Place(
+    "Pet Clinic",
+    constants.TYPES_PLACES[0],
+    "The biggest clinic here in Milan. We treat all types of animal disease. You can trust us and our professionals vets.",
+    "https://firebasestorage.googleapis.com/v0/b/petapp-64e34.appspot.com/o/places%2FgbfBtH1XbDMYice2pM0zV7caEjn21619081104651?alt=media&token=58c5bd7f-0312-4ff0-9880-289c690d8f7c",
+    "Via Fatebenefratelli 10, Milano",
+    45.473117208620046,
+    9.189788384948173,
     "",
     ""
   ),
