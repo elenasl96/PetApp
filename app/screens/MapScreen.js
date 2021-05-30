@@ -18,6 +18,7 @@ import { TextInput } from "react-native-gesture-handler";
 import mainStyle from "../styles/mainStyle";
 import utils from "../shared/utilities";
 import { AuthContext } from "../Components/AuthContext";
+import * as Device from "expo-device";
 
 export default class MapScreen extends React.Component {
   state = {
@@ -47,28 +48,34 @@ export default class MapScreen extends React.Component {
 
   componentDidMount() {
     this.setState({ mounted: true });
-    if (this.props.navigation.state.params == null) {
-      this.setMapOnCurrentPosition();
+    if (this.props.navigation.state.params == null && Device.isDevice) {
+      this.setMapOnCurrentPosition().then(() => {
+        this.getAllPlaces();
+      });
     }
-    dbPlace.getPlaces().then((placesIds) => {
-      this.context.saveGlobalPlaces(placesIds);
-      //  this.getAllPlaces();
-    });
   }
 
   getAllPlaces() {
-    let promises = this.context.globalPlaces.map((placeId) => {
-      return dbPlace.getPlace(placeId).then((place) => {
-        place.id = placeId;
-        return place;
+    console.log("MAP READY");
+    if (this.state.places.length == 0) {
+      dbPlace.getPlaces().then((placesIds) => {
+        this.context.saveGlobalPlaces(placesIds);
+        let promises = this.context.globalPlaces.map((placeId) => {
+          return dbPlace.getPlace(placeId).then((place) => {
+            place.id = placeId;
+            return place;
+          });
+        });
+        Promise.all(promises).then((places) => {
+          console.log("ALL PLACES");
+          console.log(places);
+
+          this.setState({ places: places, visibleMarkers: places });
+          this.forceUpdate();
+          //this.showAllMarkers();
+        });
       });
-    });
-    Promise.all(promises).then((places) => {
-      console.log("ALL PLACES");
-      console.log(places);
-      this.setState({ places: places, visibleMarkers: places });
-      //this.showAllMarkers();
-    });
+    }
   }
 
   componentDidUpdate() {
@@ -93,9 +100,10 @@ export default class MapScreen extends React.Component {
 
   async setMapOnCurrentPosition() {
     const { status } = await Permissions.askAsync(Permissions.LOCATION);
+
     if (status === "granted") {
       Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.Lowest,
+        accuracy: Location.Accuracy.Low,
       })
         .then((location) => {
           this.setState({ currentPosition: location });
@@ -137,9 +145,11 @@ export default class MapScreen extends React.Component {
 
   showAllMarkers() {
     this.hideCallouts();
-    let allMarkers = this.state.places;
+    let filteredMarkers = this.state.places.filter(
+      (marker) => marker == marker
+    );
     //this.removeMarkers();
-    this.setState({ visibleMarkers: allMarkers });
+    this.setState({ visibleMarkers: filteredMarkers });
   }
 
   hideCallouts() {
@@ -198,8 +208,7 @@ export default class MapScreen extends React.Component {
   }
 
   render() {
-    //this.state.markers = [];
-    console.log("MARKERS LENGTH START" + this.state.markers.length);
+    console.log("RENDER");
     return (
       <View style={styles.container}>
         <View style={styles.overlay}>
@@ -273,9 +282,16 @@ export default class MapScreen extends React.Component {
           initialRegion={this.state.region}
           region={this.state.region}
           style={styles.mapStyle}
+          onMapReady={this.getAllPlaces.bind(this)}
           onRegionChangeComplete={this.onRegionChange.bind(this)}
+          loadingEnabled={true}
+          loadingIndicatorColor="#666666"
+          loadingBackgroundColor="#eeeeee"
+          moveOnMarkerPress={false}
+          showsUserLocation={true}
+          showsCompass={true}
+          showsPointsOfInterest={false}
         >
-          {(this.state.markers = [])}
           {console.log("PLACES LENGTH: " + this.state.visibleMarkers.length)}
           {this.state.visibleMarkers.map((marker, index) => (
             <Marker
@@ -290,7 +306,7 @@ export default class MapScreen extends React.Component {
               title={marker.name}
               description={marker.address}
               onCalloutPress={() => this.showPlace(marker, index)}
-              tracksViewChanges={false}
+              //tracksViewChanges={false}
               style={styles.marker}
             >
               <Image
