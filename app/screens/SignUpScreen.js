@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   Keyboard,
   TouchableWithoutFeedback,
+  Image,
 } from "react-native";
 import "firebase/firestore";
 import { auth } from "../firebase/firebaseconfig.js";
@@ -194,7 +195,10 @@ class SignUpScreen extends React.Component {
             //keyboardVerticalOffset={Platform.OS == "ios" ? 0 : 20}
             //enabled={Platform.OS === "ios" ? true : false}
             >
-              <Text style={mainStyle.logo}>PetApp</Text>
+              <Image
+                style={mainStyle.logo}
+                source={require("../../assets/images/logo/logo3.png")}
+              ></Image>
               {this.state.emailSignup ? (
                 <View style={mainStyle.form}>
                   <TextInput

@@ -9,9 +9,9 @@ export default StyleSheet.create({
     justifyContent: "center",
   },
   logo: {
-    fontSize: 50,
-    color: "#fb5b5a",
-    marginVertical: 30,
+    width: 300,
+    height: 300,
+    marginTop: 30,
     alignSelf: "center",
   },
   form: {

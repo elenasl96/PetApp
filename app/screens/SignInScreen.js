@@ -11,6 +11,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   ScrollView,
+  Image,
 } from "react-native";
 import { auth } from "../firebase/firebaseconfig.js";
 import "firebase/firestore";
@@ -127,14 +128,17 @@ class SignInScreen extends React.Component {
         }}
       >
         <SafeAreaView style={{ flex: 1 }}>
-           <ScrollView>
+          <ScrollView>
             <KeyboardAvoidingView
               style={mainStyle.container}
               //behavior={Platform.OS == "ios" ? "padding" : "height"}
               //keyboardVerticalOffset={Platform.OS == "ios" ? 0 : 20}
               //enabled={Platform.OS === "ios" ? true : false}
             >
-              <Text style={mainStyle.logo}>PetApp</Text>
+              <Image
+                style={mainStyle.logo}
+                source={require("../../assets/images/logo/logo2.png")}
+              ></Image>
               <View style={mainStyle.form}>
                 <TextInput
                   testID="SignIn.emailInput"
@@ -199,7 +203,7 @@ class SignInScreen extends React.Component {
                 </Text>
               </View>
             </KeyboardAvoidingView>
-         </ScrollView>
+          </ScrollView>
         </SafeAreaView>
       </TouchableWithoutFeedback>
     );
@@ -249,7 +253,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   linkBox: {
-    marginVertical: 20,
+    marginTop: 20,
+    marginBottom: 50,
   },
 });
 export default SignInScreen;

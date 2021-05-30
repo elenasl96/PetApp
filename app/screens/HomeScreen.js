@@ -40,11 +40,11 @@ class HomeScreen extends React.Component {
   componentDidMount() {
     this.setState({ mounted: true, loading: true });
     //if(this.state.mounted){
-      this.loadInfo();
+    this.loadInfo();
     //}
   }
 
-  loadInfo(){
+  loadInfo() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.getUserPets([], true);
@@ -71,8 +71,8 @@ class HomeScreen extends React.Component {
       if (pets.length != 0) {
         this.getMyPets(pets);
       } else {
-        if(this.state.mounted){
-        this.setState({ pets: pets });
+        if (this.state.mounted) {
+          this.setState({ pets: pets });
         }
       }
     }
@@ -102,23 +102,27 @@ class HomeScreen extends React.Component {
 
     if (pets.length != 0) {
       pets.forEach((aid) => {
-             dbUserAnimal.getUserAnimal(uid, aid).then((animal) => {
-              animals.push(animal);
-              if (pets.length == animals.length) {
-                 dbFeed.getFeeds(animals,uid,info.getLastLogin(),info.getDays()).then((feeds) => {
-                      if (this.state.mounted) {
-                        this.setState({ feeds: feeds, loading: false });
-                      }
-                 });
-            }
-          });
-      });  
-    } else {
-      dbFeed.getFeeds(animals,uid,info.getLastLogin(),info.getDays()).then((feeds) => {
-        if (this.state.mounted) {
-          this.setState({ feeds: feeds, loading: false });
-        }
+        dbUserAnimal.getUserAnimal(uid, aid).then((animal) => {
+          animals.push(animal);
+          if (pets.length == animals.length) {
+            dbFeed
+              .getFeeds(animals, uid, info.getLastLogin(), info.getDays())
+              .then((feeds) => {
+                if (this.state.mounted) {
+                  this.setState({ feeds: feeds, loading: false });
+                }
+              });
+          }
+        });
       });
+    } else {
+      dbFeed
+        .getFeeds(animals, uid, info.getLastLogin(), info.getDays())
+        .then((feeds) => {
+          if (this.state.mounted) {
+            this.setState({ feeds: feeds, loading: false });
+          }
+        });
     }
   }
 
@@ -219,8 +223,8 @@ class HomeScreen extends React.Component {
   deletePet = (petID) => {
     dbUserAnimal.deleteAnimal(this.context.uid, petID);
     this.context.deletePet(petID);
-    if(this.state.mounted){
-    this.setState({ onDeletePet: true });
+    if (this.state.mounted) {
+      this.setState({ onDeletePet: true });
     }
   };
 
@@ -291,19 +295,16 @@ class HomeScreen extends React.Component {
 
             <View style={styles.myPlaceContainer}>
               <Text style={styles.largeText}>Your Favourite Places</Text>
-
+              {console.log("SAVED PLACES L:" + this.state.places.length)}
               {this.state.places.length > 0 ? (
-                <ScrollView
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}
-                >
+                <View style={styles.myPlaces}>
                   <PlaceButton
                     uid={this.context.uid}
                     places={this.state.places}
                     navigation={this.props.navigation}
                     isSavedPlace={true}
                   ></PlaceButton>
-                </ScrollView>
+                </View>
               ) : null}
             </View>
           </ScrollView>
@@ -393,14 +394,18 @@ const styles = StyleSheet.create({
   },
   myPlaceContainer: {
     flexDirection: "column",
+    justifyContent: "center",
     //paddingHorizontal: 0,
   },
   myPlaces: {
-    flexWrap: "nowrap",
+    flex: 1,
+    flexWrap: "wrap",
     flexDirection: "row",
-    paddingTop: 10,
-    paddingBottom: 10,
+    padding: 20,
     backgroundColor: "white",
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
   },
   place: {
     marginLeft: 15,
