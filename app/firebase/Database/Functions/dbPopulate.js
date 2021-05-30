@@ -1,3 +1,4 @@
+import dbLostPet from "./dbLostPet";
 import dbPlace from "./dbPlace";
 import dbUserAnimal from "./dbUserAnimal";
 
@@ -31,5 +32,19 @@ export const dbPopulate = {
       .then((doc) => {
         dbPlace.addUserPlace(uid, doc.id);
       });
+  },
+  addLostPet: function (uid, lostPet) {
+    dbLostPet.addLostPetNotify(
+      lostPet.getName(),
+      lostPet.getPhoto(),
+      lostPet.getSize(),
+      lostPet.getColor(),
+      lostPet.getBreed(),
+      lostPet.getNotes(),
+      lostPet.getPlace(),
+      uid,
+      lostPet.getEmail(),
+      lostPet.getPhone()
+    );
   },
 };

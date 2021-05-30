@@ -7,7 +7,7 @@ import dbNews from "../firebase/Database/Functions/dbNews";
 import dbNotification from "../firebase/Database/Functions/dbNotification";
 import dbPlace from "../firebase/Database/Functions/dbPlace";
 import { dbPopulate } from "../firebase/Database/Functions/dbPopulate";
-import { pet, uids, place } from "../firebase/Database/Population";
+import { pet, uids, place, lostPet } from "../firebase/Database/Population";
 import constants from "../shared/constants";
 
 beforeAll(() => {
@@ -49,5 +49,11 @@ test("place population", () => {
   //dbPopulate.addPlaceToUser(uids.elena, place.confortHouse);
   //dbPopulate.addPlaceToUser(uids.matteo, place.confortHouse);
   //dbPopulate.addPlaceToUser(uids.matteo, place.petClinic);
+  return expect(true).toBeTruthy();
+});
+
+test("lost pets population", () => {
+  //dbPopulate.addLostPet(uids.elena, lostPet.gioia);
+  //dbPopulate.addLostPet(uids.elena, lostPet.cipolla);
   return expect(true).toBeTruthy();
 });
