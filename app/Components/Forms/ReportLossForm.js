@@ -113,6 +113,28 @@ class ReportLossForm extends Component {
     }
   };
 
+  replyToLoss = () => {
+    let errors = validator.handleReportValidation(this.state.phone);
+    let isValid = validator.isValid(errors);
+    this.setState({ errors: errors });
+    if (isValid) {
+      this.props.close();
+      return new LostPetSeen(
+        this.state.photo,
+        this.state.size,
+        this.state.color,
+        this.state.breed,
+        this.state.notes,
+        this.state.place,
+        "",
+        this.props.pet.id,
+        this.state.email,
+        this.state.phone
+      );
+    }
+    return null;
+  };
+
   setPhoto = (photo) => {
     if (this.state.mounted) {
       this.setState({ photo: photo });
@@ -282,7 +304,7 @@ class ReportLossForm extends Component {
                 <PhotoBox setPhoto={this.setPhoto} isUpdate={false}></PhotoBox>
               ) : null}
 
-              {this.props.sight ? (
+              {this.props.sight && !pet ? (
                 <TouchableOpacity
                   style={{
                     width: "50%",
@@ -296,7 +318,8 @@ class ReportLossForm extends Component {
                     <Text style={styles.buttonText}>Report sight</Text>
                   </View>
                 </TouchableOpacity>
-              ) : (
+              ) : null}
+              {!this.props.sight && !pet ? (
                 <TouchableOpacity
                   style={{
                     width: "50%",
@@ -310,7 +333,7 @@ class ReportLossForm extends Component {
                     <Text style={styles.buttonText}>Report Loss</Text>
                   </View>
                 </TouchableOpacity>
-              )}
+              ) : null}
 
               {pet ? (
                 <View style={styles.buttons}>
@@ -318,6 +341,7 @@ class ReportLossForm extends Component {
                     navigation={this.props.navigation}
                     animal={pet}
                     userID={pet.uid}
+                    replyToLoss={this.replyToLoss.bind(this)}
                   ></NotifySightButton>
                 </View>
               ) : null}

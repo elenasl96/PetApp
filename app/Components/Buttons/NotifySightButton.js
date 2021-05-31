@@ -1,7 +1,10 @@
 import * as Notifications from "expo-notifications";
 import React, { useState, useEffect, useRef } from "react";
 import { Text, TouchableOpacity, StyleSheet } from "react-native";
+import db from "../../firebase/Database/DatabaseManager";
+import dbLostPet from "../../firebase/Database/Functions/dbLostPet";
 import dbNotification from "../../firebase/Database/Functions/dbNotification";
+import mainStyle from "../../styles/mainStyle";
 import { AuthContext } from "../AuthContext";
 
 Notifications.setNotificationHandler({
@@ -37,13 +40,38 @@ export default class NotifySightButton extends React.Component {
     });
   }
 
+  send = () => {
+    console.log("SEND");
+    let petSeen = this.props.replyToLoss();
+    if (petSeen) {
+      dbLostPet
+        .addLostPetSeen(
+          petSeen.photo,
+          petSeen.size,
+          petSeen.color,
+          petSeen.breed,
+          petSeen.notes,
+          petSeen.place,
+          this.context.uid,
+          petSeen.email,
+          petSeen.phone
+        )
+        .then((doc) => {
+          dbLostPet.getLostPetSeen(doc.id).then((pet) => {
+            pet.id = doc.id;
+            sendPushNotificationToUser(this.props.userID, pet);
+          });
+        });
+    }
+  };
+
   render() {
     const userID = this.props.userID;
     return (
       <TouchableOpacity
-        style={styles.button}
+        style={mainStyle.submitButton}
         onPress={async () => {
-          await sendPushNotificationToUser(userID, this.props.animal);
+          await this.send();
         }}
       >
         <Text style={styles.buttonText}>Reply to Loss</Text>
@@ -54,6 +82,7 @@ export default class NotifySightButton extends React.Component {
 
 async function sendPushNotificationToUser(uid, animal) {
   console.log(uid);
+
   dbNotification.getUserToken(uid).then((expoPushToken) => {
     sendPushNotification(expoPushToken, animal);
   });

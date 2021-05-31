@@ -77,7 +77,7 @@ export default StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 22,
-    marginTop: 20,
+    marginVertical: 20,
     elevation: 2,
   },
   error: {

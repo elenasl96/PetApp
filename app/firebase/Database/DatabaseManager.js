@@ -1,14 +1,14 @@
-import { firestore, storage } from "../shared/firebaseconfig.js";
-import User from "./User.js";
-import Animal from "./Animal.js";
-import AdoptableAnimal from "./AdoptableAnimal.js";
-import Place from "./Place.js";
-import Feed from "./Feed.js";
-import Notification from "./Notification.js";
-import News from "./News.js";
-import LostPetNotify from "./LostPetNotify.js";
-import LostPetSeen from "./LostPetSeen.js";
-import utils from "../shared/utilities";
+import { firestore, storage } from "../firebaseconfig";
+import User from "../Database/Objects/User";
+import Animal from "../Database/Objects/UserAnimal";
+import AdoptableAnimal from "../Database/Objects/AdoptableAnimal.js";
+import Place from "../Database/Objects/Place.js";
+import Feed from "../Database/Objects/Feed.js";
+import Notification from "../Database/Objects/Notification.js";
+import News from "../Database/Objects/News.js";
+import LostPetNotify from "../Database/Objects/LostPetNotify.js";
+import LostPetSeen from "../Database/Objects/LostPetSeen.js";
+import utils from "../../shared/utilities";
 
 const db = {
   // ----------------User-----------------------------------------------------------
@@ -1105,7 +1105,6 @@ const db = {
       }
     });
   },
-
 
   getUserAnimalsByType: function (uid, type) {
     const users = firestore.collection("Users");
