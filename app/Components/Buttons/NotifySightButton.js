@@ -1,10 +1,6 @@
 import * as Notifications from "expo-notifications";
 import React, { useState, useEffect, useRef } from "react";
-import {
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import { Text, TouchableOpacity, StyleSheet } from "react-native";
 import dbNotification from "../../firebase/Database/Functions/dbNotification";
 import { AuthContext } from "../AuthContext";
 
@@ -19,14 +15,27 @@ Notifications.setNotificationHandler({
 export default class NotifySightButton extends React.Component {
   static contextType = AuthContext;
 
-   componentDidMount(){
-      this.setState({mounted:true});
-    }
+  componentDidMount() {
+    this.setState({ mounted: true });
+    Notifications.addNotificationResponseReceivedListener(
+      this._handleNotificationResponse.bind(this)
+    );
+  }
 
-    componentWillUnmount(){
-      this.setState({mounted:false});
-    }
+  componentWillUnmount() {
+    this.setState({ mounted: false });
+  }
 
+  _handleNotificationResponse(response) {
+    console.log("OPEN APP");
+    console.log(response.notification.request.content.data);
+    //console.log(this.props.navigation);
+
+    this.props.navigation.navigate("LostPet", {
+      pet: response.notification.request.content.data.pet,
+      petID: response.notification.request.content.data.petID,
+    });
+  }
 
   render() {
     const userID = this.props.userID;
@@ -34,7 +43,7 @@ export default class NotifySightButton extends React.Component {
       <TouchableOpacity
         style={styles.button}
         onPress={async () => {
-          await sendPushNotificationToUser(userID);
+          await sendPushNotificationToUser(userID, this.props.animal);
         }}
       >
         <Text style={styles.buttonText}>Reply to Loss</Text>
@@ -43,21 +52,21 @@ export default class NotifySightButton extends React.Component {
   }
 }
 
-async function sendPushNotificationToUser(uid) {
+async function sendPushNotificationToUser(uid, animal) {
   console.log(uid);
   dbNotification.getUserToken(uid).then((expoPushToken) => {
-    sendPushNotification(expoPushToken);
+    sendPushNotification(expoPushToken, animal);
   });
 }
 
 // Can use this function below, OR use Expo's Push Notification Tool-> https://expo.io/notifications
-async function sendPushNotification(expoPushToken) {
+async function sendPushNotification(expoPushToken, animal) {
   const message = {
     to: expoPushToken,
     sound: "default",
     title: "Pet report",
     body: "Your pet has been spotted!",
-    data: { someData: "goes here" },
+    data: { pet: animal, petID: animal.id },
   };
 
   await fetch("https://exp.host/--/api/v2/push/send", {

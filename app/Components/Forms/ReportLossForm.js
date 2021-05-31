@@ -22,6 +22,7 @@ import LostPetNotify from "../../firebase/Database/Objects/LostPetNotify";
 import MatchPetsModal from "../Custom/matchPetsModal";
 import PetLostButton from "../Buttons/PetLostButton";
 import LostPetSeen from "../../firebase/Database/Objects/LostPetSeen";
+import NotifySightButton from "../Buttons/NotifySightButton";
 
 class ReportLossForm extends Component {
   static contextType = AuthContext;
@@ -45,11 +46,11 @@ class ReportLossForm extends Component {
     if (this.props.pet != null) {
       pet = this.props.pet;
       this.setState({
-        name: pet.getName(),
-        photo: pet.getPhoto(),
-        size: pet.getSize(),
-        color: pet.getColor(),
-        breed: pet.getBreed(),
+        name: pet.name,
+        photo: pet.photo,
+        size: pet.size,
+        color: pet.color,
+        breed: pet.breed,
       });
     }
   }
@@ -138,6 +139,9 @@ class ReportLossForm extends Component {
     let sizes = constants.SIZES_PETS.map((s, i) => {
       return <Picker.Item key={i} value={s} label={s} />;
     });
+
+    let pet = this.props.pet;
+
     return (
       <Modal
         animationType="slide"
@@ -307,6 +311,16 @@ class ReportLossForm extends Component {
                   </View>
                 </TouchableOpacity>
               )}
+
+              {pet ? (
+                <View style={styles.buttons}>
+                  <NotifySightButton
+                    navigation={this.props.navigation}
+                    animal={pet}
+                    userID={pet.uid}
+                  ></NotifySightButton>
+                </View>
+              ) : null}
 
               {this.state.showPetsMatched ? (
                 <View>

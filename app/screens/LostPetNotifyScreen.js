@@ -18,6 +18,7 @@ import ReportLossForm from "../Components/Forms/ReportLossForm";
 import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import NotificationsHandler from "../Components/NotificationsHandler";
 
 class LostPetNotifyScreen extends React.Component {
   static contextType = AuthContext;
@@ -33,22 +34,23 @@ class LostPetNotifyScreen extends React.Component {
   }
 
   replyToLoss = () => {
-    this.props.navigation.navigate("ReportLoss", {
-      pet: this.props.navigation.state.params.pet,
-    });
+    this.setState({ showReportLossForm: true });
   };
 
   render() {
     const pet = this.props.navigation.state.params.pet;
-    const isEditable = true;
+    //const isEditable = pet.uid == this.context.uid;
+    const isEditable = false;
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <ReportLossForm
+          sight={true}
           pet={pet}
           visible={this.state.showReportLossForm}
           close={() => {
             this.setState({ showReportLossForm: false });
           }}
+          navigation={this.props.navigation}
         ></ReportLossForm>
 
         <View style={styles.mainContent}>
@@ -81,14 +83,14 @@ class LostPetNotifyScreen extends React.Component {
               </View>
               <View>
                 <ImageBackground
-                  source={{ uri: pet.getPhoto() }}
+                  source={{ uri: pet.photo }}
                   style={styles.petImage}
                   imageStyle={{ borderRadius: 150 }}
                 ></ImageBackground>
               </View>
               <View style={styles.petName}>
                 <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-                  {pet.getName()}
+                  {pet.name}
                 </Text>
                 <Ionicons
                   style={{ textAlign: "center" }}
@@ -108,33 +110,33 @@ class LostPetNotifyScreen extends React.Component {
             >
               <View style={styles.info}>
                 <Text style={styles.infoTitle}>Size </Text>
-                <Text style={styles.infoText}>{pet.getSize()} </Text>
+                <Text style={styles.infoText}>{pet.size} </Text>
               </View>
               <View style={styles.info}>
                 <Text style={styles.infoTitle}>Breed </Text>
-                <Text style={styles.infoText}>{pet.getBreed()} </Text>
+                <Text style={styles.infoText}>{pet.breed} </Text>
               </View>
 
               <View style={styles.info}>
                 <Text style={styles.infoTitle}>Color </Text>
-                <Text style={styles.infoText}>{pet.getColor()} </Text>
+                <Text style={styles.infoText}>{pet.color} </Text>
               </View>
             </View>
 
             <Text style={styles.title}>Lost information </Text>
             <View style={styles.placeLost}>
-              <Text> {pet.getPlace()}</Text>
+              <Text> {pet.place}</Text>
             </View>
 
             <Text style={styles.title}>Contacts</Text>
             <View style={styles.contacts}>
-              <Text>Email: {pet.getEmail()}</Text>
-              <Text>Telephone: {pet.getPhone()}</Text>
+              <Text>Email: {pet.email}</Text>
+              <Text>Telephone: {pet.phone}</Text>
             </View>
 
-            <View style={styles.profile}>
-              <Text style={styles.title}>Notes</Text>
-              <Text>{pet.getNotes()}</Text>
+            <Text style={styles.title}>Notes</Text>
+            <View style={styles.contacts}>
+              <Text>{pet.notes}</Text>
             </View>
           </ScrollView>
         </View>

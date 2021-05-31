@@ -40,6 +40,8 @@ class HomeScreen extends React.Component {
   componentDidMount() {
     this.setState({ mounted: true, loading: true });
     //if(this.state.mounted){
+    console.log("OPENING HOMESCREEN");
+    console.log(this.props.navigation.state.params);
     this.loadInfo();
     //}
   }
