@@ -207,6 +207,11 @@ export default class MapScreen extends React.Component {
     }
   }
 
+  clearSearch() {
+    this.searchInput.blur();
+    this.searchInput.clear();
+  }
+
   render() {
     console.log("RENDER");
     return (
@@ -215,6 +220,9 @@ export default class MapScreen extends React.Component {
           <View style={styles.searchBox}>
             <View style={styles.mapSearch}>
               <TextInput
+                ref={(input) => {
+                  this.searchInput = input;
+                }}
                 placeholder="Search"
                 placeholderTextColor="#616161"
                 returnKeyType="next"
@@ -229,6 +237,15 @@ export default class MapScreen extends React.Component {
             >
               <Text style={{ textAlign: "center" }}>
                 <Feather name="search" size={18} color="black" />
+              </Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={styles.mapButton}
+              onPress={this.clearSearch.bind(this)}
+              underlayColor={"rgb(200,200,200)"}
+            >
+              <Text style={{ textAlign: "center" }}>
+                <Feather name="delete" size={18} color="black" />
               </Text>
             </TouchableHighlight>
           </View>
