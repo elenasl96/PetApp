@@ -125,3 +125,4 @@ test("addds", () => {
     //return expect(dbFeed.getUserFeeds("gbfBtH1XbDMYice2pM0zV7caEjn2")).resolves.toHaveLength(1);
     //return expect(dbFeed.getRandomGeneralFeeds("0",2)).resolves.toHaveLength(1);
 });
+

@@ -154,12 +154,21 @@ getFeedsByFilter(pet, filter, value, id) {
   },
 
   deleteUserFeeds: function (uid) {
+     /*
       query = firestore.collection("Users").doc(uid).collection("Feed");
       query.get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
           doc.ref.delete();
         });
       });
+      */
+     var promisesFeeds;
+     return dbFeed.getUserFeedsIds(uid).then(function (feeds) {
+        if (feeds.length != 0) {
+          promisesFeeds = feeds.forEach((id) =>{return dbFeed.deleteUserFeed(uid, id)});
+        }
+        return promisesFeeds;
+     });
   },
 
 
@@ -209,7 +218,9 @@ getFeedsByFilter(pet, filter, value, id) {
       var num = 1; // num general feeds
       id = id.toString(); // casts id to string 
 
-      dbFeed.deleteUserFeeds(uid); 
+      let promiseDelete = dbFeed.deleteUserFeeds(uid);
+
+      return Promise.all([promiseDelete]).then(() =>{
 
       if (animals.length != 0) { //at least one animal
 
@@ -272,6 +283,8 @@ getFeedsByFilter(pet, filter, value, id) {
           return feeds;
         });
       }
+
+     });
     } else {
       return dbFeed.getUserFeeds(uid).then((feedsFetched) => {
         feedsFetched.forEach((feed)=>{
