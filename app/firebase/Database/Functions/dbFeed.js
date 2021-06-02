@@ -94,6 +94,28 @@ getFeedsByFilter(pet, filter, value, id) {
       });
   },
 
+  getUserFeedsIds: function (uid) {
+    const users = firestore.collection("Users");
+    var feeds = [];
+    return users
+      .doc(uid)
+      .collection("Feed")
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          feeds.push(doc.id);
+          //let feed = doc.data()
+          //feeds.push(new Feed(feed.title,feed.text,feed.type));
+          return feeds;
+        });
+
+        return feeds;
+      })
+      .catch(function (error) {
+        //console.log("Error getting documents: ", error);
+      });
+  },
+
   getUserFeeds: function (uid) {
     const users = firestore.collection("Users");
     var feeds = [];
@@ -118,13 +140,13 @@ getFeedsByFilter(pet, filter, value, id) {
 
   deleteUserFeed: function (uid, fid) {
     const users = firestore.collection("Users");
-    users
+    return users
       .doc(uid)
       .collection("Feed")
       .doc(fid)
       .delete()
       .then(function () {
-        console.log("Document successfully deleted!");
+        //console.log("delete feed");
       })
       .catch(function (error) {
         console.error("Error removing document: ", error);

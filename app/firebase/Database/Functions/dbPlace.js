@@ -120,7 +120,7 @@ const dbPlace = {
           .doc(pid)
           .delete()
           .then(function () {
-            //console.log("Document successfully deleted!");
+            //console.log("delete place");
           })
           .catch(function (error) {
             console.error("Error removing document: ", error);
@@ -134,7 +134,7 @@ const dbPlace = {
           .doc(pid)
           .delete()
           .then(function () {
-            //console.log("Document successfully deleted!");
+            //console.log("delete place");
           })
           .catch(function (error) {
             console.error("Error removing document: ", error);
@@ -207,7 +207,7 @@ const dbPlace = {
       .doc(id)
       .delete()
       .then(function () {
-       // console.log("Document successfully deleted!");
+       //console.log("delete saved place");
       })
       .catch(function (error) {
         console.error("Error removing document: ", error);

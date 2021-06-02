@@ -168,7 +168,7 @@ const dbAdoptableAnimal = {
 
   deleteAdoptableAnimal: function (pid, aid) {
     const places = firestore.collection("Places");
-    dbAdoptableAnimal.getAdoptableAnimalDiseases(pid, aid).then(function (diseases) {
+    return dbAdoptableAnimal.getAdoptableAnimalDiseases(pid, aid).then(function (diseases) {
       if (diseases.length != 0) {
         // diseases are optional so must be checked
         var promisesDiseases = diseases.forEach((id) => {

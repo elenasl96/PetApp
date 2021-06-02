@@ -267,7 +267,7 @@ const dbUserAnimal = {
         return disease;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
+        //console.log("Error getting documents: ", error);
       });
   },
 
@@ -305,7 +305,7 @@ const dbUserAnimal = {
       .doc(id)
       .delete()
       .then(function () {
-        //console.log("Document successfully deleted!");
+        //console.log("delete animal disease");
       })
       .catch(function (error) {
         console.error("Error removing document: ", error);
@@ -334,6 +334,11 @@ const dbUserAnimal = {
   },
   
   deleteAnimalStat: function (uid, aid, id) {
+    return dbUserAnimal.getAnimalStatSamples(uid, aid, id).then((samples) => {
+      if (samples.length != 0) {
+      var promisesSamples = samples.forEach((sampleid) => { return dbUserAnimal.deleteAnimalStatSample(uid, aid, id, sampleid);});
+      }
+    return Promise.all([promisesSamples]).then(()=>{
     const animals = firestore
       .collection("Users")
       .doc(uid)
@@ -344,11 +349,13 @@ const dbUserAnimal = {
       .doc(id)
       .delete()
       .then(function () {
-        //console.log("Document successfully deleted!");
+        //console.log("delete stat");
       })
       .catch(function (error) {
         console.error("Error removing document: ", error);
       });
+    });
+  });
   },
 
   
@@ -359,13 +366,13 @@ const dbUserAnimal = {
       .doc(uid)
       .collection("Animals");
     const stats = animals.doc(aid).collection("Stats");
-     stats
+     return stats
       .doc(stat)
       .collection("Samples")
       .doc(id)
       .delete()
       .then(function () {
-        //console.log("Document successfully deleted!");
+        //console.log("delete sample");
       })
       .catch(function (error) {
         console.error("Error removing document: ", error);
@@ -376,7 +383,7 @@ const dbUserAnimal = {
 
   deleteAnimal: function (uid, aid) {
     const users = firestore.collection("Users");
-    dbUserAnimal.getAnimalDiseases(uid, aid).then(function (diseases) {
+    return dbUserAnimal.getAnimalDiseases(uid, aid).then(function (diseases) {
       if (diseases.length != 0) {
         // diseases are optional so must be checked
         var promisesDiseases = diseases.forEach((id) => {
@@ -384,28 +391,10 @@ const dbUserAnimal = {
         });
       }
 
-      dbUserAnimal.getAnimalStats(uid,aid).then((stats) => {
+      return dbUserAnimal.getAnimalStats(uid,aid).then((stats) => {
         if (stats.length != 0) {
-          var promisesStats = stats.forEach((id) => {
-            dbUserAnimal.getAnimalStatSamples(uid, aid, id).then((samples) => {
-               if (samples.length != 0) {
-                  var index = 1;
-                  samples.forEach((sampleid) => {
-                    dbUserAnimal.deleteAnimalStatSample(uid, aid, id, sampleid);
-                    if(index == samples.length){
-                      return dbUserAnimal.deleteAnimalStat(uid, aid, id);
-                    }
-                    else{index = index + 1;}
-                  });
-            }
-            else{
-              return dbUserAnimal.deleteAnimalStat(uid, aid, id);
-            }
-              });
-          });
-        }
-
-        
+          var promisesStats = stats.forEach((id) => {return dbUserAnimal.deleteAnimalStat(uid, aid, id);});                    
+        }        
 
        return Promise.all([promisesDiseases,promisesStats]).then(() => {
                     return users
@@ -414,14 +403,12 @@ const dbUserAnimal = {
                       .doc(aid)
                       .delete()
                       .then(function () {
-                        //console.log("Document successfully deleted!");
+                        //console.log("delete animal");
                       })
                       .catch(function (error) {
                         console.error("Error removing document: ", error);
                       });
-        });  
-
-
+           }); 
       });
     });
   },

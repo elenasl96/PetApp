@@ -60,7 +60,7 @@ const dbNotification = {
         .doc(nid)
         .delete()
         .then(function () {
-         // console.log("Document successfully deleted!");
+         //console.log("delete notification");
         })
         .catch(function (error) {
           console.error("Error removing document: ", error);

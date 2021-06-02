@@ -47,9 +47,9 @@ const dbUser = {
       if (notifications.length != 0) {
          var promisesNotifications = notifications.forEach((id) =>{return dbNotification.deleteUserNotification(uid, id)});
       }
-      dbFeed.getUserFeeds(uid).then(function (feeds) {
+      dbFeed.getUserFeedsIds(uid).then(function (feeds) {
           if (feeds.length != 0) {
-            var promisesFeeds = feeds.forEach((id) =>{ return dbFeed.deleteUserFeed(uid, id)});
+            var promisesFeeds = feeds.forEach((id) =>{return dbFeed.deleteUserFeed(uid, id)});
           }
           dbPlace.getSavedPlaces(uid).then(function (savedplaces) {
             if (savedplaces.length != 0) {
@@ -71,10 +71,10 @@ const dbUser = {
                 .doc(uid)
                 .delete()
                 .then(function () {
-                  //console.log("Document successfully deleted!");
+                  //console.log("delete user");
                 })
                 .catch(function (error) {
-                  console.error("Error removing document: ", error);
+                  //console.error("Error removing document: ", error);
                 });
               });
               }); 
@@ -84,7 +84,7 @@ const dbUser = {
                 .doc(uid)
                 .delete()
                 .then(function () {
-                  //console.log("Document successfully deleted!");
+                  //console.log("delete user");
                 })
                 .catch(function (error) {
                   console.error("Error removing document: ", error);
