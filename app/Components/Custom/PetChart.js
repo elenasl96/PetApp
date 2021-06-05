@@ -217,9 +217,15 @@ class Chart extends React.Component {
   render() {
     const data = this.state.data;
     const labels = [];
+    let chartWidth;
+    if (Dimensions.get("window").width > 900) {
+      chartWidth = Dimensions.get("window").width * 0.47;
+    } else {
+      chartWidth = Dimensions.get("window").width * 0.9;
+    }
 
     return (
-      <>
+      <View style={{ flex: 1, flexBasis: 400 }}>
         <View style={styles.statisticButtons}>
           <TouchableHighlight
             style={mainStyle.roundButton}
@@ -246,7 +252,7 @@ class Chart extends React.Component {
                   labels: labels,
                   datasets: [{ data: data }],
                 }}
-                width={Dimensions.get("window").width * 0.9} // from react-native
+                width={chartWidth} // from react-native
                 height={200}
                 //yAxisLabel={}
                 chartConfig={{
@@ -345,7 +351,7 @@ class Chart extends React.Component {
         {this.state.errors["delete"] != null ? (
           <Text style={styles.error}>{this.state.errors["delete"]}</Text>
         ) : null}
-      </>
+      </View>
     );
   }
 }

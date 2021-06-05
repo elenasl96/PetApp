@@ -207,7 +207,7 @@ class DiseasePanel extends React.Component {
     }
 
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, flexBasis: 400 }}>
         <View style={styles.descriptionContainer}>
           {temp.length != 0 ? (
             <Text style={styles.title}>
@@ -215,17 +215,28 @@ class DiseasePanel extends React.Component {
               checkout your daily feed to retrieve suggestions!
             </Text>
           ) : (
-            <View style={styles.healthStatus}>
-              <FontAwesome5 name="heartbeat" size={24} color="red" />
+            <>
+              <View style={styles.healthStatus}>
+                <FontAwesome5 name="heartbeat" size={24} color="red" />
+                <Text
+                  style={{
+                    textAlignVertical: "center",
+                    marginLeft: 10,
+                  }}
+                >
+                  The pet is in good health, great!
+                </Text>
+              </View>
               <Text
                 style={{
                   textAlignVertical: "center",
-                  marginLeft: 10,
+                  textAlign: "center",
+                  marginVertical: 6,
                 }}
               >
-                The pet is in good health, great!
+                Add a new disease using the picker below.
               </Text>
-            </View>
+            </>
           )}
 
           <ScrollView

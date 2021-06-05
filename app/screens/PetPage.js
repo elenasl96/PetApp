@@ -100,65 +100,6 @@ class PetScreen extends React.Component {
         ></ReportLossForm>
         <View style={styles.mainContent}>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.petContainer}>
-              <View style={styles.buttons}>
-                {isEditable ? (
-                  <TouchableOpacity
-                    style={[mainStyle.roundButton, { marginLeft: 60 }]}
-                    onPress={this.deletePet}
-                  >
-                    <Text style={styles.buttonText}>
-                      <AntDesign name="delete" size={24} color="red" />
-                    </Text>
-                  </TouchableOpacity>
-                ) : null}
-
-                {!isAdoptable ? (
-                  <TouchableOpacity
-                    style={[mainStyle.roundButton, { marginLeft: 20 }]}
-                    onPress={() => {
-                      this.setState({ showReportLossForm: true });
-                    }}
-                  >
-                    <Text style={styles.buttonText}>
-                      <Feather name="alert-circle" size={24} color="orange" />
-                    </Text>
-                  </TouchableOpacity>
-                ) : null}
-
-                {!isAdoptable ? (
-                  <TouchableOpacity
-                    style={[mainStyle.roundButton, { marginLeft: 60 }]}
-                    onPress={() => {
-                      this.setState({ showPhotoBox: true });
-                    }}
-                  >
-                    <Text style={styles.buttonText}>
-                      <Feather name="image" size={24} color="lightblue" />
-                    </Text>
-                  </TouchableOpacity>
-                ) : null}
-              </View>
-              <View>
-                <ImageBackground
-                  source={{ uri: this.state.photo }}
-                  style={styles.petImage}
-                  imageStyle={{ borderRadius: 150 }}
-                ></ImageBackground>
-              </View>
-              <View style={styles.petName}>
-                <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-                  {pet.getName()}
-                </Text>
-                <Ionicons
-                  style={{ textAlign: "center" }}
-                  name="md-paw"
-                  size={24}
-                  color="#f94144"
-                />
-              </View>
-            </View>
-
             {isEditable ? ( // if user pet isEditable is set to true by default
               <PhotoBox
                 petID={petID}
@@ -172,51 +113,123 @@ class PetScreen extends React.Component {
                 }}
               ></PhotoBox>
             ) : null}
-
             <View
               style={{
+                flex: 1,
                 flexDirection: "row",
+                flexWrap: "wrap",
                 justifyContent: "center",
-                alignContent: "center",
+                alignItems: "center",
               }}
             >
-              <View style={styles.info}>
-                <Text style={styles.infoTitle}>Age </Text>
-                <Text style={styles.infoText}>{pet.getAge()} </Text>
-              </View>
-              <View style={styles.info}>
-                <Text style={styles.infoTitle}>Size </Text>
-                <Text style={styles.infoText}>{pet.getSize()} </Text>
-              </View>
-              <View style={styles.info}>
-                <Text style={styles.infoTitle}>Breed </Text>
-                <Text style={styles.infoText}>{pet.getBreed()} </Text>
-              </View>
+              <View style={styles.petContainer}>
+                <View style={styles.buttons}>
+                  {isEditable ? (
+                    <TouchableOpacity
+                      style={[mainStyle.roundButton, { marginLeft: 60 }]}
+                      onPress={this.deletePet}
+                    >
+                      <Text style={styles.buttonText}>
+                        <AntDesign name="delete" size={24} color="red" />
+                      </Text>
+                    </TouchableOpacity>
+                  ) : null}
 
-              <View style={styles.info}>
-                <Text style={styles.infoTitle}>Color </Text>
-                <Text style={styles.infoText}>{pet.getColor()} </Text>
+                  {!isAdoptable ? (
+                    <TouchableOpacity
+                      style={[mainStyle.roundButton, { marginLeft: 20 }]}
+                      onPress={() => {
+                        this.setState({ showReportLossForm: true });
+                      }}
+                    >
+                      <Text style={styles.buttonText}>
+                        <Feather name="alert-circle" size={24} color="orange" />
+                      </Text>
+                    </TouchableOpacity>
+                  ) : null}
+
+                  {!isAdoptable ? (
+                    <TouchableOpacity
+                      style={[mainStyle.roundButton, { marginLeft: 60 }]}
+                      onPress={() => {
+                        this.setState({ showPhotoBox: true });
+                      }}
+                    >
+                      <Text style={styles.buttonText}>
+                        <Feather name="image" size={24} color="lightblue" />
+                      </Text>
+                    </TouchableOpacity>
+                  ) : null}
+                </View>
+                <View>
+                  <ImageBackground
+                    source={{ uri: this.state.photo }}
+                    style={styles.petImage}
+                    imageStyle={{ borderRadius: 150 }}
+                  ></ImageBackground>
+                </View>
+                <View style={styles.petName}>
+                  <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+                    {pet.getName()}
+                  </Text>
+                  <Ionicons
+                    style={{ textAlign: "center" }}
+                    name="md-paw"
+                    size={24}
+                    color="#f94144"
+                  />
+                </View>
+              </View>
+              <View
+                style={{
+                  flexBasis: 500,
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignContent: "center",
+                }}
+              >
+                <View style={styles.info}>
+                  <Text style={styles.infoTitle}>Age </Text>
+                  <Text style={styles.infoText}>{pet.getAge()} </Text>
+                </View>
+                <View style={styles.info}>
+                  <Text style={styles.infoTitle}>Size </Text>
+                  <Text style={styles.infoText}>{pet.getSize()} </Text>
+                </View>
+                <View style={styles.info}>
+                  <Text style={styles.infoTitle}>Breed </Text>
+                  <Text style={styles.infoText}>{pet.getBreed()} </Text>
+                </View>
+
+                <View style={styles.info}>
+                  <Text style={styles.infoTitle}>Color </Text>
+                  <Text style={styles.infoText}>{pet.getColor()} </Text>
+                </View>
               </View>
             </View>
+
             {isAdoptable ? (
               <View style={styles.profile}>
                 <Text style={styles.title}>Profile</Text>
                 <Text>{pet.profile}</Text>
               </View>
             ) : null}
+
             <Text style={styles.title}>Health monitor</Text>
 
-            <DiseasePanel
-              petID={petID}
-              type={type}
-              isAdoptable={isAdoptable}
-              isEditable={isEditable}
-              pid={pid}
-            >
-              {" "}
-            </DiseasePanel>
+            <View style={{ flex: 1, flexDirection: "row", flexWrap: "wrap" }}>
+              <DiseasePanel
+                petID={petID}
+                type={type}
+                isAdoptable={isAdoptable}
+                isEditable={isEditable}
+                pid={pid}
+              >
+                {" "}
+              </DiseasePanel>
 
-            {!isAdoptable ? <Chart petID={petID}></Chart> : null}
+              {!isAdoptable ? <Chart petID={petID}></Chart> : null}
+            </View>
           </ScrollView>
         </View>
       </SafeAreaView>
