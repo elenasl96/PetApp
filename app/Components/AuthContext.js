@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import firebase from "firebase";
 import * as GoogleSignIn from "expo-google-sign-in";
-//import dbUser from "../firebase/Database/Functions/dbUser";
+
 
 export const AuthContext = React.createContext();
 
@@ -31,7 +31,6 @@ class AuthContextProvider extends Component {
     if (this.state.mounted) {
       this.setState({ uid: uid });
     }
-    //console.log("this state uid:" + this.state.uid);
   };
 
   saveUser = (user) => {
@@ -90,28 +89,21 @@ class AuthContextProvider extends Component {
   };
 
   addPet = (pet) => {
-    console.log("ADD PET CONTEXT");
-    console.log("context length " + this.state.pets.length);
     let pets = this.state.pets;
     pets.push(pet);
     this.savePets(pets);
-    console.log("context length " + this.state.pets.length);
   };
 
   deletePet = (pet) => {
-    console.log("DELETE PET CONTEXT");
     let pets = this.state.pets;
-    console.log("context length " + this.state.pets.length);
     let index = pets.indexOf(pet);
     if (index != -1) {
       pets.splice(index, 1);
     }
     this.savePets(pets);
-    console.log("context length " + this.state.pets.length);
   };
 
   saveAdoptablePets = (pid, pets) => {
-    console.log("SAVE ADOPTABLE PETS: " + pets);
     var adoptablePets = this.state.adoptablePets;
     if(pets == null){
       adoptablePets[pid] = [];
@@ -126,8 +118,6 @@ class AuthContextProvider extends Component {
   };
 
   addAdoptablePet = (pid, pet) => {
-    console.log("ADD PET CONTEXT");
-    console.log("context length " + this.state.pets.length);
     let adoptablePets = this.state.adoptablePets;
     if (adoptablePets[pid] == null) {
       adoptablePets[pid] = [];
@@ -135,35 +125,17 @@ class AuthContextProvider extends Component {
     adoptablePets[pid].push(pet);
     let pets = adoptablePets[pid];
     this.saveAdoptablePets(pid, pets);
-    console.log("context length " + this.state.pets.length);
   };
 
   deleteAdoptablePet = (pid, pet) => {
-    console.log("DELETE PET CONTEXT");
     let pets = this.state.adoptablePets[pid];
-    console.log("context length " + pets.length);
     let index = pets.indexOf(pet);
     if (index != -1) {
       pets.splice(index, 1);
     }
     this.saveAdoptablePets(pid, pets);
     pets = this.state.adoptablePets[pid];
-    console.log("context length " + pets.length);
   };
-
-  /*
-  saveLastLogin = (lastlogin) => {
-   this.setState({lastlogin: lastlogin});
-   console.log("lastlogin:" + this.state.lastlogin);
-  }  */
-
-  /*
-  savePet = (pet) => {
-    this.state.pets.push(pet);
-    console.log("pets in context:");
-    console.log(this.state.pets);
-  };
-*/
 
   saveLostPets = (pets) => {
     if (this.state.mounted) {

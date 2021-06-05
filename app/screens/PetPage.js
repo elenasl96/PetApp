@@ -78,7 +78,6 @@ class PetScreen extends React.Component {
     const photo = this.state.photo;
     const isAdoptable = this.props.navigation.state.params.isAdoptable;
     const isEditable = this.props.navigation.state.params.isEditable;
-    console.log("The pet page is editable?" + isEditable);
 
     var section = "";
     var pid = null;

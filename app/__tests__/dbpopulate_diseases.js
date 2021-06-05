@@ -33,11 +33,11 @@ beforeAll(() => {
     dbUserAnimal.addDiseaseDescription("Tetanus","In cats, tetanus can take two forms.Localized tetanus is the more common form of tetanus that occurs in pets. Affected cats develop muscle rigidity (stiffness) in the limb or muscles closest to the wound. In addition to muscle rigidity, muscle tremors may also be seen. Localized tetanus can progress to generalized tetanus with time, although this does not always occur.Generalized tetanus affects widespread areas of the body.","Cat");
     dbUserAnimal.addDiseaseDescription("Thelaziasis","Thelaziasis is an infection caused by Thelazia callipaeda – a parasitic eye worm.Common symptoms are mild or severe inflammation of the inner lining of the eyelids, characterised by swelling and oozing; ocular ulcers and permanent blindness.Not all infected pets will show symptoms.","Cat");
     dbUserAnimal.addDiseaseDescription("Toxocariasis","Roundworms, and in particular Toxocara cati, are the most common intestinal parasites in cats and occur in cats of all ages throughout the world.Severe infections in kittens may result in: variable appetite or anorexia,vomiting (especially after feeding),diarrhoea alternated with constipation and growth disturbances","Cat");
-    */
+    
 
     //DOGS DISEASES 
     //dbUserAnimal.addDiseaseDescription(disease,description,"Dog");
-    /*
+    
     dbUserAnimal.addDiseaseDescription("Acromegaly","Acromegaly in dogs is an endocrine disorder.The increased secretion of somatotropin causes the abnormal overgrowth of bone, soft tissue and internal organs.Symptoms may include: hair loss,diabetes,hyperthyroidism,stiffness/rigidity,excessive urination,arthritis (inflammation of the joints) and heart failure","Dog");
     dbUserAnimal.addDiseaseDescription("Blastomycosis","Blastomycosis is a fungal infection in dogs caused by Blastomyces fungi.Respiratory disease is typical. Symptoms include coughing, trouble breathing, and congestion. Blastomycosis can affect many other areas of the body including the eyes (e.g. blindness, squinting, eye redness), skin (e.g. open, oozing sores; hard bumps under the skin), bones (e.g. leg pain, trouble walking), and lymph nodes (e.g. large swellings under the chin and in front of the shoulders).","Dog");
     dbUserAnimal.addDiseaseDescription("Blindness","Many obstacles and situations are not dangerous if your four-legged buddy can see, but become hazardous if they are blind. Blindness may result as a symptom of a different disorder, such as diabetes, or it could be from injury, and sometimes it is due to a hereditary disease you did not know your dog had.","Dog");
@@ -64,29 +64,29 @@ beforeAll(() => {
     dbUserAnimal.addDiseaseDescription("Pyometra","Pyometra is a very serious infection of the womb, also known as the 'uterus'. It's caused by the womb filling with pus and, if left untreated, it can lead to kidney failure, toxaemia, dehydration and, in some cases, death.Symptoms of pyometra include early warning signs of the animal feeling unwell, such as vomiting, refusal to eat, lethargy, increased thirst and frequent urination.She may also appear to be uncomfortable, because pyometra is a particularly painful condition for dogs","Dog");
     dbUserAnimal.addDiseaseDescription("Rabies","Rabies is uncommon in domestic animals.When a dog does get rabies, it's usually from the bite of an infected wild animal. Raccoons, skunks, bats, and foxes are common rabies carriers. The more contact your dog has with wild animals, the higher the risk of their infection.","Dog");
     dbUserAnimal.addDiseaseDescription("Tetanus","Tetanus is a very serious disease caused by a neurotoxin called tetanospasmin that is secreted by a bacterium known as Clostridium tetani. The neurotoxin affects the nervous system of dogs which can lead to painful stiffening and paralysis of the dog's jaw, neck, and other muscles.","Dog");
-    */
+    
 
     // CAT FEEDS   //None --- mongrels (meticci)
-    /*
+    
     dbFeed.addPetFeed("Cat", "Breed", 0,"Bombay", "Your Bombay’s Health", "Like all cats, Bombays are susceptible to bacterial and viral infections such as panleukopenia, calicivirus, rhinotracheitis, and rabies, which are preventable through vaccination. The risk of your cat contracting these diseases is high, so the corresponding vaccines are called “core” vaccines, which are highly recommended for all cats. In addition, vaccines are available to offer protection from other dangerous diseases like feline leukemia virus (FeLV).");
     dbFeed.addPetFeed("Cat", "Breed", 1,"Bombay", "Bombay: What a Unique Breed!", "Your cat is special! She senses your moods, is curious about your day, and has purred her way into your heart. This breed is full of personality: she is an inquisitive and lap-loving companion that can be demanding of attention but is well suited to active homes with multiple pets! Main traits: friendly, extroverted personality, may meow constantly to get your attention.");
     dbFeed.addPetFeed("Cat", "Breed", 0,"Bombay", "Your Bombay’s Health", "Bombay are unfortunately really prone to obesity. Although they are in general really active, they can become overweight easily if not exercised regularly. Pay attention that excess weight is one of the most influential factors in the development of arthritis, diabetes, and other life-threatening diseases");
     dbFeed.addPetFeed("Cat", "Breed", 1,"Bombay", "Bombay: What a Unique Breed!", "The Bombay is a hybrid breed that was developed in Kentucky from crossings between Sable Burmese and Black American Shorthairs. This sleek all black feline resembles a miniature black panther with golden or copper eyes and has earned the nickname “parlor panther.”Bombays are noted to be calm and frequently found lounging in the warmest spots of the house. The Bombay is outgoing and expressive; they will often be the first to welcome and entertain guests.");
     
     dbFeed.addPetFeed("Cat", "Breed", 0,"Siamese", "Your Siamese’s Health", "Lymphoma is a type of cancer that afflicts Siamese more than other breeds. It is a malignant cancer of the lymphatic system. Lymphoma is a very treatable form of cancer, and chemotherapy in cats has shown an excellent success rate for recovery. Treatment can be costly, however, and is a lifelong commitment. Luckily, lymphoma is one of the few types of cancer that can often be detected with a blood test, so we recommend a complete blood count twice yearly for your adult cat.");
-    dbFeed.addPetFeed("Cat", "Breed", 1,"Siamese", "Siamese: What a Unique Breed!", "Siamese Cat history shows they originated in Siam, what is now Thailand. For years, it was once believed they came from Egypt due to the resemblance to the Egyptian Cat Goddess, Bastet. It is believed the Royal Family of Siam owned Siamese cats and used them to guard the ancient temples. According to Siamese Cat history, only royalty or noblemen were allowed to own them, and their cats served as spirit guardians.");
     dbFeed.addPetFeed("Cat", "Breed", 0,"Siamese", "Your Siamese’s Health", "While the vast majority of felines prefer a solitary lifestyle, some Siamese can form unhealthy and excessive attachments to their owners. They can become so attached that when their human counterparts aren't around, they quickly become anxious or bored, leading to destructive behaviors such as paper shredding, vocalization, or litter box amnesia. To avoid the vices of boredom, make sure your cat has plenty of special toys or food puzzles to keep his mind and body active while he is left alone.");
-    dbFeed.addPetFeed("Cat", "Breed", 1,"Bombay", "Siamese: What a Unique Breed!", "One of the peculiar features of Siamese cats is that they are extremely talkative. They earned the nickname “Meezer” for her overly vocal tendencies. She has a loud, low-pitched voice that could be compared to the cries of a human baby. She is demanding of both conversation and attention—and always has to have the last word.");
+    dbFeed.addPetFeed("Cat", "Breed", 1,"Siamese", "Siamese: What a Unique Breed!", "One of the peculiar features of Siamese cats is that they are extremely talkative. They earned the nickname “Meezer” for her overly vocal tendencies. She has a loud, low-pitched voice that could be compared to the cries of a human baby. She is demanding of both conversation and attention—and always has to have the last word.");
+    dbFeed.addPetFeed("Cat", "Breed", 1,"Siamese", "Siamese: What a Unique Breed!", "Siamese Cat history shows they originated in Siam, what is now Thailand. For years, it was once believed they came from Egypt due to the resemblance to the Egyptian Cat Goddess, Bastet. It is believed the Royal Family of Siam owned Siamese cats and used them to guard the ancient temples. According to Siamese Cat history, only royalty or noblemen were allowed to own them, and their cats served as spirit guardians.");
 
     dbFeed.addPetFeed("Cat","Age",0,"Young","Discipline your young cat","Whenever possible, give treats, praise, and attention to your cat if it is behaving nicely. If you notice it lying next to something it used to chew, reward it. If you notice it scratching the scratching pole instead of your sofa, reward it. Your cat will quickly learn the difference between good and bad behavior.");
-    dbFeed.addPetFeed("Cat","Age",1,"Young","Feed your young cat","Cats require taurine, an essential amino acid, for heart and eye health. The food you choose should be balanced for the life stage of your cat or kitten. Properly balanced foods will contain taurine. You will need to provide fresh, clean water at all times, and wash and refill your cat's water bowls daily.");
     dbFeed.addPetFeed("Cat","Age",0,"Young","Don’t Treat Your Kitten Like an Adult Cat","Just as a human infant has vastly different needs than a teenager, a kitten will have care requirements distinct from those of a fully matured cat. In addition, you should consider a kitten’s various stages of development when caring for her.The socialization and training your cat receives during kittenhood will affect how well she will likely interact with people and other animals when she’s older.");
     dbFeed.addPetFeed("Cat","Age",1,"Young","Feed your young cat","Felines are natural carnivores and do not intentionally consume large quantities of carbohydrates. The domestic cat's liver has adapted to the lack of carbohydrates in the diet by using amino acids to produce glucose to fuel the brain and other tissues.Studies have shown that carbohydrate digestion in young kittens is much less effective than that of a mature feline with a developed gastrointestinal tract. Highly digestible carbohydrates can be found in commercial kitten food.");
-        
+    dbFeed.addPetFeed("Cat","Age",1,"Young","Feed your young cat","Cats require taurine, an essential amino acid, for heart and eye health. The food you choose should be balanced for the life stage of your cat or kitten. Properly balanced foods will contain taurine. You will need to provide fresh, clean water at all times, and wash and refill your cat's water bowls daily.");
+    
     dbFeed.addPetFeed("Cat","Size",0,"Small","How high can a small cat jump?","Although the average healthy cat is able to jump up to six times their height in one jump – this is around 8 foot or 2.4 metres. So not be too much surprised if you'll find your small cat on top of your shelf!");
     dbFeed.addPetFeed("Cat","Size",0,"Small","Where could my cat be hiding?","Don't worry if you don't find your pet immediately, cats love hiding places, especially small cats! They love to tuck themselves into small spaces in your closet, under your bed, or in a cardboard box or paper bag left lying on the floor. Sometimes it can take a long time and a keen eye to find your cat when she is hiding. ");
     dbFeed.addPetFeed("Cat","Size",1,"Small","How much should a small cat eat a day?","That's a question best answered by a professional, though recommendations range between 24 to 35 calories a day per pound, to keep cats at a normal, healthy weight.");
-    // size small 1
+    // size small 1 
 
     //DOG FEEDS
 
@@ -100,7 +100,8 @@ beforeAll(() => {
     dbFeed.addPetFeed("Dog", "Breed", 0,"Collie", "Your Collie’s Health", "Collie eye anomaly (CEA), also referred to as collie eye defect, is an inherited congenital condition. The chromosomes that determine the development of the eyes are mutated, so that the choroid (the collection of blood vessels that absorb scattered light and nourish the retina) is underdeveloped. The mutation can also result in other defects in the eye with more severe consequences, such as retinal detachment. When this mutation does occur, it is always in both eyes, although it might be more severe in one eye than the other.");
     dbFeed.addPetFeed("Dog", "Breed", 1,"Collie", "Collie: What a Unique Breed!", "The Collie originated as a shepherd’s dog in the Highlands of northern Scotland where it functioned as an all-purpose farm dog. After the Highland Clearances (1750 to 1860) breeding toward arbitrary breed-standards morphed the Collie into the dog we associate with Lassie today. So this dog has humble origins and it is known as one of the most placid, obedient, serene, and grateful members of the canine race.");
     dbFeed.addPetFeed("Dog", "Breed", 0,"Collie", "Your Collie’s Health", "Obesity can be a significant health problem in Collies. It is a serious disease that may cause or worsen joint problems, metabolic and digestive disorders, back pain and heart disease. Though it’s tempting to give your pal food when she looks at you with those soulful eyes, you can “love her to death” with leftover people food and doggie treats.");
-    dbFeed.addPetFeed("Dog", "Breed", 1,"Collie", "Labrador: What a Unique Breed!", "The well-bred Collie is sweet, friendly, and gentle. She is a family dog and enjoys being part of all household activities. Especially fond of kids, she enjoys playing with them and protectively watching over them. If those qualities weren't positive enough, the Collie tops them with her intelligence and loyalty.");
+    dbFeed.addPetFeed("Dog", "Breed", 1,"Collie", "Collie: What a Unique Breed!", "The well-bred Collie is sweet, friendly, and gentle. She is a family dog and enjoys being part of all household activities. Especially fond of kids, she enjoys playing with them and protectively watching over them. If those qualities weren't positive enough, the Collie tops them with her intelligence and loyalty.");
+
     
     dbFeed.addPetFeed("Dog","Age",0,"Young","Discipline your young  dog","Whenever possible, give treats, praise, and attention to your dog if it is behaving nicely. If you notice it lying next to something it used to chew, reward it. If instead of digging it plays with its toys, pet it. Your dog will quickly learn the difference between good and bad behavior.");
     dbFeed.addPetFeed("Dog","Age",1,"Young","Feed your young dog","Dogs require taurine, an essential amino acid, for heart and eye health. The food you choose should be balanced for the life stage of your dog or puppy. Properly balanced foods will contain taurine. You will need to provide fresh, clean water at all times, and wash and refill your dog's water bowls daily.");
@@ -109,11 +110,21 @@ beforeAll(() => {
     
     // general 
 
-    dbFeed.addFeedToGeneral("0","How big is a medium sized cat?","If large domestic cats seem too big and small breeds seem tiny, a medium cat breed may be just right for you. These mid-sized cats typically weigh between 10 and 15 pounds, so they fit right into almost any home and environment, whether you live in a small apartment in the city or a big house in the suburbs.");
-    dbFeed.addFeedToGeneral("0","What is the average life expectancy of an indoor cat?","Indoor cats live on average 10-15 years, while outdoor cats live on average 2-5 years This handout is intended to help you sort out the pros and cons associated with each lifestyle so you can rest assured your cat will have both an enriched life and protection from environmental hazards.");
-    dbFeed.addFeedToGeneral("1","How big is a medium sized dog?","Medium dogs weigh between 20 and 60 pounds. Their height ranges between eight inches and 27 inches. Examples of medium-sized dogs are Beagle and Border Collie.");
-    dbFeed.addFeedToGeneral("1","What is the average life expectancy of an indoor dog?","Average Life Expectancy (in captivity) of dogs depends on their size. For small dogs it is 13 years, whereas for medium dogs it is 11 years, and finally for large dogs it is 8 years.");
+    dbFeed.addFeedToGeneral("0","Weight of a medium sized cat","If large domestic cats seem too big and small breeds seem tiny, a medium cat breed may be just right for you. These mid-sized cats typically weigh between 10 and 15 pounds, so they fit right into almost any home and environment, whether you live in a small apartment in the city or a big house in the suburbs.");
+    dbFeed.addFeedToGeneral("0","Average life expectancy of an indoor dog","Average Life Expectancy (in captivity) of dogs depends on their size. For small dogs it is 13 years, whereas for medium dogs it is 11 years, and finally for large dogs it is 8 years.");
+    dbFeed.addFeedToGeneral("0","Mongrels health","The theory of hybrid vigor suggests that as a group, pets of varied ancestry will be generally healthier than their purebred counterparts. In purebred pets, intentionally breeding pets of very similar appearance over several generations produces animals that carry many of the same alleles, some of which are detrimental.");
+    dbFeed.addFeedToGeneral("0","Why dogs need a crate","Dogs need a den, or a small space just for them, to feel safe, cozy, and secure. When a crate is used appropriately, it can give dogs this feeling of a safe space and it can be a sanctuary for a dog. A crate can feel like a doghouse for the indoors. It can act as his bedroom, which is comforting and homey.");
+    dbFeed.addFeedToGeneral("0","Why to adopt a pet","There are a lot of great reasons for adopting a rescue pet from a shelter. For one thing, they are usually house-trained, unlike a new puppy from the pet shop. They are also usually more loving and affectionate as they have gone through trauma in their past and are happy to have found someone who cares for them.");
+    dbFeed.addFeedToGeneral("1","Average life expectancy of an indoor cat","Indoor cats live on average 10-15 years, while outdoor cats live on average 2-5 years This handout is intended to help you sort out the pros and cons associated with each lifestyle so you can rest assured your cat will have both an enriched life and protection from environmental hazards.");
+    dbFeed.addFeedToGeneral("1","Weight of a medium sized dog","Medium dogs weigh between 20 and 60 pounds. Their height ranges between eight inches and 27 inches. Examples of medium-sized dogs are Beagle and Border Collie.");
+    dbFeed.addFeedToGeneral("1","Take care of your pets","Attention, exercise, and play help pets (especially dogs) work off nervous energy, tone muscles, and maintain a healthy weight. The quality time you spend with your pet also helps support your animal's emotional health—whether you're walking in the woods or just cuddling on the couch.");
+    dbFeed.addFeedToGeneral("1","Why cats need a crate","Cats need a den, or a small space just for them, to feel safe, cozy, and secure. When a crate is used appropriately, it can give cats this feeling of a safe space and it can be a sanctuary for a cat. A crate can feel like a cathouse for the indoors. It can act as his bedroom, which is comforting and homey.");
+    dbFeed.addFeedToGeneral("1","Pet therapy","Pet therapy has been shown to improve patient satisfaction, energy levels, self-esteem, and mood, as well as decrease depression. Additional benefits include increased motor skills and movement, improved social skills and verbal communication, decreased boredom, and a more positive outlook.");
     
+    dbFeed.addPetFeed("Dog","Age",0,"Young","Discipline your young  dog","Whenever possible, give treats, praise, and attention to your dog if it is behaving nicely. If you notice it lying next to something it used to chew, reward it. If instead of digging it plays with its toys, pet it. Your dog will quickly learn the difference between good and bad behavior.");
+    dbFeed.addPetFeed("Dog","Age",1,"Young","Feed your young dog","Dogs require taurine, an essential amino acid, for heart and eye health. The food you choose should be balanced for the life stage of your dog or puppy. Properly balanced foods will contain taurine. You will need to provide fresh, clean water at all times, and wash and refill your dog's water bowls daily.");
+    dbFeed.addPetFeed("Dog","Age",0,"Young","Don’t Treat Your Puppy Like an Adult Dog","Just as a human infant has vastly different needs than a teenager, a puppy will have care requirements distinct from those of a fully matured dog. In addition, you should consider a puppy’s various stages of development when caring for her.The socialization and training your dog receives during puppyhood will affect how well she will likely interact with people and other animals when she’s older.");
+    dbFeed.addPetFeed("Dog","Age",1,"Young","Feed your young dog","Canines are natural carnivores and do not intentionally consume large quantities of carbohydrates. The domestic dog's liver has adapted to the lack of carbohydrates in the diet by using amino acids to produce glucose to fuel the brain and other tissues.Studies have shown that carbohydrate digestion in young puppies is much less effective than that of a mature canine with a developed gastrointestinal tract. Highly digestible carbohydrates can be found in commercial puppy food.");
     */
     
 });
@@ -122,37 +133,14 @@ afterAll(() => { //run with --detectOpenHandles
     
 });
 
-test("addds", () => {
-    
-    let animals = [new UserAnimal('test',
-                                                1,
-                                                'Bombay',
-                                                'Small',
-                                                'Black',
-                                                'https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=3596224033779591&height=100&width=100&ext=1618930868&hash=AeS7Ycc-xZFda11qK44',
-                                                'Cat')];
-    return expect(dbFeed.getFeeds([],"gbfBtH1XbDMYice2pM0zV7caEjn2","28/05/2021",1)).resolves.toHaveLength(5);
-    //return expect(dbFeed.deleteUserFeeds("gbfBtH1XbDMYice2pM0zV7caEjn2")).resolves.toBeDefined();
-    //return expect(dbFeed.deleteUserFeeds("gbfBtH1XbDMYice2pM0zV7caEjn2")).resolves.toBeDefined();
-    //dbFeed.addUserFeed("gbfBtH1XbDMYice2pM0zV7caEjn2","title","text","General");
-    //return expect(dbFeed.getUserFeeds("gbfBtH1XbDMYice2pM0zV7caEjn2")).resolves.toHaveLength(1);
-    //return expect(dbFeed.getRandomGeneralFeeds("0",2)).resolves.toHaveLength(1);
-});
+
 
 test("addds", () => {
-    dbUser.deleteUser('user1','user');
-    let animals = [new UserAnimal('test',
-                                                1,
-                                                'Bombay',
-                                                'Small',
-                                                'Black',
-                                                'https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=3596224033779591&height=100&width=100&ext=1618930868&hash=AeS7Ycc-xZFda11qK44',
-                                                'Cat')];
-    return expect(dbFeed.getFeeds([],"gbfBtH1XbDMYice2pM0zV7caEjn2","29/05/2021",1)).resolves.toHaveLength(5);
-    //return expect(dbFeed.deleteUserFeeds("gbfBtH1XbDMYice2pM0zV7caEjn2")).resolves.toBeDefined();
-    //return expect(dbFeed.deleteUserFeeds("gbfBtH1XbDMYice2pM0zV7caEjn2")).resolves.toBeDefined();
-    //dbFeed.addUserFeed("gbfBtH1XbDMYice2pM0zV7caEjn2","title","text","General");
-    //return expect(dbFeed.getUserFeeds("gbfBtH1XbDMYice2pM0zV7caEjn2")).resolves.toHaveLength(1);
-    //return expect(dbFeed.getRandomGeneralFeeds("0",2)).resolves.toHaveLength(1);
+   let animals = [new UserAnimal("name", 2, "Bombay", "Small", "black", "photo","Cat"),
+                  new UserAnimal("name", 2, "None", "Small", "black", "photo","Cat")];
+    filtered = dbFeed.filterAnimals(animals);              
+    expect(dbFeed.getFeeds(filtered,"gbfBtH1XbDMYice2pM0zV7caEjn2","03/06/2021",1)).resolves.toBe("aaa");
 });
+
+
 

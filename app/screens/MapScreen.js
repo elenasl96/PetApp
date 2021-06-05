@@ -56,7 +56,6 @@ export default class MapScreen extends React.Component {
   }
 
   getAllPlaces() {
-    console.log("MAP READY");
     if (this.state.places.length == 0) {
       dbPlace.getPlaces().then((placesIds) => {
         this.context.saveGlobalPlaces(placesIds);
@@ -67,9 +66,6 @@ export default class MapScreen extends React.Component {
           });
         });
         Promise.all(promises).then((places) => {
-          console.log("ALL PLACES");
-          console.log(places);
-
           this.setState({ places: places, visibleMarkers: places });
           this.forceUpdate();
           //this.showAllMarkers();

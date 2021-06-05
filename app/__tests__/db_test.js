@@ -9,7 +9,7 @@ import dbPlace from "../firebase/Database/Functions/dbPlace";
 
 
 beforeAll(() => {
-    
+    /*
     dbPlace.addPlace('place1',
     'Kennel',
     'description of a kennel',
@@ -101,17 +101,17 @@ beforeAll(() => {
     'user2',
     'user2@gmail.com',
     'phone');
-    
+    */
       
 })
 
 afterAll(() => {
-    
+    /*
     dbUser.deleteUser('user1','user');
     dbUser.deleteUser('user2','business');
     dbLostPet.deleteLostPetNotificationByUid('user1');
     dbLostPet.deleteLostPetSeenByUid('user2');
-
+   */
 })
 
 
