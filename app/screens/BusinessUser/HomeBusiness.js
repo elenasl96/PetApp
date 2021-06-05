@@ -30,7 +30,6 @@ export default class HomeBusiness extends React.Component {
 
   componentDidMount() {
     this.setState({ mounted: true });
-    console.log("COMPONENT DID MOUNT HOME BUSINESS");
     this.getMyPlaces(this.context.places);
   }
 

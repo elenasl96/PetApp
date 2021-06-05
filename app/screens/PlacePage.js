@@ -45,8 +45,6 @@ class VetScreen extends React.Component {
     var isKennel = false;
     var isEditable = false;
 
-    console.log("COMPONENT DID MOUNT PLACE");
-
     if (
       this.context.user.type == "business" &&
       this.context.places.includes(place.id)
@@ -85,15 +83,12 @@ class VetScreen extends React.Component {
       if (
         this.state.pets.length != this.context.adoptablePets[placeID].length
       ) {
-        console.log("COMPONENT DID UPDATE FOR ADOPTABLE PETS");
-        console.log("PETS: " + this.context.adoptablePets[placeID]);
         this.getAdoptablePets(this.context.adoptablePets[placeID]);
       }
     }
   }
 
   getAdoptablePets(petIDs) {
-    console.log("GET ADOPTABLE PETS");
     const placeID = this.props.navigation.state.params.place.id;
 
     if (petIDs.length != 0) {
@@ -159,7 +154,6 @@ class VetScreen extends React.Component {
   };
 
   setPhoto = (photo) => {
-    console.log("SET PHOTO");
     this.setState({ photo: photo });
   };
 

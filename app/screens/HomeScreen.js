@@ -39,11 +39,7 @@ class HomeScreen extends React.Component {
 
   componentDidMount() {
     this.setState({ mounted: true, loading: true });
-    //if(this.state.mounted){
-    console.log("OPENING HOMESCREEN");
-    console.log(this.props.navigation.state.params);
     this.loadInfo();
-    //}
   }
 
   loadInfo() {
@@ -82,7 +78,6 @@ class HomeScreen extends React.Component {
 
   getMyPets(pets) {
     let promises = pets.map((petID) => {
-      //console.log("ENTER MAP");
       return dbUserAnimal.getUserAnimal(this.context.uid, petID).then((pet) => {
         pet.id = petID;
         return pet;
@@ -101,14 +96,16 @@ class HomeScreen extends React.Component {
 
     var animals = [];
     var uid = this.context.uid;
+    //var pets = this.filterAnimals(pets);
 
     if (pets.length != 0) {
       pets.forEach((aid) => {
         dbUserAnimal.getUserAnimal(uid, aid).then((animal) => {
           animals.push(animal);
           if (pets.length == animals.length) {
+            let filtered = this.filterAnimals(animals);
             dbFeed
-              .getFeeds(animals, uid, info.getLastLogin(), info.getDays())
+              .getFeeds(filtered, uid, info.getLastLogin(), info.getDays())
               .then((feeds) => {
                 if (this.state.mounted) {
                   this.setState({ feeds: feeds, loading: false });
@@ -118,6 +115,7 @@ class HomeScreen extends React.Component {
         });
       });
     } else {
+      console.log("No purebreed animals");
       dbFeed
         .getFeeds(animals, uid, info.getLastLogin(), info.getDays())
         .then((feeds) => {
@@ -126,6 +124,18 @@ class HomeScreen extends React.Component {
           }
         });
     }
+  }
+
+  filterAnimals(arr){
+    for( var i = 0; i < arr.length; i++){ 
+      console.log("Breed: " + arr[i].breed);
+      if ( arr[i].breed == "None" ) { 
+          arr.splice(i, 1);
+      }
+  
+  }
+  console.log("animals after filter:" + arr);
+  return arr;
   }
 
   saveFavouritePlaces() {
@@ -172,7 +182,6 @@ class HomeScreen extends React.Component {
       }
       PIDs.map((placeID) => {
         dbPlace.getPlace(placeID).then((place) => {
-          console.log(place);
           if (place.isKennel()) {
             dbAdoptableAnimal.getAdoptableAnimals(placeID).then((animals) => {
               this.context.saveAdoptablePets(placeID, animals);
@@ -195,12 +204,10 @@ class HomeScreen extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.places.length != this.context.savedPlaces.length) {
-      //console.log("COMPONENT DID UPDATE FOR SAVEDPLACES");
       this.getMySavedPlaces(this.context.savedPlaces);
     }
 
     if (this.state.pets.length != this.context.pets.length) {
-      //console.log("COMPONENT DID UPDATE FOR PETS");
       this.getUserPets(this.context.pets, false);
     }
   }
@@ -297,7 +304,6 @@ class HomeScreen extends React.Component {
 
             <View style={styles.myPlaceContainer}>
               <Text style={styles.largeText}>Your Favourite Places</Text>
-              {console.log("SAVED PLACES L:" + this.state.places.length)}
               {this.state.places.length > 0 ? (
                 <View style={styles.myPlaces}>
                   <PlaceButton

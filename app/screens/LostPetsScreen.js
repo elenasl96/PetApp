@@ -44,12 +44,10 @@ export default class LostPetsScreen extends React.Component {
   componentDidUpdate() {
     if (this.state.lostPets.length != this.context.lostPets.length) {
       this.setState({ lostPets: this.context.lostPets });
-      //console.log("LOST PETS: " + this.state.lostPets);
     }
 
     if (this.state.lostPetsSeen.length != this.context.lostPetsSeen.length) {
       this.setState({ lostPetsSeen: this.context.lostPetsSeen });
-      //console.log("LOST PETS SEEN: " + this.state.lostPetsSeen);
     }
   }
 
@@ -83,8 +81,6 @@ export default class LostPetsScreen extends React.Component {
   sendForm = (lostPet, seen) => {
     const pet = this.props.pet;
     this.setState({ report: lostPet });
-    console.log("SEEN");
-    console.log(seen);
 
     dbLostPet.getLostPetsMatched(lostPet).then((lostPetsMatched) => {
       if (lostPetsMatched.length > 0) {
@@ -107,29 +103,6 @@ export default class LostPetsScreen extends React.Component {
         this.setState({ showReportLossForm: false });
       }
     });
-
-    /*dbLostPet
-        .addLostPetNotify(
-          this.state.name,
-          this.state.photo,
-          this.state.size,
-          this.state.color,
-          this.state.breed,
-          this.state.notes,
-          this.state.place,
-          this.context.uid,
-          this.state.email,
-          this.state.telephone
-        )
-        .then((doc) => {
-          console.log("LOST PET ID TO ADD");
-          console.log(doc.id);
-          this.context.lostPets.push(doc.id);
-          this.context.saveLostPets(this.context.lostPets);
-          console.log("LOST PETS TO UPDATE:");
-          console.log(this.context.lostPets);
-          this.props.close();
-        }); */
   };
 
   reportSight = () => {
@@ -150,7 +123,6 @@ export default class LostPetsScreen extends React.Component {
   };
 
   confirmReport = () => {
-    console.log(this.state.report);
     dbLostPet
       .addLostPetNotify(
         this.state.report.getName(),
@@ -165,12 +137,8 @@ export default class LostPetsScreen extends React.Component {
         this.state.report.getPhone()
       )
       .then((doc) => {
-        console.log("LOST PET ID TO ADD");
-        console.log(doc.id);
         this.context.lostPets.push(doc.id);
         this.context.saveLostPets(this.context.lostPets);
-        console.log("LOST PETS TO UPDATE:");
-        console.log(this.context.lostPets);
         this.setState({
           showPetsMatched: false,
           showPetsMatchedSeen: false,
@@ -181,7 +149,6 @@ export default class LostPetsScreen extends React.Component {
   };
 
   confirmReportSeen = () => {
-    console.log(this.state.report);
     dbLostPet
       .addLostPetSeen(
         this.state.report.getPhoto(),
@@ -195,12 +162,8 @@ export default class LostPetsScreen extends React.Component {
         this.state.report.getPhone()
       )
       .then((doc) => {
-        console.log("LOST PET SEEN ID TO ADD");
-        console.log(doc.id);
         this.context.lostPetsSeen.push(doc.id);
         this.context.saveLostPetsSeen(this.context.lostPetsSeen);
-        console.log("LOST PETS SEEN TO UPDATE:");
-        console.log(this.context.lostPetsSeen);
         this.setState({
           showPetsMatched: false,
           showPetsMatchedSeen: false,

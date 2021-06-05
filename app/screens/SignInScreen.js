@@ -96,9 +96,6 @@ class SignInScreen extends React.Component {
           credential
         );
         const user = auth().currentUser;
-
-        //console.log("Facebook data:");
-        //console.log(facebookProfileData);
         if (facebookProfileData.additionalUserInfo.isNewUser) {
           dbUser
             .addUser(

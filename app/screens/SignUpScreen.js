@@ -76,7 +76,6 @@ class SignUpScreen extends React.Component {
           .createUserWithEmailAndPassword(this.state.email, this.state.password)
           .then((credential) => {
             let user = credential.user;
-            //console.log(user);
             dbUser
               .addUser(
                 user.uid,
@@ -86,8 +85,6 @@ class SignUpScreen extends React.Component {
                 this.state.address
               )
               .then(() => {
-                //auth().setPersistence(auth.Auth.Persistence.LOCAL);
-                //this.props.navigation.navigate("App");
               });
           })
           .catch((error) => {
@@ -190,7 +187,6 @@ class SignUpScreen extends React.Component {
             contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
           >
             <KeyboardAvoidingView
-
             //behavior={Platform.OS == "ios" ? "padding" : "height"}
             //keyboardVerticalOffset={Platform.OS == "ios" ? 0 : 20}
             //enabled={Platform.OS === "ios" ? true : false}
