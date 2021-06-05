@@ -37,9 +37,7 @@ export const place = {
     "https://firebasestorage.googleapis.com/v0/b/petapp-64e34.appspot.com/o/places%2FgbfBtH1XbDMYice2pM0zV7caEjn21619081104651?alt=media&token=58c5bd7f-0312-4ff0-9880-289c690d8f7c",
     "Via farini 2, Milano",
     45.482860279390565,
-    9.18166729801941,
-    "",
-    ""
+    9.18166729801941
   ),
   confortHouse: new Place(
     "Confort House",
@@ -48,9 +46,7 @@ export const place = {
     "https://firebasestorage.googleapis.com/v0/b/petapp-64e34.appspot.com/o/places%2Fkennel.jpg?alt=media&token=c2ada513-2e3b-4e10-9a75-6a47b303592c",
     "Piazza Maciachini 1, Milano",
     45.49742784437551,
-    9.18689115569105,
-    "",
-    ""
+    9.18689115569105
   ),
   vetty: new Place(
     "Vetty",
@@ -59,9 +55,7 @@ export const place = {
     "https://firebasestorage.googleapis.com/v0/b/petapp-64e34.appspot.com/o/places%2FgbfBtH1XbDMYice2pM0zV7caEjn21619081104651?alt=media&token=58c5bd7f-0312-4ff0-9880-289c690d8f7c",
     "Via Giuseppe Ferrari 10, Milano",
     45.48542562941739,
-    9.184332484948477,
-    "",
-    ""
+    9.184332484948477
   ),
   petClinic: new Place(
     "Pet Clinic",
@@ -70,9 +64,7 @@ export const place = {
     "https://firebasestorage.googleapis.com/v0/b/petapp-64e34.appspot.com/o/places%2FgbfBtH1XbDMYice2pM0zV7caEjn21619081104651?alt=media&token=58c5bd7f-0312-4ff0-9880-289c690d8f7c",
     "Via Fatebenefratelli 10, Milano",
     45.473117208620046,
-    9.189788384948173,
-    "",
-    ""
+    9.189788384948173
   ),
 };
 
@@ -88,7 +80,9 @@ export const lostPet = {
     "20/05/01 10:00",
     uids.elena,
     "test@prova.it",
-    "329/123456"
+    "329/123456",
+    45.473117208620046,
+    9.189788384948173
   ),
   cipolla: new LostPetNotify(
     "Cipolla",
@@ -101,6 +95,8 @@ export const lostPet = {
     "20/05/01 11:00",
     uids.elena,
     "test@prova.it",
-    "329/123456"
+    "329/123456",
+    45.48542562941739,
+    9.184332484948477
   ),
 };

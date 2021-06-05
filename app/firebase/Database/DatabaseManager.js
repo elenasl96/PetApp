@@ -799,8 +799,6 @@ const db = {
         // doc.data() is never undefined for query doc snapshots
         console.log(doc.id, " => ", doc.data());
         let data = doc.data();
-        console.log("region");
-        console.log(data.region);
         place = new Place(
           data.name,
           data.type,
@@ -808,10 +806,8 @@ const db = {
           data.photo,
           data.uid,
           data.address,
-          data.region.latitude,
-          data.region.longitude,
-          data.region.latitudeDelta,
-          data.region.longitudeDelta
+          data.latitude,
+          data.longitude
         );
         return place;
       })

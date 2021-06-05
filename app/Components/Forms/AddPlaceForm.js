@@ -81,9 +81,7 @@ export default class AddPlaceForm extends React.Component {
                 url,
                 this.state.address + ", " + this.state.city,
                 coordinates[0].latitude,
-                coordinates[0].longitude,
-                "latitudeDelta",
-                "longitudeDelta"
+                coordinates[0].longitude
               )
               .then((doc) => {
                 this.context.addPlace(doc.id);

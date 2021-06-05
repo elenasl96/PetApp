@@ -4,7 +4,6 @@ import dbNews from "./dbNews";
 import dbAdoptableAnimal from "./dbAdoptableAnimal";
 
 const dbPlace = {
-
   addPlace: function (
     name,
     type,
@@ -12,9 +11,7 @@ const dbPlace = {
     photo,
     address,
     latitude,
-    longitude,
-    latitudeDelta,
-    longitudeDelta
+    longitude
   ) {
     const places = firestore.collection("Places");
     let place = new Place(
@@ -24,9 +21,7 @@ const dbPlace = {
       photo,
       address,
       latitude,
-      longitude,
-      latitudeDelta,
-      longitudeDelta
+      longitude
     );
 
     var id;
@@ -48,15 +43,12 @@ const dbPlace = {
           data.description,
           data.photo,
           data.address,
-          data.region.latitude,
-          data.region.longitude,
-          data.region.latitudeDelta,
-          data.region.longitudeDelta
+          data.latitude,
+          data.longitude
         );
         return place;
       })
-      .catch(function (error) {
-      });
+      .catch(function (error) {});
   },
 
   getPlaces: function () {
@@ -76,7 +68,7 @@ const dbPlace = {
         console.log("Error getting documents: ", error);
       });
   },
-/*
+  /*
   getPlacesByUid: function (uid) {
     const map = firestore.collection("Places");
     var places = [];
@@ -100,49 +92,48 @@ const dbPlace = {
   },  */
 
   deletePlace: function (pid) {
-  dbPlace.getPlace(pid).then((place) => {
-    const places = firestore.collection("Places");
-    dbNews.getAllNews(pid).then(function (news) {
-      if (news.length != 0) {
-        var promisesNews = news.forEach((newsid) => {
-        return dbNews.deleteNews(pid, newsid)
-        });
-      }
-      if(place.type == "Kennel"){
-      dbAdoptableAnimal.getAdoptableAnimals(pid).then(function (animals) {
-        if (animals.length != 0) {
-          var promisesAnimals = animals.forEach(function (aid) {
-            return dbAdoptableAnimal.deleteAdoptableAnimal(pid, aid);
+    dbPlace.getPlace(pid).then((place) => {
+      const places = firestore.collection("Places");
+      dbNews.getAllNews(pid).then(function (news) {
+        if (news.length != 0) {
+          var promisesNews = news.forEach((newsid) => {
+            return dbNews.deleteNews(pid, newsid);
           });
         }
-        return Promise.all([promisesNews,promisesAnimals]).then(() => {
-        return places
-          .doc(pid)
-          .delete()
-          .then(function () {
-            //console.log("delete place");
-          })
-          .catch(function (error) {
-            console.error("Error removing document: ", error);
+        if (place.type == "Kennel") {
+          dbAdoptableAnimal.getAdoptableAnimals(pid).then(function (animals) {
+            if (animals.length != 0) {
+              var promisesAnimals = animals.forEach(function (aid) {
+                return dbAdoptableAnimal.deleteAdoptableAnimal(pid, aid);
+              });
+            }
+            return Promise.all([promisesNews, promisesAnimals]).then(() => {
+              return places
+                .doc(pid)
+                .delete()
+                .then(function () {
+                  //console.log("delete place");
+                })
+                .catch(function (error) {
+                  console.error("Error removing document: ", error);
+                });
+            });
           });
-        });
+        } else {
+          return Promise.all([promisesNews]).then(() => {
+            places
+              .doc(pid)
+              .delete()
+              .then(function () {
+                //console.log("delete place");
+              })
+              .catch(function (error) {
+                console.error("Error removing document: ", error);
+              });
+          });
+        }
       });
-    }
-    else{
-      return Promise.all([promisesNews]).then(() => {
-      places
-          .doc(pid)
-          .delete()
-          .then(function () {
-            //console.log("delete place");
-          })
-          .catch(function (error) {
-            console.error("Error removing document: ", error);
-          });
-        });
-    }
     });
-  });
   },
 
   // saved place
@@ -174,29 +165,27 @@ const dbPlace = {
 
   deletePlaceByName: function (name) {
     const places = firestore.collection("Places");
-    const query = places
-      .where("name","==",name);
-      query.get().then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
-          //doc.ref.delete();
-          dbPlace.deletePlace(doc.id);
-        });
+    const query = places.where("name", "==", name);
+    query.get().then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        //doc.ref.delete();
+        dbPlace.deletePlace(doc.id);
       });
+    });
   },
-
 
   deleteSavedPlaceByPid: function (uid, pid) {
     const users = firestore.collection("Users");
     const query = users
       .doc(uid)
       .collection("savedplaces")
-      .where("pid","==",pid);
+      .where("pid", "==", pid);
 
-      query.get().then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
-          doc.ref.delete();
-        });
+    query.get().then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        doc.ref.delete();
       });
+    });
   },
 
   deleteSavedPlace: function (uid, id) {
@@ -207,69 +196,69 @@ const dbPlace = {
       .doc(id)
       .delete()
       .then(function () {
-       //console.log("delete saved place");
+        //console.log("delete saved place");
       })
       .catch(function (error) {
         console.error("Error removing document: ", error);
       });
   },
 
-  updatePlacePhoto: function (pid,url) {
-      firestore
-        .collection("Places")
-        .doc(pid)
-        .update({ photo: url });
-    },
+  updatePlacePhoto: function (pid, url) {
+    firestore.collection("Places").doc(pid).update({ photo: url });
+  },
 
-  addUserPlace: function (uid,pid) {
-     const users = firestore.collection("Users");
-     users.doc(uid).collection("MyPlaces").add({ pid: pid });
+  addUserPlace: function (uid, pid) {
+    const users = firestore.collection("Users");
+    users.doc(uid).collection("MyPlaces").add({ pid: pid });
   },
 
   getMyPlaces: function (uid) {
-      const users = firestore.collection("Users");
-      var myplaces = [];
-      return users
-        .doc(uid)
-        .collection("MyPlaces")
-        .get()
-        .then(function (querySnapshot) {
-          querySnapshot.forEach(function (doc) {
-            myplaces.push(doc.data().pid);
-            return myplaces;
-          });
+    const users = firestore.collection("Users");
+    var myplaces = [];
+    return users
+      .doc(uid)
+      .collection("MyPlaces")
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          myplaces.push(doc.data().pid);
           return myplaces;
-        })
-        .catch(function (error) {
-          console.log("Error getting documents: ", error);
         });
-    },
-
-    getMyPlace: function (uid, id) {
-      const users = firestore.collection("Users");
-      var myplace;
-      return users
-        .doc(uid)
-        .collection("MyPlaces")
-        .doc(id)
-        .get()
-        .then(function (doc) {
-          myplace = doc.data().pid;
-          return myplace;
-        })
-        .catch(function (error) {
-          console.log("Error getting documents: ", error);
-        });
-    },
-
-    deleteMyPlace: function (uid, id) {
-      query = firestore.collection("Users").doc(uid).collection("MyPlaces").where('pid','==',id);
-      return query.get().then(function(querySnapshot) {
-        return querySnapshot.forEach(function(doc) {
-          return doc.ref.delete();
-        });
+        return myplaces;
+      })
+      .catch(function (error) {
+        console.log("Error getting documents: ", error);
       });
-    },
+  },
 
+  getMyPlace: function (uid, id) {
+    const users = firestore.collection("Users");
+    var myplace;
+    return users
+      .doc(uid)
+      .collection("MyPlaces")
+      .doc(id)
+      .get()
+      .then(function (doc) {
+        myplace = doc.data().pid;
+        return myplace;
+      })
+      .catch(function (error) {
+        console.log("Error getting documents: ", error);
+      });
+  },
+
+  deleteMyPlace: function (uid, id) {
+    query = firestore
+      .collection("Users")
+      .doc(uid)
+      .collection("MyPlaces")
+      .where("pid", "==", id);
+    return query.get().then(function (querySnapshot) {
+      return querySnapshot.forEach(function (doc) {
+        return doc.ref.delete();
+      });
+    });
+  },
 };
 export default dbPlace;

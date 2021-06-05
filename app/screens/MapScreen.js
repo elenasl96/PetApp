@@ -173,8 +173,8 @@ export default class MapScreen extends React.Component {
 
   focusMapOn(place) {
     let region = {
-      latitude: place.region.latitude,
-      longitude: place.region.longitude,
+      latitude: place.latitude,
+      longitude: place.longitude,
       latitudeDelta: 0.01,
       longitudeDelta: 0.005,
     };
@@ -313,8 +313,8 @@ export default class MapScreen extends React.Component {
                 this.state.markers[index] = ref;
               }}
               coordinate={{
-                latitude: marker.region.latitude,
-                longitude: marker.region.longitude,
+                latitude: marker.latitude,
+                longitude: marker.longitude,
               }}
               title={marker.name}
               description={marker.address}
