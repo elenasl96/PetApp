@@ -9,8 +9,18 @@ class News extends React.Component {
   static contextType = AuthContext;
 
   state = {
-    news: null,
+    news: [],
     mounted: false,
+  };
+
+  addNews = (doc) => {
+    dbNews.getNews(this.props.placeId, doc.id).then((news) => {
+      news.pid = this.props.placeId;
+      news.id = doc.id;
+      let updatedNews = this.state.news;
+      updatedNews.push(news);
+      this.setState({ news: updatedNews });
+    });
   };
 
   deleteNews = (pid, newsId) => {
@@ -45,7 +55,7 @@ class News extends React.Component {
   }
 
   render() {
-    if (this.state.news && this.state.news.length > 0) {
+    if (this.state.news.length > 0) {
       //console.log("HAVE NEWS");
       //console.log(this.state.news);
       return this.state.news.map((news, index) => (

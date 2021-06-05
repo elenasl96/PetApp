@@ -139,6 +139,10 @@ class VetScreen extends React.Component {
     }
   };
 
+  updateNews = (doc) => {
+    this.state.news.addNews(doc);
+  };
+
   deletePlaceHere = () => {
     const placeID = this.props.navigation.state.params.place.id;
     const photo = this.props.navigation.state.params.place.photo;
@@ -172,6 +176,7 @@ class VetScreen extends React.Component {
             close={() => {
               this.setState({ showNewsForm: false });
             }}
+            updateNews={this.updateNews}
           ></AddNewsForm>
           <AddPetForm
             adoptable={true}
@@ -316,7 +321,10 @@ class VetScreen extends React.Component {
                 style={{ paddingTop: 10 }}
               >
                 <Text style={styles.title2}>News</Text>
-                <News placeId={pid}></News>
+                <News
+                  ref={(news) => (this.state.news = news)}
+                  placeId={pid}
+                ></News>
               </ScrollView>
             </ScrollView>
           </View>

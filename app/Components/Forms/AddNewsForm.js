@@ -42,8 +42,9 @@ export default class AddNewsForm extends React.Component {
 
     if (isValid) {
       const pid = this.props.pid;
-      dbNews.addNews(pid, this.state.title, this.state.text).then(() => {
+      dbNews.addNews(pid, this.state.title, this.state.text).then((doc) => {
         this.props.close();
+        this.props.updateNews(doc);
       });
     }
   }
