@@ -90,7 +90,7 @@ export default StyleSheet.create({
     backgroundColor: "#FFFFFF",
     borderRadius: 22,
     padding: 10,
-    marginBottom: 10,
+    marginVertical: 5,
     marginLeft: 10,
     elevation: 2,
     alignSelf: "center",

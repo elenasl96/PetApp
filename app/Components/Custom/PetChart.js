@@ -226,6 +226,7 @@ class Chart extends React.Component {
 
     return (
       <View style={{ flex: 1, flexBasis: 400 }}>
+        <Text style={styles.title}>Pet stats</Text>
         <View style={styles.statisticButtons}>
           <TouchableHighlight
             style={mainStyle.roundButton}
@@ -386,7 +387,7 @@ const styles = StyleSheet.create({
   },
   form: {
     borderRadius: 30,
-    flex: 1,
+    width: "60%",
     backgroundColor: "#FFF",
     borderRadius: 25,
     height: 50,
@@ -436,6 +437,13 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 5,
     elevation: 2,
+  },
+  title: {
+    color: "#4cc9f0",
+    fontWeight: "bold",
+    fontSize: 20,
+    marginVertical: 10,
+    textAlign: "center",
   },
 });
 

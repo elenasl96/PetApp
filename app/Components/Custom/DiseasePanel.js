@@ -208,6 +208,7 @@ class DiseasePanel extends React.Component {
 
     return (
       <View style={{ flex: 1, flexBasis: 400 }}>
+        <Text style={styles.title}>Health monitor</Text>
         <View style={styles.descriptionContainer}>
           {temp.length != 0 ? (
             <Text style={styles.title}>
@@ -283,7 +284,7 @@ class DiseasePanel extends React.Component {
               </Text>
 
               <Text style={{ marginHorizontal: 15, marginBottom: 10 }}>
-                Add diseases
+                Add new disease
               </Text>
             </View>
             <View
@@ -291,6 +292,7 @@ class DiseasePanel extends React.Component {
                 flex: 1,
                 flexDirection: "row",
                 justifyContent: "center",
+                alignItems: "center",
                 alignContent: "center",
                 paddingHorizontal: 15,
               }}
@@ -418,7 +420,7 @@ const styles = StyleSheet.create({
   },
   form: {
     borderRadius: 30,
-    flex: 1,
+    width: "60%",
     backgroundColor: "#FFF",
     borderRadius: 25,
     height: 50,
@@ -437,6 +439,13 @@ const styles = StyleSheet.create({
   descriptionContainer: {
     width: "90%",
     alignSelf: "center",
+  },
+  title: {
+    color: "red",
+    fontWeight: "bold",
+    fontSize: 20,
+    marginVertical: 10,
+    textAlign: "center",
   },
 });
 export default DiseasePanel;

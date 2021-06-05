@@ -215,8 +215,6 @@ class PetScreen extends React.Component {
               </View>
             ) : null}
 
-            <Text style={styles.title}>Health monitor</Text>
-
             <View style={{ flex: 1, flexDirection: "row", flexWrap: "wrap" }}>
               <DiseasePanel
                 petID={petID}
