@@ -9,7 +9,9 @@ export default class LostPetSeen {
     timestamp,
     uid,
     email,
-    phone
+    phone,
+    latitude,
+    longitude
   ) {
     this.photo = photo;
     this.size = size;
@@ -21,6 +23,8 @@ export default class LostPetSeen {
     this.uid = uid;
     this.email = email;
     this.phone = phone;
+    this.latitude = latitude;
+    this.longitude = longitude;
   }
 
   getPhoto() {
@@ -63,6 +67,14 @@ export default class LostPetSeen {
     return this.phone;
   }
 
+  getLat() {
+    return this.latitude;
+  }
+
+  getLng() {
+    return this.longitude;
+  }
+
   getCollection() {
     return "LostPetSeen";
   }
@@ -79,6 +91,8 @@ export default class LostPetSeen {
       uid: this.uid,
       email: this.email,
       phone: this.phone,
+      latitude: this.latitude,
+      longitude: this.longitude,
     };
   }
 }

@@ -10,7 +10,9 @@ export default class LostPetNotify {
     timestamp,
     uid,
     email,
-    phone
+    phone,
+    latitude,
+    longitude
   ) {
     this.name = name;
     this.photo = photo;
@@ -23,6 +25,8 @@ export default class LostPetNotify {
     this.uid = uid;
     this.email = email;
     this.phone = phone;
+    this.latitude = latitude;
+    this.longitude = longitude;
   }
 
   getName() {
@@ -69,6 +73,14 @@ export default class LostPetNotify {
     return this.phone;
   }
 
+  getLat() {
+    return this.latitude;
+  }
+
+  getLng() {
+    return this.longitude;
+  }
+
   getCollection() {
     return "LostPetNotify";
   }
@@ -86,6 +98,8 @@ export default class LostPetNotify {
       uid: this.uid,
       email: this.email,
       phone: this.phone,
+      latitude: this.latitude,
+      longitude: this.longitude,
     };
   }
 }

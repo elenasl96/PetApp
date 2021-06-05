@@ -16,7 +16,9 @@ const dbLostPet = {
     place,
     uid,
     email,
-    phone
+    phone,
+    latitude,
+    longitude
   ) {
     const lostPets = firestore.collection("LostPetNotify");
     let notification = new LostPetNotify(
@@ -30,7 +32,9 @@ const dbLostPet = {
       utils.timestampAccurate(),
       uid,
       email,
-      phone
+      phone,
+      latitude,
+      longitude
     );
     return lostPets.add(notification.toFirestore());
   },
@@ -89,7 +93,9 @@ const dbLostPet = {
           data.timestamp,
           data.uid,
           data.email,
-          data.phone
+          data.phone,
+          data.latitude,
+          data.longitude
         );
         return notification;
       })
@@ -133,7 +139,9 @@ const dbLostPet = {
     place,
     uid,
     email,
-    phone
+    phone,
+    latitude,
+    longitude
   ) {
     const lostPets = firestore.collection("LostPetSeen");
 
@@ -147,7 +155,9 @@ const dbLostPet = {
       utils.timestampAccurate(),
       uid,
       email,
-      phone
+      phone,
+      latitude,
+      longitude
     );
     return lostPets.add(notification.toFirestore());
   },
@@ -205,7 +215,9 @@ const dbLostPet = {
           data.timestamp,
           data.uid,
           data.email,
-          data.phone
+          data.phone,
+          data.latitude,
+          data.longitude
         );
         return notification;
       })

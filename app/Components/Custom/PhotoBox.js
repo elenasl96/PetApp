@@ -335,8 +335,6 @@ const styles = StyleSheet.create({
     height: 120,
     backgroundColor: "lightgrey",
     borderRadius: 20,
-
-    elevation: 3,
   },
   container: {
     flex: 1,

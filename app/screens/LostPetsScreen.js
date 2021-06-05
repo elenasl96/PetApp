@@ -83,6 +83,7 @@ export default class LostPetsScreen extends React.Component {
     this.setState({ report: lostPet });
 
     dbLostPet.getLostPetsMatched(lostPet).then((lostPetsMatched) => {
+      console.log("LOST PETS MATCHED: " + lostPetsMatched.length);
       if (lostPetsMatched.length > 0) {
         this.setState({
           showLostPets: false,
@@ -122,19 +123,21 @@ export default class LostPetsScreen extends React.Component {
     }
   };
 
-  confirmReport = () => {
+  confirmReport = (lostPet) => {
     dbLostPet
       .addLostPetNotify(
-        this.state.report.getName(),
-        this.state.report.getPhoto(),
-        this.state.report.getSize(),
-        this.state.report.getColor(),
-        this.state.report.getBreed(),
-        this.state.report.getNotes(),
-        this.state.report.getPlace(),
+        lostPet.name,
+        lostPet.photo,
+        lostPet.size,
+        lostPet.color,
+        lostPet.breed,
+        lostPet.notes,
+        lostPet.place,
         this.context.uid,
-        this.state.report.getEmail(),
-        this.state.report.getPhone()
+        lostPet.email,
+        lostPet.phone,
+        lostPet.latitude,
+        lostPet.longitude
       )
       .then((doc) => {
         this.context.lostPets.push(doc.id);
@@ -202,7 +205,7 @@ export default class LostPetsScreen extends React.Component {
               <TouchableHighlight
                 style={styles.mapButton}
                 onPress={() => {
-                  this.confirmReport();
+                  this.confirmReport(this.state.report);
                 }}
                 underlayColor={"rgb(200,200,200)"}
               >

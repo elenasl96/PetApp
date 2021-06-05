@@ -71,6 +71,32 @@ class PetScreen extends React.Component {
     this.setState({ mounted: false });
   }
 
+  sendForm = (lostPet, seen) => {
+    const pet = this.props.navigation.state.params.pet;
+
+    dbLostPet.getLostPetsMatched(lostPet).then((lostPetsMatched) => {
+      if (lostPetsMatched.length > 0) {
+        this.setState({
+          showLostPets: false,
+          showLostPetsSeen: false,
+          showReportLossForm: false,
+          showReportSightForm: false,
+          lostPetsMatched: lostPetsMatched,
+          showPetsMatched: !seen,
+          showPetsMatchedSeen: seen,
+        });
+      } else {
+        if (seen) {
+          this.confirmReportSeen(lostPet);
+        } else {
+          this.confirmReport(lostPet);
+        }
+
+        this.setState({ showReportLossForm: false });
+      }
+    });
+  };
+
   render() {
     const pet = this.props.navigation.state.params.pet;
     const petID = this.props.navigation.state.params.petID;
@@ -97,6 +123,7 @@ class PetScreen extends React.Component {
           close={() => {
             this.setState({ showReportLossForm: false });
           }}
+          sendForm={this.sendForm}
         ></ReportLossForm>
         <View style={styles.mainContent}>
           <ScrollView showsVerticalScrollIndicator={false}>

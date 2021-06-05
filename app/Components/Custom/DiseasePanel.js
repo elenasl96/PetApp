@@ -211,7 +211,7 @@ class DiseasePanel extends React.Component {
         <Text style={styles.title}>Health monitor</Text>
         <View style={styles.descriptionContainer}>
           {temp.length != 0 ? (
-            <Text style={styles.title}>
+            <Text style={styles.text}>
               Ough! Your pet is suffering of some diseases... Monitor it and
               checkout your daily feed to retrieve suggestions!
             </Text>

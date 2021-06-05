@@ -23,6 +23,7 @@ import MatchPetsModal from "../Custom/matchPetsModal";
 import PetLostButton from "../Buttons/PetLostButton";
 import LostPetSeen from "../../firebase/Database/Objects/LostPetSeen";
 import NotifySightButton from "../Buttons/NotifySightButton";
+import * as Location from "expo-location";
 
 class ReportLossForm extends Component {
   static contextType = AuthContext;
@@ -34,6 +35,7 @@ class ReportLossForm extends Component {
     breed: "",
     notes: null,
     place: null,
+    city: null,
     email: null,
     phone: null,
     mounted: false,
@@ -65,7 +67,7 @@ class ReportLossForm extends Component {
     });
   };
 
-  reportLoss = () => {
+  reportLoss = async () => {
     const pet = this.props.pet;
     let errors = validator.handleReportValidation(
       this.state.phone,
@@ -75,20 +77,32 @@ class ReportLossForm extends Component {
     let isValid = validator.isValid(errors);
     this.setState({ errors: errors });
     if (isValid) {
-      let lostPet = new LostPetNotify(
-        this.state.name,
-        this.state.photo,
-        this.state.size,
-        this.state.color,
-        this.state.breed,
-        this.state.notes,
-        this.state.place,
-        "",
-        "",
-        this.state.email,
-        this.state.phone
-      );
-      this.props.sendForm(lostPet, false);
+      let { status } = await Location.requestPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+      let place = this.state.place + ", " + this.state.city;
+      Location.geocodeAsync(place).then((coordinates) => {
+        console.log("coordinates");
+        console.log(coordinates);
+        let lostPet = new LostPetNotify(
+          this.state.name,
+          this.state.photo,
+          this.state.size,
+          this.state.color,
+          this.state.breed,
+          this.state.notes,
+          place,
+          "",
+          this.context.uid,
+          this.state.email,
+          this.state.phone,
+          coordinates[0].latitude,
+          coordinates[0].longitude
+        );
+        this.props.sendForm(lostPet, false);
+      });
     }
   };
 
@@ -265,7 +279,7 @@ class ReportLossForm extends Component {
               <View style={mainStyle.form}>
                 <TextInput
                   style={mainStyle.inputText}
-                  placeholder="Place"
+                  placeholder="Via, Street..."
                   placeholderTextColor="#616161"
                   returnKeyType="next"
                   textContentType="addressCity"
@@ -273,6 +287,23 @@ class ReportLossForm extends Component {
                   onChangeText={(place) => this.setState({ place })}
                 />
               </View>
+
+              <View style={mainStyle.form}>
+                <TextInput
+                  style={mainStyle.inputText}
+                  placeholder="City"
+                  placeholderTextColor="#616161"
+                  returnKeyType="next"
+                  textContentType="addressCity"
+                  value={this.state.city}
+                  onChangeText={(city) => this.setState({ city })}
+                />
+              </View>
+
+              {this.state.errors["address"] != null ? (
+                <Text style={styles.error}>{this.state.errors["address"]}</Text>
+              ) : null}
+
               <View style={mainStyle.form}>
                 <TextInput
                   style={mainStyle.inputText}
@@ -319,7 +350,7 @@ class ReportLossForm extends Component {
                   </View>
                 </TouchableOpacity>
               ) : null}
-              {!this.props.sight && !pet ? (
+              {!this.props.sight ? (
                 <TouchableOpacity
                   style={{
                     width: "50%",
@@ -335,7 +366,7 @@ class ReportLossForm extends Component {
                 </TouchableOpacity>
               ) : null}
 
-              {pet ? (
+              {this.props.sight && pet ? (
                 <View style={styles.buttons}>
                   <NotifySightButton
                     navigation={this.props.navigation}
