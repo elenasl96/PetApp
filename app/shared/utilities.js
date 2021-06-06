@@ -1,20 +1,19 @@
 const utils = {
-
   getAgeString: function (age) {
-      var string;
-      if (age < 0) {
-        console.log("Age must be a positive integer");
-        string = "error";
-      }
+    var string;
+    if (age < 0) {
+      console.log("Age must be a positive integer");
+      string = "error";
+    }
 
-      if (age <= 6 && age >= 0) string = "Young";
+    if (age <= 6 && age >= 0) string = "Young";
 
-      if (age > 6 && age <= 12) string = "Medium";
+    if (age > 6 && age <= 12) string = "Medium";
 
-      if (age > 12) string = "Old";
+    if (age > 12) string = "Old";
 
-      return string;
-    },
+    return string;
+  },
 
   timestamp: function () {
     let date = new Date();
@@ -93,6 +92,16 @@ const utils = {
     return (
       (longerLength - this.editDistance(longer, shorter)) /
       parseFloat(longerLength)
+    );
+  },
+
+  searchInPlaces: function (placeName, search) {
+    placeName = placeName.toLowerCase().replace(/\s/g, "");
+    search = search.toLowerCase().replace(/\s/g, "");
+    return (
+      this.similarity(placeName, search) > 0.5 ||
+      placeName.includes(search) ||
+      search.includes(placeName)
     );
   },
 };

@@ -189,10 +189,7 @@ export default class MapScreen extends React.Component {
     let matchingPlaces = [];
     let matchingCoordinates = [];
     this.state.places.forEach((place) => {
-      if (
-        utils.similarity(place.getName(), this.state.search) > 0.9 ||
-        place.getName().includes(this.state.search)
-      ) {
+      if (utils.searchInPlaces(place.getName(), this.state.search)) {
         matchingPlaces.push(place);
         matchingCoordinates.push(place.getLatLng());
       }
