@@ -115,9 +115,10 @@ export default StyleSheet.create({
     },
     maxWidth: 500,
     width: "90%",
+
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 2,
+    elevation: 3,
   },
   box: {
     backgroundColor: "powderblue",

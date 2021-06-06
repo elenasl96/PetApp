@@ -22,12 +22,18 @@ const TabNavigator = createMaterialBottomTabNavigator(
         let iconName;
         if (routeName === "Home") {
           iconName = focused ? "md-home" : "md-home";
+          iconName = require("../../../assets/images/draws/dog-house.png");
         } else if (routeName === "Map") {
           iconName = focused ? "md-map" : "md-map";
+          iconName = require("../../../assets/images/draws/pet-shop.png");
         } else if (routeName === "Lost") {
           iconName = focused ? "md-paw" : "md-paw";
+          iconName = require("../../../assets/images/draws/muzzle.png");
         }
-        return <Ionicons name={iconName} size={24} color={tintColor} />;
+        //return <Ionicons name={iconName} size={24} color={tintColor} />;
+        return (
+          <Image style={{ width: 25, height: 25 }} source={iconName}></Image>
+        );
       },
     }),
     tabBarOptions: {
