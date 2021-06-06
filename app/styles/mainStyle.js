@@ -119,4 +119,9 @@ export default StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
   },
+  box: {
+    backgroundColor: "powderblue",
+    borderRadius: 25,
+    padding: 10,
+  },
 });

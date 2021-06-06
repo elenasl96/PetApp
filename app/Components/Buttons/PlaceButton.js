@@ -122,8 +122,8 @@ const styles = StyleSheet.create({
   },
   title: {
     marginVertical: 55,
-    color: "orange",
-    textShadowColor: "orange",
+    color: "black",
+    //textShadowColor: "orange",
     textShadowRadius: 3,
     fontSize: 20,
     backgroundColor: "white",

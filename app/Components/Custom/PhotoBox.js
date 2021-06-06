@@ -18,6 +18,7 @@ import dbPlace from "../../firebase/Database/Functions/dbPlace";
 import dbUser from "../../firebase/Database/Functions/dbUser";
 import dbAdoptableAnimal from "../../firebase/Database/Functions/dbAdoptableAnimal";
 import validator from "../../shared/validation";
+import mainStyle from "../../styles/mainStyle";
 
 class PhotoBox extends React.Component {
   // props: ids , section , initial photo (if any) , boolean to show (or not) update button
@@ -274,12 +275,15 @@ class PhotoBox extends React.Component {
       // Mode form
       return (
         <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            marginTop: 20,
-            justifyContent: "center",
-          }}
+          style={[
+            mainStyle.box,
+            {
+              flex: 1,
+              flexDirection: "row",
+              marginTop: 20,
+              justifyContent: "center",
+            },
+          ]}
         >
           <View
             style={{
@@ -290,13 +294,14 @@ class PhotoBox extends React.Component {
           >
             <TouchableOpacity onPress={this.pickImage.bind(this)}>
               <View style={styles.button}>
-                <Text> Pick image from gallery </Text>
+                <Text style={styles.text}> Pick image from gallery </Text>
               </View>
             </TouchableOpacity>
+            <Text style={styles.text}>OR</Text>
 
             <TouchableOpacity onPress={this.openCamera.bind(this)}>
               <View style={styles.button}>
-                <Text>Open the camera </Text>
+                <Text style={styles.text}>Open the camera </Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -343,6 +348,9 @@ const styles = StyleSheet.create({
   },
   mainContent: {
     flex: 1,
+  },
+  text: {
+    textAlign: "center",
   },
   centeredView: {
     flex: 1,
@@ -391,16 +399,16 @@ const styles = StyleSheet.create({
     height: 30,
   },
   button: {
-    backgroundColor: "#F9844A",
+    backgroundColor: "white",
     minWidth: 100,
-    height: 44,
+    //height: 44,
     borderRadius: 22,
-    paddingHorizontal: 12,
-    paddingVertical: 5,
-    marginBottom: 5,
-    marginLeft: 10,
+    padding: 10,
+    marginVertical: 5,
+    marginRight: 10,
     alignContent: "center",
     justifyContent: "center",
+    elevation: 2,
   },
   buttonText: {
     alignSelf: "center",

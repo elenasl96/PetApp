@@ -17,6 +17,7 @@ import dbAdoptableAnimal from "../../firebase/Database/Functions/dbAdoptableAnim
 import PlaceButton from "../../Components/Buttons/PlaceButton";
 import AddPlaceForm from "../../Components/Forms/AddPlaceForm";
 import { AntDesign } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default class HomeBusiness extends React.Component {
   state = {
@@ -107,13 +108,18 @@ export default class HomeBusiness extends React.Component {
             <View style={styles.myPlacesContainer}>
               <View style={styles.titleBox}>
                 <Text style={styles.title}>My Places </Text>
-                <TouchableHighlight
+                <TouchableOpacity
                   onPress={this.addPlace}
                   style={styles.addPetButton}
                 >
                   <AntDesign name="plus" size={50} style={styles.plus} />
-                </TouchableHighlight>
+                </TouchableOpacity>
               </View>
+              <Text style={styles.text}>
+                Register your places to show them in the map. It can be a
+                veterinary, a kennel, a park, or other type of place related to
+                pets.
+              </Text>
 
               <ScrollView
                 style={{ width: "100%" }}
@@ -192,18 +198,24 @@ const styles = StyleSheet.create({
   myPlacesContainer: {
     flex: 1,
     flexDirection: "column",
+    alignItems: "center",
   },
   title: {
     marginLeft: 15,
-    marginTop: 10,
+    //marginTop: 10,
     fontWeight: "bold",
     fontSize: 20,
   },
   titleBox: {
     flex: 1,
     flexDirection: "row",
-    marginTop: 10,
+    marginTop: 30,
     justifyContent: "center",
+    alignItems: "center",
+  },
+  text: {
+    marginTop: 15,
+    width: "70%",
   },
   myPlaces: {
     flex: 1,
@@ -249,5 +261,9 @@ const styles = StyleSheet.create({
     height: 50,
     resizeMode: "cover",
     tintColor: "orange",
+  },
+  addPetButton: {
+    borderRadius: 25,
+    marginLeft: 10,
   },
 });
