@@ -136,10 +136,12 @@ afterAll(() => { //run with --detectOpenHandles
 
 
 test("addds", () => {
+
    let animals = [new UserAnimal("name", 2, "Bombay", "Small", "black", "photo","Cat"),
                   new UserAnimal("name", 2, "None", "Small", "black", "photo","Cat")];
-    filtered = dbFeed.filterAnimals(animals);              
-    expect(dbFeed.getFeeds(filtered,"gbfBtH1XbDMYice2pM0zV7caEjn2","03/06/2021",1)).resolves.toBe("aaa");
+    //filtered = dbFeed.filterAnimals(animals);              
+    expect(dbFeed.getFeeds([],"gbfBtH1XbDMYice2pM0zV7caEjn2","03/06/2021",0)).resolves.toHaveLength(4);
+    //expect(dbFeed.getRandomGeneralFeeds("gbfBtH1XbDMYice2pM0zV7caEjn2","Cat",0)).resolves.toBeInstanceOf(Feed);
 });
 
 

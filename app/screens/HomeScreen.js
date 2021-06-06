@@ -103,9 +103,8 @@ class HomeScreen extends React.Component {
         dbUserAnimal.getUserAnimal(uid, aid).then((animal) => {
           animals.push(animal);
           if (pets.length == animals.length) {
-            let filtered = this.filterAnimals(animals);
             dbFeed
-              .getFeeds(filtered, uid, info.getLastLogin(), info.getDays())
+              .getFeeds(animals, uid, info.getLastLogin(), info.getDays())
               .then((feeds) => {
                 if (this.state.mounted) {
                   this.setState({ feeds: feeds, loading: false });
@@ -115,7 +114,6 @@ class HomeScreen extends React.Component {
         });
       });
     } else {
-      console.log("No purebreed animals");
       dbFeed
         .getFeeds(animals, uid, info.getLastLogin(), info.getDays())
         .then((feeds) => {
@@ -126,17 +124,6 @@ class HomeScreen extends React.Component {
     }
   }
 
-  filterAnimals(arr){
-    for( var i = 0; i < arr.length; i++){ 
-      console.log("Breed: " + arr[i].breed);
-      if ( arr[i].breed == "None" ) { 
-          arr.splice(i, 1);
-      }
-  
-  }
-  console.log("animals after filter:" + arr);
-  return arr;
-  }
 
   saveFavouritePlaces() {
     dbPlace.getSavedPlaces(this.context.uid).then((places) => {

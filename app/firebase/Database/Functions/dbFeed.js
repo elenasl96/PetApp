@@ -204,6 +204,16 @@ getFeedsByFilter(pet, filter, value, id) {
       });
   },
 
+  filterAnimals(arr){
+    for( var i = 0; i < arr.length; i++){ 
+      if ( arr[i].breed == "None" ) { 
+          arr.splice(i, 1);
+      }
+  
+  }
+  return arr;
+  },
+
   getFeeds: function (animals, uid, lastlogin, days) {
 
     var feeds = [];
@@ -224,43 +234,55 @@ getFeedsByFilter(pet, filter, value, id) {
 
       if (animals.length != 0) { //at least one animal
 
-        
-        var types = [];
-        animals.forEach(function (animal) {
+        var types = [];  
+        animals.forEach(function (animal) {  //animals included mongrels
           if (!types.includes(animal.type)) {
             types.push(animal.type);
           }
         });
 
+        animals_F = dbFeed.filterAnimals(animals); // only purebreed animals
+        if(animals_F.length!=0){ // if exists at least one purebreed animal
+        var types_F = [];
+        animals_F.forEach(function (animal) {
+          if (!types_F.includes(animal.type)) {
+            types_F.push(animal.type);
+          }
+        });
 
         var type = types[Math.floor(Math.random() * types.length)];
 
-        let promiseBreed = dbFeed.getBreedFeed(uid,type,id); 
+        var promiseBreed = dbFeed.getBreedFeed(uid,type,id); 
 
-        
+        num = 2;
+
+        }
+        else{ //if no purebreed animals exist
+          num = 3;
+        }
+
         type = types[Math.floor(Math.random() * types.length)];
         let promiseAge = dbFeed.getAgeFeed(uid, type, id);
 
         type = types[Math.floor(Math.random() * types.length)];
         let promiseSize = dbFeed.getSizeFeed(uid, type, id);
-
-        num = 2;
         
         let promiseGeneral = dbFeed.getRandomGeneralFeeds(id, num);
 
         return Promise.all([promiseBreed,promiseAge,promiseSize,promiseGeneral]).then((feedsFetched)=>{  
           
           let i = 0;
+          let num_notgeneral = 5 - num;
           feedsFetched.forEach((feed)=>{
-            if(i<3){
+            if(i<num_notgeneral){
             dbFeed.addUserFeed(uid,feed.title,feed.text,feed.type);
             feeds.push(new Feed(feed.title,feed.text,feed.type));
             }
             else{
-              dbFeed.addUserFeed(uid,feed[0].title,feed[0].text,feed[0].type);
-              feeds.push(new Feed(feed[0].title,feed[0].text,feed[0].type));
-              dbFeed.addUserFeed(uid,feed[1].title,feed[1].text,feed[1].type);
-              feeds.push(new Feed(feed[1].title,feed[1].text,feed[1].type));
+              for (j = 0; j < num; j++) { 
+              dbFeed.addUserFeed(uid,feed[j].title,feed[j].text,feed[j].type);
+              feeds.push(new Feed(feed[j].title,feed[j].text,feed[j].type));
+              }
             }
             i = i + 1;
             return feeds;
@@ -303,7 +325,7 @@ getFeedsByFilter(pet, filter, value, id) {
     return dbFeed.getUserAnimalsByType(uid, type).then(function (animals) {
       var breeds = [];
       animals.forEach(function (animal) {
-        if (!breeds.includes(animal.breed)) {
+        if (!breeds.includes(animal.breed) && animal.breed!="None") {
           breeds.push(animal.breed);
         }
       });
