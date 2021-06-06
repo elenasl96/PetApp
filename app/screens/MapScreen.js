@@ -255,25 +255,27 @@ export default class MapScreen extends React.Component {
 
           <View style={styles.mapTopButtons}>
             <TouchableHighlight
-              style={styles.mapButton}
+              style={[styles.mapButton, { backgroundColor: "#48bfe3" }]}
               onPress={() => this.showPlacesFilteredOn("Veterinary")}
               underlayColor={"rgb(200,200,200)"}
             >
-              <Text style={{ textAlign: "center" }}>Vet</Text>
+              <Text style={{ textAlign: "center", color: "white" }}>Vet</Text>
             </TouchableHighlight>
             <TouchableHighlight
-              style={styles.mapButton}
+              style={[styles.mapButton, { backgroundColor: "#e76f51" }]}
               onPress={() => this.showPlacesFilteredOn("Kennel")}
               underlayColor={"rgb(200,200,200)"}
             >
-              <Text style={{ textAlign: "center" }}>Kennel</Text>
+              <Text style={{ textAlign: "center", color: "white" }}>
+                Kennel
+              </Text>
             </TouchableHighlight>
             <TouchableHighlight
-              style={styles.mapButton}
+              style={[styles.mapButton, { backgroundColor: "#52b788" }]}
               onPress={() => this.showPlacesFilteredOn("Park")}
               underlayColor={"rgb(200,200,200)"}
             >
-              <Text style={{ textAlign: "center" }}>Park</Text>
+              <Text style={{ textAlign: "center", color: "white" }}>Park</Text>
             </TouchableHighlight>
             <TouchableHighlight
               style={styles.mapButton}
@@ -365,7 +367,7 @@ const styles = StyleSheet.create({
     zIndex: -1,
   },
   infoWindow: {
-    minWidth: 120,
+    minWidth: 150,
   },
   placeName: {
     fontWeight: "bold",

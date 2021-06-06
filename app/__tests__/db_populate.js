@@ -48,6 +48,8 @@ test("place population", () => {
   //dbPopulate.addPlaceToUser(uids.elena, place.confortHouse);
   //dbPopulate.addPlaceToUser(uids.matteo, place.confortHouse);
   //dbPopulate.addPlaceToUser(uids.matteo, place.petClinic);
+  //dbPopulate.addPlaceToUser(uids.matteo, place.happyPark);
+  //dbPopulate.addPlaceToUser(uids.matteo, place.dogPark);
   return expect(true).toBeTruthy();
 });
 
