@@ -19,6 +19,7 @@ import mainStyle from "../styles/mainStyle";
 import utils from "../shared/utilities";
 import { AuthContext } from "../Components/AuthContext";
 import * as Device from "expo-device";
+import PlacePage from "./PlacePage";
 
 export default class MapScreen extends React.Component {
   state = {
@@ -191,7 +192,10 @@ export default class MapScreen extends React.Component {
     this.state.places.forEach((place) => {
       if (utils.searchInPlaces(place.getName(), this.state.search)) {
         matchingPlaces.push(place);
-        matchingCoordinates.push(place.getLatLng());
+        matchingCoordinates.push({
+          latitude: place.getLat(),
+          longitude: place.getLng(),
+        });
       }
     });
     if (this.state.mounted) {
@@ -207,6 +211,12 @@ export default class MapScreen extends React.Component {
 
   render() {
     console.log("RENDER");
+    var pins = {
+      Veterinary: require("../../assets/images/pin/Veterinary.png"),
+      Park: require("../../assets/images/pin/Park.png"),
+      Kennel: require("../../assets/images/pin/Kennel.png"),
+      Other: require("../../assets/images/pin/Other.png"),
+    };
     return (
       <View style={styles.container}>
         <View style={styles.overlay}>
@@ -320,10 +330,10 @@ export default class MapScreen extends React.Component {
               style={styles.marker}
             >
               <Image
-                source={require("../../assets/images/paw.png")}
+                source={pins[marker.type]}
                 style={[
                   styles.markerImage,
-                  { tintColor: this.getPlaceColor(marker.type) },
+                  //{ tintColor: this.getPlaceColor(marker.type) },
                 ]}
               />
               <Callout>
@@ -387,7 +397,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   markerImage: {
-    height: 35,
+    height: 40,
     width: 35,
   },
   overlay: {
