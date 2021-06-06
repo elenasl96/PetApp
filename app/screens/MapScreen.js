@@ -166,7 +166,6 @@ export default class MapScreen extends React.Component {
   }
 
   showPlace(place) {
-    console.log(place);
     this.props.navigation.navigate("Place", {
       place: place,
     });
@@ -210,7 +209,6 @@ export default class MapScreen extends React.Component {
   }
 
   render() {
-    console.log("RENDER");
     var pins = {
       Veterinary: require("../../assets/images/pin/Veterinary.png"),
       Park: require("../../assets/images/pin/Park.png"),
@@ -314,7 +312,6 @@ export default class MapScreen extends React.Component {
           showsCompass={true}
           showsPointsOfInterest={false}
         >
-          {console.log("PLACES LENGTH: " + this.state.visibleMarkers.length)}
           {this.state.visibleMarkers.map((marker, index) => (
             <Marker
               key={index}
