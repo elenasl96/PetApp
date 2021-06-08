@@ -9,16 +9,14 @@ import dbPlace from "../firebase/Database/Functions/dbPlace";
 
 
 beforeAll(() => {
-    /*
+    
     dbPlace.addPlace('place1',
     'Kennel',
     'description of a kennel',
     'https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=3596224033779591&height=100&width=100&ext=1618930868&hash=AeS7Ycc-xZFda11qK44',
     'viale romagna 2',
     41.0,
-    41.3,
-    "latitudeDelta",
-    "longitudeDelta").then((place) => {
+    41.3).then((place) => {
 
     //creates standard user , he saves the place and adds feeds
     dbUser.addUser('user1',
@@ -90,7 +88,7 @@ beforeAll(() => {
                     'Moscova',
                     'user1',
                     'user1@gmail.com',
-                    'phone');
+                    'phone',41.0,42.0);
     
     dbLostPet.addLostPetSeen('https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=3596224033779591&height=100&width=100&ext=1618930868&hash=AeS7Ycc-xZFda11qK44',
     'Big',
@@ -100,18 +98,18 @@ beforeAll(() => {
     'Moscova',
     'user2',
     'user2@gmail.com',
-    'phone');
-    */
+    'phone',41.0,42.0);
+    
       
 })
 
 afterAll(() => {
-    /*
+    
     dbUser.deleteUser('user1','user');
     dbUser.deleteUser('user2','business');
     dbLostPet.deleteLostPetNotificationByUid('user1');
     dbLostPet.deleteLostPetSeenByUid('user2');
-   */
+   
 })
 
 

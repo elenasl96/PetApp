@@ -188,7 +188,7 @@ test("addds", () => {
    let animals = [new UserAnimal("name", 2, "Bombay", "Small", "black", "photo","Cat"),
                   new UserAnimal("name", 2, "None", "Small", "black", "photo","Cat")];
     //filtered = dbFeed.filterAnimals(animals);              
-    expect(dbFeed.getFeeds([],"gbfBtH1XbDMYice2pM0zV7caEjn2","03/06/2021",0)).resolves.toHaveLength(4);
+    expect(dbFeed.getFeeds(animals,"gbfBtH1XbDMYice2pM0zV7caEjn2","03/06/2021",0)).resolves.toHaveLength(4);
     //expect(dbFeed.getRandomGeneralFeeds("gbfBtH1XbDMYice2pM0zV7caEjn2","Cat",0)).resolves.toBeInstanceOf(Feed);
 });
 
