@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import firebase from "firebase";
 import * as GoogleSignIn from "expo-google-sign-in";
 
-
 export const AuthContext = React.createContext();
 
 class AuthContextProvider extends Component {
@@ -76,9 +75,10 @@ class AuthContextProvider extends Component {
   deleteFavouritePlace = (place) => {
     let places = this.state.savedPlaces;
     let index = places.indexOf(place);
-    if (index != -1) {
+    if (index !== -1) {
       places.splice(index, 1);
     }
+
     this.saveFavouritePlaces(places);
   };
 
@@ -105,11 +105,10 @@ class AuthContextProvider extends Component {
 
   saveAdoptablePets = (pid, pets) => {
     var adoptablePets = this.state.adoptablePets;
-    if(pets == null){
+    if (pets == null) {
       adoptablePets[pid] = [];
-    }
-    else{
-    adoptablePets[pid] = pets;
+    } else {
+      adoptablePets[pid] = pets;
     }
 
     if (this.state.mounted) {

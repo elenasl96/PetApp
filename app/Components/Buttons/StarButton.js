@@ -38,15 +38,19 @@ class StarButton extends React.Component {
   };
 
   deleteFromFavorite = () => {
-    dbPlace.deleteSavedPlace(this.props.uid,this.props.pid);
-    this.setState({ favorite: false });
-    this.context.deleteFavouritePlace(this.props.pid);
+    dbPlace.deleteSavedPlace(this.props.uid, this.props.pid).then(() => {
+      this.setState({ favorite: false });
+      this.context.deleteFavouritePlace(this.props.pid);
+    });
   };
 
   render() {
     if (this.state.favorite) {
       return (
-        <TouchableOpacity testID = "StarButton.deleteFromFavorite" onPress={() => this.deleteFromFavorite()}>
+        <TouchableOpacity
+          testID="StarButton.deleteFromFavorite"
+          onPress={() => this.deleteFromFavorite()}
+        >
           <AntDesign
             name="star"
             size={32}
@@ -57,7 +61,11 @@ class StarButton extends React.Component {
       );
     } else {
       return (
-        <TouchableOpacity testID = "StarButton.addFavorite" id="button_fav" onPress={() => this.addToFavorite()}>
+        <TouchableOpacity
+          testID="StarButton.addFavorite"
+          id="button_fav"
+          onPress={() => this.addToFavorite()}
+        >
           <AntDesign
             name="staro"
             size={32}

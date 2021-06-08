@@ -9,7 +9,6 @@ export default class Feed {
     this.type = type;
   }
 
-
   getTitle() {
     return this.title;
   }
@@ -28,7 +27,7 @@ export default class Feed {
     } else if (this.type == constants.FEED_TYPE.breed) {
       return "#dfe7fd";
     } else if (this.type == constants.FEED_TYPE.general) {
-      return "#fde2e4";
+      return "#d8f3dc";
     } else if ((this.type = constants.FEED_TYPE.size)) {
       return "#fad2e1";
     }

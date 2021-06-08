@@ -24,6 +24,7 @@ import { Entypo } from "@expo/vector-icons";
 import AddPetForm from "../Components/Forms/AddPetForm";
 import dbAdoptableAnimal from "../firebase/Database/Functions/dbAdoptableAnimal";
 import LoadingOverlay from "../Components/Custom/loadingOverlay";
+import mainStyle from "../styles/mainStyle";
 
 class HomeScreen extends React.Component {
   state = {
@@ -63,7 +64,7 @@ class HomeScreen extends React.Component {
       dbUserAnimal.getUserAnimals(this.context.uid).then((pets) => {
         this.getMyPets(pets); // converts ids in Animal objects
         this.context.savePets(pets);
-        this.getUserFeeds(pets);
+        this.getUserFeeds([]);
       });
     } else {
       if (pets.length != 0) {
@@ -124,7 +125,6 @@ class HomeScreen extends React.Component {
     }
   }
 
-
   saveFavouritePlaces() {
     dbPlace.getSavedPlaces(this.context.uid).then((places) => {
       if (this.state.mounted) {
@@ -135,16 +135,16 @@ class HomeScreen extends React.Component {
   }
 
   getMySavedPlaces(placeIDs) {
-    /*
-   let promises = places.map((placeID) => {
-         return dbPlace.getPlace(placeID).then((place) => {
-           place.id = placeID;
-           return place;
-         });
-       });
-        Promise.all(promises).then((places) => {
-            this.setState({places:places});
-        });*/
+    /*let promises = places.map((placeID) => {
+      return dbPlace.getPlace(placeID).then((place) => {
+        place.id = placeID;
+        return place;
+      });
+    });
+    Promise.all(promises).then((places) => {
+      this.setState({ places: places });
+    }); */
+
     var places = [];
     placeIDs.map((placeID) => {
       dbPlace.getPlace(placeID).then((place) => {
@@ -160,6 +160,9 @@ class HomeScreen extends React.Component {
         }
       });
     });
+    if (placeIDs.length == 0) {
+      this.setState({ places: [] });
+    }
   }
 
   getMyPlaces() {
@@ -190,7 +193,7 @@ class HomeScreen extends React.Component {
   }*/
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.places.length != this.context.savedPlaces.length) {
+    if (this.state.places.length !== this.context.savedPlaces.length) {
       this.getMySavedPlaces(this.context.savedPlaces);
     }
 
@@ -245,7 +248,7 @@ class HomeScreen extends React.Component {
 
         <View style={styles.mainContent}>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.feedContainer}>
+            <View style={styles.horizontalContainer}>
               <ScrollView
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
@@ -259,33 +262,35 @@ class HomeScreen extends React.Component {
               </ScrollView>
             </View>
 
-            <View style={styles.myPets}>
+            <View style={styles.horizontalContainer}>
               <ScrollView
-                horizontal={false}
+                horizontal={true}
                 showsHorizontalScrollIndicator={false}
               >
-                <Text style={styles.largeText}>Your pets</Text>
-                <ScrollView
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}
-                >
-                  {this.state.pets.length > 0 ? (
-                    <PetButton
-                      uid={this.context.uid}
-                      pets={this.state.pets}
-                      navigation={this.props.navigation}
-                      deleteAnimal={this.deletePet}
-                      type="useranimal"
-                    ></PetButton>
-                  ) : null}
+                <View>
+                  <Image
+                    style={styles.dogHouse}
+                    source={require("../../assets/images/draws/pet.png")}
+                  ></Image>
+                  <Text style={styles.largeText}>Pets</Text>
+                </View>
 
-                  <TouchableHighlight
-                    onPress={this.showPetForm}
-                    style={styles.addPetButton}
-                  >
-                    <AntDesign name="plus" size={50} style={styles.plus} />
-                  </TouchableHighlight>
-                </ScrollView>
+                {this.state.pets.length > 0 ? (
+                  <PetButton
+                    uid={this.context.uid}
+                    pets={this.state.pets}
+                    navigation={this.props.navigation}
+                    deleteAnimal={this.deletePet}
+                    type="useranimal"
+                  ></PetButton>
+                ) : null}
+
+                <TouchableHighlight
+                  onPress={this.showPetForm}
+                  style={styles.addPetButton}
+                >
+                  <AntDesign name="plus" size={50} style={styles.plus} />
+                </TouchableHighlight>
               </ScrollView>
             </View>
 
@@ -300,7 +305,20 @@ class HomeScreen extends React.Component {
                     isSavedPlace={true}
                   ></PlaceButton>
                 </View>
-              ) : null}
+              ) : (
+                <View
+                  style={[
+                    mainStyle.box,
+                    { marginHorizontal: 20, backgroundColor: "#fff1e6" },
+                  ]}
+                >
+                  <Text style={styles.text}>
+                    You can explore veterinaries, kennels, parks and other
+                    places in the map. Click the star button to keep them in
+                    your favourites!
+                  </Text>
+                </View>
+              )}
             </View>
           </ScrollView>
         </View>
@@ -316,6 +334,7 @@ const styles = StyleSheet.create({
   },
   mainContent: {
     flex: 1,
+    justifyContent: "flex-start",
   },
   topBar: {
     flexDirection: "row",
@@ -343,7 +362,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     resizeMode: "cover",
   },
-  feedContainer: {
+  horizontalContainer: {
     justifyContent: "center",
     flexDirection: "row",
     paddingTop: 20,
@@ -365,13 +384,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 20,
   },
-  myPets: {
-    flexWrap: "nowrap",
-    flexDirection: "row",
-    paddingBottom: 10,
-    backgroundColor: "white",
-  },
-
   petImage: {
     width: 150,
     height: 150,
@@ -438,6 +450,16 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginBottom: 10,
     alignSelf: "center",
+  },
+  dogHouse: {
+    width: 120,
+    height: 120,
+    marginHorizontal: 15,
+  },
+  text: {
+    width: "80%",
+    alignSelf: "center",
+    textAlign: "center",
   },
 });
 export default HomeScreen;

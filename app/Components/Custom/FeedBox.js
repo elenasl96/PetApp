@@ -17,23 +17,23 @@ class FeedBox extends React.Component {
 
     let promises = feeds.map((feed, index) => {
       //return dbFeed.getUserFeed(this.props.uid, feedID).then((feed) => {
-        return (
-          <LinearGradient
-            key={index}
-            style={styles.feed}
-            // Background Linear Gradient
-            //colors={["#caf0f8", "#48cae4", "#00b4d8"]}
-            colors={["#fff", feed.getColor(), feed.getColor()]}
-            start={{ x: 0.8, y: 0 }}
-            locations={[0, 0.5, 1]}
-          >
-            <View style={styles.header}>
-              <Text style={mainStyle.title}>{feed.getTitle()}</Text>
-              {feed.getIcon()}
-            </View>
-            <Text style={mainStyle.text}>{feed.getText()}</Text>
-          </LinearGradient>
-        );
+      return (
+        <LinearGradient
+          key={index}
+          style={styles.feed}
+          // Background Linear Gradient
+          //colors={["#caf0f8", "#48cae4", "#00b4d8"]}
+          colors={["#fff", "#fff", feed.getColor(), feed.getColor()]}
+          start={{ x: 0.8, y: 0 }}
+          locations={[0, 0.1, 0.8, 1]}
+        >
+          <View style={styles.header}>
+            <Text style={styles.title}>{feed.getTitle()}</Text>
+            <Text>{feed.getIcon()}</Text>
+          </View>
+          <Text style={mainStyle.text}>{feed.getText()}</Text>
+        </LinearGradient>
+      );
       //});
     });
 
@@ -58,15 +58,19 @@ class FeedBox extends React.Component {
 
 const styles = StyleSheet.create({
   feed: {
-    width: 300,
-    height: 250,
+    width: 320,
+    height: 320,
     backgroundColor: "#caf0f8",
     borderRadius: 20,
-    marginLeft: 10,
-    marginRight: 10,
+    marginHorizontal: 10,
     padding: 15,
     elevation: 2,
     marginVertical: 5,
+  },
+  feedContainer: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "flex-start",
   },
   petImage: {
     width: 150,
@@ -75,9 +79,15 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   header: {
-    flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
+    marginBottom: 5,
+    marginRight: 5,
+  },
+  title: {
+    fontSize: 22,
+    flexShrink: 1,
+    marginRight: 10,
   },
 });
 

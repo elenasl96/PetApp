@@ -190,13 +190,17 @@ const dbPlace = {
 
   deleteSavedPlace: function (uid, id) {
     const users = firestore.collection("Users");
+    console.log(uid + " + " + id);
     return users
       .doc(uid)
       .collection("savedplaces")
-      .doc(id)
-      .delete()
-      .then(function () {
+      .where("pid", "==", id)
+      .get()
+      .then(function (querySnapshot) {
         //console.log("delete saved place");
+        querySnapshot.forEach(function (doc) {
+          doc.ref.delete();
+        });
       })
       .catch(function (error) {
         console.error("Error removing document: ", error);
