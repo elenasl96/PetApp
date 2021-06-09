@@ -64,7 +64,7 @@ class HomeScreen extends React.Component {
       dbUserAnimal.getUserAnimals(this.context.uid).then((pets) => {
         this.getMyPets(pets); // converts ids in Animal objects
         this.context.savePets(pets);
-        this.getUserFeeds([]);
+        this.getUserFeeds(pets);
       });
     } else {
       if (pets.length != 0) {

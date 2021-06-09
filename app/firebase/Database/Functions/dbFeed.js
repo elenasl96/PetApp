@@ -226,7 +226,6 @@ getFeedsByFilter(pet, filter, value, id) {
 
       var id = days % 2;
       var num = 1; // num general feeds
-      id = id.toString(); // casts id to string 
 
       let promiseDelete = dbFeed.deleteUserFeeds(uid);
 
@@ -250,23 +249,26 @@ getFeedsByFilter(pet, filter, value, id) {
           }
         });
 
-        var type = types[Math.floor(Math.random() * types.length)];
+        var type = types_F[Math.floor(Math.random() * types_F.length)];
 
-        var promiseBreed = dbFeed.getBreedFeed(uid,type,id); 
+        let promiseBreed = dbFeed.getBreedFeed(uid,type,id); 
 
         num = 2;
 
-        }
-        else{ //if no purebreed animals exist
+        //}
+        /*else{ //if no purebreed animals exist
           num = 3;
-        }
+          var promiseBreed=[];
+        } */
 
         type = types[Math.floor(Math.random() * types.length)];
         let promiseAge = dbFeed.getAgeFeed(uid, type, id);
 
+         
         type = types[Math.floor(Math.random() * types.length)];
         let promiseSize = dbFeed.getSizeFeed(uid, type, id);
         
+        id = id.toString(); // casts id to string
         let promiseGeneral = dbFeed.getRandomGeneralFeeds(id, num);
 
         return Promise.all([promiseBreed,promiseAge,promiseSize,promiseGeneral]).then((feedsFetched)=>{  
@@ -287,13 +289,47 @@ getFeedsByFilter(pet, filter, value, id) {
             i = i + 1;
             return feeds;
           });
-          return feeds
+          return feeds;
         });
         
-       
+      }
+      else{ // only mongrels pets
+        num = 3;
+
+        type = types[Math.floor(Math.random() * types.length)];
+        let promiseAge = dbFeed.getAgeFeed(uid, type, id);
+
+        type = types[Math.floor(Math.random() * types.length)];
+        let promiseSize = dbFeed.getSizeFeed(uid, type, id);
+        
+        id = id.toString(); // casts id to string
+        let promiseGeneral = dbFeed.getRandomGeneralFeeds(id, num);
+
+        return Promise.all([promiseAge,promiseSize,promiseGeneral]).then((feedsFetched)=>{  
+          let i = 0;
+          let num_notgeneral = 5 - num;
+          feedsFetched.forEach((feed)=>{
+            if(i<num_notgeneral){
+            dbFeed.addUserFeed(uid,feed.title,feed.text,feed.type);
+            feeds.push(new Feed(feed.title,feed.text,feed.type));
+            }
+            else{
+              for (j = 0; j < num; j++) { 
+              dbFeed.addUserFeed(uid,feed[j].title,feed[j].text,feed[j].type);
+              feeds.push(new Feed(feed[j].title,feed[j].text,feed[j].type));
+              }
+            }
+            i = i + 1;
+            return feeds;
+          });
+          return feeds;
+        });
+
+      }
 
       } else {   
         num = 5;
+        id = id.toString(); // casts id to string
         let promiseGeneral = dbFeed.getRandomGeneralFeeds(id, num);
         return Promise.all([promiseGeneral]).then((feedsFetched)=>{  
           feedsFetched[0].forEach((feed)=>{
@@ -307,6 +343,7 @@ getFeedsByFilter(pet, filter, value, id) {
       }
 
      });
+
     } else {
       return dbFeed.getUserFeeds(uid).then((feedsFetched) => {
         feedsFetched.forEach((feed)=>{
