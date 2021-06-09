@@ -190,7 +190,7 @@ class ReportLossForm extends Component {
         <View style={mainStyle.centeredView}>
           <View style={mainStyle.modalView}>
             <ScrollView
-              style={{ width: "80%" }}
+              style={{ width: "100%" }}
               showsVerticalScrollIndicator={false}
             >
               {this.props.sight ? (

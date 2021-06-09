@@ -125,22 +125,16 @@ export default class HomeBusiness extends React.Component {
                 pets.
               </Text>
 
-              <ScrollView
-                style={{ width: "100%" }}
-                vertical={true}
-                showsHorizontalScrollIndicator={false}
-              >
-                <View style={styles.myPlaces}>
-                  {this.state.places.length > 0 ? (
-                    <PlaceButton
-                      uid={this.context.uid}
-                      places={this.state.places}
-                      navigation={this.props.navigation}
-                      deletePlace={this.deletePlace}
-                    ></PlaceButton>
-                  ) : null}
-                </View>
-              </ScrollView>
+              <View style={styles.myPlaces}>
+                {this.state.places.length > 0 ? (
+                  <PlaceButton
+                    uid={this.context.uid}
+                    places={this.state.places}
+                    navigation={this.props.navigation}
+                    deletePlace={this.deletePlace}
+                  ></PlaceButton>
+                ) : null}
+              </View>
             </View>
           </ScrollView>
         </View>
