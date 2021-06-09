@@ -5,9 +5,13 @@ import {
   Image,
   TouchableHighlight,
   View,
+  ImageBackground,
 } from "react-native";
 import dbLostPet from "../../firebase/Database/Functions/dbLostPet";
 import { AuthContext } from "../../Components/AuthContext";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { LinearGradient } from "expo-linear-gradient";
+import { Entypo } from "@expo/vector-icons";
 
 class PetLostButton extends React.Component {
   state = {
@@ -60,44 +64,63 @@ class PetLostButton extends React.Component {
   render() {
     if (this.state.lostPets.length > 0) {
       return this.state.lostPets.map((animal) => (
-        <View key={animal.id}>
-          <TouchableHighlight
+        <TouchableOpacity
+          key={animal.id}
+          style={{
+            backgroundColor: "#f8edeb",
+            flexBasis: 400,
+            minWidth: 350,
+            marginHorizontal: 10,
+            marginVertical: 10,
+            borderRadius: 25,
+            elevation: 2,
+          }}
+          value={animal.id}
+          onPress={() => this.showLostPet(animal)}
+        >
+          <View
             style={{
-              backgroundColor: "white",
-
-              width: 180,
-              height: 240,
-              marginLeft: 10,
-              marginBottom: 10,
-              borderRadius: 35,
-              padding: 10,
-              shadowColor: "#EEE",
-              shadowOffset: {
-                width: 0,
-                height: 1,
-              },
-              shadowOpacity: 0.18,
-              shadowRadius: 1.0,
+              flex: 1,
+              flexBasis: 400,
+              flexDirection: "row",
+              borderRadius: 100,
             }}
-            value={animal.id}
-            onPress={() => this.showLostPet(animal)}
           >
-            <View>
-              <View style={styles.imageContainer}>
-                <Image
-                  source={{ uri: animal.photo }}
-                  style={styles.petImage}
-                ></Image>
+            <ImageBackground
+              source={{ uri: animal.photo }}
+              style={styles.petImage}
+              imageStyle={{
+                borderTopLeftRadius: 25,
+                borderBottomLeftRadius: 25,
+              }}
+            >
+              <View style={styles.overlay}>
+                <LinearGradient
+                  style={{ flex: 1 }}
+                  // Background Linear Gradient
+                  //colors={["#caf0f8", "#48cae4", "#00b4d8"]}
+                  colors={["#f7ede2", "rgba(0, 0, 0, 0)"]}
+                  start={{ x: 2.7, y: 1 }}
+                  locations={[0.62, 0.66]}
+                >
+                  <Text></Text>
+                </LinearGradient>
               </View>
+            </ImageBackground>
 
-              <View style={styles.textContainer}>
-                <Text style={styles.text}>{animal.getName()}</Text>
-                <Text style={styles.text}>{animal.getPlace()}</Text>
-                <Text style={styles.text}>{animal.getTimestamp()}</Text>
-              </View>
+            <View style={styles.textContainer}>
+              <Text style={styles.name}>{animal.getName()}</Text>
+              <Text style={styles.place}>
+                <Entypo name="location-pin" size={18} color="#83c5be" />
+                {animal.getPlace()}
+              </Text>
+              <Text style={styles.time}>
+                <Entypo name="clock" size={16} color="#83c5be" />{" "}
+                {animal.getTimestamp().substr(0, 10)}
+              </Text>
             </View>
-          </TouchableHighlight>
-        </View>
+          </View>
+        </TouchableOpacity>
       ));
     } else {
       return <Text style={{ textAlign: "center" }}>No Pet Lost</Text>;
@@ -112,21 +135,48 @@ const styles = StyleSheet.create({
     borderRadius: 75,
     backgroundColor: "orange",
   },
-  imageContainer: {
-    borderRadius: 120,
-    elevation: 3,
-  },
   petImage: {
-    width: "100%",
+    width: 150,
     height: 150,
-    borderRadius: 120,
+    height: 150,
+    borderTopLeftRadius: 25,
+    borderBottomLeftRadius: 25,
     resizeMode: "cover",
   },
   textContainer: {
-    padding: 5,
+    flex: 1,
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+    flexDirection: "column",
+    justifyContent: "space-evenly",
   },
   text: {
     textAlign: "center",
+  },
+  name: {
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 20,
+    color: "#ffb4a2",
+  },
+  place: {
+    textAlign: "center",
+    fontWeight: "600",
+    fontSize: 18,
+    flexWrap: "wrap",
+    color: "#6d6875",
+  },
+  time: {
+    textAlign: "center",
+    fontWeight: "600",
+    fontSize: 18,
+    color: "#6d6875",
+  },
+  overlay: {
+    backgroundColor: "rgba(150, 150, 150, 0)",
+    width: "100%",
+    height: "100%",
+    borderRadius: 20,
   },
 });
 export default PetLostButton;
