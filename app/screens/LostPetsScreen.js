@@ -321,7 +321,7 @@ export default class LostPetsScreen extends React.Component {
               {this.state.showLostPets ? (
                 <Text style={styles.text}>
                   Help other owners to find their beloved pets or report your
-                  loss clicking on the button below.
+                  loss clicking on the "Report loss" button.
                 </Text>
               ) : null}
 

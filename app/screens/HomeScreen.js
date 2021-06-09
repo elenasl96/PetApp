@@ -312,7 +312,7 @@ class HomeScreen extends React.Component {
                     { marginHorizontal: 20, backgroundColor: "#fff1e6" },
                   ]}
                 >
-                  <Text style={styles.text}>
+                  <Text style={[styles.text, { color: "#6d6875" }]}>
                     You can explore veterinaries, kennels, parks and other
                     places in the map. Click the star button to keep them in
                     your favourites!

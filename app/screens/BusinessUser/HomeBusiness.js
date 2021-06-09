@@ -107,6 +107,10 @@ export default class HomeBusiness extends React.Component {
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.myPlacesContainer}>
               <View style={styles.titleBox}>
+                <Image
+                  style={{ width: 70, height: 70 }}
+                  source={require("../../../assets/images/draws/pet-shop(2).png")}
+                ></Image>
                 <Text style={styles.title}>My Places </Text>
                 <TouchableOpacity
                   onPress={this.addPlace}
