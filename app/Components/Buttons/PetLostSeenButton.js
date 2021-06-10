@@ -64,7 +64,7 @@ class PetLostSeenButton extends React.Component {
           }}
           value={animal.id}
           onPress={() =>
-            navigation.push("LostPet", {
+            this.props.navigation.push("LostPet", {
               pet: animal,
               petID: animal.id,
             })

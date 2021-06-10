@@ -19,6 +19,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import NotificationsHandler from "../Components/NotificationsHandler";
+import { Entypo } from "@expo/vector-icons";
 
 class LostPetNotifyScreen extends React.Component {
   static contextType = AuthContext;
@@ -130,8 +131,12 @@ class LostPetNotifyScreen extends React.Component {
 
             <Text style={styles.title}>Contacts</Text>
             <View style={styles.contacts}>
-              <Text>Email: {pet.email}</Text>
-              <Text>Telephone: {pet.phone}</Text>
+              <Text style={styles.textContact}>
+                <Entypo name="email" size={16} color="black" /> {pet.email}
+              </Text>
+              <Text style={styles.textContact}>
+                <Entypo name="phone" size={16} color="black" /> {pet.phone}
+              </Text>
             </View>
 
             <Text style={styles.title}>Notes</Text>
@@ -382,10 +387,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   contacts: {
-    backgroundColor: "powderblue",
-    borderRadius: 20,
-    padding: 20,
+    //backgroundColor: "powderblue",
+    // borderRadius: 20,
+    paddingHorizontal: 20,
     marginHorizontal: 20,
+  },
+  textContact: {
+    textAlign: "center",
+    fontWeight: "400",
+    fontSize: 18,
+    marginVertical: 5,
   },
   placeLost: {
     backgroundColor: "powderblue",
