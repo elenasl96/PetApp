@@ -4,6 +4,7 @@ import dbFeed from "../../firebase/Database/Functions/dbFeed";
 import mainStyle from "../../styles/mainStyle.js";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
+import { ScrollView } from "react-native-gesture-handler";
 
 class FeedBox extends React.Component {
   state = {
@@ -31,7 +32,9 @@ class FeedBox extends React.Component {
             <Text style={styles.title}>{feed.getTitle()}</Text>
             <Text>{feed.getIcon()}</Text>
           </View>
-          <Text style={mainStyle.text}>{feed.getText()}</Text>
+          <ScrollView>
+            <Text style={mainStyle.text}>{feed.getText()}</Text>
+          </ScrollView>
         </LinearGradient>
       );
       //});

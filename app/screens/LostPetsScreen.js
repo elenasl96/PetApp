@@ -249,18 +249,15 @@ export default class LostPetsScreen extends React.Component {
             <View style={styles.myPlacesContainer}>
               <View style={styles.buttons}>
                 {this.state.showLostPets ? (
-                  <TouchableHighlight
+                  <TouchableOpacity
                     onPress={() => {
                       this.reportLoss();
                     }}
-                    underlayColor={"rgb(200,200,200)"}
-                    style={{ borderRadius: 20 }}
+                    style={[styles.button, { backgroundColor: "#f8ad9d" }]}
                   >
-                    <View style={styles.button}>
-                      <Feather name="alert-triangle" size={24} color="white" />
-                      <Text style={styles.buttonText}>Report Loss </Text>
-                    </View>
-                  </TouchableHighlight>
+                    <Feather name="alert-triangle" size={24} color="white" />
+                    <Text style={[styles.buttonText]}>Report Loss </Text>
+                  </TouchableOpacity>
                 ) : null}
                 {this.state.showLostPets ? (
                   <TouchableOpacity
@@ -270,29 +267,26 @@ export default class LostPetsScreen extends React.Component {
                         showLostPetsSeen: true,
                       });
                     }}
+                    style={[styles.button, { backgroundColor: "#b5e48c" }]}
                   >
-                    <View style={styles.button}>
-                      <Feather
-                        name="arrow-right-circle"
-                        size={24}
-                        color="white"
-                      />
-                      <Text style={styles.buttonText}>Go to pet sights </Text>
-                    </View>
+                    <Feather
+                      name="arrow-right-circle"
+                      size={24}
+                      color="white"
+                    />
+                    <Text style={styles.buttonText}>Go to pet sights </Text>
                   </TouchableOpacity>
                 ) : null}
                 {this.state.showLostPetsSeen ? (
-                  <TouchableHighlight
+                  <TouchableOpacity
                     onPress={() => {
                       this.reportSight();
                     }}
-                    underlayColor={"rgb(200,200,200)"}
+                    style={[styles.button, { backgroundColor: "#b5e48c" }]}
                   >
-                    <View style={styles.button}>
-                      <Feather name="alert-circle" size={24} color="white" />
-                      <Text style={styles.buttonText}>Report sight </Text>
-                    </View>
-                  </TouchableHighlight>
+                    <Feather name="alert-circle" size={24} color="white" />
+                    <Text style={styles.buttonText}>Report sight </Text>
+                  </TouchableOpacity>
                 ) : null}
                 {this.state.showLostPetsSeen ? (
                   <TouchableOpacity
@@ -302,15 +296,14 @@ export default class LostPetsScreen extends React.Component {
                         showLostPetsSeen: false,
                       });
                     }}
+                    style={[styles.button, { backgroundColor: "#f8ad9d" }]}
                   >
-                    <View style={styles.button}>
-                      <Feather
-                        name="arrow-right-circle"
-                        size={24}
-                        color="white"
-                      />
-                      <Text style={styles.buttonText}>Go to lost pets </Text>
-                    </View>
+                    <Feather
+                      name="arrow-right-circle"
+                      size={24}
+                      color="white"
+                    />
+                    <Text style={styles.buttonText}>Go to lost pets </Text>
                   </TouchableOpacity>
                 ) : null}
               </View>
@@ -411,7 +404,6 @@ const styles = StyleSheet.create({
     paddingRight: 20,
   },
   button: {
-    backgroundColor: "#fe6d73",
     borderRadius: 22,
     flexDirection: "row",
     paddingVertical: 10,

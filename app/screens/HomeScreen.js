@@ -25,6 +25,7 @@ import AddPetForm from "../Components/Forms/AddPetForm";
 import dbAdoptableAnimal from "../firebase/Database/Functions/dbAdoptableAnimal";
 import LoadingOverlay from "../Components/Custom/loadingOverlay";
 import mainStyle from "../styles/mainStyle";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 class HomeScreen extends React.Component {
   state = {
@@ -285,12 +286,12 @@ class HomeScreen extends React.Component {
                   ></PetButton>
                 ) : null}
 
-                <TouchableHighlight
+                <TouchableOpacity
                   onPress={this.showPetForm}
                   style={styles.addPetButton}
                 >
                   <AntDesign name="plus" size={50} style={styles.plus} />
-                </TouchableHighlight>
+                </TouchableOpacity>
               </ScrollView>
             </View>
 

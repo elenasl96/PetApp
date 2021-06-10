@@ -86,27 +86,14 @@ class PetLostButton extends React.Component {
               borderRadius: 100,
             }}
           >
-            <ImageBackground
+            <Image
               source={{ uri: animal.photo }}
               style={styles.petImage}
               imageStyle={{
                 borderTopLeftRadius: 25,
                 borderBottomLeftRadius: 25,
               }}
-            >
-              <View style={styles.overlay}>
-                <LinearGradient
-                  style={{ flex: 1 }}
-                  // Background Linear Gradient
-                  //colors={["#caf0f8", "#48cae4", "#00b4d8"]}
-                  colors={["#f7ede2", "rgba(0, 0, 0, 0)"]}
-                  start={{ x: 2.7, y: 1 }}
-                  locations={[0.62, 0.66]}
-                >
-                  <Text></Text>
-                </LinearGradient>
-              </View>
-            </ImageBackground>
+            ></Image>
 
             <View style={styles.textContainer}>
               <Text style={styles.name}>{animal.getName()}</Text>

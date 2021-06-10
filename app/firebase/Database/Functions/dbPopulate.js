@@ -44,7 +44,9 @@ export const dbPopulate = {
       lostPet.getPlace(),
       uid,
       lostPet.getEmail(),
-      lostPet.getPhone()
+      lostPet.getPhone(),
+      lostPet.getLat(),
+      lostPet.getLng()
     );
   },
 };
