@@ -44,24 +44,7 @@ export default class NotifySightButton extends React.Component {
     console.log("SEND");
     let petSeen = this.props.replyToLoss();
     if (petSeen) {
-      dbLostPet
-        .addLostPetSeen(
-          petSeen.photo,
-          petSeen.size,
-          petSeen.color,
-          petSeen.breed,
-          petSeen.notes,
-          petSeen.place,
-          this.context.uid,
-          petSeen.email,
-          petSeen.phone
-        )
-        .then((doc) => {
-          dbLostPet.getLostPetSeen(doc.id).then((pet) => {
-            pet.id = doc.id;
-            sendPushNotificationToUser(this.props.userID, pet);
-          });
-        });
+      sendPushNotificationToUser(this.props.userID, petSeen);
     }
   };
 
@@ -94,8 +77,17 @@ async function sendPushNotification(expoPushToken, animal) {
     to: expoPushToken,
     sound: "default",
     title: "Pet report",
-    body: "Your pet has been spotted!",
-    data: { pet: animal, petID: animal.id },
+    body:
+      "Your pet has been spotted! \n" +
+      "Place: " +
+      animal.place +
+      "\n" +
+      "Phone:" +
+      animal.phone +
+      "\n" +
+      "Email:" +
+      animal.email,
+    //data: { pet: animal, petID: animal.id },
   };
 
   await fetch("https://exp.host/--/api/v2/push/send", {

@@ -140,7 +140,7 @@ class LostPetNotifyScreen extends React.Component {
             </View>
 
             <Text style={styles.title}>Notes</Text>
-            <View style={styles.contacts}>
+            <View style={styles.placeLost}>
               <Text>{pet.notes}</Text>
             </View>
           </ScrollView>
