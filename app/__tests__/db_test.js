@@ -109,7 +109,7 @@ afterAll(() => {
     dbUser.deleteUser('user2','business');
     dbLostPet.deleteLostPetNotificationByUid('user1');
     dbLostPet.deleteLostPetSeenByUid('user2');
-   */
+     */
 })
 
 

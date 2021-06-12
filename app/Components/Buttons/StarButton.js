@@ -50,6 +50,7 @@ class StarButton extends React.Component {
         <TouchableOpacity
           testID="StarButton.deleteFromFavorite"
           onPress={() => this.deleteFromFavorite()}
+          
         >
           <AntDesign
             name="star"
