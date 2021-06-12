@@ -1,4 +1,4 @@
-import validator from "../shared/validation";
+import validator from "../../shared/validation";
 
 it('test photo validation 1', () => { 
     expect(validator.isValid(validator.handlePhotoValidation("photo"))).toBeTruthy();

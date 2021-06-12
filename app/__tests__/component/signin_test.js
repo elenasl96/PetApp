@@ -1,6 +1,6 @@
 import React from "react";
 import { render, fireEvent } from '@testing-library/react-native';
-import SignInScreen from "../screens/SignInScreen";
+import SignInScreen from "../../screens/SignInScreen";
 
 it("renders default elements",() => {
    const{getAllByText,getByPlaceholderText} = render(<SignInScreen />);

@@ -1,8 +1,8 @@
 import React from 'react';
-import FeedBox from '../Components/Custom/FeedBox';
+import FeedBox from '../../Components/Custom/FeedBox';
 import Adapter from 'enzyme-adapter-react-16';
 import {shallow,mount,configure} from 'enzyme';
-import Feed from '../firebase/Database/Objects/Feed';
+import Feed from '../../firebase/Database/Objects/Feed';
 
 let wrapper;
 

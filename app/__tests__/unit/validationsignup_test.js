@@ -1,4 +1,4 @@
-import validator from "../shared/validation";
+import validator from "../../shared/validation";
 
 it('test signup validation 1', () => { 
     expect(validator.isValid(validator.handleSignUpValidation("name","email","password","user","photo","email"))).toBeTruthy();
