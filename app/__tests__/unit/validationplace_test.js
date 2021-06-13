@@ -1,4 +1,4 @@
-import validator from "../shared/validation";
+import validator from "../../shared/validation";
 
 it('test place validation 1', () => { 
     expect(validator.isValid(validator.handlePlaceValidation("kennel1","description","photo","Street brera","Milan"))).toBeTruthy();

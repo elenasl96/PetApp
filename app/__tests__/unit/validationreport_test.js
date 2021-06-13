@@ -1,4 +1,4 @@
-import validator from "../shared/validation";
+import validator from "../../shared/validation";
 
 it('test report validation 1', () => { 
     expect(validator.isValid(validator.handleReportValidation(3334141773,"sight"))).toBeTruthy();

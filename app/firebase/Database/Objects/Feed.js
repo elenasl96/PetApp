@@ -34,7 +34,7 @@ export default class Feed {
   }
 
   getIcon() {
-    console.log(this.type);
+    //console.log(this.type);
     if (this.type === constants.FEED_TYPE.age) {
       return (
         <Ionicons name="md-color-wand" size={24} color={this.getColor()} />

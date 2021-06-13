@@ -1,6 +1,6 @@
 import React from "react";
 import { render, fireEvent } from '@testing-library/react-native';
-import SignInScreen from "../screens/SignInScreen";
+import SignInScreen from "../../screens/SignInScreen";
 
 it("renders default elements",() => {
    const{getAllByText,getByPlaceholderText} = render(<SignInScreen />);
@@ -20,9 +20,7 @@ it("navigates to signup page", async() => {
    const pushMock = jest.fn();
 
    const{getByTestId,getByText,queryAllByText} = render(<SignInScreen navigation = {{ navigate : pushMock}} />);
-   
-   //fireEvent.changeText(getByTestId("SignIn.emailInput"),"test@hotmail.com");
-   //fireEvent.changeText(getByTestId("SignIn.passwordInput"),"test97");
+
    fireEvent.press(getByTestId("SignIn.ToSignUp"));
 
    expect(pushMock).toBeCalledWith('SignUp');
