@@ -49,4 +49,19 @@ export const dbPopulate = {
       lostPet.getLng()
     );
   },
+  addLostPetSeen: function (uid, lostPet) {
+    dbLostPet.addLostPetSeen(
+      lostPet.getPhoto(),
+      lostPet.getSize(),
+      lostPet.getColor(),
+      lostPet.getBreed(),
+      lostPet.getNotes(),
+      lostPet.getPlace(),
+      uid,
+      lostPet.getEmail(),
+      lostPet.getPhone(),
+      lostPet.getLat(),
+      lostPet.getLng()
+    );
+  },
 };

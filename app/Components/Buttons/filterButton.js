@@ -85,7 +85,7 @@ export default class FilterButton extends React.Component {
         </Modal>
         <TouchableOpacity
           onPress={() => this.showFilterModal()}
-          style={mainStyle.roundButton}
+          style={[mainStyle.roundButton, styles.filter]}
         >
           <AntDesign name="filter" size={24} color="black" />
         </TouchableOpacity>
@@ -95,6 +95,9 @@ export default class FilterButton extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  filter: {
+    marginRight: 15,
+  },
   title: {
     textAlign: "center",
     marginVertical: 10,

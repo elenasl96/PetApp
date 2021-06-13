@@ -49,16 +49,16 @@ export default class LostPetsScreen extends React.Component {
       this.state.lostPets.length != this.context.lostPets.length ||
       this.state.lostPets != this.context.lostPets
     ) {
-      console.log("lost pets update");
-      console.log(this.state.lostPets);
       this.setState({ lostPets: [] });
       this.setState({ update: true, lostPets: this.context.lostPets });
-      console.log(this.state.update);
-      console.log(this.state.lostPets);
     }
 
-    if (this.state.lostPetsSeen.length != this.context.lostPetsSeen.length) {
-      this.setState({ lostPetsSeen: this.context.lostPetsSeen });
+    if (
+      this.state.lostPetsSeen.length != this.context.lostPetsSeen.length ||
+      this.state.lostPetsSeen != this.context.lostPetsSeen
+    ) {
+      this.setState({ lostPetsSeen: [] });
+      this.setState({ update: true, lostPetsSeen: this.context.lostPetsSeen });
     }
   }
 
@@ -90,10 +90,24 @@ export default class LostPetsScreen extends React.Component {
   };
 
   getLostPetsSeen = () => {
-    dbLostPet.getLostPetsSeen().then((lostPetsSeen) => {
+    return dbLostPet.getLostPetsSeen().then((lostPetsSeen) => {
       if (this.state.mounted) {
         this.context.saveLostPetsSeen(lostPetsSeen);
+        return lostPetsSeen;
       }
+    });
+  };
+
+  getLostPetsSeenAnimals = (lostPetsIDs) => {
+    let promises = lostPetsIDs.map((petID) => {
+      return dbLostPet.getLostPetSeen(petID).then((animal) => {
+        animal.id = petID;
+        return animal;
+      });
+    });
+
+    return Promise.all(promises).then((lostPets) => {
+      return lostPets;
     });
   };
 
@@ -202,49 +216,105 @@ export default class LostPetsScreen extends React.Component {
   };
 
   orderByDistance = async () => {
-    this.setState({ showLostPets: false, loading: true });
-    let { status } = await Location.requestPermissionsAsync();
+    if (this.state.showLostPets) {
+      this.setState({ showLostPets: false, loading: true });
+      let { status } = await Location.requestPermissionsAsync();
 
-    if (status === "granted") {
-      Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.Low,
-      })
-        .then((location) => {
-          this.setState({ currentPosition: location });
-          this.getLostPetsAnimals(this.context.lostPets).then((lostPets) => {
-            lostPets.forEach((pet) => {
-              pet.distance = utils.calcDistance(location.coords, pet);
-            });
-            lostPets.sort(utils.compareDistance);
-            let updatePets = [];
-            lostPets.forEach((pet) => {
-              updatePets.push(pet.id);
-            });
-            if (this.state.mounted) {
-              this.context.saveLostPets(updatePets);
-            }
-            this.setState({ showLostPets: true, loading: false });
-          });
+      if (status === "granted") {
+        Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Low,
         })
-        .catch((error) => {
-          console.log(error);
-        });
-    } else {
-      throw new Error("Location permission not granted");
+          .then((location) => {
+            this.setState({ currentPosition: location });
+            this.getLostPetsAnimals(this.context.lostPets).then((lostPets) => {
+              lostPets.forEach((pet) => {
+                pet.distance = utils.calcDistance(location.coords, pet);
+              });
+              lostPets.sort(utils.compareDistance);
+              let updatePets = [];
+              lostPets.forEach((pet) => {
+                updatePets.push(pet.id);
+              });
+              if (this.state.mounted) {
+                this.context.saveLostPets(updatePets);
+              }
+              this.setState({ showLostPets: true, loading: false });
+
+              console.log(
+                this.state.showLostPets + this.state.showLostPetsSeen
+              );
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } else {
+        throw new Error("Location permission not granted");
+      }
+    } else if (this.state.showLostPetsSeen) {
+      this.setState({ showLostPetsSeen: false, loading: true });
+      let { status } = await Location.requestPermissionsAsync();
+
+      if (status === "granted") {
+        Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Low,
+        })
+          .then((location) => {
+            this.setState({ currentPosition: location });
+            this.getLostPetsSeenAnimals(this.context.lostPetsSeen).then(
+              (lostPetsSeen) => {
+                lostPetsSeen.forEach((pet) => {
+                  pet.distance = utils.calcDistance(location.coords, pet);
+                });
+                lostPetsSeen.sort(utils.compareDistance);
+                let updatePets = [];
+                lostPetsSeen.forEach((pet) => {
+                  updatePets.push(pet.id);
+                });
+                if (this.state.mounted) {
+                  this.context.saveLostPetsSeen(updatePets);
+                }
+                this.setState({ showLostPetsSeen: true, loading: false });
+                console.log(
+                  this.state.showLostPets + this.state.showLostPetsSeen
+                );
+              }
+            );
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } else {
+        throw new Error("Location permission not granted");
+      }
     }
   };
 
   orderByNewest = () => {
     console.log("order by newest");
-    if (this.state.mounted) {
-      this.setState({ showLostPets: false, loading: true });
-    }
-    this.getLostPets().then((lostPets) => {
+    if (this.state.showLostPets) {
       if (this.state.mounted) {
-        this.context.saveLostPets(lostPets);
+        this.setState({ showLostPets: false, loading: true });
       }
-      this.setState({ showLostPets: true, loading: false });
-    });
+      this.getLostPets().then((lostPets) => {
+        if (this.state.mounted) {
+          this.context.saveLostPets(lostPets);
+        }
+        this.setState({ showLostPets: true, loading: false });
+        console.log(this.state.showLostPets, this.state.showLostPetsSeen);
+      });
+    } else if (this.state.showLostPetsSeen) {
+      if (this.state.mounted) {
+        this.setState({ showLostPetsSeen: false, loading: true });
+      }
+      this.getLostPetsSeen().then((lostPetsSeen) => {
+        if (this.state.mounted) {
+          this.context.saveLostPetsSeen(lostPetsSeen);
+        }
+        this.setState({ showLostPetsSeen: true, loading: false });
+        console.log(this.state.showLostPets, this.state.showLostPetsSeen);
+      });
+    }
   };
 
   render() {
@@ -272,7 +342,7 @@ export default class LostPetsScreen extends React.Component {
         ></ReportLossForm>
         <View style={styles.mainContent}>
           <View style={styles.bottomOverlay}>
-            {this.state.showLostPets ? (
+            {this.state.showLostPets || this.state.showLostPetsSeen ? (
               <FilterButton
                 orderByDistance={this.orderByDistance}
                 orderByNewest={this.orderByNewest}
@@ -412,6 +482,9 @@ export default class LostPetsScreen extends React.Component {
                   justifyContent: "center",
                 }}
               >
+                {console.log("PET LOST" + this.state.showLostPets)}
+                {console.log("PET LOST An")}
+                {console.log(this.state.lostPets)}
                 {this.state.lostPets.length > 0 && this.state.showLostPets ? (
                   <PetLostButton
                     navigation={this.props.navigation}
