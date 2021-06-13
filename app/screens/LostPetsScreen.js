@@ -18,6 +18,9 @@ import ReportLossForm from "../Components/Forms/ReportLossForm";
 import mainStyle from "../styles/mainStyle";
 import { Feather } from "@expo/vector-icons";
 import LoadingOverlay from "../Components/Custom/loadingOverlay";
+import FilterButton from "../Components/Buttons/filterButton";
+import * as Location from "expo-location";
+import utils from "../shared/utilities";
 
 export default class LostPetsScreen extends React.Component {
   state = {
@@ -42,8 +45,16 @@ export default class LostPetsScreen extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.state.lostPets.length != this.context.lostPets.length) {
-      this.setState({ lostPets: this.context.lostPets });
+    if (
+      this.state.lostPets.length != this.context.lostPets.length ||
+      this.state.lostPets != this.context.lostPets
+    ) {
+      console.log("lost pets update");
+      console.log(this.state.lostPets);
+      this.setState({ lostPets: [] });
+      this.setState({ update: true, lostPets: this.context.lostPets });
+      console.log(this.state.update);
+      console.log(this.state.lostPets);
     }
 
     if (this.state.lostPetsSeen.length != this.context.lostPetsSeen.length) {
@@ -56,11 +67,25 @@ export default class LostPetsScreen extends React.Component {
   }
 
   getLostPets = () => {
-    dbLostPet.getLostPetNotifications().then((lostPets) => {
+    return dbLostPet.getLostPetNotifications().then((lostPets) => {
       if (this.state.mounted) {
         this.context.saveLostPets(lostPets);
         this.setState({ loading: false });
+        return lostPets;
       }
+    });
+  };
+
+  getLostPetsAnimals = (lostPetsIDs) => {
+    let promises = lostPetsIDs.map((petID) => {
+      return dbLostPet.getLostPetNotification(petID).then((animal) => {
+        animal.id = petID;
+        return animal;
+      });
+    });
+
+    return Promise.all(promises).then((lostPets) => {
+      return lostPets;
     });
   };
 
@@ -176,6 +201,52 @@ export default class LostPetsScreen extends React.Component {
       });
   };
 
+  orderByDistance = async () => {
+    this.setState({ showLostPets: false, loading: true });
+    let { status } = await Location.requestPermissionsAsync();
+
+    if (status === "granted") {
+      Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Low,
+      })
+        .then((location) => {
+          this.setState({ currentPosition: location });
+          this.getLostPetsAnimals(this.context.lostPets).then((lostPets) => {
+            lostPets.forEach((pet) => {
+              pet.distance = utils.calcDistance(location.coords, pet);
+            });
+            lostPets.sort(utils.compareDistance);
+            let updatePets = [];
+            lostPets.forEach((pet) => {
+              updatePets.push(pet.id);
+            });
+            if (this.state.mounted) {
+              this.context.saveLostPets(updatePets);
+            }
+            this.setState({ showLostPets: true, loading: false });
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      throw new Error("Location permission not granted");
+    }
+  };
+
+  orderByNewest = () => {
+    console.log("order by newest");
+    if (this.state.mounted) {
+      this.setState({ showLostPets: false, loading: true });
+    }
+    this.getLostPets().then((lostPets) => {
+      if (this.state.mounted) {
+        this.context.saveLostPets(lostPets);
+      }
+      this.setState({ showLostPets: true, loading: false });
+    });
+  };
+
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -201,6 +272,12 @@ export default class LostPetsScreen extends React.Component {
         ></ReportLossForm>
         <View style={styles.mainContent}>
           <View style={styles.bottomOverlay}>
+            {this.state.showLostPets ? (
+              <FilterButton
+                orderByDistance={this.orderByDistance}
+                orderByNewest={this.orderByNewest}
+              ></FilterButton>
+            ) : null}
             {this.state.showPetsMatched ? (
               <TouchableHighlight
                 style={styles.mapButton}
@@ -338,7 +415,7 @@ export default class LostPetsScreen extends React.Component {
                 {this.state.lostPets.length > 0 && this.state.showLostPets ? (
                   <PetLostButton
                     navigation={this.props.navigation}
-                    pets={this.context.lostPets}
+                    pets={this.state.lostPets}
                   ></PetLostButton>
                 ) : null}
 
@@ -507,6 +584,7 @@ const styles = StyleSheet.create({
     right: 10,
     flex: 1,
     flexDirection: "row",
+    zIndex: 999,
   },
   mapButton: {
     padding: 8,

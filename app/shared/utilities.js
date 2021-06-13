@@ -104,6 +104,22 @@ const utils = {
       search.includes(placeName)
     );
   },
+
+  compareDistance: function (a, b) {
+    if (a.distance < b.distance) {
+      return -1;
+    }
+    if (a.distance > b.distance) {
+      return 1;
+    }
+    return 0;
+  },
+
+  calcDistance: function (pointA, pointB) {
+    var a = pointA.latitude - pointB.latitude;
+    var b = pointB.longitude - pointB.longitude;
+    return Math.sqrt(a * a + b * b);
+  },
 };
 
 export default utils;

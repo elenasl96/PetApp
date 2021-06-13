@@ -96,7 +96,7 @@ export default class MapScreen extends React.Component {
   }
 
   async setMapOnCurrentPosition() {
-    const { status } = await Permissions.askAsync(Permissions.LOCATION);
+    let { status } = await Location.requestPermissionsAsync();
 
     if (status === "granted") {
       Location.getCurrentPositionAsync({

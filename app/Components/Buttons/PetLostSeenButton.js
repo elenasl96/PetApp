@@ -67,6 +67,7 @@ class PetLostSeenButton extends React.Component {
             this.props.navigation.push("LostPet", {
               pet: animal,
               petID: animal.id,
+              seen: true,
             })
           }
         >

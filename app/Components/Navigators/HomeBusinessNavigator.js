@@ -54,7 +54,7 @@ const HomeBusinessNavigator = createStackNavigator(
     defaultNavigationOptions: {
       headerTitle: () => <NavBar />,
       headerStyle: {
-        backgroundColor: "#f4978e",
+        backgroundColor: "#e2ece9",
       },
       headerTintColor: "#fff",
       headerTitleStyle: {

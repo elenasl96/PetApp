@@ -43,6 +43,7 @@ const dbLostPet = {
     const lostPets = firestore.collection("LostPetNotify");
     var notifications = [];
     return lostPets
+      .orderBy("timestamp", "desc")
       .get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {

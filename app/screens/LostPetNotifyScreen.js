@@ -41,6 +41,7 @@ class LostPetNotifyScreen extends React.Component {
   render() {
     const pet = this.props.navigation.state.params.pet;
     //const isEditable = pet.uid == this.context.uid;
+    const isSeen = this.props.navigation.state.params.seen;
     const isEditable = false;
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -56,184 +57,135 @@ class LostPetNotifyScreen extends React.Component {
 
         <View style={styles.mainContent}>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.petContainer}>
-              <View style={styles.buttons}>
-                {isEditable ? (
-                  <TouchableOpacity
-                    style={[mainStyle.roundButton, { marginLeft: 60 }]}
-                    onPress={this.deletePet}
-                  >
-                    <Text style={styles.buttonText}>
-                      <AntDesign name="delete" size={24} color="red" />
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                flexWrap: "wrap",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <View style={styles.petContainer}>
+                <View style={styles.buttons}>
+                  {isEditable ? (
+                    <TouchableOpacity
+                      style={[mainStyle.roundButton, { marginLeft: 60 }]}
+                      onPress={this.deletePet}
+                    >
+                      <Text style={styles.buttonText}>
+                        <AntDesign name="delete" size={24} color="red" />
+                      </Text>
+                    </TouchableOpacity>
+                  ) : null}
+
+                  {!isEditable && !isSeen ? (
+                    <TouchableOpacity
+                      style={[mainStyle.roundButton, { marginLeft: 20 }]}
+                      onPress={() => {
+                        this.setState({ showReportLossForm: true });
+                      }}
+                    >
+                      <Text style={styles.buttonText}>
+                        <Feather name="alert-circle" size={24} color="orange" />
+                      </Text>
+                    </TouchableOpacity>
+                  ) : null}
+                </View>
+                <View>
+                  <ImageBackground
+                    source={{ uri: pet.photo }}
+                    style={styles.petImage}
+                    imageStyle={{ borderRadius: 150 }}
+                  ></ImageBackground>
+                </View>
+                {!isSeen && pet.name ? (
+                  <View style={styles.petName}>
+                    <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+                      {pet.name}
                     </Text>
-                  </TouchableOpacity>
+                    <Ionicons
+                      style={{ textAlign: "center" }}
+                      name="md-paw"
+                      size={24}
+                      color="#f94144"
+                    />
+                  </View>
+                ) : null}
+              </View>
+
+              <View
+                style={{
+                  flexBasis: 500,
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignContent: "center",
+                }}
+              >
+                {pet.size ? (
+                  <View style={styles.info}>
+                    <Text style={styles.infoTitle}>Size </Text>
+                    <Text style={styles.infoText}>{pet.size} </Text>
+                  </View>
                 ) : null}
 
-                {!isEditable ? (
-                  <TouchableOpacity
-                    style={[mainStyle.roundButton, { marginLeft: 20 }]}
-                    onPress={() => {
-                      this.setState({ showReportLossForm: true });
-                    }}
-                  >
-                    <Text style={styles.buttonText}>
-                      <Feather name="alert-circle" size={24} color="orange" />
-                    </Text>
-                  </TouchableOpacity>
+                {pet.breed ? (
+                  <View style={styles.info}>
+                    <Text style={styles.infoTitle}>Breed </Text>
+                    <Text style={styles.infoText}>{pet.breed} </Text>
+                  </View>
                 ) : null}
-              </View>
-              <View>
-                <ImageBackground
-                  source={{ uri: pet.photo }}
-                  style={styles.petImage}
-                  imageStyle={{ borderRadius: 150 }}
-                ></ImageBackground>
-              </View>
-              <View style={styles.petName}>
-                <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-                  {pet.name}
-                </Text>
-                <Ionicons
-                  style={{ textAlign: "center" }}
-                  name="md-paw"
-                  size={24}
-                  color="#f94144"
-                />
+
+                {pet.color ? (
+                  <View style={styles.info}>
+                    <Text style={styles.infoTitle}>Color </Text>
+                    <Text style={styles.infoText}>{pet.color} </Text>
+                  </View>
+                ) : null}
               </View>
             </View>
 
             <View
               style={{
+                flex: 1,
                 flexDirection: "row",
+                flexWrap: "wrap",
                 justifyContent: "center",
                 alignContent: "center",
+                alignItems: "center",
               }}
             >
-              <View style={styles.info}>
-                <Text style={styles.infoTitle}>Size </Text>
-                <Text style={styles.infoText}>{pet.size} </Text>
+              <View style={{ flex: 1, flexBasis: 300 }}>
+                <Text style={styles.title}>Lost information </Text>
+                <View style={styles.placeLost}>
+                  <Text> {pet.place}</Text>
+                </View>
+
+                {pet.notes ? (
+                  <>
+                    <Text style={styles.title}>Notes</Text>
+                    <View style={[styles.placeLost]}>
+                      <Text>{pet.notes}</Text>
+                    </View>
+                  </>
+                ) : null}
               </View>
-              <View style={styles.info}>
-                <Text style={styles.infoTitle}>Breed </Text>
-                <Text style={styles.infoText}>{pet.breed} </Text>
+
+              <View style={{ flex: 1, flexBasis: 300 }}>
+                <Text style={styles.title}>Contacts</Text>
+                <View style={[styles.contacts, { marginBottom: 20 }]}>
+                  <Text style={styles.textContact}>
+                    <Entypo name="email" size={16} color="black" /> {pet.email}
+                  </Text>
+                  <Text style={styles.textContact}>
+                    <Entypo name="phone" size={16} color="black" /> {pet.phone}
+                  </Text>
+                </View>
               </View>
-
-              <View style={styles.info}>
-                <Text style={styles.infoTitle}>Color </Text>
-                <Text style={styles.infoText}>{pet.color} </Text>
-              </View>
-            </View>
-
-            <Text style={styles.title}>Lost information </Text>
-            <View style={styles.placeLost}>
-              <Text> {pet.place}</Text>
-            </View>
-
-            <Text style={styles.title}>Contacts</Text>
-            <View style={styles.contacts}>
-              <Text style={styles.textContact}>
-                <Entypo name="email" size={16} color="black" /> {pet.email}
-              </Text>
-              <Text style={styles.textContact}>
-                <Entypo name="phone" size={16} color="black" /> {pet.phone}
-              </Text>
-            </View>
-
-            <Text style={styles.title}>Notes</Text>
-            <View style={styles.placeLost}>
-              <Text>{pet.notes}</Text>
             </View>
           </ScrollView>
         </View>
       </SafeAreaView>
-      /*/*<SafeAreaView style={{ flex: 1 }}>
-        <View style={styles.mainContent}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.petContainer}>
-              <View style={styles.pet}>
-                <ImageBackground
-                  //source={require("../../assets/images/Gioia.jpg")}
-                  style={styles.petImage}
-                  imageStyle={{ borderRadius: 50 }}
-                >
-                  <Text
-                    style={[
-                      styles.title,
-                      {
-                        color: "white",
-                        textShadowColor: "black",
-                        textShadowRadius: 2,
-                        alignSelf: "center",
-                      },
-                    ]}
-                  >
-                    {pet.name ? pet.name : null}
-                  </Text>
-                </ImageBackground>
-              </View>
-
-              <View style={styles.buttons}>
-                <NotifySightButton userID={pet.getUid()}></NotifySightButton>
-              </View>
-            </View>
-
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-            >
-              <TouchableHighlight>
-                <View style={styles.info}>
-                  <Text>Size</Text>
-                  <Text>{pet.getSize()}</Text>
-                </View>
-              </TouchableHighlight>
-
-              <TouchableHighlight>
-                <View style={styles.info}>
-                  <Text>Weight</Text>
-                  <Text>20kg</Text>
-                </View>
-              </TouchableHighlight>
-
-              <TouchableHighlight>
-                <View style={styles.info}>
-                  <Text>Height</Text>
-                  <Text>50cm</Text>
-                </View>
-              </TouchableHighlight>
-
-              <TouchableHighlight>
-                <View style={styles.info}>
-                  <Text>Breed</Text>
-                  <Text>{pet.breed}</Text>
-                </View>
-              </TouchableHighlight>
-
-              <TouchableHighlight>
-                <View style={styles.info}>
-                  <Text>Disease</Text>
-                  <Text>{pet.diseases}</Text>
-                </View>
-              </TouchableHighlight>
-            </ScrollView>
-
-            <View style={styles.descriptionContainer}>
-              <Text style={mainStyle.text}>Loss Information</Text>
-              <Text>
-                {pet.getPlace() +
-                  "\n" +
-                  pet.getTimestamp() +
-                  "\n" +
-                  pet.getNotes() +
-                  "\n" +
-                  pet.getEmail() +
-                  "\n" +
-                  pet.getPhone()}
-              </Text>
-            </View>
-          </ScrollView>
-        </View>
-                </SafeAreaView> */
     );
   }
 }
