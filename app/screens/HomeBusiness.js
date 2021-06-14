@@ -3,19 +3,16 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   Image,
-  TouchableHighlight,
   ScrollView,
-  TouchableHighlightComponent,
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import firebase from "firebase";
-import { AuthContext } from "../../Components/Custom/AuthContext";
-import dbPlace from "../../firebase/Database/Functions/dbPlace.js";
-import dbAdoptableAnimal from "../../firebase/Database/Functions/dbAdoptableAnimal.js";
-import PlaceButton from "../../Components/Buttons/PlaceButton";
-import AddPlaceForm from "../../Components/Forms/AddPlaceForm";
+import { AuthContext } from "../components/custom/AuthContext";
+import dbPlace from "../firebase/database/functions/DbPlace.js";
+import dbAdoptableAnimal from "../firebase/database/functions/DbAdoptableAnimal.js";
+import PlaceButton from "../components/buttons/PlaceButton";
+import AddPlaceForm from "../components/forms/AddPlaceForm";
 import { AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
@@ -103,7 +100,7 @@ export default class HomeBusiness extends React.Component {
               <View style={styles.titleBox}>
                 <Image
                   style={{ width: 70, height: 70 }}
-                  source={require("../../../assets/images/draws/pet-shop(2).png")}
+                  source={require("../../assets/images/draws/pet-shop(2).png")}
                 ></Image>
                 <Text style={styles.title}>My Places </Text>
                 <TouchableOpacity

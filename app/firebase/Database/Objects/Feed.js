@@ -1,4 +1,4 @@
-import constants from "../../../shared/constants";
+import constants from "../../../shared/Constants";
 import React, { useContext, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 

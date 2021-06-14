@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import dbFeed from "../../firebase/Database/Functions/dbFeed";
-import mainStyle from "../../styles/mainStyle.js";
+import dbFeed from "../../firebase/database/functions/DbFeed";
+import mainStyle from "../../styles/MainStyle.js";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { ScrollView } from "react-native-gesture-handler";

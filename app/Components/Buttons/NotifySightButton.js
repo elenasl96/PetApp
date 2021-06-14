@@ -1,9 +1,9 @@
 import * as Notifications from "expo-notifications";
 import React, { useState, useEffect, useRef } from "react";
 import { Text, TouchableOpacity, StyleSheet } from "react-native";
-import dbNotification from "../../firebase/Database/Functions/dbNotification";
-import mainStyle from "../../styles/mainStyle";
-import { AuthContext } from "../Custom/AuthContext";
+import dbNotification from "../../firebase/database/functions/DbNotification";
+import mainStyle from "../../styles/MainStyle";
+import { AuthContext } from "../custom/AuthContext";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({

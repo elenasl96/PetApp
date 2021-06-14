@@ -6,8 +6,8 @@ import {
   View,
   ImageBackground,
 } from "react-native";
-import dbPlace from "../../firebase/Database/Functions/dbPlace";
-import { AuthContext } from "../Custom/AuthContext";
+import dbPlace from "../../firebase/database/functions/DbPlace";
+import { AuthContext } from "../custom/AuthContext";
 
 class PlaceButton extends React.Component {
   static contextType = AuthContext;

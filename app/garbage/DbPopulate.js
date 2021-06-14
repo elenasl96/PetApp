@@ -1,6 +1,6 @@
-import dbLostPet from "./dbLostPet";
-import dbPlace from "./dbPlace";
-import dbUserAnimal from "./dbUserAnimal";
+import dbLostPet from "../firebase/database/functions/DbLostPet";
+import dbPlace from "../firebase/database/functions/DbPlace";
+import dbUserAnimal from "../firebase/database/functions/DbUserAnimal";
 
 export const dbPopulate = {
   addPetToUser: function (uid, animal) {

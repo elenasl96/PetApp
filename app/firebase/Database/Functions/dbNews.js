@@ -1,6 +1,6 @@
-import utils from "../../../shared/utilities.js";
-import { firestore } from "../../firebaseconfig.js";
-import News from "../Objects/News.js";
+import utils from "../../../shared/Utilities.js";
+import { firestore } from "../../FirebaseConfig.js";
+import News from "../objects/News.js";
 
 const dbNews = {
   addNews: function (pid, title, text) {

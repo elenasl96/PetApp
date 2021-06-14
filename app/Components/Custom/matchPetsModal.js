@@ -8,11 +8,9 @@ import {
   TouchableOpacity,
   Modal,
 } from "react-native";
-import dbNews from "../../firebase/Database/Functions/dbNews";
+import dbNews from "../../firebase/database/functions/DbNews";
 import { AuthContext } from "./AuthContext";
-
-import mainStyle from "../../styles/mainStyle";
-import PetLostButton from "../Buttons/PetLostButton";
+import PetLostButton from "../buttons/PetLostButton";
 
 export default class MatchPetsModal extends React.Component {
   static contextType = AuthContext;

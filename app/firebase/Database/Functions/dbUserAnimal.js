@@ -1,5 +1,5 @@
-import { firestore } from "../../firebaseconfig.js";
-import UserAnimal from "../Objects/UserAnimal.js";
+import { firestore } from "../../FirebaseConfig.js";
+import UserAnimal from "../objects/UserAnimal.js";
 
 const dbUserAnimal = {
   addUserAnimal: function (uid, name, age, breed, size, color, photo, type) {

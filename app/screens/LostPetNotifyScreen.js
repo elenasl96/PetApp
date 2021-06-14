@@ -8,9 +8,9 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
-import mainStyle from "../styles/mainStyle";
-import { AuthContext } from "../Components/Custom/AuthContext";
-import ReportLossForm from "../Components/Forms/ReportLossForm";
+import mainStyle from "../styles/MainStyle";
+import { AuthContext } from "../components/custom/AuthContext";
+import ReportLossForm from "../components/forms/ReportLossForm";
 import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";

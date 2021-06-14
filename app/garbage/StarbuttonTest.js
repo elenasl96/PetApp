@@ -1,5 +1,5 @@
 import React from 'react';
-import StarButton from '../Components/Buttons/StarButton';
+import StarButton from '../components/buttons/StarButton';
 import { render} from '@testing-library/react-native';
 
 it("renders default elements",() => {

@@ -2,8 +2,8 @@ import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
 import { useState, useEffect, useRef, useContext } from "react";
 import {Platform } from "react-native";
-import dbNotification from "../../firebase/Database/Functions/dbNotification";
-import dbUser from "../../firebase/Database/Functions/dbUser";
+import dbNotification from "../../firebase/database/functions/DbNotification";
+import dbUser from "../../firebase/database/functions/DbUser";
 import { AuthContext } from "./AuthContext";
 
 Notifications.setNotificationHandler({

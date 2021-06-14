@@ -1,12 +1,12 @@
-import dbUser from "../../firebase/Database/Functions/dbUser";
-import dbUserAnimal from "../../firebase/Database/Functions/dbUserAnimal";
-import dbAdoptableAnimal from "../../firebase/Database/Functions/dbAdoptableAnimal";
-import dbFeed from "../../firebase/Database/Functions/dbFeed";
-import dbLostPet from "../../firebase/Database/Functions/dbLostPet";
-import dbNews from "../../firebase/Database/Functions/dbNews";
-import dbNotification from "../../firebase/Database/Functions/dbNotification";
-import dbPlace from "../../firebase/Database/Functions/dbPlace";
-import { dbPopulate } from "../../firebase/Database/Functions/dbPopulate";
+import dbUser from "../../firebase/database/functions/DbUser";
+import dbUserAnimal from "../../firebase/database/functions/DbUserAnimal";
+import dbAdoptableAnimal from "../../firebase/database/functions/DbAdoptableAnimal";
+import dbFeed from "../../firebase/database/functions/DbFeed";
+import dbLostPet from "../../firebase/database/functions/DbLostPet";
+import dbNews from "../../firebase/database/functions/DbNews";
+import dbNotification from "../../firebase/database/functions/DbNotification";
+import dbPlace from "../../firebase/database/functions/DbPlace";
+import { dbPopulate } from "../../garbage/DbPopulate";
 import {
   pet,
   uids,
@@ -14,7 +14,7 @@ import {
   lostPet,
   lostPetSeen,
 } from "../../garbage/Population";
-import constants from "../../shared/constants";
+import constants from "../../shared/Constants";
 
 beforeAll(() => {
   /*  

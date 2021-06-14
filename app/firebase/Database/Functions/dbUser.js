@@ -1,10 +1,10 @@
-import { firestore } from "../../firebaseconfig.js";
-import User from "../Objects/User.js";
-import dbNotification from "./dbNotification.js";
-import dbUserAnimal from "./dbUserAnimal.js";
-import dbFeed from "./dbFeed.js";
-import utils from "../../../shared/utilities";
-import dbPlace from "./dbPlace.js";
+import { firestore } from "../../FirebaseConfig.js";
+import User from "../objects/User.js";
+import dbNotification from "./DbNotification.js";
+import dbUserAnimal from "./DbUserAnimal.js";
+import dbFeed from "./DbFeed.js";
+import utils from "../../../shared/Utilities";
+import dbPlace from "./DbPlace.js";
 
 const dbUser = {
   // user info

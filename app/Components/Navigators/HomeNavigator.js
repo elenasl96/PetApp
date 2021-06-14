@@ -3,8 +3,8 @@ import HomeScreen from "../../screens/HomeScreen";
 import PetScreen from "../../screens/PetPage";
 import VetScreen from "../../screens/PlacePage";
 import React from "react";
-import NavBar from "../Custom/NavBar";
-import HomeBusiness from "../../screens/BusinessUser/HomeBusiness";
+import NavBar from "../custom/NavBar";
+import HomeBusiness from "../../screens/HomeBusiness";
 //import AnimalsToAdoptScreen from "../../screens/AnimalsToAdopt";
 
 const HomeNavigator = createStackNavigator(

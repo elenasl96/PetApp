@@ -11,13 +11,13 @@ import {
 } from "react-native";
 import * as Location from "expo-location";
 import { Marker, Callout, CustomCalloutView } from "react-native-maps";
-import dbPlace from "../firebase/Database/Functions/dbPlace";
+import dbPlace from "../firebase/database/functions/DbPlace";
 import * as Permissions from "expo-permissions";
 import { Feather } from "@expo/vector-icons";
 import { TextInput } from "react-native-gesture-handler";
-import mainStyle from "../styles/mainStyle";
-import utils from "../shared/utilities";
-import { AuthContext } from "../Components/Custom/AuthContext";
+import mainStyle from "../styles/MainStyle";
+import utils from "../shared/Utilities";
+import { AuthContext } from "../components/custom/AuthContext";
 import * as Device from "expo-device";
 import PlacePage from "./PlacePage";
 

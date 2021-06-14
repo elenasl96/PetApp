@@ -1,7 +1,7 @@
-import { firestore } from "../../firebaseconfig.js";
-import LostPetNotify from "../Objects/LostPetNotify.js";
-import LostPetSeen from "../Objects/LostPetSeen.js";
-import utils from "../../../shared/utilities.js";
+import { firestore } from "../../FirebaseConfig.js";
+import LostPetNotify from "../objects/LostPetNotify.js";
+import LostPetSeen from "../objects/LostPetSeen.js";
+import utils from "../../../shared/Utilities.js";
 
 const dbLostPet = {
   //-----------------------------Lost Pets Notify ------------------------------
@@ -254,7 +254,6 @@ const dbLostPet = {
   //----------------------------LOST PET MATCH-----------------------------
 
   getLostPetsMatched: function (pet) {
-    console.log(pet.getBreed());
     var notifications = [];
     return firestore
       .collection(pet.getCollection())
@@ -264,11 +263,7 @@ const dbLostPet = {
       .get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
-          // doc.data() is never undefined for query doc snapshots
-          console.log("DATA");
-          console.log(doc.data());
           notifications.push(doc.id);
-          //console.log(feed);
           return notifications;
         });
         return notifications;

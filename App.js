@@ -2,11 +2,11 @@ import React from "react";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 
 import * as firebase from "firebase";
-import firebaseConfig from "./app/firebase/firebaseconfig.js";
-import AuthNavigator from "./app/Components/Navigators/AuthNavigator";
-import TabNavigator from "./app/Components/Navigators/TabNavigator.js";
-import AuthContextProvider from "./app/Components/Custom/AuthContext.js";
-import TabBusinessNavigator from "./app/Components/Navigators/TabBusinessNavigator";
+import firebaseConfig from "./app/firebase/FirebaseConfig.js";
+import AuthNavigator from "./app/components/navigators/AuthNavigator";
+import TabNavigator from "./app/components/navigators/TabNavigator.js";
+import AuthContextProvider from "./app/components/custom/AuthContext.js";
+import TabBusinessNavigator from "./app/components/navigators/TabBusinessNavigator";
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);

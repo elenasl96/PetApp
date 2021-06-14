@@ -1,4 +1,4 @@
-import utils from "../../shared/utilities";
+import utils from "../../shared/Utilities";
 
 test("utils test", () => {
   expect(utils.getAgeString(4)).toBe("Young");

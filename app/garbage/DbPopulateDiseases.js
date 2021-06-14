@@ -1,8 +1,8 @@
-import dbUserAnimal from "../firebase/Database/Functions/dbUserAnimal";
-import dbFeed from "../firebase/Database/Functions/dbFeed";
-import dbUser from "../firebase/Database/Functions/dbUser";
-import Feed from "../firebase/Database/Objects/Feed";
-import UserAnimal from "../firebase/Database/Objects/UserAnimal";
+import dbUserAnimal from "../firebase/database/functions/DbUserAnimal";
+import dbFeed from "../firebase/database/functions/DbFeed";
+import dbUser from "../firebase/database/functions/DbUser";
+import Feed from "../firebase/database/objects/Feed";
+import UserAnimal from "../firebase/database/objects/UserAnimal";
 
 beforeAll(() => {
 

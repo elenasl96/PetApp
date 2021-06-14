@@ -1,5 +1,5 @@
-import { firestore } from "../../firebaseconfig.js";
-import AdoptableAnimal from "../Objects/AdoptableAnimal.js";
+import { firestore } from "../../FirebaseConfig.js";
+import AdoptableAnimal from "../objects/AdoptableAnimal.js";
 
 const dbAdoptableAnimal = {
   addAdoptableAnimal: function (

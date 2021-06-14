@@ -8,16 +8,16 @@ import {
   ScrollView,
   Modal,
 } from "react-native";
-import dbPlace from "../../firebase/Database/Functions/dbPlace";
-import storageManager from "../../firebase/Storage/storage";
-import PhotoBox from "../Custom/PhotoBox";
-import { AuthContext } from "../Custom/AuthContext";
+import dbPlace from "../../firebase/database/functions/DbPlace";
+import storageManager from "../../firebase/storage/Storage";
+import PhotoBox from "../custom/PhotoBox";
+import { AuthContext } from "../custom/AuthContext";
 
-import mainStyle from "../../styles/mainStyle";
+import mainStyle from "../../styles/MainStyle";
 import * as Location from "expo-location";
 import { Picker } from "@react-native-picker/picker";
-import constants from "../../shared/constants";
-import validator from "../../shared/validation";
+import constants from "../../shared/Constants";
+import validator from "../../shared/Validation";
 
 export default class AddPlaceForm extends React.Component {
   static contextType = AuthContext;

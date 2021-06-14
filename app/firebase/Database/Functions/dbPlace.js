@@ -1,7 +1,7 @@
-import { firestore } from "../../firebaseconfig.js";
-import Place from "../Objects/Place.js";
-import dbNews from "./dbNews";
-import dbAdoptableAnimal from "./dbAdoptableAnimal";
+import { firestore } from "../../FirebaseConfig.js";
+import Place from "../objects/Place.js";
+import dbNews from "./DbNews";
+import dbAdoptableAnimal from "./DbAdoptableAnimal";
 
 const dbPlace = {
   addPlace: function (

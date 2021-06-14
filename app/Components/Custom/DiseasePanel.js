@@ -8,10 +8,10 @@ import {
 } from "react-native";
 
 import { Picker } from "@react-native-picker/picker";
-import mainStyle from "../../styles/mainStyle";
-import dbUserAnimal from "../../firebase/Database/Functions/dbUserAnimal";
-import dbAdoptableAnimal from "../../firebase/Database/Functions/dbAdoptableAnimal";
-import constants from "../../shared/constants";
+import mainStyle from "../../styles/MainStyle";
+import dbUserAnimal from "../../firebase/database/functions/DbUserAnimal";
+import dbAdoptableAnimal from "../../firebase/database/functions/DbAdoptableAnimal";
+import constants from "../../shared/Constants";
 import { AuthContext } from "./AuthContext";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";

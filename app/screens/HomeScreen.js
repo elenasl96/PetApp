@@ -11,20 +11,20 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import firebase from "firebase";
-import { AuthContext } from "../Components/Custom/AuthContext";
-import PetButton from "../Components/Buttons/PetButton";
-import dbUserAnimal from "../firebase/Database/Functions/dbUserAnimal";
-import dbFeed from "../firebase/Database/Functions/dbFeed";
-import dbPlace from "../firebase/Database/Functions/dbPlace";
-import PlaceButton from "../Components/Buttons/PlaceButton";
-import FeedBox from "../Components/Custom/FeedBox";
-import NotificationsHandler from "../Components/Custom/NotificationsHandler";
+import { AuthContext } from "../components/custom/AuthContext";
+import PetButton from "../components/buttons/PetButton";
+import dbUserAnimal from "../firebase/database/functions/DbUserAnimal";
+import dbFeed from "../firebase/database/functions/DbFeed";
+import dbPlace from "../firebase/database/functions/DbPlace";
+import PlaceButton from "../components/buttons/PlaceButton";
+import FeedBox from "../components/custom/FeedBox";
+import NotificationsHandler from "../components/custom/NotificationsHandler";
 import { AntDesign } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
-import AddPetForm from "../Components/Forms/AddPetForm";
-import dbAdoptableAnimal from "../firebase/Database/Functions/dbAdoptableAnimal";
-import LoadingOverlay from "../Components/Custom/loadingOverlay";
-import mainStyle from "../styles/mainStyle";
+import AddPetForm from "../components/forms/AddPetForm";
+import dbAdoptableAnimal from "../firebase/database/functions/DbAdoptableAnimal";
+import LoadingOverlay from "../components/custom/LoadingOverlay";
+import mainStyle from "../styles/MainStyle";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 class HomeScreen extends React.Component {

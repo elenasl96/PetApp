@@ -8,16 +8,16 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
-import { AuthContext } from "../Components/Custom/AuthContext";
-import dbLostPet from "../firebase/Database/Functions/dbLostPet";
-import PetLostButton from "../Components/Buttons/PetLostButton";
-import PetLostSeenButton from "../Components/Buttons/PetLostSeenButton";
-import ReportLossForm from "../Components/Forms/ReportLossForm";
+import { AuthContext } from "../components/custom/AuthContext";
+import dbLostPet from "../firebase/database/functions/DbLostPet";
+import PetLostButton from "../components/buttons/PetLostButton";
+import PetLostSeenButton from "../components/buttons/PetLostSeenButton";
+import ReportLossForm from "../components/forms/ReportLossForm";
 import { Feather } from "@expo/vector-icons";
-import LoadingOverlay from "../Components/Custom/loadingOverlay";
-import FilterButton from "../Components/Buttons/filterButton";
+import LoadingOverlay from "../components/custom/LoadingOverlay";
+import FilterButton from "../components/buttons/FilterButton";
 import * as Location from "expo-location";
-import utils from "../shared/utilities";
+import utils from "../shared/Utilities";
 
 export default class LostPetsScreen extends React.Component {
   state = {

@@ -3,7 +3,7 @@ import HomeScreen from "../../screens/HomeScreen";
 import PetScreen from "../../screens/PetPage";
 import VetScreen from "../../screens/PlacePage";
 import React from "react";
-import NavBar from "../Custom/NavBar";
+import NavBar from "../custom/NavBar";
 
 import MapScreen from "../../screens/MapScreen";
 //import AnimalsToAdoptScreen from "../../screens/AnimalsToAdopt";

@@ -1,19 +1,10 @@
-import { storage } from "../firebaseconfig.js";
-import dbUserAnimal from "../Database/Functions/dbUserAnimal";
-//----------------Photo storage------------------------------------------------------------------------------
+import { storage } from "../FirebaseConfig.js";
 
 const storageManager = {
-  /*
-  upload = async (uid,uri,section) => {
-      const response = await fetch(uri);
-      const file = await response.blob();
-      console.log("File");
-      this.toStorage(uid, file,section);
-  }; */
+
 
   toStorage: function (uid,file,section ) {
-    //var urlToStore;
-    //Reference to firebase storage
+
     var storageRef = storage.ref();
 
     // Create the file metadata
@@ -41,7 +32,6 @@ const storageManager = {
   },
 
   fromStorage: function (section,filename) {
-    //console.log("FromStorage");
     var storageRef = storage.ref();
     var imageRef = storageRef.child(section + "/" + filename);
     return imageRef
@@ -55,8 +45,6 @@ const storageManager = {
         };
         xhr.open("GET", url);
         xhr.send();
-
-        //console.log("url " + url);
         return url;
       })
       .catch(function (error) {

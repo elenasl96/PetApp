@@ -9,20 +9,20 @@ import {
   KeyboardAvoidingView,
   Modal,
 } from "react-native";
-import dbLostPet from "../../firebase/Database/Functions/dbLostPet";
-import { AuthContext } from "../Custom/AuthContext";
+import dbLostPet from "../../firebase/database/functions/DbLostPet";
+import { AuthContext } from "../custom/AuthContext";
 import { withNavigation } from "react-navigation";
-import mainStyle from "../../styles/mainStyle";
+import mainStyle from "../../styles/MainStyle";
 import { ScrollView } from "react-native-gesture-handler";
-import PhotoBox from "../Custom/PhotoBox";
+import PhotoBox from "../custom/PhotoBox";
 import { Picker } from "@react-native-picker/picker";
-import constants from "../../shared/constants";
-import validator from "../../shared/validation";
-import LostPetNotify from "../../firebase/Database/Objects/LostPetNotify";
-import MatchPetsModal from "../Custom/matchPetsModal";
-import PetLostButton from "../Buttons/PetLostButton";
-import LostPetSeen from "../../firebase/Database/Objects/LostPetSeen";
-import NotifySightButton from "../Buttons/NotifySightButton";
+import constants from "../../shared/Constants";
+import validator from "../../shared/Validation";
+import LostPetNotify from "../../firebase/database/objects/LostPetNotify";
+import MatchPetsModal from "../custom/MatchPetsModal";
+import PetLostButton from "../buttons/PetLostButton";
+import LostPetSeen from "../../firebase/database/objects/LostPetSeen";
+import NotifySightButton from "../buttons/NotifySightButton";
 import * as Location from "expo-location";
 
 class ReportLossForm extends Component {

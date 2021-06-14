@@ -1,4 +1,4 @@
-import constants from "../../../shared/constants";
+import constants from "../../../shared/Constants";
 
 export default class Place {
   constructor(name, type, description, photo, address, latitude, longitude) {

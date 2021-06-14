@@ -7,17 +7,17 @@ import {
   TouchableOpacity,
   Modal,
 } from "react-native";
-import dbUserAnimal from "../../firebase/Database/Functions/dbUserAnimal";
-import storageManager from "../../firebase/Storage/storage";
-import PhotoBox from "../Custom/PhotoBox";
-import { AuthContext } from "../Custom/AuthContext";
+import dbUserAnimal from "../../firebase/database/functions/DbUserAnimal";
+import storageManager from "../../firebase/storage/Storage";
+import PhotoBox from "../custom/PhotoBox";
+import { AuthContext } from "../custom/AuthContext";
 import { withNavigation } from "react-navigation";
 import { Picker } from "@react-native-picker/picker";
-import constants from "../../shared/constants";
-import validator from "../../shared/validation";
-import mainStyle from "../../styles/mainStyle";
+import constants from "../../shared/Constants";
+import validator from "../../shared/Validation";
+import mainStyle from "../../styles/MainStyle";
 import { ScrollView } from "react-native-gesture-handler";
-import dbAdoptableAnimal from "../../firebase/Database/Functions/dbAdoptableAnimal";
+import dbAdoptableAnimal from "../../firebase/database/functions/DbAdoptableAnimal";
 
 class AddPetForm extends React.Component {
   static contextType = AuthContext;

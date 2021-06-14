@@ -1,6 +1,6 @@
-import {firestore} from "../../firebaseconfig.js";
-import Notification from "../Objects/Notification.js";
-import utils from "../../../shared/utilities";
+import {firestore} from "../../FirebaseConfig.js";
+import Notification from "../objects/Notification.js";
+import utils from "../../../shared/Utilities";
 
 const dbNotification = {
   addUserNotification: function (uid, title, text) {

@@ -1,7 +1,7 @@
-import {firestore} from "../../firebaseconfig.js";
-import Feed from "../Objects/Feed.js";
-import UserAnimal from "../Objects/UserAnimal.js";
-import utils from "../../../shared/utilities.js";
+import {firestore} from "../../FirebaseConfig.js";
+import Feed from "../objects/Feed.js";
+import UserAnimal from "../objects/UserAnimal.js";
+import utils from "../../../shared/Utilities.js";
 
 const dbFeed = {
 getFeedsByFilter(pet, filter, value, id) {

@@ -13,14 +13,14 @@ import {
   Image,
 } from "react-native";
 import "firebase/firestore";
-import { auth } from "../firebase/firebaseconfig.js";
+import { auth } from "../firebase/FirebaseConfig.js";
 import * as Facebook from "expo-facebook";
-import PhotoBox from "../Components/Custom/PhotoBox";
-import mainStyle from "../styles/mainStyle";
-import dbUser from "../firebase/Database/Functions/dbUser";
-import { AuthContext } from "../Components/Custom/AuthContext.js";
+import PhotoBox from "../components/custom/PhotoBox";
+import mainStyle from "../styles/MainStyle";
+import dbUser from "../firebase/database/functions/DbUser";
+import { AuthContext } from "../components/custom/AuthContext.js";
 import { Picker } from "@react-native-picker/picker";
-import validator from "../shared/validation.js";
+import validator from "../shared/Validation.js";
 import { ScrollView } from "react-native-gesture-handler";
 
 class SignUpScreen extends React.Component {

@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Image, TouchableHighlight } from "react-native";
 
-import { AuthContext } from "../Custom/AuthContext";
+import { AuthContext } from "../custom/AuthContext";
 
 class PetButton extends React.Component {
   state = {

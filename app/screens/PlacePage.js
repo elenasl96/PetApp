@@ -11,18 +11,18 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
-import dbAdoptableAnimal from "../firebase/Database/Functions/dbAdoptableAnimal";
-import News from "../Components/Custom/News";
-import { AuthContext } from "../Components/Custom/AuthContext";
+import dbAdoptableAnimal from "../firebase/database/functions/DbAdoptableAnimal";
+import News from "../components/custom/News";
+import { AuthContext } from "../components/custom/AuthContext";
 import { LinearGradient } from "expo-linear-gradient";
-import StarButton from "../Components/Buttons/StarButton";
+import StarButton from "../components/buttons/StarButton";
 import { withNavigation } from "react-navigation";
-import AddNewsForm from "../Components/Forms/AddNewsForm";
-import AddPetForm from "../Components/Forms/AddPetForm";
-import PetButton from "../Components/Buttons/PetButton";
-import storageManager from "../firebase/Storage/storage";
-import PhotoBox from "../Components/Custom/PhotoBox";
-import mainStyle from "../styles/mainStyle";
+import AddNewsForm from "../components/forms/AddNewsForm";
+import AddPetForm from "../components/forms/AddPetForm";
+import PetButton from "../components/buttons/PetButton";
+import storageManager from "../firebase/storage/Storage";
+import PhotoBox from "../components/custom/PhotoBox";
+import mainStyle from "../styles/MainStyle";
 import { Feather } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";

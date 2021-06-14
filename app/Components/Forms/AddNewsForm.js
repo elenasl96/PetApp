@@ -8,10 +8,10 @@ import {
   TouchableOpacity,
   Modal,
 } from "react-native";
-import dbNews from "../../firebase/Database/Functions/dbNews";
-import { AuthContext } from "../Custom/AuthContext";
-import validator from "../../shared/validation";
-import mainStyle from "../../styles/mainStyle";
+import dbNews from "../../firebase/database/functions/DbNews";
+import { AuthContext } from "../custom/AuthContext";
+import validator from "../../shared/Validation";
+import mainStyle from "../../styles/MainStyle";
 
 export default class AddNewsForm extends React.Component {
   static contextType = AuthContext;

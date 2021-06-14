@@ -12,13 +12,13 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import * as MediaLibrary from "expo-media-library";
 import { AuthContext } from "./AuthContext";
-import storageManager from "../../firebase/Storage/storage";
-import dbUserAnimal from "../../firebase/Database/Functions/dbUserAnimal";
-import dbPlace from "../../firebase/Database/Functions/dbPlace";
-import dbUser from "../../firebase/Database/Functions/dbUser";
-import dbAdoptableAnimal from "../../firebase/Database/Functions/dbAdoptableAnimal";
-import validator from "../../shared/validation";
-import mainStyle from "../../styles/mainStyle";
+import storageManager from "../../firebase/storage/Storage";
+import dbUserAnimal from "../../firebase/database/functions/DbUserAnimal";
+import dbPlace from "../../firebase/database/functions/DbPlace";
+import dbUser from "../../firebase/database/functions/DbUser";
+import dbAdoptableAnimal from "../../firebase/database/functions/DbAdoptableAnimal";
+import validator from "../../shared/Validation";
+import mainStyle from "../../styles/MainStyle";
 
 class PhotoBox extends React.Component {
   // props: ids , section , initial photo (if any) , boolean to show (or not) update button
@@ -43,7 +43,6 @@ class PhotoBox extends React.Component {
   componentDidMount() {
     this.setState({ mounted: true });
     if (this.props.isUpdate) {
-      //console.log("IN DID MOUNT");
       this.setState({ photo: this.props.photo, visible: this.props.visible }); // photo passed from the container, our initial photo
     } else {
       this.setState({ visible: true });

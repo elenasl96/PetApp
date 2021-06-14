@@ -1,8 +1,8 @@
 import React from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
-import dbPlace from "../../firebase/Database/Functions/dbPlace";
-import { AuthContext } from "../Custom/AuthContext";
+import dbPlace from "../../firebase/database/functions/DbPlace";
+import { AuthContext } from "../custom/AuthContext";
 
 class StarButton extends React.Component {
   static contextType = AuthContext;

@@ -10,17 +10,17 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import mainStyle from "../styles/mainStyle";
-import storageManager from "../firebase/Storage/storage";
-import { AuthContext } from "../Components/Custom/AuthContext";
+import mainStyle from "../styles/MainStyle";
+import storageManager from "../firebase/storage/Storage";
+import { AuthContext } from "../components/custom/AuthContext";
 import { withNavigation } from "react-navigation";
 import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
-import PhotoBox from "../Components/Custom/PhotoBox";
-import DiseasePanel from "../Components/Custom/DiseasePanel";
-import Chart from "../Components/Custom/PetChart.js";
-import ReportLossForm from "../Components/Forms/ReportLossForm";
+import PhotoBox from "../components/custom/PhotoBox";
+import DiseasePanel from "../components/custom/DiseasePanel";
+import Chart from "../components/custom/PetChart.js";
+import ReportLossForm from "../components/forms/ReportLossForm";
 
 class PetScreen extends React.Component {
   state = {

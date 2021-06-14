@@ -8,8 +8,8 @@ import {
   Text,
   StyleSheet,
 } from "react-native";
-import { AuthContext } from "../Custom/AuthContext";
-import mainStyle from "../../styles/mainStyle";
+import { AuthContext } from "../custom/AuthContext";
+import mainStyle from "../../styles/MainStyle";
 
 export default class FilterButton extends React.Component {
   static contextType = AuthContext;

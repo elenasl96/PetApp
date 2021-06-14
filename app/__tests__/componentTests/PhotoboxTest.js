@@ -1,5 +1,5 @@
 import React from 'react';
-import PhotoBox from '../../Components/Custom/PhotoBox';
+import PhotoBox from '../../components/custom/PhotoBox';
 import Adapter from 'enzyme-adapter-react-16';
 import {shallow,mount,configure} from 'enzyme';
 

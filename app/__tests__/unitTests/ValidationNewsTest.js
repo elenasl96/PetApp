@@ -1,4 +1,4 @@
-import validator from "../../shared/validation";
+import validator from "../../shared/Validation";
 
 it('test news validation 1', () => { 
     expect(validator.isValid(validator.handleNewsValidation("title1","text1"))).toBeTruthy();

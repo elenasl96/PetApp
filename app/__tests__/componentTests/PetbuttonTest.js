@@ -1,5 +1,5 @@
 import React from 'react';
-import PetButton from '../../Components/Buttons/PetButton';
+import PetButton from '../../components/buttons/PetButton';
 import Adapter from 'enzyme-adapter-react-16';
 import {shallow,mount,configure} from 'enzyme';
 
