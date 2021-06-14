@@ -7,10 +7,8 @@ import {
   ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
-import firebase from "firebase";
 import { AuthContext } from "../components/custom/AuthContext";
 import dbPlace from "../firebase/database/functions/DbPlace.js";
-import dbAdoptableAnimal from "../firebase/database/functions/DbAdoptableAnimal.js";
 import PlaceButton from "../components/buttons/PlaceButton";
 import AddPlaceForm from "../components/forms/AddPlaceForm";
 import { AntDesign } from "@expo/vector-icons";
