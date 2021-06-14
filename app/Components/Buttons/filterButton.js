@@ -8,8 +8,7 @@ import {
   Text,
   StyleSheet,
 } from "react-native";
-import dbPlace from "../../firebase/Database/Functions/dbPlace";
-import { AuthContext } from "../AuthContext";
+import { AuthContext } from "../Custom/AuthContext";
 import mainStyle from "../../styles/mainStyle";
 
 export default class FilterButton extends React.Component {
@@ -19,11 +18,6 @@ export default class FilterButton extends React.Component {
     filterOpen: false,
     mounted: false,
   };
-
-  /* constructor(props) {
-    super(props);
-
-  }*/
 
   componentDidMount() {
     this.setState({ mounted: true });

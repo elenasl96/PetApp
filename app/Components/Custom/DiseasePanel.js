@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   StyleSheet,
   Text,
@@ -12,7 +12,7 @@ import mainStyle from "../../styles/mainStyle";
 import dbUserAnimal from "../../firebase/Database/Functions/dbUserAnimal";
 import dbAdoptableAnimal from "../../firebase/Database/Functions/dbAdoptableAnimal";
 import constants from "../../shared/constants";
-import { AuthContext } from "../AuthContext";
+import { AuthContext } from "./AuthContext";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";

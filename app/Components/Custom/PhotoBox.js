@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as MediaLibrary from "expo-media-library";
-import { AuthContext } from "../AuthContext";
+import { AuthContext } from "./AuthContext";
 import storageManager from "../../firebase/Storage/storage";
 import dbUserAnimal from "../../firebase/Database/Functions/dbUserAnimal";
 import dbPlace from "../../firebase/Database/Functions/dbPlace";

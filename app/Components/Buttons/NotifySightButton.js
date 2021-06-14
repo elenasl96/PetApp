@@ -1,11 +1,9 @@
 import * as Notifications from "expo-notifications";
 import React, { useState, useEffect, useRef } from "react";
 import { Text, TouchableOpacity, StyleSheet } from "react-native";
-import db from "../../firebase/Database/DatabaseManager";
-import dbLostPet from "../../firebase/Database/Functions/dbLostPet";
 import dbNotification from "../../firebase/Database/Functions/dbNotification";
 import mainStyle from "../../styles/mainStyle";
-import { AuthContext } from "../AuthContext";
+import { AuthContext } from "../Custom/AuthContext";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -32,7 +30,6 @@ export default class NotifySightButton extends React.Component {
   _handleNotificationResponse(response) {
     console.log("OPEN APP");
     console.log(response.notification.request.content.data);
-    //console.log(this.props.navigation);
 
     this.props.navigation.navigate("LostPet", {
       pet: response.notification.request.content.data.pet,

@@ -1,13 +1,12 @@
-import React, { useContext } from "react";
+import React from "react";
 import {
   StyleSheet,
   Text,
   Image,
-  TouchableHighlight,
   View,
 } from "react-native";
 import dbLostPet from "../../firebase/Database/Functions/dbLostPet";
-import { AuthContext } from "../../Components/AuthContext";
+import { AuthContext } from "../Custom/AuthContext";
 import { Entypo } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 

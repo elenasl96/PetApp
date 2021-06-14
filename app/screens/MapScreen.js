@@ -17,7 +17,7 @@ import { Feather } from "@expo/vector-icons";
 import { TextInput } from "react-native-gesture-handler";
 import mainStyle from "../styles/mainStyle";
 import utils from "../shared/utilities";
-import { AuthContext } from "../Components/AuthContext";
+import { AuthContext } from "../Components/Custom/AuthContext";
 import * as Device from "expo-device";
 import PlacePage from "./PlacePage";
 
@@ -69,7 +69,6 @@ export default class MapScreen extends React.Component {
         Promise.all(promises).then((places) => {
           this.setState({ places: places, visibleMarkers: places });
           this.forceUpdate();
-          //this.showAllMarkers();
         });
       });
     }
@@ -145,7 +144,6 @@ export default class MapScreen extends React.Component {
     let filteredMarkers = this.state.places.filter(
       (marker) => marker == marker
     );
-    //this.removeMarkers();
     this.setState({ visibleMarkers: filteredMarkers });
   }
 
@@ -325,14 +323,12 @@ export default class MapScreen extends React.Component {
               title={marker.name}
               description={marker.address}
               onCalloutPress={() => this.showPlace(marker, index)}
-              //tracksViewChanges={false}
               style={styles.marker}
             >
               <Image
                 source={pins[marker.type]}
                 style={[
                   styles.markerImage,
-                  //{ tintColor: this.getPlaceColor(marker.type) },
                 ]}
               />
               <Callout>

@@ -13,7 +13,7 @@ import {
   place,
   lostPet,
   lostPetSeen,
-} from "../../firebase/Database/Population";
+} from "../../garbage/Population";
 import constants from "../../shared/constants";
 
 beforeAll(() => {

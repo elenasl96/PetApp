@@ -4,14 +4,13 @@ import {
   View,
   Text,
   TextInput,
-  SafeAreaView,
   TouchableOpacity,
   Modal,
 } from "react-native";
 import dbUserAnimal from "../../firebase/Database/Functions/dbUserAnimal";
 import storageManager from "../../firebase/Storage/storage";
 import PhotoBox from "../Custom/PhotoBox";
-import { AuthContext } from "../AuthContext";
+import { AuthContext } from "../Custom/AuthContext";
 import { withNavigation } from "react-navigation";
 import { Picker } from "@react-native-picker/picker";
 import constants from "../../shared/constants";

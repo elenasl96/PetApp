@@ -9,7 +9,7 @@ import {
   Modal,
 } from "react-native";
 import dbNews from "../../firebase/Database/Functions/dbNews";
-import { AuthContext } from "../AuthContext";
+import { AuthContext } from "../Custom/AuthContext";
 import validator from "../../shared/validation";
 import mainStyle from "../../styles/mainStyle";
 

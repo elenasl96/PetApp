@@ -10,7 +10,7 @@ import {
   Modal,
 } from "react-native";
 import dbLostPet from "../../firebase/Database/Functions/dbLostPet";
-import { AuthContext } from "../AuthContext";
+import { AuthContext } from "../Custom/AuthContext";
 import { withNavigation } from "react-navigation";
 import mainStyle from "../../styles/mainStyle";
 import { ScrollView } from "react-native-gesture-handler";

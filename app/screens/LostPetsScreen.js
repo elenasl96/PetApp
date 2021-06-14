@@ -3,19 +3,16 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
-  Image,
   TouchableHighlight,
   ScrollView,
   TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
-import { AuthContext } from "../Components/AuthContext";
+import { AuthContext } from "../Components/Custom/AuthContext";
 import dbLostPet from "../firebase/Database/Functions/dbLostPet";
 import PetLostButton from "../Components/Buttons/PetLostButton";
 import PetLostSeenButton from "../Components/Buttons/PetLostSeenButton";
 import ReportLossForm from "../Components/Forms/ReportLossForm";
-import mainStyle from "../styles/mainStyle";
 import { Feather } from "@expo/vector-icons";
 import LoadingOverlay from "../Components/Custom/loadingOverlay";
 import FilterButton from "../Components/Buttons/filterButton";
@@ -561,8 +558,6 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     overflow: "hidden",
     elevation: 2,
-    //borderBottomColor: "orange",
-    //borderBottomWidth: 2,
   },
 
   buttonText: {

@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import firebase from "firebase";
-import { AuthContext } from "../../Components/AuthContext";
+import { AuthContext } from "../../Components/Custom/AuthContext";
 import dbPlace from "../../firebase/Database/Functions/dbPlace.js";
 import dbAdoptableAnimal from "../../firebase/Database/Functions/dbAdoptableAnimal.js";
 import PlaceButton from "../../Components/Buttons/PlaceButton";
@@ -37,12 +37,6 @@ export default class HomeBusiness extends React.Component {
   getMyPlaces(places) {
     let promises = places.map((placeID) => {
       return dbPlace.getPlace(placeID).then((place) => {
-        /*
-        if(place.isKennel()){
-         dbAdoptableAnimal.getAdoptableAnimals(placeID).then((animals) => {
-                 this.context.saveAdoptablePets(placeID,animals);
-         });
-        }*/
         place.id = placeID;
         return place;
       });
@@ -200,7 +194,6 @@ const styles = StyleSheet.create({
   },
   title: {
     marginLeft: 15,
-    //marginTop: 10,
     fontWeight: "bold",
     fontSize: 20,
   },

@@ -5,9 +5,7 @@ import {
   Modal,
   ActivityIndicator,
 } from "react-native";
-import { AuthContext } from "../AuthContext";
-
-import mainStyle from "../../styles/mainStyle";
+import { AuthContext } from "./AuthContext";
 
 export default class LoadingOverlay extends React.Component {
   static contextType = AuthContext;

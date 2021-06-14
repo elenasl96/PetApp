@@ -3,14 +3,11 @@ import {
   StyleSheet,
   Text,
   Image,
-  TouchableHighlight,
   View,
-  ImageBackground,
 } from "react-native";
 import dbLostPet from "../../firebase/Database/Functions/dbLostPet";
-import { AuthContext } from "../../Components/AuthContext";
+import { AuthContext } from "../Custom/AuthContext";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { LinearGradient } from "expo-linear-gradient";
 import { Entypo } from "@expo/vector-icons";
 
 class PetLostButton extends React.Component {

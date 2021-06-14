@@ -10,7 +10,7 @@ import {
 import dbUserAnimal from "../../firebase/Database/Functions/dbUserAnimal";
 import utils from "../../shared/utilities";
 import mainStyle from "../../styles/mainStyle";
-import { AuthContext } from "../AuthContext";
+import { AuthContext } from "./AuthContext";
 
 import { LineChart } from "react-native-chart-kit";
 import { AntDesign } from "@expo/vector-icons";

@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import dbAdoptableAnimal from "../firebase/Database/Functions/dbAdoptableAnimal";
 import News from "../Components/Custom/News";
-import { AuthContext } from "../Components/AuthContext";
+import { AuthContext } from "../Components/Custom/AuthContext";
 import { LinearGradient } from "expo-linear-gradient";
 import StarButton from "../Components/Buttons/StarButton";
 import { withNavigation } from "react-navigation";
@@ -368,10 +368,6 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 30,
   },
   button: {
-    //backgroundColor: "#F9844A",
-    //height: 44,
-    //borderRadius: 22,
-
     padding: 10,
     marginLeft: 10,
     borderBottomColor: "orange",
@@ -399,7 +395,6 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     paddingHorizontal: 25,
     color: "black",
-    //backgroundColor: "rgba(255,255,255,0.6)",
   },
   vetImage: {
     width: "100%",

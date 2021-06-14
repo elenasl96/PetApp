@@ -1,7 +1,7 @@
-import constants from "../../shared/constants";
-import LostPetNotify from "./Objects/LostPetNotify";
-import Place from "./Objects/Place";
-import UserAnimal from "./Objects/UserAnimal";
+import constants from "../shared/constants";
+import LostPetNotify from "../firebase/Database/Objects/LostPetNotify";
+import Place from "../firebase/Database/Objects/Place";
+import UserAnimal from "../firebase/Database/Objects/UserAnimal";
 
 export const uids = {
   elena: "zXe1We0SrOaaw8YliDx7OpdB4E23",

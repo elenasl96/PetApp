@@ -4,21 +4,16 @@ import {
   Text,
   View,
   SafeAreaView,
-  Button,
-  Image,
-  TouchableHighlight,
   ScrollView,
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
 import mainStyle from "../styles/mainStyle";
-import { AuthContext } from "../Components/AuthContext";
-import NotifySightButton from "../Components/Buttons/NotifySightButton";
+import { AuthContext } from "../Components/Custom/AuthContext";
 import ReportLossForm from "../Components/Forms/ReportLossForm";
 import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
-import NotificationsHandler from "../Components/NotificationsHandler";
 import { Entypo } from "@expo/vector-icons";
 
 class LostPetNotifyScreen extends React.Component {
@@ -40,7 +35,6 @@ class LostPetNotifyScreen extends React.Component {
 
   render() {
     const pet = this.props.navigation.state.params.pet;
-    //const isEditable = pet.uid == this.context.uid;
     const isSeen = this.props.navigation.state.params.seen;
     const isEditable = false;
     return (
@@ -241,26 +235,20 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     justifyContent: "center",
     alignContent: "center",
-    //paddingBottom: 20,
   },
   pet: {
     width: 150,
     height: 150,
-    //borderRadius: 150,
-    //backgroundColor: "white",
     marginLeft: 10,
     elevation: 2,
   },
   petImage: {
     width: 150,
     height: 150,
-    //borderRadius: 0,
-    //resizeMode: "cover",
     padding: 10,
     elevation: 2,
   },
   info: {
-    //backgroundColor: "#F9C74F",
     backgroundColor: "white",
     borderRadius: 15,
     marginLeft: 7,
@@ -339,8 +327,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   contacts: {
-    //backgroundColor: "powderblue",
-    // borderRadius: 20,
     paddingHorizontal: 20,
     marginHorizontal: 20,
   },

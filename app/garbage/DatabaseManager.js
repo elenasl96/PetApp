@@ -1,14 +1,14 @@
-import { firestore, storage } from "../firebaseconfig";
-import User from "../Database/Objects/User";
-import Animal from "../Database/Objects/UserAnimal";
-import AdoptableAnimal from "../Database/Objects/AdoptableAnimal.js";
-import Place from "../Database/Objects/Place.js";
-import Feed from "../Database/Objects/Feed.js";
-import Notification from "../Database/Objects/Notification.js";
-import News from "../Database/Objects/News.js";
-import LostPetNotify from "../Database/Objects/LostPetNotify.js";
-import LostPetSeen from "../Database/Objects/LostPetSeen.js";
-import utils from "../../shared/utilities";
+import { firestore, storage } from "../firebase/firebaseconfig";
+import User from "../firebase/Database/Objects/User";
+import Animal from "../firebase/Database/Objects/UserAnimal";
+import AdoptableAnimal from "../firebase/Database/Objects/AdoptableAnimal.js";
+import Place from "../firebase/Database/Objects/Place.js";
+import Feed from "../firebase/Database/Objects/Feed.js";
+import Notification from "../firebase/Database/Objects/Notification.js";
+import News from "../firebase/Database/Objects/News.js";
+import LostPetNotify from "../firebase/Database/Objects/LostPetNotify.js";
+import LostPetSeen from "../firebase/Database/Objects/LostPetSeen.js";
+import utils from "../shared/utilities";
 
 const db = {
   // ----------------User-----------------------------------------------------------

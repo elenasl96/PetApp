@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import dbNews from "../../firebase/Database/Functions/dbNews";
-import { AuthContext } from "../AuthContext";
+import { AuthContext } from "./AuthContext";
 import { AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 

@@ -11,14 +11,14 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import firebase from "firebase";
-import { AuthContext } from "../Components/AuthContext";
+import { AuthContext } from "../Components/Custom/AuthContext";
 import PetButton from "../Components/Buttons/PetButton";
 import dbUserAnimal from "../firebase/Database/Functions/dbUserAnimal";
 import dbFeed from "../firebase/Database/Functions/dbFeed";
 import dbPlace from "../firebase/Database/Functions/dbPlace";
 import PlaceButton from "../Components/Buttons/PlaceButton";
 import FeedBox from "../Components/Custom/FeedBox";
-import NotificationsHandler from "../Components/NotificationsHandler";
+import NotificationsHandler from "../Components/Custom/NotificationsHandler";
 import { AntDesign } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import AddPetForm from "../Components/Forms/AddPetForm";
@@ -53,7 +53,6 @@ class HomeScreen extends React.Component {
 
         if (this.context.user.type == "business") {
           this.getMyPlaces();
-          //this.getMyAdoptablePets();
         }
       }
     });
@@ -98,7 +97,6 @@ class HomeScreen extends React.Component {
 
     var animals = [];
     var uid = this.context.uid;
-    //var pets = this.filterAnimals(pets);
 
     if (pets.length != 0) {
       pets.forEach((aid) => {
@@ -136,16 +134,6 @@ class HomeScreen extends React.Component {
   }
 
   getMySavedPlaces(placeIDs) {
-    /*let promises = places.map((placeID) => {
-      return dbPlace.getPlace(placeID).then((place) => {
-        place.id = placeID;
-        return place;
-      });
-    });
-    Promise.all(promises).then((places) => {
-      this.setState({ places: places });
-    }); */
-
     var places = [];
     placeIDs.map((placeID) => {
       dbPlace.getPlace(placeID).then((place) => {
@@ -182,16 +170,6 @@ class HomeScreen extends React.Component {
       });
     });
   }
-  /*
-  getMyAdoptablePets() {
-    let places = this.context.places;
-
-    dbPlace.getMyPlaces(this.context.uid).then((PIDs) => {
-      if (this.state.mounted) {
-        this.context.savePlaces(PIDs);
-      }
-    });
-  }*/
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.places.length !== this.context.savedPlaces.length) {
@@ -403,7 +381,6 @@ const styles = StyleSheet.create({
   myPlaceContainer: {
     flexDirection: "column",
     justifyContent: "center",
-    //paddingHorizontal: 0,
   },
   myPlaces: {
     flex: 1,

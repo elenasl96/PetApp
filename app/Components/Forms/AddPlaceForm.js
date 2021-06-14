@@ -4,16 +4,14 @@ import {
   View,
   Text,
   TextInput,
-  SafeAreaView,
   TouchableOpacity,
-  KeyboardAvoidingView,
   ScrollView,
   Modal,
 } from "react-native";
 import dbPlace from "../../firebase/Database/Functions/dbPlace";
 import storageManager from "../../firebase/Storage/storage";
 import PhotoBox from "../Custom/PhotoBox";
-import { AuthContext } from "../AuthContext";
+import { AuthContext } from "../Custom/AuthContext";
 
 import mainStyle from "../../styles/mainStyle";
 import * as Location from "expo-location";

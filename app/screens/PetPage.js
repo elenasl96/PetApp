@@ -1,14 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 
 import {
   StyleSheet,
   Text,
-  TextInput,
   View,
   SafeAreaView,
-  Button,
-  Image,
-  TouchableHighlight,
   ScrollView,
   ImageBackground,
   TouchableOpacity,
@@ -16,18 +12,15 @@ import {
 
 import mainStyle from "../styles/mainStyle";
 import storageManager from "../firebase/Storage/storage";
-import { AuthContext } from "../Components/AuthContext";
+import { AuthContext } from "../Components/Custom/AuthContext";
 import { withNavigation } from "react-navigation";
 import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
-
-//--- custom components -------
 import PhotoBox from "../Components/Custom/PhotoBox";
 import DiseasePanel from "../Components/Custom/DiseasePanel";
 import Chart from "../Components/Custom/PetChart.js";
 import ReportLossForm from "../Components/Forms/ReportLossForm";
-//--------------------------
 
 class PetScreen extends React.Component {
   state = {
@@ -314,26 +307,20 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     justifyContent: "center",
     alignContent: "center",
-    //paddingBottom: 20,
   },
   pet: {
     width: 150,
     height: 150,
-    //borderRadius: 150,
-    //backgroundColor: "white",
     marginLeft: 10,
     elevation: 2,
   },
   petImage: {
     width: 150,
     height: 150,
-    //borderRadius: 0,
-    //resizeMode: "cover",
     padding: 10,
     elevation: 2,
   },
   info: {
-    //backgroundColor: "#F9C74F",
     backgroundColor: "white",
     borderRadius: 15,
     marginLeft: 7,
