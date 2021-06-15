@@ -187,18 +187,20 @@ export default class LostPetsScreen extends React.Component {
       });
   };
 
-  confirmReportSeen = () => {
+  confirmReportSeen = (lostPet) => {
     dbLostPet
       .addLostPetSeen(
-        this.state.report.getPhoto(),
-        this.state.report.getSize(),
-        this.state.report.getColor(),
-        this.state.report.getBreed(),
-        this.state.report.getNotes(),
-        this.state.report.getPlace(),
+        lostPet.photo,
+        lostPet.size,
+        lostPet.color,
+        lostPet.breed,
+        lostPet.notes,
+        lostPet.place,
         this.context.uid,
-        this.state.report.getEmail(),
-        this.state.report.getPhone()
+        lostPet.email,
+        lostPet.phone,
+        lostPet.latitude,
+        lostPet.longitude
       )
       .then((doc) => {
         this.context.lostPetsSeen.push(doc.id);
@@ -354,8 +356,8 @@ export default class LostPetsScreen extends React.Component {
                 underlayColor={"rgb(200,200,200)"}
               >
                 <Text style={{ textAlign: "center" }}>
-                  <Feather name="alert-circle" size={24} color="black" /> Send
-                  report
+                  <Feather name="alert-circle" size={24} color="black" />{" "}
+                  Confirm report{" "}
                 </Text>
               </TouchableHighlight>
             ) : null}

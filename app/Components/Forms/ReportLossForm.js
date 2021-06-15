@@ -106,24 +106,43 @@ class ReportLossForm extends Component {
     }
   };
 
-  reportSight = () => {
-    let errors = validator.handleReportValidation(this.state.phone);
+  reportSight = async () => {
+    let errors = validator.handleReportValidation(
+      this.state.phone,
+      "seen",
+      this.state.name,
+      this.state.place,
+      this.state.city
+    );
     let isValid = validator.isValid(errors);
     this.setState({ errors: errors });
     if (isValid) {
-      let lostPet = new LostPetSeen(
-        this.state.photo,
-        this.state.size,
-        this.state.color,
-        this.state.breed,
-        this.state.notes,
-        this.state.place,
-        "",
-        "",
-        this.state.email,
-        this.state.phone
-      );
-      this.props.sendForm(lostPet, true);
+      let { status } = await Location.requestPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+      let place = this.state.place + ", " + this.state.city;
+      Location.geocodeAsync(place).then((coordinates) => {
+        console.log("coordinates");
+        console.log(coordinates);
+        let lostPet = new LostPetSeen(
+          this.state.photo,
+          this.state.size,
+          this.state.color,
+          this.state.breed,
+          this.state.notes,
+          place,
+          "",
+          this.context.uid,
+          this.state.email,
+          this.state.phone,
+          coordinates[0].latitude,
+          coordinates[0].longitude
+        );
+        s;
+        this.props.sendForm(lostPet, true);
+      });
     }
   };
 
@@ -300,8 +319,8 @@ class ReportLossForm extends Component {
                 />
               </View>
 
-              {this.state.errors["address"] != null ? (
-                <Text style={styles.error}>{this.state.errors["address"]}</Text>
+              {this.state.errors["place"] != null ? (
+                <Text style={styles.error}>{this.state.errors["place"]}</Text>
               ) : null}
 
               <View style={mainStyle.form}>
@@ -335,7 +354,7 @@ class ReportLossForm extends Component {
                 <PhotoBox setPhoto={this.setPhoto} isUpdate={false}></PhotoBox>
               ) : null}
 
-              {this.props.sight && !pet ? (
+              {this.props.sight && pet == null ? (
                 <TouchableOpacity
                   style={{
                     width: "50%",
@@ -346,7 +365,7 @@ class ReportLossForm extends Component {
                   onPress={this.reportSight.bind(this)}
                 >
                   <View style={styles.button}>
-                    <Text style={styles.buttonText}>Report sight</Text>
+                    <Text style={styles.buttonText}>Report sight </Text>
                   </View>
                 </TouchableOpacity>
               ) : null}
@@ -361,12 +380,12 @@ class ReportLossForm extends Component {
                   onPress={this.reportLoss.bind(this)}
                 >
                   <View style={mainStyle.submitButton}>
-                    <Text style={styles.buttonText}>Report Loss</Text>
+                    <Text style={styles.buttonText}>Report Loss </Text>
                   </View>
                 </TouchableOpacity>
               ) : null}
 
-              {this.props.sight && pet ? (
+              {this.props.sight && pet !== null ? (
                 <View style={styles.buttons}>
                   <NotifySightButton
                     navigation={this.props.navigation}

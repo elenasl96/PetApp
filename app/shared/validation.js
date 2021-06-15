@@ -31,7 +31,7 @@ const validator = {
       errors["age"] = "Age is an integer between 0 and 20 ";
     }
 
-    if (adoptable && profile==null) {
+    if (adoptable && profile == null) {
       errors["profile"] = "Profile cannot be empty";
     }
 
@@ -88,7 +88,7 @@ const validator = {
     return errors;
   },
 
-  handleReportValidation(phone, reportType, name) {
+  handleReportValidation(phone, reportType, name, place, city) {
     let errors = {};
 
     if (reportType === "loss" && !name.match(/^[a-zA-Z]+$/)) {
@@ -97,6 +97,10 @@ const validator = {
 
     if (isNaN(phone)) {
       errors["number"] = "Telephone must be a number";
+    }
+
+    if (!place || !city) {
+      errors["place"] = "Insert valid address and city";
     }
 
     return errors;

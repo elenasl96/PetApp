@@ -1,3 +1,4 @@
+import utils from "../../../shared/Utilities.js";
 import { firestore } from "../../FirebaseConfig.js";
 import UserAnimal from "../objects/UserAnimal.js";
 
@@ -5,7 +6,16 @@ const dbUserAnimal = {
   addUserAnimal: function (uid, name, age, breed, size, color, photo, type) {
     const users = firestore.collection("Users");
     const animals = users.doc(uid).collection("Animals");
-    let animal = new UserAnimal(name, age, breed, size, color, photo, type);
+    let yearOfBirth = utils.getYearOfBirth(age);
+    let animal = new UserAnimal(
+      name,
+      yearOfBirth,
+      breed,
+      size,
+      color,
+      photo,
+      type
+    );
     return animals.add(animal.toFirestore());
   },
 
@@ -32,13 +42,9 @@ const dbUserAnimal = {
   addAnimalStat: function (uid, aid, stat) {
     const users = firestore.collection("Users");
     const animals = users.doc(uid).collection("Animals");
-    animals
-      .doc(aid)
-      .collection("Stats")
-      .doc(stat)
-      .set({
-        name: stat,
-      });
+    animals.doc(aid).collection("Stats").doc(stat).set({
+      name: stat,
+    });
   },
 
   getUserAnimals: function (uid) {
@@ -332,33 +338,33 @@ const dbUserAnimal = {
         });
     });
   },
-  
+
   deleteAnimalStat: function (uid, aid, id) {
     return dbUserAnimal.getAnimalStatSamples(uid, aid, id).then((samples) => {
       if (samples.length != 0) {
-      var promisesSamples = samples.forEach((sampleid) => { return dbUserAnimal.deleteAnimalStatSample(uid, aid, id, sampleid);});
+        var promisesSamples = samples.forEach((sampleid) => {
+          return dbUserAnimal.deleteAnimalStatSample(uid, aid, id, sampleid);
+        });
       }
-    return Promise.all([promisesSamples]).then(()=>{
-    const animals = firestore
-      .collection("Users")
-      .doc(uid)
-      .collection("Animals");
-    return animals
-      .doc(aid)
-      .collection("Stats")
-      .doc(id)
-      .delete()
-      .then(function () {
-        //console.log("delete stat");
-      })
-      .catch(function (error) {
-        console.error("Error removing document: ", error);
+      return Promise.all([promisesSamples]).then(() => {
+        const animals = firestore
+          .collection("Users")
+          .doc(uid)
+          .collection("Animals");
+        return animals
+          .doc(aid)
+          .collection("Stats")
+          .doc(id)
+          .delete()
+          .then(function () {
+            //console.log("delete stat");
+          })
+          .catch(function (error) {
+            console.error("Error removing document: ", error);
+          });
       });
     });
-  });
   },
-
-  
 
   deleteAnimalStatSample: function (uid, aid, stat, id) {
     const animals = firestore
@@ -366,7 +372,7 @@ const dbUserAnimal = {
       .doc(uid)
       .collection("Animals");
     const stats = animals.doc(aid).collection("Stats");
-     return stats
+    return stats
       .doc(stat)
       .collection("Samples")
       .doc(id)
@@ -379,8 +385,6 @@ const dbUserAnimal = {
       });
   },
 
-
-
   deleteAnimal: function (uid, aid) {
     const users = firestore.collection("Users");
     return dbUserAnimal.getAnimalDiseases(uid, aid).then(function (diseases) {
@@ -391,35 +395,37 @@ const dbUserAnimal = {
         });
       }
 
-      return dbUserAnimal.getAnimalStats(uid,aid).then((stats) => {
+      return dbUserAnimal.getAnimalStats(uid, aid).then((stats) => {
         if (stats.length != 0) {
-          var promisesStats = stats.forEach((id) => {return dbUserAnimal.deleteAnimalStat(uid, aid, id);});                    
-        }        
+          var promisesStats = stats.forEach((id) => {
+            return dbUserAnimal.deleteAnimalStat(uid, aid, id);
+          });
+        }
 
-       return Promise.all([promisesDiseases,promisesStats]).then(() => {
-                    return users
-                      .doc(uid)
-                      .collection("Animals")
-                      .doc(aid)
-                      .delete()
-                      .then(function () {
-                        //console.log("delete animal");
-                      })
-                      .catch(function (error) {
-                        console.error("Error removing document: ", error);
-                      });
-           }); 
+        return Promise.all([promisesDiseases, promisesStats]).then(() => {
+          return users
+            .doc(uid)
+            .collection("Animals")
+            .doc(aid)
+            .delete()
+            .then(function () {
+              //console.log("delete animal");
+            })
+            .catch(function (error) {
+              console.error("Error removing document: ", error);
+            });
+        });
       });
     });
   },
 
   // get disease descriptions
-  getDiseaseDescription(name,type) {
+  getDiseaseDescription(name, type) {
     var ref = firestore.collection("DiseaseDescriptions");
     var descriptions = [];
     return ref
       .where("name", "==", name)
-      .where("type","==", type)
+      .where("type", "==", type)
       .get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
@@ -433,13 +439,12 @@ const dbUserAnimal = {
       });
   },
 
-  addDiseaseDescription(name,description,type){
-    
+  addDiseaseDescription(name, description, type) {
     const ref = firestore.collection("DiseaseDescriptions");
     let disease = {
-       name: name,
-       description: description,
-       type: type,
+      name: name,
+      description: description,
+      type: type,
     };
     ref.add(disease);
   },
