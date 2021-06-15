@@ -21,6 +21,7 @@ import PhotoBox from "../components/custom/PhotoBox";
 import DiseasePanel from "../components/custom/DiseasePanel";
 import Chart from "../components/custom/PetChart.js";
 import ReportLossForm from "../components/forms/ReportLossForm";
+import utils from "../shared/Utilities";
 
 class PetScreen extends React.Component {
   state = {
@@ -210,7 +211,9 @@ class PetScreen extends React.Component {
               >
                 <View style={styles.info}>
                   <Text style={styles.infoTitle}>Age </Text>
-                  <Text style={styles.infoText}>{pet.getAge()} </Text>
+                  <Text style={styles.infoText}>
+                    {utils.getAge(pet.getAge())}
+                  </Text>
                 </View>
                 <View style={styles.info}>
                   <Text style={styles.infoTitle}>Size </Text>

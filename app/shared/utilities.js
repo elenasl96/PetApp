@@ -15,6 +15,15 @@ const utils = {
     return string;
   },
 
+  getYearOfBirth: function (age) {
+    return new Date().getFullYear() - parseInt(age);
+  },
+
+  getAge: function (yearOfBirth) {
+    var currentYear = new Date().getFullYear();
+    return currentYear - yearOfBirth;
+  },
+
   timestamp: function () {
     let date = new Date();
     let day = date.getDate();
