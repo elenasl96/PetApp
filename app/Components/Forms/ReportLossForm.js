@@ -24,6 +24,7 @@ import PetLostButton from "../buttons/PetLostButton";
 import LostPetSeen from "../../firebase/database/objects/LostPetSeen";
 import NotifySightButton from "../buttons/NotifySightButton";
 import * as Location from "expo-location";
+import MainStyle from "../../styles/MainStyle";
 
 class ReportLossForm extends Component {
   static contextType = AuthContext;
@@ -140,7 +141,6 @@ class ReportLossForm extends Component {
           coordinates[0].latitude,
           coordinates[0].longitude
         );
-        s;
         this.props.sendForm(lostPet, true);
       });
     }
@@ -231,7 +231,7 @@ class ReportLossForm extends Component {
                 </View>
               ) : null}
               {this.state.errors["name"] != null ? (
-                <Text style={styles.error}>{this.state.errors["name"]}</Text>
+                <Text style={MainStyle.error}>{this.state.errors["name"]}</Text>
               ) : null}
               {this.props.pet == null ? (
                 <View style={mainStyle.form}>
@@ -283,7 +283,9 @@ class ReportLossForm extends Component {
                 </View>
               ) : null}
               {this.state.errors["breed"] != null ? (
-                <Text style={styles.error}>{this.state.errors["breed"]}</Text>
+                <Text style={MainStyle.error}>
+                  {this.state.errors["breed"]}
+                </Text>
               ) : null}
               <View style={mainStyle.form}>
                 <TextInput
@@ -320,7 +322,9 @@ class ReportLossForm extends Component {
               </View>
 
               {this.state.errors["place"] != null ? (
-                <Text style={styles.error}>{this.state.errors["place"]}</Text>
+                <Text style={MainStyle.error}>
+                  {this.state.errors["place"]}
+                </Text>
               ) : null}
 
               <View style={mainStyle.form}>
@@ -347,7 +351,9 @@ class ReportLossForm extends Component {
                 />
               </View>
               {this.state.errors["number"] != null ? (
-                <Text style={styles.error}>{this.state.errors["number"]}</Text>
+                <Text style={MainStyle.error}>
+                  {this.state.errors["number"]}
+                </Text>
               ) : null}
 
               {this.props.pet == null ? (
