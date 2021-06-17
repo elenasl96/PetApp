@@ -4,6 +4,8 @@ import dbNews from "../../firebase/database/functions/DbNews";
 import { AuthContext } from "./AuthContext";
 import { AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import EditableText from "./EditableText";
+
 
 class News extends React.Component {
   static contextType = AuthContext;
@@ -55,6 +57,7 @@ class News extends React.Component {
   }
 
   render() {
+    const isEditable = this.props.isEditable;
     if (this.state.news.length > 0) {
       //console.log("HAVE NEWS");
       //console.log(this.state.news);
@@ -62,14 +65,22 @@ class News extends React.Component {
         <View key={index} style={styles.feedContainer}>
           <View style={styles.feed}>
             <View style={styles.topNews}>
-              <Text style={styles.newsTitle}>{news.getTitle()}</Text>
+
+              {!isEditable ? (
+              <Text style={styles.newsTitle}>{news.getTitle()}</Text>)
+              : (
+          <EditableText text = {news.getTitle()} field = {"titlenews"} pid = {news.pid} nid = {news.id}></EditableText>)}
+
               <TouchableOpacity
                 onPress={() => this.deleteNews(news.pid, news.id)}
               >
                 <AntDesign name="close" size={22} color="black" />
               </TouchableOpacity>
             </View>
-            <Text>{news.getText()}</Text>
+            {!isEditable ? (
+              <Text >{news.getText()}</Text>)
+              : (
+          <EditableText text = {news.getText()} field = {"textnews"} pid = {news.pid} nid = {news.id}></EditableText>)}
             <Text style={styles.newsTime}>{news.getTimestamp()}</Text>
           </View>
         </View>

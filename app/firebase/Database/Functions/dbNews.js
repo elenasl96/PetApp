@@ -60,5 +60,24 @@ const dbNews = {
         console.log("Error getting documents: ", error);
       });
   },
+
+  updateNewsTitle: function (pid, nid, title) {
+    firestore
+      .collection("Places")
+      .doc(pid)
+      .collection("News")
+      .doc(nid)
+      .update({ title: title });
+  },
+
+  updateNewsText: function (pid, nid, text) {
+    firestore
+      .collection("Places")
+      .doc(pid)
+      .collection("News")
+      .doc(nid)
+      .update({ text: text });
+  },
+
 };
 export default dbNews;

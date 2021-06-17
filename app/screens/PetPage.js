@@ -21,6 +21,7 @@ import PhotoBox from "../components/custom/PhotoBox";
 import DiseasePanel from "../components/custom/DiseasePanel";
 import Chart from "../components/custom/PetChart.js";
 import ReportLossForm from "../components/forms/ReportLossForm";
+import EditableText from "../components/custom/EditableText";
 import utils from "../shared/Utilities";
 
 class PetScreen extends React.Component {
@@ -231,11 +232,19 @@ class PetScreen extends React.Component {
               </View>
             </View>
 
+          
             {isAdoptable ? (
+              <>
+              {!isEditable ? (
               <View style={styles.profile}>
                 <Text style={styles.title}>Profile</Text>
                 <Text>{pet.profile}</Text>
-              </View>
+              </View> ) : (
+              <View style={styles.profile}>
+              <Text style={styles.title}>Profile</Text>
+              <EditableText text = {pet.profile} aid = {petID} field = {"profile"} pid = {pid} ></EditableText>
+            </View> )}
+              </> 
             ) : null}
 
             <View style={{ flex: 1, flexDirection: "row", flexWrap: "wrap" }}>

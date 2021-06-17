@@ -295,10 +295,19 @@ const dbAdoptableAnimal = {
   updateAdoptablePetPhoto: function (pid, aid, url) {
     firestore
       .collection("Places")
-      .doc(uid)
+      .doc(pid)
       .collection("Animals")
       .doc(aid)
       .update({ photo: url });
+  },
+
+  updateAdoptablePetProfile: function (pid, aid, profile) {
+    firestore
+      .collection("Places")
+      .doc(pid)
+      .collection("Animals")
+      .doc(aid)
+      .update({ profile: profile });
   },
 };
 export default dbAdoptableAnimal;

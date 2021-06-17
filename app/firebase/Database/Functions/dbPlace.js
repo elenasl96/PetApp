@@ -264,5 +264,15 @@ const dbPlace = {
       });
     });
   },
+
+  updateDescriptionPlace: function(pid,value){
+
+    firestore.collection("Places").doc(pid).update({ description: value });
+  },
+
+  updateAddressPlace: function(pid,value){
+    firestore.collection("Places").doc(pid).update({ address: value });
+  },
+
 };
 export default dbPlace;

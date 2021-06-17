@@ -26,6 +26,7 @@ import mainStyle from "../styles/MainStyle";
 import { Feather } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+import EditableText from "../components/custom/EditableText";
 
 class VetScreen extends React.Component {
   static contextType = AuthContext;
@@ -167,6 +168,12 @@ class VetScreen extends React.Component {
     const isEditable = this.state.isEditable;
     const photo = this.state.photo;
 
+    /* <Text>
+              {place.getAddress()}
+              {"\n"}
+              {place.getDescription()}
+            </Text>  */
+
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView>
@@ -288,11 +295,21 @@ class VetScreen extends React.Component {
             </ImageBackground>
           </View>
           <View style={styles.details}>
-            <Text>
+           
+           {!isEditable ? 
+           (<Text>
               {place.getAddress()}
               {"\n"}
               {place.getDescription()}
-            </Text>
+            </Text>):
+            (
+            <>
+            <EditableText text = {place.getAddress()} field="address" pid={pid} ></EditableText>
+            <EditableText text = {place.getDescription()} field="description" pid={pid}> </EditableText>
+            </>
+            )}
+           
+
             {this.state.pets.length > 0 ? (
               <Text style={styles.title2}>Pets for adoption</Text>
             ) : null}
@@ -324,6 +341,7 @@ class VetScreen extends React.Component {
                 <News
                   ref={(news) => (this.state.news = news)}
                   placeId={pid}
+                  isEditable = {isEditable}
                 ></News>
               </ScrollView>
             </ScrollView>
