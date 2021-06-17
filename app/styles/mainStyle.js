@@ -81,10 +81,11 @@ export default StyleSheet.create({
     elevation: 2,
   },
   error: {
-    fontSize: 18,
+    fontSize: 14,
     textAlign: "center",
     color: "red",
     width: "80%",
+    marginTop: 2,
   },
   roundButton: {
     backgroundColor: "#FFFFFF",

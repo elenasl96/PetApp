@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     flexShrink: 1,
     marginRight: 10,
+    fontWeight: "bold",
   },
 });
 
