@@ -248,7 +248,11 @@ class AddPetForm extends React.Component {
                 <Text style={styles.error}>{this.state.errors["profile"]}</Text>
               ) : null}
 
-              <PhotoBox setPhoto={this.setPhoto} isUpdate={false}></PhotoBox>
+              <PhotoBox
+                setPhoto={this.setPhoto}
+                section={"pets"}
+                isUpdate={false}
+              ></PhotoBox>
 
               {this.state.errors["photo"] != null ? (
                 <Text style={styles.error}>{this.state.errors["photo"]}</Text>

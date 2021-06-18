@@ -21,7 +21,7 @@
     "facebookDisplayName": "Pet App",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.polimi.petapp",
+      "bundleIdentifier": "com.geoPaw",
       "buildNumber": "1.0.0"
     },
     "android": {
@@ -37,6 +37,7 @@
             "apiKey": "AIzaSyBFYko4HqcyktioPKUmkIfx2aZIXKBEMwk"
         }
       },
+      "googleServicesFile": "./google-services.json",
       "permissions": [ "CAMERA", "WRITE_EXTERNAL_STORAGE","READ_EXTERNAL_STORAGE",  "CAMERA_ROLL" ]
     },
     "web": {

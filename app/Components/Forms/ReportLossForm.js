@@ -73,7 +73,9 @@ class ReportLossForm extends Component {
     let errors = validator.handleReportValidation(
       this.state.phone,
       "loss",
-      this.state.name
+      this.state.name,
+      this.state.place,
+      this.state.city
     );
     let isValid = validator.isValid(errors);
     this.setState({ errors: errors });
@@ -357,7 +359,11 @@ class ReportLossForm extends Component {
               ) : null}
 
               {this.props.pet == null ? (
-                <PhotoBox setPhoto={this.setPhoto} isUpdate={false}></PhotoBox>
+                <PhotoBox
+                  setPhoto={this.setPhoto}
+                  section={"pets"}
+                  isUpdate={false}
+                ></PhotoBox>
               ) : null}
 
               {this.props.sight && pet == null ? (

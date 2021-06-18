@@ -366,7 +366,7 @@ export default class LostPetsScreen extends React.Component {
               <TouchableHighlight
                 style={styles.mapButton}
                 onPress={() => {
-                  this.confirmReportSeen();
+                  this.confirmReportSeen(this.state.report);
                 }}
                 underlayColor={"rgb(200,200,200)"}
               >

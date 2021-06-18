@@ -188,7 +188,11 @@ export default class AddPlaceForm extends React.Component {
                 <Text style={styles.error}>{this.state.errors["address"]}</Text>
               ) : null}
 
-              <PhotoBox setPhoto={this.setPhoto} isUpdate={false}></PhotoBox>
+              <PhotoBox
+                setPhoto={this.setPhoto}
+                section={"places"}
+                isUpdate={false}
+              ></PhotoBox>
               {this.state.errors["photo"] != null ? (
                 <Text style={styles.error}>{this.state.errors["photo"]}</Text>
               ) : null}
