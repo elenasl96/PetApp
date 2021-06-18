@@ -7,14 +7,14 @@ const utils = {
     }
 
     age = this.getAge(age);
-    console.log(age);
+    //console.log(age);
 
     if (age <= 6 && age >= 0) string = "Young";
 
     if (age > 6 && age <= 12) string = "Medium";
 
     if (age > 12) string = "Old";
-    console.log(string);
+    //console.log(string);
     return string;
   },
 

@@ -5,6 +5,7 @@ import utils from "../../../shared/Utilities.js";
 
 const dbFeed = {
 getFeedsByFilter(pet, filter, value, id) {
+    
     const ref = firestore.collection("Feed").doc(pet).collection(filter);
     var feeds = [];
     return (
@@ -19,7 +20,9 @@ getFeedsByFilter(pet, filter, value, id) {
             feeds.push(feed);
             return feeds;
           });
+          console.log("GET FEEDS BY FILTER: " + filter + " " + feeds);
           return feeds;
+
         })
         .catch(function (error) {
           console.log("Error getting documents: ", error);
@@ -28,6 +31,7 @@ getFeedsByFilter(pet, filter, value, id) {
   },
 
   getGeneralFeeds(id) {
+    //console.log( "id is a string? " + id instanceof String);
     const general = firestore.collection("Feed").doc("General").collection(id);
     var feeds = [];
     return general
@@ -39,6 +43,7 @@ getFeedsByFilter(pet, filter, value, id) {
           feeds.push(feed);
           return feeds;
         });
+        //console.log("GENERAL: " + feeds);
         return feeds;
       })
       .catch(function (error) {
@@ -205,13 +210,15 @@ getFeedsByFilter(pet, filter, value, id) {
   },
 
   filterAnimals(arr){
-    for( var i = 0; i < arr.length; i++){ 
-      if ( arr[i].breed == "None" ) { 
-          arr.splice(i, 1);
-      }
   
+  filtered = [];
+    for( var i = 0; i < arr.length; i++){ 
+      if ( arr[i].breed != "None" ) { 
+          //arr.splice(i, 1);
+          filtered.push(arr[i]);
+      }
   }
-  return arr;
+  return filtered;
   },
 
   getFeeds: function (animals, uid, lastlogin, days) {
@@ -225,6 +232,7 @@ getFeedsByFilter(pet, filter, value, id) {
         .update({ lastlogin: utils.timestamp(), days: newdays });
 
       var id = days % 2;
+      var id = Number(id);
       var num = 1; // num general feeds
 
       let promiseDelete = dbFeed.deleteUserFeeds(uid);
@@ -272,7 +280,7 @@ getFeedsByFilter(pet, filter, value, id) {
         let promiseGeneral = dbFeed.getRandomGeneralFeeds(id, num);
 
         return Promise.all([promiseBreed,promiseAge,promiseSize,promiseGeneral]).then((feedsFetched)=>{  
-          
+          console.log("FEEDS FETCHED " + feedsFetched);
           let i = 0;
           let num_notgeneral = 5 - num;
           feedsFetched.forEach((feed)=>{
@@ -385,13 +393,15 @@ getFeedsByFilter(pet, filter, value, id) {
       var ages = [];
       animals.forEach(function (animal) {
         var age = utils.getAgeString(animal.age);
+
         if (!ages.includes(age)) {
           ages.push(age);
         }
       });
-
+      
       var age = ages[Math.floor(Math.random() * ages.length)];
       
+
       return dbFeed.getFeedsByFilter(type, "Age", age, id).then(function (feeds) {
         feed = feeds[Math.floor(Math.random() * feeds.length)];
         feed = new Feed(feed.title,feed.text,feed.type);
@@ -431,6 +441,7 @@ getFeedsByFilter(pet, filter, value, id) {
         feedsTarget.push(feed);
         //dbFeed.addUserFeed(uid, feed.title, feed.text, feed.type);
       }
+      console.log("GENERAL FEEDS: " + feedsTarget);
       return feedsTarget;
     });
   },
