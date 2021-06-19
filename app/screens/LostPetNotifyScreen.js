@@ -7,6 +7,7 @@ import {
   ScrollView,
   ImageBackground,
   TouchableOpacity,
+  Linking,
 } from "react-native";
 import mainStyle from "../styles/MainStyle";
 import { AuthContext } from "../components/custom/ContextProvider";
@@ -36,7 +37,7 @@ class LostPetNotifyScreen extends React.Component {
   render() {
     const pet = this.props.navigation.state.params.pet;
     const isSeen = this.props.navigation.state.params.seen;
-    const isEditable = false;
+    const isEditable = pet.uid === this.context.uid;
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <ReportLossForm
@@ -62,7 +63,7 @@ class LostPetNotifyScreen extends React.Component {
             >
               <View style={styles.petContainer}>
                 <View style={styles.buttons}>
-                  {isEditable ? (
+                  {false ? (
                     <TouchableOpacity
                       style={[mainStyle.roundButton, { marginLeft: 60 }]}
                       onPress={this.deletePet}
@@ -164,18 +165,29 @@ class LostPetNotifyScreen extends React.Component {
                   </>
                 ) : null}
               </View>
-
-              <View style={{ flex: 1, flexBasis: 300 }}>
-                <Text style={styles.title}>Contacts</Text>
-                <View style={[styles.contacts, { marginBottom: 20 }]}>
-                  <Text style={styles.textContact}>
-                    <Entypo name="email" size={16} color="black" /> {pet.email}
-                  </Text>
-                  <Text style={styles.textContact}>
-                    <Entypo name="phone" size={16} color="black" /> {pet.phone}
-                  </Text>
+              {pet.email || pet.phone ? (
+                <View style={{ flex: 1, flexBasis: 300 }}>
+                  <Text style={styles.title}>Contacts</Text>
+                  <View style={[styles.contacts, { marginBottom: 20 }]}>
+                    <TouchableOpacity
+                      onPress={() => Linking.openURL("mailto:" + pet.email)}
+                    >
+                      <Text style={styles.textContact}>
+                        <Entypo name="email" size={16} color="black" />{" "}
+                        {pet.email}
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => Linking.openURL("tel:" + pet.phone)}
+                    >
+                      <Text style={styles.textContact}>
+                        <Entypo name="phone" size={16} color="black" />{" "}
+                        {pet.phone}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
-              </View>
+              ) : null}
             </View>
           </ScrollView>
         </View>
