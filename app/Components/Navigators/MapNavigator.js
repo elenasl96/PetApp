@@ -57,7 +57,7 @@ const MapNavigator = createStackNavigator(
     defaultNavigationOptions: {
       headerTitle: () => <NavBar />,
       headerStyle: {
-        backgroundColor: "#f4978e",
+        backgroundColor: "#f8edeb",
       },
       headerTintColor: "#fff",
       headerTitleStyle: {

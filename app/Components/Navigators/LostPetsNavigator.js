@@ -37,7 +37,7 @@ const LostPetsNavigator = createStackNavigator(
         return <NavBar title={routeName} />;
       },
       headerStyle: {
-        backgroundColor: "#f4978e",
+        backgroundColor: "#f8edeb",
       },
       //headerTintColor: "#fff",
       headerTitleStyle: {
