@@ -61,35 +61,11 @@ const dbPlace = {
           places.push(doc.id);
           return places;
         });
-
         return places;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
       });
   },
-  /*
-  getPlacesByUid: function (uid) {
-    const map = firestore.collection("Places");
-    var places = [];
-    return map
-      .where("uid", "==", uid)
-      .get()
-      .then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          // doc.data() is never undefined for query doc snapshots
-          //console.log(doc.id, " => ", doc.data());
-          places.push(doc.id);
-          //console.log(user);
-          return places;
-        });
-
-        return places;
-      })
-      .catch(function (error) {
-        console.log("Error getting documents: ", error);
-      });
-  },  */
 
   deletePlace: function (pid) {
     dbPlace.getPlace(pid).then((place) => {
@@ -112,10 +88,8 @@ const dbPlace = {
                 .doc(pid)
                 .delete()
                 .then(function () {
-                  //console.log("delete place");
                 })
                 .catch(function (error) {
-                  console.error("Error removing document: ", error);
                 });
             });
           });
@@ -125,10 +99,8 @@ const dbPlace = {
               .doc(pid)
               .delete()
               .then(function () {
-                //console.log("delete place");
               })
               .catch(function (error) {
-                console.error("Error removing document: ", error);
               });
           });
         }
@@ -159,7 +131,6 @@ const dbPlace = {
         return savedplaces;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
       });
   },
 
@@ -190,20 +161,17 @@ const dbPlace = {
 
   deleteSavedPlace: function (uid, id) {
     const users = firestore.collection("Users");
-    console.log(uid + " + " + id);
     return users
       .doc(uid)
       .collection("savedplaces")
       .where("pid", "==", id)
       .get()
       .then(function (querySnapshot) {
-        //console.log("delete saved place");
         querySnapshot.forEach(function (doc) {
           doc.ref.delete();
         });
       })
       .catch(function (error) {
-        console.error("Error removing document: ", error);
       });
   },
 
@@ -231,7 +199,6 @@ const dbPlace = {
         return myplaces;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
       });
   },
 
@@ -248,7 +215,6 @@ const dbPlace = {
         return myplace;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
       });
   },
 

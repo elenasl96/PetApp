@@ -18,7 +18,7 @@ import * as Facebook from "expo-facebook";
 import PhotoBox from "../components/custom/PhotoBox";
 import mainStyle from "../styles/MainStyle";
 import dbUser from "../firebase/database/functions/DbUser";
-import { AuthContext } from "../components/custom/AuthContext.js";
+import { AuthContext } from "../components/custom/ContextProvider.js";
 import { Picker } from "@react-native-picker/picker";
 import validator from "../shared/Validation.js";
 import { ScrollView } from "react-native-gesture-handler";

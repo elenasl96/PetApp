@@ -4,16 +4,13 @@ import {
   Text,
   View,
   SafeAreaView,
-  Button,
-  Image,
-  TouchableHighlight,
   ScrollView,
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
 import dbAdoptableAnimal from "../firebase/database/functions/DbAdoptableAnimal";
 import News from "../components/custom/News";
-import { AuthContext } from "../components/custom/AuthContext";
+import { AuthContext } from "../components/custom/ContextProvider";
 import { LinearGradient } from "expo-linear-gradient";
 import StarButton from "../components/buttons/StarButton";
 import { withNavigation } from "react-navigation";

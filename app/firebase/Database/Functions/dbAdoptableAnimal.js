@@ -52,7 +52,6 @@ const dbAdoptableAnimal = {
         return animal;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
       });
   },
 
@@ -75,7 +74,6 @@ const dbAdoptableAnimal = {
         return diseases;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
       });
   },
 
@@ -96,7 +94,6 @@ const dbAdoptableAnimal = {
         return animals;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
       });
   },
 
@@ -124,7 +121,6 @@ const dbAdoptableAnimal = {
         return diseases;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
       });
   },
 
@@ -144,7 +140,6 @@ const dbAdoptableAnimal = {
         return disease;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
       });
   },
 
@@ -159,10 +154,8 @@ const dbAdoptableAnimal = {
       .doc(id)
       .delete()
       .then(function () {
-        //console.log("Document successfully deleted!");
       })
       .catch(function (error) {
-        console.error("Error removing document: ", error);
       });
   },
 
@@ -183,10 +176,8 @@ const dbAdoptableAnimal = {
                       .doc(aid)
                       .delete()
                       .then(function () {
-                        //console.log("Document successfully deleted!");
                       })
                       .catch(function (error) {
-                        console.error("Error removing document: ", error);
                       });
         });  
     
@@ -212,7 +203,6 @@ const dbAdoptableAnimal = {
         return diseases;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
       });
   },
 
@@ -231,10 +221,8 @@ const dbAdoptableAnimal = {
           .doc(id)
           .delete()
           .then(function () {
-            //console.log("Document successfully deleted!");
           })
           .catch(function (error) {
-            console.error("Error removing document: ", error);
           });
       });
   },
@@ -265,7 +253,6 @@ const dbAdoptableAnimal = {
         return descriptions;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
       });
   },
 
@@ -284,10 +271,8 @@ const dbAdoptableAnimal = {
           .doc(id)
           .delete()
           .then(function () {
-            //console.log("Document successfully deleted!");
           })
           .catch(function (error) {
-            console.error("Error removing document: ", error);
           });
       });
   },

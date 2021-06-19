@@ -1,9 +1,9 @@
 import * as Notifications from "expo-notifications";
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 import { Text, TouchableOpacity, StyleSheet } from "react-native";
 import dbNotification from "../../firebase/database/functions/DbNotification";
 import mainStyle from "../../styles/MainStyle";
-import { AuthContext } from "../custom/AuthContext";
+import { AuthContext } from "../custom/ContextProvider";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -28,9 +28,6 @@ export default class NotifySightButton extends React.Component {
   }
 
   _handleNotificationResponse(response) {
-    console.log("OPEN APP");
-    console.log(response.notification.request.content.data);
-
     this.props.navigation.navigate("LostPet", {
       pet: response.notification.request.content.data.pet,
       petID: response.notification.request.content.data.petID,
@@ -38,7 +35,6 @@ export default class NotifySightButton extends React.Component {
   }
 
   send = () => {
-    console.log("SEND");
     let petSeen = this.props.replyToLoss();
     if (petSeen) {
       sendPushNotificationToUser(this.props.userID, petSeen);
@@ -61,8 +57,6 @@ export default class NotifySightButton extends React.Component {
 }
 
 async function sendPushNotificationToUser(uid, animal) {
-  console.log(uid);
-
   dbNotification.getUserToken(uid).then((expoPushToken) => {
     sendPushNotification(expoPushToken, animal);
   });

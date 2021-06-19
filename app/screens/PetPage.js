@@ -12,7 +12,7 @@ import {
 
 import mainStyle from "../styles/MainStyle";
 import storageManager from "../firebase/storage/Storage";
-import { AuthContext } from "../components/custom/AuthContext";
+import { AuthContext } from "../components/custom/ContextProvider";
 import { withNavigation } from "react-navigation";
 import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";

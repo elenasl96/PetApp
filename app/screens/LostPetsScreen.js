@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
-import { AuthContext } from "../components/custom/AuthContext";
+import { AuthContext } from "../components/custom/ContextProvider";
 import dbLostPet from "../firebase/database/functions/DbLostPet";
 import PetLostButton from "../components/buttons/PetLostButton";
 import PetLostSeenButton from "../components/buttons/PetLostSeenButton";
@@ -119,7 +119,6 @@ export default class LostPetsScreen extends React.Component {
     this.setState({ report: lostPet });
 
     dbLostPet.getLostPetsMatched(lostPet).then((lostPetsMatched) => {
-      console.log("LOST PETS MATCHED: " + lostPetsMatched.length);
       if (lostPetsMatched.length > 0) {
         this.setState({
           showLostPets: false,
@@ -239,13 +238,9 @@ export default class LostPetsScreen extends React.Component {
               }
               this.setState({ showLostPets: true, loading: false });
 
-              console.log(
-                this.state.showLostPets + this.state.showLostPetsSeen
-              );
             });
           })
           .catch((error) => {
-            console.log(error);
           });
       } else {
         throw new Error("Location permission not granted");
@@ -274,14 +269,10 @@ export default class LostPetsScreen extends React.Component {
                   this.context.saveLostPetsSeen(updatePets);
                 }
                 this.setState({ showLostPetsSeen: true, loading: false });
-                console.log(
-                  this.state.showLostPets + this.state.showLostPetsSeen
-                );
               }
             );
           })
           .catch((error) => {
-            console.log(error);
           });
       } else {
         throw new Error("Location permission not granted");
@@ -290,7 +281,6 @@ export default class LostPetsScreen extends React.Component {
   };
 
   orderByNewest = () => {
-    console.log("order by newest");
     if (this.state.showLostPets) {
       if (this.state.mounted) {
         this.setState({ showLostPets: false, loading: true });
@@ -300,7 +290,6 @@ export default class LostPetsScreen extends React.Component {
           this.context.saveLostPets(lostPets);
         }
         this.setState({ showLostPets: true, loading: false });
-        console.log(this.state.showLostPets, this.state.showLostPetsSeen);
       });
     } else if (this.state.showLostPetsSeen) {
       if (this.state.mounted) {
@@ -311,7 +300,6 @@ export default class LostPetsScreen extends React.Component {
           this.context.saveLostPetsSeen(lostPetsSeen);
         }
         this.setState({ showLostPetsSeen: true, loading: false });
-        console.log(this.state.showLostPets, this.state.showLostPetsSeen);
       });
     }
   };
@@ -481,9 +469,6 @@ export default class LostPetsScreen extends React.Component {
                   justifyContent: "center",
                 }}
               >
-                {console.log("PET LOST" + this.state.showLostPets)}
-                {console.log("PET LOST An")}
-                {console.log(this.state.lostPets)}
                 {this.state.lostPets.length > 0 && this.state.showLostPets ? (
                   <PetLostButton
                     navigation={this.props.navigation}

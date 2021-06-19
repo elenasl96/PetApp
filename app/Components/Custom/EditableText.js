@@ -46,7 +46,6 @@ class EditableText extends React.Component {
     const newText = this.state.newText;
     if (oldText != newText) {
       // update if there is some change
-      console.log("new text!!");
       this.setState({ oldText: newText });
       this.updateDb(newText);
     }

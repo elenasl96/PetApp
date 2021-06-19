@@ -35,7 +35,6 @@ const dbUser = {
         return user;
       })
       .catch(function (error) {
-        console.log("Error getting documents");
       });
   },
 
@@ -71,10 +70,8 @@ const dbUser = {
                 .doc(uid)
                 .delete()
                 .then(function () {
-                  //console.log("delete user");
                 })
                 .catch(function (error) {
-                  //console.error("Error removing document: ", error);
                 });
               });
               }); 
@@ -84,10 +81,8 @@ const dbUser = {
                 .doc(uid)
                 .delete()
                 .then(function () {
-                  //console.log("delete user");
                 })
                 .catch(function (error) {
-                  console.error("Error removing document: ", error);
                 });
               });
               }

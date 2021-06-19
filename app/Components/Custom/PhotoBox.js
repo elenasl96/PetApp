@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as MediaLibrary from "expo-media-library";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "./ContextProvider";
 import storageManager from "../../firebase/storage/Storage";
 import dbUserAnimal from "../../firebase/database/functions/DbUserAnimal";
 import dbPlace from "../../firebase/database/functions/DbPlace";
@@ -55,15 +55,12 @@ class PhotoBox extends React.Component {
     if (status !== "granted") {
       alert("Sorry, we need gallery roll permissions to make this work!");
     } else {
-      console.log("Gallery permissions granted");
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
         allowsEditing: true,
         aspect: [4, 3],
         quality: 1,
       });
-      console.log(result);
-
       if (!result.cancelled) {
         if (this.props.isUpdate) {
           if (this.state.mounted) {
@@ -89,7 +86,6 @@ class PhotoBox extends React.Component {
     if (status !== "granted") {
       alert("Sorry, we need camera roll permissions to make this work!");
     } else {
-      console.log("Camera permissions granted");
       let result = await ImagePicker.launchCameraAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
         allowsEditing: true,

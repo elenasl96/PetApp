@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import dbNews from "../../firebase/database/functions/DbNews";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "./ContextProvider";
 import { AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import EditableText from "./EditableText";
@@ -26,10 +26,8 @@ class News extends React.Component {
   };
 
   deleteNews = (pid, newsId) => {
-    //console.log(pid, newsId);
     dbNews.deleteNews(pid, newsId).then(() => {
       let updatedNews = this.state.news.filter((news) => news.id !== newsId);
-      //console.log(updatedNews);
       this.setState({ news: updatedNews });
     });
   };
@@ -45,7 +43,6 @@ class News extends React.Component {
           return news;
         });
       });
-      //console.log(newsPromises);
       Promise.all(newsPromises).then((news) => {
         this.setState({ news: news });
       });
@@ -59,8 +56,6 @@ class News extends React.Component {
   render() {
     const isEditable = this.props.isEditable;
     if (this.state.news.length > 0) {
-      console.log("HAVE NEWS");
-      console.log(this.state.news);
       return this.state.news.map((newsObject) => (
         <View key={newsObject.id} style={styles.feedContainer}>
           <View style={styles.feed}>

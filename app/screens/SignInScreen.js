@@ -18,7 +18,7 @@ import "firebase/firestore";
 import * as Facebook from "expo-facebook";
 import dbUser from "../firebase/database/functions/DbUser";
 import mainStyle from "../styles/MainStyle";
-import { AuthContext } from "../components/custom/AuthContext";
+import { AuthContext } from "../components/custom/ContextProvider";
 
 class SignInScreen extends React.Component {
   static contextType = AuthContext;

@@ -53,7 +53,6 @@ const dbLostPet = {
         return notifications;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
       });
   },
 
@@ -71,7 +70,6 @@ const dbLostPet = {
         return notifications;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
       });
   },
 
@@ -101,7 +99,6 @@ const dbLostPet = {
         return notification;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
       });
   },
 
@@ -111,10 +108,8 @@ const dbLostPet = {
       .doc(lid)
       .delete()
       .then(function () {
-        //console.log("Document successfully deleted!");
       })
       .catch(function (error) {
-        console.error("Error removing document: ", error);
       });
   },
 
@@ -123,7 +118,6 @@ const dbLostPet = {
     const query = lostPets.where("uid", "==", uid);
     query.get().then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
-        //console.log(uid);
         doc.ref.delete();
       });
     });
@@ -176,7 +170,6 @@ const dbLostPet = {
         return notifications;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
       });
   },
 
@@ -194,7 +187,6 @@ const dbLostPet = {
         return notifications;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
       });
   },
 
@@ -223,7 +215,6 @@ const dbLostPet = {
         return notification;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
       });
   },
 
@@ -233,10 +224,8 @@ const dbLostPet = {
       .doc(lid)
       .delete()
       .then(function () {
-        //console.log("Document successfully deleted!");
       })
       .catch(function (error) {
-        console.error("Error removing document: ", error);
       });
   },
 
@@ -245,7 +234,6 @@ const dbLostPet = {
     const query = lostPets.where("uid", "==", uid);
     query.get().then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
-        //console.log(uid);
         doc.ref.delete();
       });
     });
@@ -269,7 +257,6 @@ const dbLostPet = {
         return notifications;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
       });
   },
 };

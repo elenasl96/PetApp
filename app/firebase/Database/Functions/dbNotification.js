@@ -24,7 +24,6 @@ const dbNotification = {
           return notifications;
         })
         .catch(function (error) {
-          console.log("Error getting documents: ", error);
         });
     },
 
@@ -37,8 +36,6 @@ const dbNotification = {
         .doc(nid)
         .get()
         .then(function (doc) {
-          // doc.data() is never undefined for query doc snapshots
-          //console.log(doc.id, " => ", doc.data());
           let data = doc.data();
           notification = new Notification(
             data.title,
@@ -48,7 +45,6 @@ const dbNotification = {
           return notification;
         })
         .catch(function (error) {
-          console.log("Error getting documents: ", error);
         });
     },
 
@@ -60,10 +56,8 @@ const dbNotification = {
         .doc(nid)
         .delete()
         .then(function () {
-         //console.log("delete notification");
         })
         .catch(function (error) {
-          console.error("Error removing document: ", error);
         });
     },
 
@@ -73,13 +67,10 @@ const dbNotification = {
           .doc(uid)
           .get()
           .then(function (doc) {
-            // doc.data() is never undefined for query doc snapshots
             let token = doc.data().notificationtoken;
-            //console.log(doc.id, " => ", doc.data());
             return token;
           })
           .catch(function (error) {
-            console.log("Error getting documents: ", error);
           });
       },
 

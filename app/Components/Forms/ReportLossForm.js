@@ -6,12 +6,9 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  KeyboardAvoidingView,
   Modal,
 } from "react-native";
-import dbLostPet from "../../firebase/database/functions/DbLostPet";
-import { AuthContext } from "../custom/AuthContext";
-import { withNavigation } from "react-navigation";
+import { AuthContext } from "../custom/ContextProvider";
 import mainStyle from "../../styles/MainStyle";
 import { ScrollView } from "react-native-gesture-handler";
 import PhotoBox from "../custom/PhotoBox";
@@ -19,7 +16,6 @@ import { Picker } from "@react-native-picker/picker";
 import constants from "../../shared/Constants";
 import validator from "../../shared/Validation";
 import LostPetNotify from "../../firebase/database/objects/LostPetNotify";
-import MatchPetsModal from "../custom/MatchPetsModal";
 import PetLostButton from "../buttons/PetLostButton";
 import LostPetSeen from "../../firebase/database/objects/LostPetSeen";
 import NotifySightButton from "../buttons/NotifySightButton";

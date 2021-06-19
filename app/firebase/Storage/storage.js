@@ -52,9 +52,7 @@ const storageManager = {
         xhr.send();
         return url;
       })
-      .catch(function (error) {
-        console.log("error");
-      });
+      .catch(function (error) {});
   },
 
   deleteFile: function (url) {
@@ -65,13 +63,8 @@ const storageManager = {
     // Delete the file
     storageRef
       .delete()
-      .then(() => {
-        console.log("File deleted successfully");
-      })
-      .catch((error) => {
-        console.log("Uh-oh, an error occurred!");
-      });
-    // [END storage_delete_file]
+      .then(() => {})
+      .catch((error) => {});
   },
 };
 

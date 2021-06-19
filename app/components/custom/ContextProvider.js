@@ -4,7 +4,7 @@ import * as GoogleSignIn from "expo-google-sign-in";
 
 export const AuthContext = React.createContext();
 
-class AuthContextProvider extends Component {
+class ContextProvider extends Component {
   state = {
     user: null,
     loading: false,
@@ -213,4 +213,4 @@ class AuthContextProvider extends Component {
   }
 }
 
-export default AuthContextProvider;
+export default ContextProvider;

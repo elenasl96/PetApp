@@ -11,7 +11,7 @@ import {
 import dbPlace from "../../firebase/database/functions/DbPlace";
 import storageManager from "../../firebase/storage/Storage";
 import PhotoBox from "../custom/PhotoBox";
-import { AuthContext } from "../custom/AuthContext";
+import { AuthContext } from "../custom/ContextProvider";
 
 import mainStyle from "../../styles/MainStyle";
 import * as Location from "expo-location";
@@ -64,10 +64,7 @@ export default class AddPlaceForm extends React.Component {
       }
       const response = await fetch(this.state.photo);
       const file = await response.blob();
-      Location.geocodeAsync(this.state.address).then((coordinates) => {
-        console.log("latitude");
-        console.log(coordinates[0].latitude);
-
+      Location.geocodeAsync(this.state.address).then((coordinates) => {ù
         storageManager
           .toStorage(this.context.uid, file, "places")
           .then((url) => {

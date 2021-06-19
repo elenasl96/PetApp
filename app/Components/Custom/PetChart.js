@@ -8,9 +8,8 @@ import {
   TextInput,
 } from "react-native";
 import dbUserAnimal from "../../firebase/database/functions/DbUserAnimal";
-import utils from "../../shared/Utilities";
 import mainStyle from "../../styles/MainStyle";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "./ContextProvider";
 
 import { LineChart } from "react-native-chart-kit";
 import { AntDesign } from "@expo/vector-icons";
@@ -97,7 +96,6 @@ class Chart extends React.Component {
         errors["samples"] = "Sample must be a number";
       }
     }
-    //console.log(errors);
     if (this.state.mounted) {
       this.setState({ errors: errors });
     }
@@ -106,7 +104,6 @@ class Chart extends React.Component {
 
   addPetStatSample = () => {
     if (this.handleValidation()) {
-      //console.log("Valid sample");
       let errors = {};
       errors["samples"] = null;
 
@@ -125,13 +122,6 @@ class Chart extends React.Component {
         this.state.newtype,
         Number(this.state.newdata)
       );
-      console.log(
-        "Added new sample with value: " +
-          this.state.newdata +
-          " and label: " +
-          utils.timestamp()
-      );
-
       if (this.state.mounted) {
         this.setState({ errors: errors });
       }

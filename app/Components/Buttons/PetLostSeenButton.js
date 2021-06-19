@@ -6,7 +6,7 @@ import {
   View,
 } from "react-native";
 import dbLostPet from "../../firebase/database/functions/DbLostPet";
-import { AuthContext } from "../custom/AuthContext";
+import { AuthContext } from "../custom/ContextProvider";
 import { Entypo } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 

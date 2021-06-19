@@ -8,7 +8,7 @@ import {
   Text,
   StyleSheet,
 } from "react-native";
-import { AuthContext } from "../custom/AuthContext";
+import { AuthContext } from "../custom/ContextProvider";
 import mainStyle from "../../styles/MainStyle";
 
 export default class FilterButton extends React.Component {
