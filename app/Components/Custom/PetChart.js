@@ -201,7 +201,7 @@ class Chart extends React.Component {
     if (this.state.mounted) {
       this.setState({ errors: errors });
     }
-    //db.deleteAnimalStatSample(this.context.uid,this.props.navigation.state.params.petID,this.state.newtype,id);
+
   };
 
   render() {
@@ -301,7 +301,7 @@ class Chart extends React.Component {
               />
             </Text>
             <Text style={{ marginHorizontal: 15, marginBottom: 10 }}>
-              Add new sample {this.state.newtype}
+              Add new sample {this.state.newtype} {this.state.newtype == "weight" ? "[kg]" : "[cm]"}
             </Text>
           </View>
           <View

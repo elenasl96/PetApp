@@ -89,7 +89,7 @@ class ReportLossForm extends Component {
         const response = await fetch(this.state.photo);
         file = await response.blob();
       }
-      storageManager.toStorage(this.context.uid, file, "pets").then((url) => {
+      storageManager.toStorage(this.context.uid, file, "lostpets").then((url) => {
         Location.geocodeAsync(place).then(async (coordinates) => {
           console.log("coordinates");
           console.log(coordinates);
@@ -139,7 +139,7 @@ class ReportLossForm extends Component {
           file = await response.blob();
         }
 
-        storageManager.toStorage(this.context.uid, file, "pets").then((url) => {
+        storageManager.toStorage(this.context.uid, file, "lostpets").then((url) => {
           console.log("coordinates");
           console.log(coordinates);
           let lostPet = new LostPetSeen(

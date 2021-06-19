@@ -4,7 +4,7 @@ it('test report validation 1', () => {
     expect(validator.isValid(validator.handleReportValidation(3334141773,"sight","matteo","place","city"))).toBeTruthy();
 })
 
-it('test report validation 2', () => { // false because text must not be an empty string
+it('test report validation 2', () => { // false because telephone must not be an empty string
     expect(validator.isValid(validator.handleReportValidation("number","sight"))).toBeFalsy();
 })
 
@@ -12,7 +12,7 @@ it('test report validation 3', () => { // false because place must not be an emp
     expect(validator.isValid(validator.handleReportValidation(3334141773,"loss","matteo",null,"city"))).toBeFalsy();
 })
 
-it('test report validation 3', () => { // false because city must not be empty
+it('test report validation 4', () => { // false because city must not be empty
     expect(validator.isValid(validator.handleReportValidation(3334141773,"loss","matteo","place",null))).toBeFalsy();
 })
 
