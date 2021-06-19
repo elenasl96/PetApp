@@ -17,13 +17,10 @@ class FeedBox extends React.Component {
     const feeds = this.props.feeds;
 
     let promises = feeds.map((feed, index) => {
-      //return dbFeed.getUserFeed(this.props.uid, feedID).then((feed) => {
       return (
         <LinearGradient
           key={index}
           style={styles.feed}
-          // Background Linear Gradient
-          //colors={["#caf0f8", "#48cae4", "#00b4d8"]}
           colors={["#fff", "#fff", feed.getColor(), feed.getColor()]}
           start={{ x: 0.8, y: 0 }}
           locations={[0, 0.1, 0.8, 1]}
@@ -52,7 +49,6 @@ class FeedBox extends React.Component {
   }
 
   render() {
-    //console.log("F");
     if (this.state.mounted) {
       return this.state.feeds;
     }

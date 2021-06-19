@@ -63,7 +63,6 @@ const dbUserAnimal = {
         return animals;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
       });
   },
 
@@ -90,7 +89,6 @@ const dbUserAnimal = {
         return animal;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
       });
   },
 
@@ -110,84 +108,8 @@ const dbUserAnimal = {
         return stats;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
       });
   },
-
-  /*
-  getAnimalStats: function (uid, aid) {
-    const users = firestore.collection("Users");
-    const animals = users.doc(uid).collection("Animals");
-    var stats = [];
-    return animals
-      .doc(aid)
-      .collection("Stats")
-      .get()
-      .then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          // doc.data() is never undefined for query doc snapshots
-          //console.log(doc.id, " => ", doc.data());
-          stats.push(doc.id);
-          //console.log(user);
-          return stats;
-        });
-        return stats;
-      })
-      .catch(function (error) {
-        console.log("Error getting documents: ", error);
-      });
-  },
-
-  getAnimalStat: function (uid, aid, stat) {
-    const users = firestore.collection("Users");
-    const animals = users.doc(uid).collection("Animals");
-    var stat;
-    return animals
-      .doc(aid)
-      .collection("Stats")
-      .doc(stat)
-      .get()
-      .then(function (doc) {
-        // doc.data() is never undefined for query doc snapshots
-        //console.log(doc.id, " => ", doc.data());
-        stat = doc.data().name;
-        //console.log(user);
-        return stat;
-      })
-      .catch(function (error) {
-        console.log("Error getting documents: ", error);
-      });
-  },
-
-  getAnimalStatSampleByLabel: function (uid, aid, stat,label) {
-      const users = firestore.collection("Users");
-      const animals = users.doc(uid).collection("Animals");
-      var sample;
-      return animals
-        .doc(aid)
-        .collection("Stats")
-        .doc(stat)
-        .where("label","==",label)
-        .get()
-        .then(function (doc) {
-          // doc.data() is never undefined for query doc snapshots
-          //console.log(doc.id, " => ", doc.data());
-          sample = doc.id;
-          //console.log(user);
-          return sample;
-        })
-        .catch(function (error) {
-          console.log("Error getting documents: ", error);
-        });
-    },
-
-    deleteAnimalStatSampleByLabel: function(uid, aid, stat,label){
-       getAnimalStatSampleByLabel(uid, aid, stat,label).then((id)=>{
-         db.deleteAnimalStatSample(uid,aid,stat,id);
-       });
-    },
-
-    */
 
   getAnimalStatSamples: function (uid, aid, stat) {
     const stats = firestore
@@ -209,7 +131,6 @@ const dbUserAnimal = {
         return samples;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
       });
   },
 
@@ -231,7 +152,6 @@ const dbUserAnimal = {
         return sample;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
       });
   },
 
@@ -253,7 +173,6 @@ const dbUserAnimal = {
         return diseases;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
       });
   },
 
@@ -273,7 +192,6 @@ const dbUserAnimal = {
         return disease;
       })
       .catch(function (error) {
-        //console.log("Error getting documents: ", error);
       });
   },
 
@@ -296,7 +214,6 @@ const dbUserAnimal = {
         return diseases;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
       });
   },
 
@@ -311,10 +228,8 @@ const dbUserAnimal = {
       .doc(id)
       .delete()
       .then(function () {
-        //console.log("delete animal disease");
       })
       .catch(function (error) {
-        console.error("Error removing document: ", error);
       });
   },
 
@@ -331,10 +246,8 @@ const dbUserAnimal = {
         .doc(id)
         .delete()
         .then(function () {
-          //console.log("Document successfully deleted!");
         })
         .catch(function (error) {
-          console.error("Error removing document: ", error);
         });
     });
   },
@@ -357,10 +270,8 @@ const dbUserAnimal = {
           .doc(id)
           .delete()
           .then(function () {
-            //console.log("delete stat");
           })
           .catch(function (error) {
-            console.error("Error removing document: ", error);
           });
       });
     });
@@ -378,10 +289,8 @@ const dbUserAnimal = {
       .doc(id)
       .delete()
       .then(function () {
-        //console.log("delete sample");
       })
       .catch(function (error) {
-        console.error("Error removing document: ", error);
       });
   },
 
@@ -409,10 +318,8 @@ const dbUserAnimal = {
             .doc(aid)
             .delete()
             .then(function () {
-              //console.log("delete animal");
             })
             .catch(function (error) {
-              console.error("Error removing document: ", error);
             });
         });
       });
@@ -435,7 +342,6 @@ const dbUserAnimal = {
         return descriptions;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
       });
   },
 

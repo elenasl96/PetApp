@@ -3,15 +3,12 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   Image,
-  TouchableHighlight,
   ScrollView,
-  ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import firebase from "firebase";
-import { AuthContext } from "../components/custom/AuthContext";
+import { AuthContext } from "../components/custom/ContextProvider";
 import PetButton from "../components/buttons/PetButton";
 import dbUserAnimal from "../firebase/database/functions/DbUserAnimal";
 import dbFeed from "../firebase/database/functions/DbFeed";
@@ -20,7 +17,6 @@ import PlaceButton from "../components/buttons/PlaceButton";
 import FeedBox from "../components/custom/FeedBox";
 import NotificationsHandler from "../components/custom/NotificationsHandler";
 import { AntDesign } from "@expo/vector-icons";
-import { Entypo } from "@expo/vector-icons";
 import AddPetForm from "../components/forms/AddPetForm";
 import dbAdoptableAnimal from "../firebase/database/functions/DbAdoptableAnimal";
 import LoadingOverlay from "../components/custom/LoadingOverlay";

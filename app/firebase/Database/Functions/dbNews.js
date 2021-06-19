@@ -24,7 +24,6 @@ const dbNews = {
         return news;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
       });
   },
 
@@ -36,10 +35,8 @@ const dbNews = {
       .doc(newsid)
       .delete()
       .then(function () {
-        //console.log("Document successfully deleted!");
       })
       .catch(function (error) {
-        console.error("Error removing document: ", error);
       });
   },
 
@@ -57,7 +54,6 @@ const dbNews = {
         return news;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
       });
   },
 

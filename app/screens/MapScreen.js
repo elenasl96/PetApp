@@ -6,20 +6,16 @@ import {
   View,
   Dimensions,
   Image,
-  Button,
   TouchableHighlight,
 } from "react-native";
 import * as Location from "expo-location";
 import { Marker, Callout, CustomCalloutView } from "react-native-maps";
 import dbPlace from "../firebase/database/functions/DbPlace";
-import * as Permissions from "expo-permissions";
 import { Feather } from "@expo/vector-icons";
 import { TextInput } from "react-native-gesture-handler";
-import mainStyle from "../styles/MainStyle";
 import utils from "../shared/Utilities";
-import { AuthContext } from "../components/custom/AuthContext";
+import { AuthContext } from "../components/custom/ContextProvider";
 import * as Device from "expo-device";
-import PlacePage from "./PlacePage";
 
 export default class MapScreen extends React.Component {
   state = {
@@ -41,11 +37,6 @@ export default class MapScreen extends React.Component {
   };
 
   static contextType = AuthContext;
-
-  /*
-  constructor() {
-    super();
-  } */
 
   componentDidMount() {
     this.setState({ mounted: true });
@@ -112,7 +103,6 @@ export default class MapScreen extends React.Component {
           this.state.map.animateToRegion(regionUpdate, 1000);
         })
         .catch((error) => {
-          console.log(error);
         });
     } else {
       throw new Error("Location permission not granted");

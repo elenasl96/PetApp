@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet, ActivityIndicator } from "react-native";
 import firebase from "firebase";
-import { AuthContext } from "../components/custom/AuthContext";
+import { AuthContext } from "../components/custom/ContextProvider";
 import dbUser from "../firebase/database/functions/DbUser";
 class LoadingScreen extends React.Component {
   static contextType = AuthContext;

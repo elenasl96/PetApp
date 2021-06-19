@@ -7,7 +7,7 @@ import {
   ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
-import { AuthContext } from "../components/custom/AuthContext";
+import { AuthContext } from "../components/custom/ContextProvider";
 import dbPlace from "../firebase/database/functions/DbPlace.js";
 import PlaceButton from "../components/buttons/PlaceButton";
 import AddPlaceForm from "../components/forms/AddPlaceForm";

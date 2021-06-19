@@ -5,7 +5,7 @@ import * as firebase from "firebase";
 import firebaseConfig from "./app/firebase/FirebaseConfig.js";
 import AuthNavigator from "./app/components/navigators/AuthNavigator";
 import TabNavigator from "./app/components/navigators/TabNavigator.js";
-import AuthContextProvider from "./app/components/custom/AuthContext.js";
+import AuthContextProvider from "./app/components/custom/ContextProvider.js";
 import TabBusinessNavigator from "./app/components/navigators/TabBusinessNavigator";
 
 if (!firebase.apps.length) {

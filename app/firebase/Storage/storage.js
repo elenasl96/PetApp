@@ -24,7 +24,6 @@ const storageManager = {
       .then(() => {
         return storageManager.fromStorage(section,filename).then((url) => {
           urlToStore = url;
-          //console.log("url:" + urlToStore);
           return urlToStore;
         });
       });
@@ -48,7 +47,6 @@ const storageManager = {
         return url;
       })
       .catch(function (error) {
-        console.log("error");
       });
   },
 
@@ -59,11 +57,8 @@ const storageManager = {
 
       // Delete the file
       storageRef.delete().then(() => {
-        console.log("File deleted successfully");
       }).catch((error) => {
-        console.log("Uh-oh, an error occurred!");
       });
-      // [END storage_delete_file]
     },
 
 

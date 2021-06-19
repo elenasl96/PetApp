@@ -10,7 +10,7 @@ import {
 import dbUserAnimal from "../../firebase/database/functions/DbUserAnimal";
 import storageManager from "../../firebase/storage/Storage";
 import PhotoBox from "../custom/PhotoBox";
-import { AuthContext } from "../custom/AuthContext";
+import { AuthContext } from "../custom/ContextProvider";
 import { withNavigation } from "react-navigation";
 import { Picker } from "@react-native-picker/picker";
 import constants from "../../shared/Constants";

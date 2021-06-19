@@ -20,18 +20,15 @@ getFeedsByFilter(pet, filter, value, id) {
             feeds.push(feed);
             return feeds;
           });
-          console.log("GET FEEDS BY FILTER: " + filter + " " + feeds);
           return feeds;
 
         })
         .catch(function (error) {
-          console.log("Error getting documents: ", error);
         })
     );
   },
 
   getGeneralFeeds(id) {
-    //console.log( "id is a string? " + id instanceof String);
     const general = firestore.collection("Feed").doc("General").collection(id);
     var feeds = [];
     return general
@@ -43,11 +40,9 @@ getFeedsByFilter(pet, filter, value, id) {
           feeds.push(feed);
           return feeds;
         });
-        //console.log("GENERAL: " + feeds);
         return feeds;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
       });
   },
 
@@ -95,7 +90,6 @@ getFeedsByFilter(pet, filter, value, id) {
         return feed;
       })
       .catch(function (error) {
-        //console.log("Error getting documents: ", error);
       });
   },
 
@@ -109,15 +103,12 @@ getFeedsByFilter(pet, filter, value, id) {
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
           feeds.push(doc.id);
-          //let feed = doc.data()
-          //feeds.push(new Feed(feed.title,feed.text,feed.type));
           return feeds;
         });
 
         return feeds;
       })
       .catch(function (error) {
-        //console.log("Error getting documents: ", error);
       });
   },
 
@@ -130,7 +121,6 @@ getFeedsByFilter(pet, filter, value, id) {
       .get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
-          //feeds.push(doc.id);
           let feed = doc.data()
           feeds.push(new Feed(feed.title,feed.text,feed.type));
           return feeds;
@@ -139,7 +129,6 @@ getFeedsByFilter(pet, filter, value, id) {
         return feeds;
       })
       .catch(function (error) {
-        //console.log("Error getting documents: ", error);
       });
   },
 
@@ -151,22 +140,12 @@ getFeedsByFilter(pet, filter, value, id) {
       .doc(fid)
       .delete()
       .then(function () {
-        //console.log("delete feed");
       })
       .catch(function (error) {
-        console.error("Error removing document: ", error);
       });
   },
 
   deleteUserFeeds: function (uid) {
-     /*
-      query = firestore.collection("Users").doc(uid).collection("Feed");
-      query.get().then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
-          doc.ref.delete();
-        });
-      });
-      */
      var promisesFeeds;
      return dbFeed.getUserFeedsIds(uid).then(function (feeds) {
         if (feeds.length != 0) {
@@ -205,7 +184,6 @@ getFeedsByFilter(pet, filter, value, id) {
         return animals;
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
       });
   },
 
@@ -214,7 +192,6 @@ getFeedsByFilter(pet, filter, value, id) {
   filtered = [];
     for( var i = 0; i < arr.length; i++){ 
       if ( arr[i].breed != "None" ) { 
-          //arr.splice(i, 1);
           filtered.push(arr[i]);
       }
   }
@@ -280,7 +257,6 @@ getFeedsByFilter(pet, filter, value, id) {
         let promiseGeneral = dbFeed.getRandomGeneralFeeds(id, num);
 
         return Promise.all([promiseBreed,promiseAge,promiseSize,promiseGeneral]).then((feedsFetched)=>{  
-          console.log("FEEDS FETCHED " + feedsFetched);
           let i = 0;
           let num_notgeneral = 5 - num;
           feedsFetched.forEach((feed)=>{
@@ -439,9 +415,7 @@ getFeedsByFilter(pet, filter, value, id) {
         feed = new Feed(feed.title,feed.text,feed.type);
         feeds.splice(ind, 1);
         feedsTarget.push(feed);
-        //dbFeed.addUserFeed(uid, feed.title, feed.text, feed.type);
       }
-      console.log("GENERAL FEEDS: " + feedsTarget);
       return feedsTarget;
     });
   },

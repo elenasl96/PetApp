@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useContext } from "react";
 import {Platform } from "react-native";
 import dbNotification from "../../firebase/database/functions/DbNotification";
 import dbUser from "../../firebase/database/functions/DbUser";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "./ContextProvider";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -33,7 +33,6 @@ export default function NotificationsHandler() {
     // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log(response);
       });
 
     return () => {
@@ -88,7 +87,6 @@ export default function NotificationsHandler() {
         return;
       }
       token = (await Notifications.getExpoPushTokenAsync()).data;
-      console.log(token);
 
       if (Platform.OS === "android") {
         Notifications.setNotificationChannelAsync("default", {

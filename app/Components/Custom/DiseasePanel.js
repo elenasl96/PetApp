@@ -12,7 +12,7 @@ import mainStyle from "../../styles/MainStyle";
 import dbUserAnimal from "../../firebase/database/functions/DbUserAnimal";
 import dbAdoptableAnimal from "../../firebase/database/functions/DbAdoptableAnimal";
 import constants from "../../shared/Constants";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "./ContextProvider";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
@@ -55,7 +55,6 @@ class DiseasePanel extends React.Component {
     } else {
       const pid = this.props.pid;
       dbAdoptableAnimal.getAdoptableAnimalDiseases(pid, petID).then((DIDs) => {
-        console.log("DIDs: " + DIDs);
         if (DIDs.length != 0) {
           DIDs.map((did) => {
             dbAdoptableAnimal
@@ -98,7 +97,6 @@ class DiseasePanel extends React.Component {
 
     if (diseases.includes(disease)) {
       errors["addDisease"] = "Disease already present!";
-      console.log(errors["addDisease"]);
     } else {
       if (!this.props.isAdoptable) {
         dbUserAnimal.addAnimalDisease(
@@ -179,7 +177,6 @@ class DiseasePanel extends React.Component {
     const isEditable = this.props.isEditable;
 
     let diseases = temp.map((s) => {
-      //console.log("s: "+ s);
       return (
         <TouchableHighlight
           style={styles.disease}

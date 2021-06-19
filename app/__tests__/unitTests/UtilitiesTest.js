@@ -1,9 +1,9 @@
 import utils from "../../shared/Utilities";
 
 test("utils test", () => {
-  expect(utils.getAgeString(4)).toBe("Young");
-  expect(utils.getAgeString(8)).toBe("Medium");
-  expect(utils.getAgeString(16)).toBe("Old");
+  expect(utils.getAgeString(2017)).toBe("Young");
+  expect(utils.getAgeString(2013)).toBe("Medium");
+  expect(utils.getAgeString(2005)).toBe("Old");
   expect(utils.timestamp()).toBeDefined();
   expect(utils.timestampAccurate()).toBeDefined();
 
