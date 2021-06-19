@@ -197,7 +197,7 @@ class VetScreen extends React.Component {
             section={"places"}
             setPhoto={this.setPhoto}
             isUpdate={true}
-            photo={photo}
+            photo={place.photo}
             visible={this.state.showPhotoBox}
             close={() => {
               this.setState({ showPhotoBox: false });
