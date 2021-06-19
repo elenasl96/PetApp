@@ -126,7 +126,7 @@ class VetScreen extends React.Component {
   }
 
   openInMap = () => {
-    this.props.navigation.push("Map", {
+    this.props.navigation.navigate("MapHome", {
       currentPlace: this.props.navigation.state.params.place,
     });
   };

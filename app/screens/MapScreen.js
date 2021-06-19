@@ -40,7 +40,9 @@ export default class MapScreen extends React.Component {
 
   componentDidMount() {
     this.setState({ mounted: true });
-    if (this.props.navigation.state.params == null && Device.isDevice) {
+    if (this.props.navigation.state.params == undefined && Device.isDevice) {
+      console.log("current position");
+      console.log(this.props.navigation.state.params);
       this.setMapOnCurrentPosition().then(() => {
         this.getAllPlaces();
       });
@@ -66,11 +68,13 @@ export default class MapScreen extends React.Component {
   }
 
   componentDidUpdate() {
+    console.log(this.props.navigation.state);
     if (
       this.state.places.length > 0 &&
       this.props.navigation.state.params &&
       this.props.navigation.state.params.currentPlace
     ) {
+      console.log("update");
       const currentPlace = this.props.navigation.state.params.currentPlace;
       this.props.navigation.state.params = null;
       this.focusMapOn(currentPlace);

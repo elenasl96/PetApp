@@ -10,7 +10,7 @@ import MapScreen from "../../screens/MapScreen";
 
 const MapNavigator = createStackNavigator(
   {
-    Map: {
+    MapHome: {
       screen: MapScreen,
       // Optional: When deep linking or using react-navigation in a web app, this path is used:
       path: "home",
@@ -52,7 +52,7 @@ const MapNavigator = createStackNavigator(
     },
   },
   {
-    initialRouteName: "Map",
+    initialRouteName: "MapHome",
     /* The header config from HomeScreen is now here */
     defaultNavigationOptions: {
       headerTitle: () => <NavBar />,
