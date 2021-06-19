@@ -126,7 +126,7 @@ const validator = {
     }
 
     if (password == "" && signUpType == "email") {
-      errors["email"] = "Password cannot be empty";
+      errors["password"] = "Password cannot be empty";
     }
 
     if (userType == "") {

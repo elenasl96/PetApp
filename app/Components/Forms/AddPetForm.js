@@ -166,7 +166,9 @@ class AddPetForm extends React.Component {
                 />
               </View>
               {this.state.errors["name"] != null ? (
-                <Text style={styles.error}>{this.state.errors["name"]}</Text>
+                <Text style={mainStyles.error}>
+                  {this.state.errors["name"]}
+                </Text>
               ) : null}
 
               <View style={mainStyle.form}>
@@ -181,7 +183,7 @@ class AddPetForm extends React.Component {
               </View>
 
               {this.state.errors["age"] != null ? (
-                <Text style={styles.error}>{this.state.errors["age"]}</Text>
+                <Text style={mainStyles.error}>{this.state.errors["age"]}</Text>
               ) : null}
 
               <View style={mainStyle.form}>
@@ -245,17 +247,17 @@ class AddPetForm extends React.Component {
               ) : null}
 
               {this.state.errors["profile"] != null ? (
-                <Text style={styles.error}>{this.state.errors["profile"]}</Text>
+                <Text style={mainStyles.error}>
+                  {this.state.errors["profile"]}
+                </Text>
               ) : null}
 
-              <PhotoBox
-                setPhoto={this.setPhoto}
-                section={"pets"}
-                isUpdate={false}
-              ></PhotoBox>
+              <PhotoBox setPhoto={this.setPhoto} isUpdate={false}></PhotoBox>
 
               {this.state.errors["photo"] != null ? (
-                <Text style={styles.error}>{this.state.errors["photo"]}</Text>
+                <Text style={mainStyles.error}>
+                  {this.state.errors["photo"]}
+                </Text>
               ) : null}
 
               <TouchableOpacity

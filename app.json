@@ -38,7 +38,7 @@
         }
       },
       "googleServicesFile": "./google-services.json",
-      "permissions": [ "CAMERA", "WRITE_EXTERNAL_STORAGE","READ_EXTERNAL_STORAGE",  "CAMERA_ROLL" ]
+      "permissions": [ "CAMERA", "WRITE_EXTERNAL_STORAGE","READ_EXTERNAL_STORAGE",  "CAMERA_ROLL", "ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION" ]
     },
     "web": {
       "favicon": "./assets/favicon.png"

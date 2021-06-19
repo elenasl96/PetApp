@@ -86,25 +86,29 @@ class ReportLossForm extends Component {
         return;
       }
       let place = this.state.place + ", " + this.state.city;
-      Location.geocodeAsync(place).then((coordinates) => {
-        console.log("coordinates");
-        console.log(coordinates);
-        let lostPet = new LostPetNotify(
-          this.state.name,
-          this.state.photo,
-          this.state.size,
-          this.state.color,
-          this.state.breed,
-          this.state.notes,
-          place,
-          "",
-          this.context.uid,
-          this.state.email,
-          this.state.phone,
-          coordinates[0].latitude,
-          coordinates[0].longitude
-        );
-        this.props.sendForm(lostPet, false);
+      const response = await fetch(this.state.photo);
+      const file = await response.blob();
+      storageManager.toStorage(this.context.uid, file, "pets").then((url) => {
+        Location.geocodeAsync(place).then((coordinates) => {
+          console.log("coordinates");
+          console.log(coordinates);
+          let lostPet = new LostPetNotify(
+            this.state.name,
+            url,
+            this.state.size,
+            this.state.color,
+            this.state.breed,
+            this.state.notes,
+            place,
+            "",
+            this.context.uid,
+            this.state.email,
+            this.state.phone,
+            coordinates[0].latitude,
+            coordinates[0].longitude
+          );
+          this.props.sendForm(lostPet, false);
+        });
       });
     }
   };
@@ -127,23 +131,27 @@ class ReportLossForm extends Component {
       }
       let place = this.state.place + ", " + this.state.city;
       Location.geocodeAsync(place).then((coordinates) => {
-        console.log("coordinates");
-        console.log(coordinates);
-        let lostPet = new LostPetSeen(
-          this.state.photo,
-          this.state.size,
-          this.state.color,
-          this.state.breed,
-          this.state.notes,
-          place,
-          "",
-          this.context.uid,
-          this.state.email,
-          this.state.phone,
-          coordinates[0].latitude,
-          coordinates[0].longitude
-        );
-        this.props.sendForm(lostPet, true);
+        const response = await fetch(this.state.photo);
+        const file = await response.blob();
+        storageManager.toStorage(this.context.uid, file, "pets").then((url) => {
+          console.log("coordinates");
+          console.log(coordinates);
+          let lostPet = new LostPetSeen(
+            url,
+            this.state.size,
+            this.state.color,
+            this.state.breed,
+            this.state.notes,
+            place,
+            "",
+            this.context.uid,
+            this.state.email,
+            this.state.phone,
+            coordinates[0].latitude,
+            coordinates[0].longitude
+          );
+          this.props.sendForm(lostPet, true);
+        });
       });
     }
   };
@@ -359,11 +367,7 @@ class ReportLossForm extends Component {
               ) : null}
 
               {this.props.pet == null ? (
-                <PhotoBox
-                  setPhoto={this.setPhoto}
-                  section={"pets"}
-                  isUpdate={false}
-                ></PhotoBox>
+                <PhotoBox setPhoto={this.setPhoto} isUpdate={false}></PhotoBox>
               ) : null}
 
               {this.props.sight && pet == null ? (

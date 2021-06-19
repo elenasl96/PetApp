@@ -9,8 +9,8 @@ export default StyleSheet.create({
     justifyContent: "center",
   },
   logo: {
-    width: 300,
-    height: 300,
+    width: 200,
+    height: 200,
     marginTop: 30,
     alignSelf: "center",
   },

@@ -157,7 +157,7 @@ class PetScreen extends React.Component {
                     </TouchableOpacity>
                   ) : null}
 
-                  {!isAdoptable ? (
+                  {false ? (
                     <TouchableOpacity
                       style={[mainStyle.roundButton, { marginLeft: 20 }]}
                       onPress={() => {
@@ -172,7 +172,7 @@ class PetScreen extends React.Component {
 
                   {!isAdoptable ? (
                     <TouchableOpacity
-                      style={[mainStyle.roundButton, { marginLeft: 60 }]}
+                      style={[mainStyle.roundButton, { marginLeft: 30 }]}
                       onPress={() => {
                         this.setState({ showPhotoBox: true });
                       }}
@@ -232,19 +232,25 @@ class PetScreen extends React.Component {
               </View>
             </View>
 
-          
             {isAdoptable ? (
               <>
-              {!isEditable ? (
-              <View style={styles.profile}>
-                <Text style={styles.title}>Profile</Text>
-                <Text>{pet.profile}</Text>
-              </View> ) : (
-              <View style={styles.profile}>
-              <Text style={styles.title}>Profile</Text>
-              <EditableText text = {pet.profile} aid = {petID} field = {"profile"} pid = {pid} ></EditableText>
-            </View> )}
-              </> 
+                {!isEditable ? (
+                  <View style={styles.profile}>
+                    <Text style={styles.title}>Profile</Text>
+                    <Text>{pet.profile}</Text>
+                  </View>
+                ) : (
+                  <View style={styles.profile}>
+                    <Text style={styles.title}>Profile</Text>
+                    <EditableText
+                      text={pet.profile}
+                      aid={petID}
+                      field={"profile"}
+                      pid={pid}
+                    ></EditableText>
+                  </View>
+                )}
+              </>
             ) : null}
 
             <View style={{ flex: 1, flexDirection: "row", flexWrap: "wrap" }}>

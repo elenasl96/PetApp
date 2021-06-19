@@ -26,18 +26,19 @@ import { ScrollView } from "react-native-gesture-handler";
 class SignUpScreen extends React.Component {
   static contextType = AuthContext;
   state = {
-    name: null,
-    email: null,
-    password: null,
-    address: null,
-    type: null,
-    photo: null,
+    name: "",
+    email: "",
+    password: "",
+    address: "",
+    type: "",
+    photo: "",
     errorMessage: null,
     loading: false,
     mounted: true,
     emailSignup: false,
     facebookSignup: false,
     googleSignup: false,
+    errors: [],
   };
 
   componentDidMount() {
@@ -76,15 +77,20 @@ class SignUpScreen extends React.Component {
           .createUserWithEmailAndPassword(this.state.email, this.state.password)
           .then((credential) => {
             let user = credential.user;
-            dbUser
-              .addUser(
-                user.uid,
-                this.state.name,
-                this.state.photo,
-                this.state.type,
-                this.state.address
-              )
-              .then(() => {
+            const response = await fetch(this.state.photo);
+            const file = await response.blob();
+            storageManager
+              .toStorage(this.context.uid, file, "pets")
+              .then((url) => {
+                dbUser
+                  .addUser(
+                    user.uid,
+                    this.state.name,
+                    url,
+                    this.state.type,
+                    this.state.address
+                  )
+                  .then(() => {});
               });
           })
           .catch((error) => {
@@ -193,92 +199,120 @@ class SignUpScreen extends React.Component {
             >
               <Image
                 style={mainStyle.logo}
-                source={require("../../assets/images/logo/logo3.png")}
+                source={require("../../assets/icon.png")}
               ></Image>
-              {this.state.emailSignup ? (
-                <View style={mainStyle.form}>
-                  <TextInput
-                    style={mainStyle.inputText}
-                    placeholder="Name"
-                    placeholderTextColor="#616161"
-                    returnKeyType="next"
-                    textContentType="name"
-                    value={this.state.name}
-                    onChangeText={(name) => this.setState({ name })}
-                  />
-                </View>
-              ) : null}
+              <View style={{ width: 300, alignSelf: "center" }}>
+                {this.state.emailSignup ? (
+                  <View style={mainStyle.form}>
+                    <TextInput
+                      style={mainStyle.inputText}
+                      placeholder="Name"
+                      placeholderTextColor="#616161"
+                      returnKeyType="next"
+                      textContentType="name"
+                      value={this.state.name}
+                      onChangeText={(name) => this.setState({ name })}
+                    />
+                  </View>
+                ) : null}
 
-              {this.state.emailSignup ? (
-                <View style={mainStyle.form}>
-                  <TextInput
-                    style={mainStyle.inputText}
-                    placeholder="Email"
-                    placeholderTextColor="#616161"
-                    returnKeyType="next"
-                    keyboardType="email-address"
-                    textContentType="emailAddress"
-                    value={this.state.email}
-                    onChangeText={(email) => this.setState({ email })}
-                  />
-                </View>
-              ) : null}
+                {this.state.errors["name"] != null ? (
+                  <Text style={mainStyle.error}>
+                    {this.state.errors["name"]}
+                  </Text>
+                ) : null}
 
-              {this.state.emailSignup ? (
-                <View style={mainStyle.form}>
-                  <TextInput
-                    style={mainStyle.inputText}
-                    placeholder="Password"
-                    placeholderTextColor="#616161"
-                    returnKeyType="done"
-                    textContentType="newPassword"
-                    secureTextEntry={true}
-                    value={this.state.password}
-                    onChangeText={(password) => this.setState({ password })}
-                  />
-                </View>
-              ) : null}
+                {this.state.emailSignup ? (
+                  <View style={mainStyle.form}>
+                    <TextInput
+                      style={mainStyle.inputText}
+                      placeholder="Email"
+                      placeholderTextColor="#616161"
+                      returnKeyType="next"
+                      keyboardType="email-address"
+                      textContentType="emailAddress"
+                      value={this.state.email}
+                      onChangeText={(email) => this.setState({ email })}
+                    />
+                  </View>
+                ) : null}
 
-              {this.state.emailSignup ? (
-                <PhotoBox setPhoto={this.setPhoto} isUpdate={false}></PhotoBox>
-              ) : null}
+                {this.state.errors["email"] != null ? (
+                  <Text style={mainStyle.error}>
+                    {this.state.errors["email"]}
+                  </Text>
+                ) : null}
 
-              {this.state.emailSignup ||
-              this.state.facebookSignup ||
-              this.state.googleSignup ? (
-                <View style={mainStyle.form}>
-                  <TextInput
-                    style={mainStyle.inputText}
-                    placeholder="Address"
-                    placeholderTextColor="#616161"
-                    returnKeyType="next"
-                    textContentType="addressCity"
-                    value={this.state.address}
-                    onChangeText={(address) => this.setState({ address })}
-                  />
-                </View>
-              ) : null}
+                {this.state.emailSignup ? (
+                  <View style={mainStyle.form}>
+                    <TextInput
+                      style={mainStyle.inputText}
+                      placeholder="Password"
+                      placeholderTextColor="#616161"
+                      returnKeyType="done"
+                      textContentType="newPassword"
+                      secureTextEntry={true}
+                      value={this.state.password}
+                      onChangeText={(password) => this.setState({ password })}
+                    />
+                  </View>
+                ) : null}
 
-              {this.state.emailSignup ||
-              this.state.facebookSignup ||
-              this.state.googleSignup ? (
-                <View style={mainStyle.form}>
-                  <Picker
-                    selectedValue={""}
-                    style={{ height: 50, width: "100%" }}
-                    onValueChange={(itemValue, itemIndex) =>
-                      this.setState({ type: itemValue })
-                    }
-                  >
-                    <Picker.Item label="Select user type" value="" />
-                    <Picker.Item label="Basic user" value="user" />
-                    <Picker.Item label="Business user" value="business" />
-                  </Picker>
-                </View>
-              ) : null}
+                {this.state.errors["password"] != null ? (
+                  <Text style={mainStyle.error}>
+                    {this.state.errors["password"]}
+                  </Text>
+                ) : null}
 
+                {this.state.emailSignup ? (
+                  <PhotoBox
+                    setPhoto={this.setPhoto}
+                    isUpdate={false}
+                  ></PhotoBox>
+                ) : null}
+
+                {this.state.emailSignup ||
+                this.state.facebookSignup ||
+                this.state.googleSignup ? (
+                  <View style={mainStyle.form}>
+                    <TextInput
+                      style={mainStyle.inputText}
+                      placeholder="Address"
+                      placeholderTextColor="#616161"
+                      returnKeyType="next"
+                      textContentType="addressCity"
+                      value={this.state.address}
+                      onChangeText={(address) => this.setState({ address })}
+                    />
+                  </View>
+                ) : null}
+
+                {this.state.errors["address"] != null ? (
+                  <Text style={mainStyle.error}>
+                    {this.state.errors["address"]}
+                  </Text>
+                ) : null}
+
+                {this.state.emailSignup ||
+                this.state.facebookSignup ||
+                this.state.googleSignup ? (
+                  <View style={mainStyle.form}>
+                    <Picker
+                      selectedValue={""}
+                      style={{ height: 50, width: "100%" }}
+                      onValueChange={(itemValue, itemIndex) =>
+                        this.setState({ type: itemValue })
+                      }
+                    >
+                      <Picker.Item label="Select user type" value="" />
+                      <Picker.Item label="Basic user" value="user" />
+                      <Picker.Item label="Business user" value="business" />
+                    </Picker>
+                  </View>
+                ) : null}
+              </View>
               {this.renderLoading()}
-              <Text style={styles.error}>{this.state.errorMessage}</Text>
+              <Text style={mainStyle.error}>{this.state.errorMessage}</Text>
               <TouchableOpacity onPress={this.signUpWithEmail.bind(this)}>
                 <View style={[styles.button, styles.emailButton]}>
                   <Text style={styles.text}>Sign Up with email</Text>
@@ -289,11 +323,11 @@ class SignUpScreen extends React.Component {
                   <Text style={styles.buttonText}>Signup with Facebook</Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={this.context.signInWithGoogle}>
+              {/*<TouchableOpacity onPress={this.context.signInWithGoogle}>
                 <View style={[styles.button, styles.googleButton]}>
                   <Text style={styles.buttonText}>Signup with Google</Text>
                 </View>
-              </TouchableOpacity>
+                  </TouchableOpacity> */}
               <View style={[styles.linkBox, mainStyle.link]}>
                 <Text
                   style={styles.text}

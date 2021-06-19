@@ -125,7 +125,9 @@ class SignInScreen extends React.Component {
         }}
       >
         <SafeAreaView style={{ flex: 1 }}>
-          <ScrollView>
+          <ScrollView
+            contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+          >
             <KeyboardAvoidingView
               style={mainStyle.container}
               //behavior={Platform.OS == "ios" ? "padding" : "height"}
@@ -134,7 +136,7 @@ class SignInScreen extends React.Component {
             >
               <Image
                 style={mainStyle.logo}
-                source={require("../../assets/images/logo/logo2.png")}
+                source={require("../../assets/icon.png")}
               ></Image>
               <View style={mainStyle.form}>
                 <TextInput
@@ -180,13 +182,14 @@ class SignInScreen extends React.Component {
                   <Text style={styles.lightText}>Continue with Facebook</Text>
                 </View>
               </TouchableOpacity>
+              {/*}
               <TouchableOpacity
               // onPress={this.context.signInWithGoogle}
               >
                 <View style={[styles.button, styles.googleButton]}>
                   <Text style={styles.lightText}>Continue with Google</Text>
                 </View>
-              </TouchableOpacity>
+      </TouchableOpacity> */}
 
               <View style={[styles.linkBox, mainStyle.link]}>
                 <Text
