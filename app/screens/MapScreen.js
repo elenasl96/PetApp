@@ -102,8 +102,7 @@ export default class MapScreen extends React.Component {
           };
           this.state.map.animateToRegion(regionUpdate, 1000);
         })
-        .catch((error) => {
-        });
+        .catch((error) => {});
     } else {
       throw new Error("Location permission not granted");
     }
@@ -288,6 +287,7 @@ export default class MapScreen extends React.Component {
             this.state.map = map;
           }}
           initialRegion={this.state.region}
+          maxZoomLevel={18}
           region={this.state.region}
           style={styles.mapStyle}
           onMapReady={this.getAllPlaces.bind(this)}
@@ -315,12 +315,7 @@ export default class MapScreen extends React.Component {
               onCalloutPress={() => this.showPlace(marker, index)}
               style={styles.marker}
             >
-              <Image
-                source={pins[marker.type]}
-                style={[
-                  styles.markerImage,
-                ]}
-              />
+              <Image source={pins[marker.type]} style={[styles.markerImage]} />
               <Callout>
                 <TouchableHighlight>
                   <View style={styles.infoWindow}>
