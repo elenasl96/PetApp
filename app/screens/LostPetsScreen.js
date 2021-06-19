@@ -176,7 +176,7 @@ export default class LostPetsScreen extends React.Component {
         lostPet.longitude
       )
       .then((doc) => {
-        this.context.lostPets.push(doc.id);
+        this.context.lostPets.unshift(doc.id);
         this.context.saveLostPets(this.context.lostPets);
         this.setState({
           showPetsMatched: false,
@@ -203,7 +203,7 @@ export default class LostPetsScreen extends React.Component {
         lostPet.longitude
       )
       .then((doc) => {
-        this.context.lostPetsSeen.push(doc.id);
+        this.context.lostPetsSeen.unshift(doc.id);
         this.context.saveLostPetsSeen(this.context.lostPetsSeen);
         this.setState({
           showPetsMatched: false,

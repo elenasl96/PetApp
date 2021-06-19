@@ -25,6 +25,7 @@ import LostPetSeen from "../../firebase/database/objects/LostPetSeen";
 import NotifySightButton from "../buttons/NotifySightButton";
 import * as Location from "expo-location";
 import MainStyle from "../../styles/MainStyle";
+import storageManager from "../../firebase/storage/Storage";
 
 class ReportLossForm extends Component {
   static contextType = AuthContext;
@@ -86,10 +87,14 @@ class ReportLossForm extends Component {
         return;
       }
       let place = this.state.place + ", " + this.state.city;
-      const response = await fetch(this.state.photo);
-      const file = await response.blob();
+      let file = null;
+      console.log(this.state.photo);
+      if (this.state.photo && this.state.photo !== "") {
+        const response = await fetch(this.state.photo);
+        file = await response.blob();
+      }
       storageManager.toStorage(this.context.uid, file, "pets").then((url) => {
-        Location.geocodeAsync(place).then((coordinates) => {
+        Location.geocodeAsync(place).then(async (coordinates) => {
           console.log("coordinates");
           console.log(coordinates);
           let lostPet = new LostPetNotify(
@@ -130,9 +135,14 @@ class ReportLossForm extends Component {
         return;
       }
       let place = this.state.place + ", " + this.state.city;
-      Location.geocodeAsync(place).then((coordinates) => {
-        const response = await fetch(this.state.photo);
-        const file = await response.blob();
+      Location.geocodeAsync(place).then(async (coordinates) => {
+        let file = null;
+        console.log(this.state.photo);
+        if (this.state.photo && this.state.photo !== "") {
+          const response = await fetch(this.state.photo);
+          file = await response.blob();
+        }
+
         storageManager.toStorage(this.context.uid, file, "pets").then((url) => {
           console.log("coordinates");
           console.log(coordinates);

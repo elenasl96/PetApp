@@ -22,6 +22,7 @@ import { AuthContext } from "../components/custom/AuthContext.js";
 import { Picker } from "@react-native-picker/picker";
 import validator from "../shared/Validation.js";
 import { ScrollView } from "react-native-gesture-handler";
+import storageManager from "../firebase/storage/Storage";
 
 class SignUpScreen extends React.Component {
   static contextType = AuthContext;
@@ -75,7 +76,7 @@ class SignUpScreen extends React.Component {
       if (validator.isValid(errors)) {
         await auth()
           .createUserWithEmailAndPassword(this.state.email, this.state.password)
-          .then((credential) => {
+          .then(async (credential) => {
             let user = credential.user;
             const response = await fetch(this.state.photo);
             const file = await response.blob();

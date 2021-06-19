@@ -295,20 +295,28 @@ class VetScreen extends React.Component {
             </ImageBackground>
           </View>
           <View style={styles.details}>
-           
-           {!isEditable ? 
-           (<Text>
-              {place.getAddress()}
-              {"\n"}
-              {place.getDescription()}
-            </Text>):
-            (
-            <>
-            <EditableText text = {place.getAddress()} field="address" pid={pid} ></EditableText>
-            <EditableText text = {place.getDescription()} field="description" pid={pid}> </EditableText>
-            </>
+            {!isEditable ? (
+              <Text>
+                {place.getAddress()}
+                {"\n"}
+                {place.getDescription()}
+              </Text>
+            ) : (
+              <>
+                <EditableText
+                  text={place.getAddress()}
+                  field="address"
+                  pid={pid}
+                ></EditableText>
+                <EditableText
+                  text={place.getDescription()}
+                  field="description"
+                  pid={pid}
+                >
+                  {" "}
+                </EditableText>
+              </>
             )}
-           
 
             {this.state.pets.length > 0 ? (
               <Text style={styles.title2}>Pets for adoption</Text>
@@ -331,19 +339,25 @@ class VetScreen extends React.Component {
                 </ScrollView>
               </View>
             ) : null}
-
+            <Text style={styles.title2}>News</Text>
             <ScrollView showsVerticalScrollIndicator={false}>
-              <ScrollView
+              <View
                 showsHorizontalScrollIndicator={false}
-                style={{ paddingTop: 10 }}
+                style={{
+                  paddingTop: 10,
+                  flex: 1,
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignContent: "center",
+                  flexWrap: "wrap",
+                }}
               >
-                <Text style={styles.title2}>News</Text>
                 <News
                   ref={(news) => (this.state.news = news)}
                   placeId={pid}
-                  isEditable = {isEditable}
+                  isEditable={isEditable}
                 ></News>
-              </ScrollView>
+              </View>
             </ScrollView>
           </View>
         </ScrollView>

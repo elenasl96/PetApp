@@ -288,7 +288,14 @@ class HomeScreen extends React.Component {
                 <View
                   style={[
                     mainStyle.box,
-                    { marginHorizontal: 20, backgroundColor: "#fff1e6" },
+                    {
+                      marginHorizontal: 20,
+                      backgroundColor: "#fff1e6",
+                      flexBasis: 300,
+                      width: "95%",
+                      maxWidth: 500,
+                      alignSelf: "center",
+                    },
                   ]}
                 >
                   <Text style={[styles.text, { color: "#6d6875" }]}>

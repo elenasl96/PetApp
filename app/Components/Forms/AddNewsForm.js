@@ -31,20 +31,18 @@ export default class AddNewsForm extends React.Component {
 
   addNews() {
     let errors = validator.handleNewsValidation(
-      this.state.name,
-      this.state.description,
-      this.state.photo,
-      this.state.address,
-      this.state.city
+      this.state.title,
+      this.state.text
     );
     let isValid = validator.isValid(errors);
     this.setState({ errors: errors });
-
+    console.log(this.state);
     if (isValid) {
       const pid = this.props.pid;
       dbNews.addNews(pid, this.state.title, this.state.text).then((doc) => {
         this.props.close();
         this.props.updateNews(doc);
+        this.setState({ title: "", text: "" });
       });
     }
   }
@@ -74,7 +72,7 @@ export default class AddNewsForm extends React.Component {
                   placeholderTextColor="#616161"
                   returnKeyType="next"
                   value={this.state.title}
-                  onChangeText={(title) => this.setState({ title })}
+                  onChangeText={(title) => this.setState({ title: title })}
                 />
               </View>
 
@@ -90,7 +88,7 @@ export default class AddNewsForm extends React.Component {
                   returnKeyType="next"
                   multiline
                   value={this.state.text}
-                  onChangeText={(text) => this.setState({ text })}
+                  onChangeText={(text) => this.setState({ text: text })}
                 />
               </View>
 

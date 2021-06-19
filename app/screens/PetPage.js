@@ -128,7 +128,7 @@ class PetScreen extends React.Component {
                 section={section}
                 setPhoto={this.setPhoto}
                 isUpdate={true}
-                photo={photo}
+                photo={pet.photo}
                 visible={this.state.showPhotoBox}
                 close={() => {
                   this.setState({ showPhotoBox: false });

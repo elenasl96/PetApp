@@ -1,37 +1,42 @@
 import { storage } from "../FirebaseConfig.js";
 
 const storageManager = {
+  toStorage: function (uid, file, section) {
+    if (file) {
+      var storageRef = storage.ref();
 
+      // Create the file metadata
+      var metadata = {
+        contentType: "image/jpeg",
+      };
 
-  toStorage: function (uid,file,section ) {
+      //Create a filename
+      let date = new Date().getTime();
+      let filename = uid + date;
 
-    var storageRef = storage.ref();
-
-    // Create the file metadata
-    var metadata = {
-      contentType: "image/jpeg",
-    };
-
-    //Create a filename
-    let date = new Date().getTime();
-    let filename = uid + date;
-
-    var urlToStore;
-    // Upload file and metadata
-    return storageRef
-      .child(section + "/" + filename)
-      .put(file, metadata)
-      .then(() => {
-        return storageManager.fromStorage(section,filename).then((url) => {
-          urlToStore = url;
-          //console.log("url:" + urlToStore);
-          return urlToStore;
+      var urlToStore;
+      // Upload file and metadata
+      return storageRef
+        .child(section + "/" + filename)
+        .put(file, metadata)
+        .then(() => {
+          return storageManager.fromStorage(section, filename).then((url) => {
+            urlToStore = url;
+            //console.log("url:" + urlToStore);
+            return urlToStore;
+          });
         });
+      //filename must be saved for future accesses;
+    } else {
+      return storageManager.fromStorage(section, "default.jpg").then((url) => {
+        urlToStore = url;
+        //console.log("url:" + urlToStore);
+        return urlToStore;
       });
-    //filename must be saved for future accesses;
+    }
   },
 
-  fromStorage: function (section,filename) {
+  fromStorage: function (section, filename) {
     var storageRef = storage.ref();
     var imageRef = storageRef.child(section + "/" + filename);
     return imageRef
@@ -52,21 +57,22 @@ const storageManager = {
       });
   },
 
-   deleteFile: function(url) {
-      // [START storage_delete_file]
-      // Create a reference to the file to delete
-      var storageRef = storage.refFromURL(url);
+  deleteFile: function (url) {
+    // [START storage_delete_file]
+    // Create a reference to the file to delete
+    var storageRef = storage.refFromURL(url);
 
-      // Delete the file
-      storageRef.delete().then(() => {
+    // Delete the file
+    storageRef
+      .delete()
+      .then(() => {
         console.log("File deleted successfully");
-      }).catch((error) => {
+      })
+      .catch((error) => {
         console.log("Uh-oh, an error occurred!");
       });
-      // [END storage_delete_file]
-    },
-
-
+    // [END storage_delete_file]
+  },
 };
 
 export default storageManager;
