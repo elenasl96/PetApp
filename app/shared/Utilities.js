@@ -126,8 +126,9 @@ const utils = {
   },
 
   calcDistance: function (pointA, pointB) {
+    //console.log(pointA.latitude);
     var a = pointA.latitude - pointB.latitude;
-    var b = pointB.longitude - pointB.longitude;
+    var b = pointA.longitude - pointB.longitude;
     return Math.sqrt(a * a + b * b);
   },
 };
