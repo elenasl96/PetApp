@@ -64,20 +64,19 @@ async function sendPushNotificationToUser(uid, animal) {
 
 // Can use this function below, OR use Expo's Push Notification Tool-> https://expo.io/notifications
 async function sendPushNotification(expoPushToken, animal) {
+  let body = "Your pet has been spotted! \n" + "Place: " + animal.place;
+  if (animal.phone) {
+    body += "\n" + "Phone:" + animal.phone;
+  }
+  if (animal.email) {
+    body += "\n" + "Email:" + animal.email;
+  }
+
   const message = {
     to: expoPushToken,
     sound: "default",
     title: "Pet report",
-    body:
-      "Your pet has been spotted! \n" +
-      "Place: " +
-      animal.place +
-      "\n" +
-      "Phone:" +
-      animal.phone +
-      "\n" +
-      "Email:" +
-      animal.email,
+    body: body,
     //data: { pet: animal, petID: animal.id },
   };
 

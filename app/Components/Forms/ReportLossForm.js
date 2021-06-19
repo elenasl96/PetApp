@@ -163,7 +163,13 @@ class ReportLossForm extends Component {
   };
 
   replyToLoss = () => {
-    let errors = validator.handleReportValidation(this.state.phone);
+    let errors = validator.handleReportValidation(
+      this.state.phone,
+      "seen",
+      this.state.name,
+      this.state.place,
+      this.state.city
+    );
     let isValid = validator.isValid(errors);
     this.setState({ errors: errors });
     if (isValid) {
