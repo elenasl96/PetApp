@@ -38,7 +38,7 @@
         }
       },
      
-      "permissions": [ "CAMERA", "WRITE_EXTERNAL_STORAGE","READ_EXTERNAL_STORAGE",  "CAMERA_ROLL", "ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION" ]
+      "permissions": [ "CAMERA", "WRITE_EXTERNAL_STORAGE","READ_EXTERNAL_STORAGE",  "CAMERA_ROLL", "ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION", "RECEIVE_BOOT_COMPLETED" ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
