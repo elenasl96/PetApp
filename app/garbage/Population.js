@@ -31,7 +31,7 @@ export const pet = {
 
 export const place = {
   labVeterinary: new Place(
-    "LabVeterinary",
+    "Veterinary Lab",
     constants.TYPES_PLACES[0],
     "We take care of your best friend. Our team is the more professional in the city.",
     "https://firebasestorage.googleapis.com/v0/b/petapp-64e34.appspot.com/o/places%2FgbfBtH1XbDMYice2pM0zV7caEjn21619081104651?alt=media&token=58c5bd7f-0312-4ff0-9880-289c690d8f7c",
@@ -52,7 +52,7 @@ export const place = {
     "Vetty",
     constants.TYPES_PLACES[0],
     "Contact us for every emergency. 24H/24H emergency veterinary.",
-    "https://firebasestorage.googleapis.com/v0/b/petapp-64e34.appspot.com/o/places%2FgbfBtH1XbDMYice2pM0zV7caEjn21619081104651?alt=media&token=58c5bd7f-0312-4ff0-9880-289c690d8f7c",
+    "https://firebasestorage.googleapis.com/v0/b/petapp-64e34.appspot.com/o/places%2Fvet3.jpg?alt=media&token=1b5b5720-1f44-4dc2-97c0-ef38ec83e1a1",
     "Via Giuseppe Ferrari 10, Milano",
     45.48542562941739,
     9.184332484948477
@@ -70,7 +70,7 @@ export const place = {
     "Happy Park",
     constants.TYPES_PLACES[1],
     "A Park for every human friend.",
-    "https://firebasestorage.googleapis.com/v0/b/petapp-64e34.appspot.com/o/places%2FgbfBtH1XbDMYice2pM0zV7caEjn21619081104651?alt=media&token=58c5bd7f-0312-4ff0-9880-289c690d8f7c",
+    "https://firebasestorage.googleapis.com/v0/b/petapp-64e34.appspot.com/o/places%2Fpark1.jpg?alt=media&token=5d1ecf7a-22b1-42d1-b9b8-bbdff6554b08",
     "Parco Wanda Osiris, Milano",
     45.50212797942806,
     9.19550437629243
@@ -79,7 +79,7 @@ export const place = {
     "Dog Park",
     constants.TYPES_PLACES[1],
     "A giant park with every type of funny toy for your dog in an exclusive area of Milan.",
-    "https://firebasestorage.googleapis.com/v0/b/petapp-64e34.appspot.com/o/places%2FgbfBtH1XbDMYice2pM0zV7caEjn21619081104651?alt=media&token=58c5bd7f-0312-4ff0-9880-289c690d8f7c",
+    "https://firebasestorage.googleapis.com/v0/b/petapp-64e34.appspot.com/o/places%2Fpark2.jpg?alt=media&token=cfdcbed1-46e8-4934-bed2-bc02ecb5bfd5",
     "Parco biblioteca degli alberi, Milano",
     45.48464145426812,
     9.192929278204524

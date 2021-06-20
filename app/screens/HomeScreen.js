@@ -5,6 +5,7 @@ import {
   View,
   Image,
   ScrollView,
+  RefreshControl,
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import firebase from "firebase";
@@ -37,21 +38,22 @@ class HomeScreen extends React.Component {
 
   componentDidMount() {
     this.setState({ mounted: true, loading: true });
-    this.loadInfo();
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.loadInfo();
+      }
+    });
   }
 
   loadInfo() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.getUserPets([], true);
+    console.log("load info");
+    this.getUserPets([], true);
 
-        this.saveFavouritePlaces();
+    this.saveFavouritePlaces();
 
-        if (this.context.user.type == "business") {
-          this.getMyPlaces();
-        }
-      }
-    });
+    if (this.context.user.type == "business") {
+      this.getMyPlaces();
+    }
   }
 
   getUserPets(pets, loadFeed) {
@@ -222,7 +224,17 @@ class HomeScreen extends React.Component {
         <LoadingOverlay visible={this.state.loading}></LoadingOverlay>
 
         <View style={styles.mainContent}>
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl
+                refreshing={false}
+                onRefresh={() => {
+                  this.loadInfo();
+                }}
+              />
+            }
+          >
             <View style={styles.horizontalContainer}>
               <ScrollView
                 horizontal={true}

@@ -50,7 +50,7 @@ test("pet population", () => {
   return expect(true).toBeTruthy();
   //var animals = [ new UserAnimal("test","2017","None","Medium","Black","photo","Dog"),
   //new UserAnimal("test","2011","None","Small","Black","photo","Dog"),
- // new UserAnimal("test","2011","Collie","Small","Black","photo","Dog")
+  // new UserAnimal("test","2011","Collie","Small","Black","photo","Dog")
   //return expect(dbFeed.getFeeds(animals,"gbfBtH1XbDMYice2pM0zV7caEjn2","17/06/2021",0)).resolves.toHaveLength(5);
   //return expect(dbFeed.filterAnimals(animals)).toHaveLength(2);
   //dbFeed.getBreedFeed(uid,type,id)
@@ -59,12 +59,12 @@ test("pet population", () => {
 });
 
 test("place population", () => {
-  //dbPopulate.addPlaceToUser(uids.elena, place.labVeterinary);
-  //dbPopulate.addPlaceToUser(uids.elena, place.confortHouse);
-  //dbPopulate.addPlaceToUser(uids.matteo, place.confortHouse);
-  //dbPopulate.addPlaceToUser(uids.matteo, place.petClinic);
-  //dbPopulate.addPlaceToUser(uids.matteo, place.happyPark);
-  //dbPopulate.addPlaceToUser(uids.matteo, place.dogPark);
+  dbPopulate.addPlaceToUser(uids.elena, place.labVeterinary);
+  dbPopulate.addPlaceToUser(uids.elena, place.confortHouse);
+  dbPopulate.addPlaceToUser(uids.matteo, place.vetty);
+  dbPopulate.addPlaceToUser(uids.matteo, place.petClinic);
+  dbPopulate.addPlaceToUser(uids.matteo, place.happyPark);
+  dbPopulate.addPlaceToUser(uids.matteo, place.dogPark);
   return expect(true).toBeTruthy();
 });
 

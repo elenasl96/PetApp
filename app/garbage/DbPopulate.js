@@ -25,9 +25,7 @@ export const dbPopulate = {
         place.getPhoto(),
         place.getAddress(),
         place.getLat(),
-        place.getLng(),
-        "",
-        ""
+        place.getLng()
       )
       .then((doc) => {
         dbPlace.addUserPlace(uid, doc.id);

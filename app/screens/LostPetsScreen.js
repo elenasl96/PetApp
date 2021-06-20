@@ -6,6 +6,7 @@ import {
   TouchableHighlight,
   ScrollView,
   TouchableOpacity,
+  RefreshControl,
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { AuthContext } from "../components/custom/ContextProvider";
@@ -35,10 +36,14 @@ export default class LostPetsScreen extends React.Component {
   };
   static contextType = AuthContext;
 
-  componentDidMount() {
-    this.setState({ mounted: true });
+  loadInfo() {
     this.getLostPets();
     this.getLostPetsSeen();
+  }
+
+  componentDidMount() {
+    this.setState({ mounted: true });
+    this.loadInfo();
   }
 
   componentDidUpdate() {
@@ -237,11 +242,9 @@ export default class LostPetsScreen extends React.Component {
                 this.context.saveLostPets(updatePets);
               }
               this.setState({ showLostPets: true, loading: false });
-
             });
           })
-          .catch((error) => {
-          });
+          .catch((error) => {});
       } else {
         throw new Error("Location permission not granted");
       }
@@ -272,8 +275,7 @@ export default class LostPetsScreen extends React.Component {
               }
             );
           })
-          .catch((error) => {
-          });
+          .catch((error) => {});
       } else {
         throw new Error("Location permission not granted");
       }
@@ -379,7 +381,17 @@ export default class LostPetsScreen extends React.Component {
               </TouchableHighlight>
             ) : null}
           </View>
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl
+                refreshing={false}
+                onRefresh={() => {
+                  this.loadInfo();
+                }}
+              />
+            }
+          >
             <View style={styles.myPlacesContainer}>
               <View style={styles.buttons}>
                 {this.state.showLostPets ? (
