@@ -281,39 +281,53 @@ class HomeScreen extends React.Component {
               </ScrollView>
             </View>
 
-            <View style={styles.myPlaceContainer}>
-              <Text style={styles.largeText}>Your Favourite Places</Text>
-              {this.state.places.length > 0 ? (
-                <View style={styles.myPlaces}>
+            {this.state.places.length > 0 ? (
+              <View style={styles.horizontalContainer}>
+                <ScrollView
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
+                >
+                  <View>
+                    <Image
+                      style={[
+                        styles.dogHouse,
+                        { width: 100, height: 100, alignSelf: "center" },
+                      ]}
+                      source={require("../../assets/images/draws/paw.png")}
+                    ></Image>
+                    <Text style={[styles.largeText, { textAlign: "center" }]}>
+                      Favourite{"\n"} places
+                    </Text>
+                  </View>
                   <PlaceButton
                     uid={this.context.uid}
                     places={this.state.places}
                     navigation={this.props.navigation}
                     isSavedPlace={true}
                   ></PlaceButton>
-                </View>
-              ) : (
-                <View
-                  style={[
-                    mainStyle.box,
-                    {
-                      marginHorizontal: 20,
-                      backgroundColor: "#fff1e6",
-                      flexBasis: 300,
-                      width: "95%",
-                      maxWidth: 500,
-                      alignSelf: "center",
-                    },
-                  ]}
-                >
-                  <Text style={[styles.text, { color: "#6d6875" }]}>
-                    You can explore veterinaries, kennels, parks and other
-                    places in the map. Click the star button to keep them in
-                    your favourites!
-                  </Text>
-                </View>
-              )}
-            </View>
+                </ScrollView>
+              </View>
+            ) : (
+              <View
+                style={[
+                  mainStyle.box,
+                  {
+                    marginHorizontal: 20,
+                    backgroundColor: "#fff1e6",
+                    flexBasis: 300,
+                    width: "95%",
+                    maxWidth: 500,
+                    alignSelf: "center",
+                  },
+                ]}
+              >
+                <Text style={[styles.text, { color: "#6d6875" }]}>
+                  You can explore veterinaries, kennels, parks and other places
+                  in the map. Click the star button to keep them in your
+                  favourites!
+                </Text>
+              </View>
+            )}
           </ScrollView>
         </View>
       </SafeAreaView>
@@ -361,8 +375,7 @@ const styles = StyleSheet.create({
   horizontalContainer: {
     justifyContent: "center",
     flexDirection: "row",
-    paddingTop: 20,
-    paddingBottom: 20,
+    paddingVertical: 10,
     backgroundColor: "white",
   },
   feed: {

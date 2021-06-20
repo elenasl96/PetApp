@@ -58,25 +58,21 @@ class PlaceButton extends React.Component {
     if (this.props.places != null) {
       //  if (!this.props.isSavedPlace) {
       return this.props.places.map((place, index) => (
-        <View
-          key={index}
-          style={{ flex: 3, flexBasis: 300, maxWidth: 300, margin: 10 }}
+        <TouchableHighlight
+          key={place.id}
+          onPress={() => this.showPlace(place)}
+          style={styles.place}
         >
-          <TouchableHighlight
-            onPress={() => this.showPlace(place)}
-            style={styles.place}
+          <ImageBackground
+            source={{ uri: place.photo }}
+            style={styles.placeImage}
+            imageStyle={{ borderRadius: 20 }}
           >
-            <ImageBackground
-              source={{ uri: place.photo }}
-              style={styles.placeImage}
-              imageStyle={{ borderRadius: 20 }}
-            >
-              <View style={styles.overlay}>
-                <Text style={styles.title}>{place.name}</Text>
-              </View>
-            </ImageBackground>
-          </TouchableHighlight>
-        </View>
+            <View style={styles.overlay}>
+              <Text style={styles.title}>{place.name}</Text>
+            </View>
+          </ImageBackground>
+        </TouchableHighlight>
       ));
       /*} else {
       return this.props.places.map((place, index) => (
@@ -118,6 +114,10 @@ const styles = StyleSheet.create({
     //flexShrink: 1,
     //flexBasis: 200,
     //flex: 2,
+
+    marginHorizontal: 10,
+    width: 250,
+    height: 150,
   },
   title: {
     marginVertical: 55,
