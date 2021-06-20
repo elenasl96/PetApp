@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     marginRight: 10,
     fontWeight: "bold",
+    fontFamily: "Roboto",
   },
 });
 

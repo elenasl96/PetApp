@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  ScrollView,
-} from "react-native";
+import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { AuthContext } from "../components/custom/ContextProvider";
 import dbPlace from "../firebase/database/functions/DbPlace.js";
@@ -165,6 +159,7 @@ const styles = StyleSheet.create({
   mainTitle: {
     fontSize: 25,
     fontWeight: "bold",
+    fontFamily: "Roboto",
   },
   profileContainer: {
     flexDirection: "row",
@@ -173,6 +168,7 @@ const styles = StyleSheet.create({
   username: {
     fontSize: 14,
     fontWeight: "bold",
+    fontFamily: "Roboto",
     margin: 10,
   },
   profileImage: {
@@ -190,6 +186,7 @@ const styles = StyleSheet.create({
   title: {
     marginLeft: 15,
     fontWeight: "bold",
+    fontFamily: "Roboto",
     fontSize: 20,
   },
   titleBox: {

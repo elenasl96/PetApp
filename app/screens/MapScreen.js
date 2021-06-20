@@ -353,6 +353,7 @@ const styles = StyleSheet.create({
   },
   placeName: {
     fontWeight: "bold",
+    fontFamily: "Roboto",
   },
   mapTopButtons: {
     flex: 1,

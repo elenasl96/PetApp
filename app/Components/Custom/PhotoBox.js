@@ -411,6 +411,7 @@ const styles = StyleSheet.create({
   mainTitle: {
     fontSize: 25,
     fontWeight: "bold",
+    fontFamily: "Roboto",
   },
   petContainer: {
     flex: 1,
@@ -446,6 +447,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: "bold",
+    fontFamily: "Roboto",
     fontSize: 20,
   },
 

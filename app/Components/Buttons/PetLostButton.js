@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  Image,
-  View,
-} from "react-native";
+import { StyleSheet, Text, Image, View } from "react-native";
 import dbLostPet from "../../firebase/database/functions/DbLostPet";
 import { AuthContext } from "../custom/ContextProvider";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -143,6 +138,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 20,
     color: "#ffb4a2",
+    fontFamily: "Roboto",
   },
   place: {
     textAlign: "center",

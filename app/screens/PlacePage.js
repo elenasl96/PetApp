@@ -386,6 +386,7 @@ const styles = StyleSheet.create({
   mainTitle: {
     fontSize: 25,
     fontWeight: "bold",
+    fontFamily: "Roboto",
     margin: 10,
   },
   buttons: {
@@ -407,16 +408,19 @@ const styles = StyleSheet.create({
     color: "orange",
     alignSelf: "center",
     fontWeight: "bold",
+    fontFamily: "Roboto",
   },
   title2: {
     color: "#4cc9f0",
     fontWeight: "bold",
+    fontFamily: "Roboto",
     fontSize: 20,
     marginVertical: 15,
     textAlign: "center",
   },
   title: {
     fontWeight: "bold",
+    fontFamily: "Roboto",
     fontSize: 20,
     margin: 10,
   },

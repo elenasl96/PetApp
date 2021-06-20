@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text,Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet } from "react-native";
 import firebase from "firebase";
 import { AuthContext } from "./ContextProvider.js";
 import { Ionicons } from "@expo/vector-icons";
@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
   mainTitle: {
     fontSize: 25,
     fontWeight: "bold",
+    fontFamily: "Roboto",
   },
   profileContainer: {
     flexDirection: "row",
@@ -82,6 +83,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
     margin: 10,
+    fontFamily: "Roboto",
   },
   profileImage: {
     width: 45,
@@ -94,6 +96,7 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginTop: 10,
     fontWeight: "bold",
+    fontFamily: "Roboto",
     fontSize: 20,
   },
   exitButton: {

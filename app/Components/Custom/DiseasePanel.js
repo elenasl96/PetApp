@@ -185,7 +185,9 @@ class DiseasePanel extends React.Component {
           onPress={() => this.setState({ diseaseShown: s })}
         >
           <View style={styles.info}>
-            <Text style={{ fontWeight: "bold" }}>{s}</Text>
+            <Text style={{ fontWeight: "bold", fontFamily: "Roboto" }}>
+              {s}
+            </Text>
           </View>
         </TouchableHighlight>
       );
@@ -440,6 +442,7 @@ const styles = StyleSheet.create({
   title: {
     color: "red",
     fontWeight: "bold",
+    fontFamily: "Roboto",
     fontSize: 20,
     marginVertical: 10,
     textAlign: "center",

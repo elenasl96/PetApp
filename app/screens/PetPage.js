@@ -191,7 +191,13 @@ class PetScreen extends React.Component {
                   ></ImageBackground>
                 </View>
                 <View style={styles.petName}>
-                  <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      fontWeight: "bold",
+                      fontFamily: "Roboto",
+                    }}
+                  >
                     {pet.getName()}
                   </Text>
                   <Ionicons
@@ -318,6 +324,7 @@ const styles = StyleSheet.create({
   mainTitle: {
     fontSize: 25,
     fontWeight: "bold",
+    fontFamily: "Roboto",
   },
   petContainer: {
     flex: 1,
@@ -351,10 +358,12 @@ const styles = StyleSheet.create({
   infoText: {
     textAlign: "center",
     fontWeight: "bold",
+    fontFamily: "Roboto",
   },
   infoTitle: {
     color: "#f94144",
     fontWeight: "bold",
+    fontFamily: "Roboto",
     textAlign: "center",
   },
 
@@ -405,6 +414,7 @@ const styles = StyleSheet.create({
   title: {
     color: "#4cc9f0",
     fontWeight: "bold",
+    fontFamily: "Roboto",
     fontSize: 20,
     marginVertical: 10,
     textAlign: "center",

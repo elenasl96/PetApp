@@ -371,6 +371,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     textAlign: "center",
     fontWeight: "bold",
+    fontFamily: "Roboto",
   },
   button: {
     maxWidth: 300,
@@ -389,6 +390,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#FFFFFF",
     fontWeight: "bold",
+    fontFamily: "Roboto",
     textAlign: "center",
   },
 

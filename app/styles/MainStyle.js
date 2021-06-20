@@ -49,12 +49,14 @@ export default StyleSheet.create({
   title: {
     fontSize: 23,
     fontWeight: "bold",
+    fontFamily: "Roboto",
   },
   text: {
     fontSize: 18,
   },
   link: {
     fontWeight: "bold",
+    fontFamily: "Roboto",
     fontSize: 20,
   },
   button: {

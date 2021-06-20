@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
   },
   newsTitle: {
     fontWeight: "bold",
+    fontFamily: "Roboto",
   },
   newsTime: {
     fontStyle: "italic",

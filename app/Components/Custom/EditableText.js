@@ -108,7 +108,9 @@ class EditableText extends React.Component {
             style={[MainStyle.roundButton, { marginTop: 0, marginRight: 5 }]}
             onPress={() => this.handlePress()}
           >
-            <Text style={{ fontWeight: "bold" }}>{m2}</Text>
+            <Text style={{ fontWeight: "bold", fontFamily: "Roboto" }}>
+              {m2}
+            </Text>
           </TouchableOpacity>
         ) : null}
       </View>

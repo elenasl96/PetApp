@@ -201,7 +201,6 @@ class Chart extends React.Component {
     if (this.state.mounted) {
       this.setState({ errors: errors });
     }
-
   };
 
   render() {
@@ -301,7 +300,8 @@ class Chart extends React.Component {
               />
             </Text>
             <Text style={{ marginHorizontal: 15, marginBottom: 10 }}>
-              Add new sample {this.state.newtype} {this.state.newtype == "weight" ? "[kg]" : "[cm]"}
+              Add new sample {this.state.newtype}{" "}
+              {this.state.newtype == "weight" ? "[kg]" : "[cm]"}
             </Text>
           </View>
           <View
@@ -355,6 +355,7 @@ const styles = StyleSheet.create({
   subtitle: {
     color: "#4cc9f0",
     fontWeight: "bold",
+    fontFamily: "Roboto",
     textAlign: "center",
   },
   text: {
@@ -431,6 +432,7 @@ const styles = StyleSheet.create({
   title: {
     color: "#4cc9f0",
     fontWeight: "bold",
+    fontFamily: "Roboto",
     fontSize: 20,
     marginVertical: 10,
     textAlign: "center",
