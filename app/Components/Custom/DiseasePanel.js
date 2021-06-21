@@ -206,7 +206,7 @@ class DiseasePanel extends React.Component {
     }
 
     return (
-      <View style={{ flex: 1, flexBasis: 400 }}>
+      <View style={{ flex: 1, flexBasis: 300 }}>
         <Text style={styles.title}>Health monitor</Text>
         <View style={styles.descriptionContainer}>
           {temp.length != 0 ? (

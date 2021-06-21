@@ -27,6 +27,42 @@ export const pet = {
     "https://firebasestorage.googleapis.com/v0/b/petapp-64e34.appspot.com/o/pets%2FCipolla.jpg?alt=media&token=5b3255ce-9767-490e-af06-ed917b4a8c86",
     constants.TYPES_PETS[1]
   ),
+  puzzola: new UserAnimal(
+    "Puzzola",
+    11,
+    "None",
+    constants.SIZES_PETS[0],
+    "Orange",
+    "https://firebasestorage.googleapis.com/v0/b/petapp-64e34.appspot.com/o/pets%2Fcat.jpg?alt=media&token=f10130b3-6f63-4577-8c0e-c5372a1b588d",
+    constants.TYPES_PETS[1]
+  ),
+  willy: new UserAnimal(
+    "Willy",
+    1,
+    "Siamese",
+    constants.SIZES_PETS[0],
+    "White",
+    "https://firebasestorage.googleapis.com/v0/b/petapp-64e34.appspot.com/o/pets%2Fsiamese.jpg?alt=media&token=733d79ca-fb8a-4b86-9b13-5ff86d54c4ce",
+    constants.TYPES_PETS[1]
+  ),
+  sweet: new UserAnimal(
+    "Sweet",
+    10,
+    "Collie",
+    constants.SIZES_PETS[1],
+    "Particolor",
+    "https://firebasestorage.googleapis.com/v0/b/petapp-64e34.appspot.com/o/pets%2Fcollie.jpg?alt=media&token=c9150983-d6b5-417f-982a-639e6f2e93b5",
+    constants.TYPES_PETS[0]
+  ),
+  tippi: new UserAnimal(
+    "Tippi",
+    5,
+    "None",
+    constants.SIZES_PETS[1],
+    "Particolor",
+    "https://firebasestorage.googleapis.com/v0/b/petapp-64e34.appspot.com/o/pets%2Fdog.jpeg?alt=media&token=27988d67-b24a-4857-9782-580b9e2fb469",
+    constants.TYPES_PETS[0]
+  ),
 };
 
 export const place = {

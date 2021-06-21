@@ -214,7 +214,7 @@ class Chart extends React.Component {
     }
 
     return (
-      <View style={{ flex: 1, flexBasis: 400 }}>
+      <View style={{ flex: 1, flexBasis: 300 }}>
         <Text style={styles.title}>Pet stats</Text>
         <View style={styles.statisticButtons}>
           <TouchableHighlight
